@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Controllers\Backend;
+
+
+use App\Http\Controllers\Controller;
+
+class FileController extends Controller
+{
+    /**
+     * 上传文件
+     * https://github.com/jacobcyl/Aliyun-oss-storage
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function upload()
+    {
+        $disk = storage ();
+        //TODO 上传文件到云储存
+        return json (1001, 'upload success');
+    }
+}

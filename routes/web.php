@@ -1,0 +1,9 @@
+<?php
+/**
+ *  每个模块按照独立模块区分 这样协同开发时 修改路由的话 代码不会冲突
+ */
+
+Route::middleware ('web')->namespace ('Frontend')->group (function () {
+
+    include_route_files (__DIR__ . '/api/frontend/');
+});

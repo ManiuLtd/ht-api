@@ -1,0 +1,46 @@
+git:
+  submodules: false
+
+language: php
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+php:
+  - 7.1
+  - 7.2
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.1
+      env: DB_CONNECTION=mysql DB_DATABASE=laravel_test DB_USERNAME=root DB_PASSWORD='' DB_PORT=3306 EXEC_COVERAGE=true
+    - php: 7.2
+      env: DB_CONNECTION=mysql DB_DATABASE=laravel_test DB_USERNAME=root DB_PASSWORD='' DB_PORT=3306 EXEC_COVERAGE=true
+env:
+  - DB_CONNECTION=mysql DB_DATABASE=laravel_test DB_USERNAME=root DB_PASSWORD='' DB_PORT=3306
+  - DB_CONNECTION=mysql DB_DATABASE=laravel_test DB_USERNAME=root DB_PASSWORD='' DB_PORT=3306 EXEC_COVERAGE=true
+
+before_install:
+  - if [[ "$DB_CONNECTION" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS laravel_test;" -uroot; fi
+
+before_script:
+  - if [[ $EXEC_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini ; fi
+  - if [[ $EXEC_COVERAGE = 'true' ]]; then echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini ; fi
+  - composer self-update || true
+  - composer install --dev --no-interaction -o --no-scripts
+  - composer run-script post-root-package-install
+  - composer run-script post-create-project-cmd
+  - composer run-script post-autoload-dump
+
+script:
+  - if [[ $EXEC_COVERAGE = 'true' ]]; then phpdbg -qrr ./vendor/bin/phpunit --coverage-clover=coverage.clover ; fi
+  - if [[ $EXEC_COVERAGE != 'true' ]]; then ./vendor/bin/phpunit ; fi
+
+after_success:
+  - if [[ $EXEC_COVERAGE = 'true' ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
+
+after_failure:
+  - cat storage/logs/laravel-`date +"%Y-%m-%d"`.log
