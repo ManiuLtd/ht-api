@@ -1,0 +1,1 @@
+{  "name": "鸿唐网络",  "version": "0.1.0",  "description": "基于laravel的快速开发脚手架接口文档",  "title": "接口文档",  "url": "http://htshop.iwxapp.com/api",  "sampleUrl": false,  "defaultVersion": "0.0.0",  "apidoc": "0.3.0",  "generator": {    "name": "apidoc",    "time": "2018-09-07T12:56:50.677Z",    "url": "http://apidocjs.com",    "version": "0.17.6"  }}
