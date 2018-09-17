@@ -52,11 +52,10 @@ class MemberWithdrawsController extends Controller
         $withdraws = $this->repository
             ->pushCriteria (new DatePickerCriteria())
             ->with ('member')
-            ->paginate (request ('limit') ?? 10);
+            ->paginate (request ('limit', 10));
 
         return json (1001, '列表获取成功', $withdraws);
     }
-
 
 
     /**
@@ -94,7 +93,6 @@ class MemberWithdrawsController extends Controller
             return json (5001, $e->getMessageBag ());
         }
     }
-
 
 
     /**

@@ -16,10 +16,14 @@ use App\Validators\Member\MemberAddressValidator;
 class MemberAddressRepositoryEloquent extends BaseRepository implements MemberAddressRepository
 {
 
+    /**
+     * @var array
+     */
     protected $fieldSearchable = [
         'member_id',
         'user_id',
     ];
+
     /**
      * Specify Model class name
      *
@@ -43,11 +47,18 @@ class MemberAddressRepositoryEloquent extends BaseRepository implements MemberAd
 
 
     /**
-     * Boot up the repository, pushing criteria
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {
         $this->pushCriteria (app (RequestCriteria::class));
     }
 
+    /**
+     * @return string
+     */
+    public function presenter()
+    {
+        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+    }
 }

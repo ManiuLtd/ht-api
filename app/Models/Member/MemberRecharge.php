@@ -7,9 +7,8 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberRecharge.
- *
- * @package namespace App\Models;
+ * Class MemberRecharge
+ * @package App\Models\Member
  */
 class MemberRecharge extends Model implements Transformable
 {
@@ -32,7 +31,6 @@ class MemberRecharge extends Model implements Transformable
         'merch_id',
         'order_id',
     ];
-
 
     /**
      * 所属用户

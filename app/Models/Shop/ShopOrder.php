@@ -27,14 +27,17 @@ class ShopOrder extends Model implements Transformable
      */
     protected $hidden = [
         'member_id',
-        'address_id'
+        'address_id',
+        'user_id',
+        'merch_id',
+        'agent_id',
     ];
 
     /**
      * 子订单
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function goods()
+    public function subOrders()
     {
         return $this->hasMany ('App\Models\Shop\ShopOrderGoods', 'order_id');
     }

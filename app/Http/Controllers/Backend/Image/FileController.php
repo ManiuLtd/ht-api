@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Image;
 
 
 use App\Http\Controllers\Controller;
 
+/**
+ * Class FileController
+ * @package App\Http\Controllers\Backend\Image
+ */
 class FileController extends Controller
 {
     /**

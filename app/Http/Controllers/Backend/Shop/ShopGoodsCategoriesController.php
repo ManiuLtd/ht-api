@@ -69,17 +69,6 @@ class ShopGoodsCategoriesController extends Controller
         }
     }
 
-    /**
-     * 商品分类详情
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $category = $this->repository->find ($id);
-
-        return json (1001, "详情获取成功", $category);
-    }
 
     /**
      * 编辑商品分类
@@ -134,7 +123,7 @@ class ShopGoodsCategoriesController extends Controller
     protected function checkCategory($id, $isEdit = false, $parentId = 0)
     {
         //验证是否有子分类
-        $hasChild = db ('goods_categories')->where ('parentid', $id)->first () ?? false;
+        $hasChild = db ('shop_goods_categories')->where ('parentid', $id)->first () ?? false;
         //禁止删除拥有子分类的分类
         if (!$isEdit && $hasChild) {
             return false;
@@ -144,7 +133,7 @@ class ShopGoodsCategoriesController extends Controller
             return false;
         }
         //验证分类是否存在
-        $isExist = db ('goods_categories')->find ($id) ?? false;
+        $isExist = db ('shop_goods_categories')->find ($id) ?? false;
 
         if (!$isExist) {
             return false;

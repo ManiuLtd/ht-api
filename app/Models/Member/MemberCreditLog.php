@@ -7,9 +7,8 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberCreditLog.
- *
- * @package namespace App\Models\Member;
+ * Class MemberCreditLog
+ * @package App\Models\Member
  */
 class MemberCreditLog extends Model implements Transformable
 {

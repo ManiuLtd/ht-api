@@ -26,4 +26,9 @@ class ShopCouponCategory extends Model implements Transformable
         'status'
     ];
 
+    protected $hidden = [
+        'user_id',
+        'merch_id',
+    ];
+
 }

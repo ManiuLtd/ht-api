@@ -41,6 +41,7 @@ class Member extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
+        'user_id',
         'inviter_id',
         'level1',
         'level2',

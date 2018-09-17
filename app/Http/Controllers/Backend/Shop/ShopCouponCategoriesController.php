@@ -40,7 +40,6 @@ class ShopCouponCategoriesController extends Controller
     }
 
 
-
     /**
      * 优惠券分类列表
      * @return \Illuminate\Http\JsonResponse
@@ -51,7 +50,6 @@ class ShopCouponCategoriesController extends Controller
 
         return json (1001, '列表获取成功', $couponCategories);
     }
-
 
 
     /**
@@ -76,20 +74,6 @@ class ShopCouponCategoriesController extends Controller
 
 
     /**
-     * 优惠券分类详情
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $couponCategory = $this->repository->find ($id);
-
-        return json (1001, "详情获取成功", $couponCategory);
-
-    }
-
-
-    /**
      * 编辑优惠券分类
      * @param ShopCouponCategoryUpdateRequest $request
      * @param $id
@@ -109,7 +93,6 @@ class ShopCouponCategoriesController extends Controller
             return json (5001, $e->getMessageBag ());
         }
     }
-
 
 
     /**

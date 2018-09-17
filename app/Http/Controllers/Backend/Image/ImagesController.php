@@ -1,15 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/9/10
- * Time: 11:46
- */
 
 namespace App\Http\Controllers\Backend\Image;
 
 
-class ImagesController
+use App\Http\Controllers\Controller;
+
+/**
+ * Class ImagesController
+ * @package App\Http\Controllers\Backend\Image
+ */
+class ImagesController extends  Controller
 {
 
+    /**
+     * 图片列表
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        //TODO 显示储存空间的图片列表（阿里云或者七牛云)
+        return json (1001, 'image list get success');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -13,7 +14,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class ShopGoodsComment extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,4 +23,44 @@ class ShopGoodsComment extends Model implements Transformable
      */
     protected $fillable = [];
 
+    /**
+     * @var array
+     */
+    protected $hidden = [
+        'user_id',
+        'member_id',
+        'merch_id',
+        'order_id',
+        'goods_id',
+    ];
+
+
+    /**
+     * 所属用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function member()
+    {
+        return $this->belongsTo ('App\Models\Member\Member')->withDefault (null);
+    }
+
+
+    /**
+     * 所属订单
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function order()
+    {
+        return $this->belongsTo ('App\Models\Shop\ShopOrder')->withDefault (null);
+    }
+
+
+    /**
+     * 所属商品
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function goods()
+    {
+        return $this->belongsTo ('App\Models\Shop\ShopGoods')->withDefault (null);
+    }
 }

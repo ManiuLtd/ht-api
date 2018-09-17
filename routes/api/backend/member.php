@@ -10,12 +10,12 @@ Route::namespace ('Member')->group (function () {
 
     //收货地址
     Route::resource ('member/address', 'MemberAddressesController', [
-        'only' => [ 'index']
+        'only' => ['index']
     ]);
 
     //用户收藏
-    Route::resource ('member/favourites', 'MemberFavouritesController', [
-        'only' => [ 'index']
+    Route::resource ('member/favourite', 'MemberFavouritesController', [
+        'only' => ['index']
     ]);
 
     //会员日志
@@ -25,21 +25,20 @@ Route::namespace ('Member')->group (function () {
 
     //会员等级
     Route::resource ('member/level', 'MemberLevelsController', [
-        'except' => ['create', 'edit']
+        'except' => ['create', 'edit', 'show']
     ]);
+
+    //提现记录
+    Route::resource ('member/withdraw', 'MemberWithdrawsController', [
+        'except' => ['create', 'edit', 'store']
+    ]);
+
+    //充值记录
+    Route::get ('member/recharge', 'MemberRechargesController@index');
 
     //会员
     Route::resource ('member', 'MembersController', [
         'except' => ['create', 'edit', 'store']
     ]);
-
-
-    //提现
-    Route::resource ('withdraw', 'MemberWithdrawsController', [
-        'except' => ['create', 'edit', 'store']
-    ]);
-
-    //充值记录
-    Route::get ('recharge', 'MemberRechargesController@index');
 
 });

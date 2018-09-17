@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend\Shop;
 use App\Http\Controllers\Controller;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\Shop\ShopGoodsCommentCreateRequest;
 use App\Http\Requests\Shop\ShopGoodsCommentUpdateRequest;
 use App\Repositories\Interfaces\ShopGoodsCommentRepository;
 use App\Validators\Shop\ShopGoodsCommentValidator;
@@ -45,40 +44,17 @@ class ShopGoodsCommentsController extends Controller
      */
     public function index()
     {
-        $comments = $this->repository->all ();
+        $comments = $this->repository->with (['member', 'order', 'goods'])->all ();
 
-        return json (1001, "更新成功", $comments);
+        return json (1001, "列表获取成功", $comments);
 
     }
 
-
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $comment = $this->repository->find ($id);
-
-        if (request ()->wantsJson ()) {
-
-            return response ()->json ([
-                'data' => $comment,
-            ]);
-        }
-
-        return view ('comments.show', compact ('comment'));
-    }
-
-
-
-    /**
+     * 编辑评论
      * @param ShopGoodsCommentUpdateRequest $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(ShopGoodsCommentUpdateRequest $request, $id)
     {
@@ -86,31 +62,28 @@ class ShopGoodsCommentsController extends Controller
 
             $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $comment = $this->repository->update ($request->all (), $id);
+            $couponCategory = $this->repository->update ($request->all (), $id);
 
-            $response = [
-                'message' => 'ShopGoodsComment updated.',
-                'data' => $comment->toArray (),
-            ];
+            return json (1001, "更新成功", $couponCategory);
 
-            if ($request->wantsJson ()) {
-
-                return response ()->json ($response);
-            }
-
-            return redirect ()->back ()->with ('message', $response['message']);
         } catch (ValidatorException $e) {
-
-            if ($request->wantsJson ()) {
-
-                return response ()->json ([
-                    'error' => true,
-                    'message' => $e->getMessageBag ()
-                ]);
-            }
-
-            return redirect ()->back ()->withErrors ($e->getMessageBag ())->withInput ();
+            return json (5001, $e->getMessageBag ());
         }
+    }
+
+    /**
+     * 评论详情
+     *
+     * @param $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+        $comment = $this->repository->with (['member', 'order', 'goods'])->find ($id);
+
+        return json (1001, "详情获取成功", $comment);
+
     }
 
 

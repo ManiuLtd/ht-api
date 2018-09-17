@@ -15,6 +15,18 @@ use App\Validators\Shop\ShopGoodsCommentValidator;
  */
 class ShopGoodsCommentRepositoryEloquent extends BaseRepository implements ShopGoodsCommentRepository
 {
+
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'member_id',
+        'merch_id',
+        'order_id',
+        'goods_id',
+        'nickname',
+    ];
+
     /**
      * Specify Model class name
      *

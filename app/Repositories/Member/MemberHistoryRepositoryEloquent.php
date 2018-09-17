@@ -22,6 +22,7 @@ class MemberHistoryRepositoryEloquent extends BaseRepository implements MemberHi
     protected $fieldSearchable = [
         'member_id',
         'user_id',
+        'created_at'
     ];
 
 

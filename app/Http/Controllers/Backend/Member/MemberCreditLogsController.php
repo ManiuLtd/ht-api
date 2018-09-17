@@ -31,7 +31,7 @@ class MemberCreditLogsController extends Controller
 
 
     /**
-     * 积分日志
+     * 积分余额日志
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
@@ -40,8 +40,8 @@ class MemberCreditLogsController extends Controller
             ->pushCriteria (new DatePickerCriteria())
             ->with (['member', 'user'])
             ->paginate (request ('limit', 10));
-        return json (1001, '列表获取成功', $memberCreditLogs);
 
+        return json (1001, '列表获取成功', $memberCreditLogs);
     }
 
 }

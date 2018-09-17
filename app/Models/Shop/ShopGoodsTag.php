@@ -28,8 +28,17 @@ class ShopGoodsTag extends Model implements Transformable
         'status'
     ];
 
+    /**
+     * @var array
+     */
     protected $dates = ['deleted_at'];
 
+    /**
+     * @var array
+     */
+    protected $hidden = [
+       'user_id'
+    ];
 
     /**
      * 字段映射

@@ -7,9 +7,8 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class ShopCouponLog.
- *
- * @package namespace App\Models\Shop;
+ * Class ShopCouponLog
+ * @package App\Models\Shop
  */
 class ShopCouponLog extends Model implements Transformable
 {
@@ -27,6 +26,8 @@ class ShopCouponLog extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
+        'merch_id',
+        'user_id',
         'coupon_id',
         'member_id'
     ];
@@ -48,26 +49,4 @@ class ShopCouponLog extends Model implements Transformable
     {
         return $this->belongsTo ('App\Models\Member\Member')->withDefault (null);
     }
-
-    /**
-     * @return array
-     */
-    public function transform()
-    {
-        return [
-            'id' => (int)$this->id,
-            'ordersn' => $this->ordersn,
-            'coupon_id' => $this->coupon_id,//优惠券ID
-            'name' => $this->name,
-            'thumb' => $this->thumb,
-            'get_time' => $this->get_time,//获取时间
-            'created_at' => $this->created_at->toDateTimeString (),
-            'member_nickname' => $this->member->nickname,
-            'coupon_deduct' => $this->coupon->deduct,// 立减金额
-        ];
-
-
-    }
-
-
 }

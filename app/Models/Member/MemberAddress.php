@@ -14,14 +14,11 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class MemberAddress extends Model implements Transformable
 {
-    use TransformableTrait,SoftDeletes;
+    use TransformableTrait, SoftDeletes;
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
-    protected $table = 'member_addresses';
     protected $fillable = [
         'user_id',
         'member_id',
@@ -35,11 +32,15 @@ class MemberAddress extends Model implements Transformable
         'isdefault',
         'type'
     ];
+
     /**
      * @var array
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * @var array
+     */
     protected $hidden = [
         'member_id',
         'user_id'

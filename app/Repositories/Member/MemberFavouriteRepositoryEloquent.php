@@ -16,10 +16,14 @@ use App\Validators\Member\MemberFavouriteValidator;
 class MemberFavouriteRepositoryEloquent extends BaseRepository implements MemberFavouriteRepository
 {
 
+    /**
+     * @var array
+     */
     protected $fieldSearchable = [
         'member_id',
         'user_id',
     ];
+
     /**
      * Specify Model class name
      *
@@ -31,9 +35,7 @@ class MemberFavouriteRepositoryEloquent extends BaseRepository implements Member
     }
 
     /**
-     * Specify Validator class name
-     *
-     * @return mixed
+     * @return null|string
      */
     public function validator()
     {
@@ -41,9 +43,8 @@ class MemberFavouriteRepositoryEloquent extends BaseRepository implements Member
         return MemberFavouriteValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {

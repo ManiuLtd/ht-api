@@ -35,6 +35,9 @@ class ShopGoodsCategory extends Model implements Transformable
 
     protected $dates = ['deleted_at'];
 
+    protected $hidden = [
+        'user_id'
+    ];
 
     /**
      * 字段映射

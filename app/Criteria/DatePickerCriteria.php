@@ -13,21 +13,19 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 class DatePickerCriteria implements CriteriaInterface
 {
     /**
-     * Apply criteria in query repository
-     *
-     * @param string              $model
+     * 根据时间筛选，需要传入开始时间和结束时间
+     * @param $model
      * @param RepositoryInterface $repository
-     *
      * @return mixed
      */
     public function apply($model, RepositoryInterface $repository)
     {
         $start = request ('start');
         $end = request ('end');
-        if($start && $end){
-            return $model->where([
-                ['created_at','>=',$start],
-                ['created_at','<=',$end],
+        if ($start && $end) {
+            return $model->where ([
+                ['created_at', '>=', $start],
+                ['created_at', '<=', $end],
             ]);
         }
         return $model;

@@ -32,7 +32,7 @@ class ShopCouponsController extends Controller
      * ShopCouponsController constructor.
      *
      * @param ShopCouponRepository $repository
-     * @param ShopCouponValidator  $validator
+     * @param ShopCouponValidator $validator
      */
     public function __construct(ShopCouponRepository $repository, ShopCouponValidator $validator)
     {
@@ -48,9 +48,9 @@ class ShopCouponsController extends Controller
      */
     public function index()
     {
-        $coupons = $this->repository->with('category')->paginate(request('limit') ?? 10);
+        $coupons = $this->repository->with ('category')->paginate (request ('limit', 10));
 
-        return json(1001, '列表获取成功', $coupons);
+        return json (1001, '列表获取成功', $coupons);
 
     }
 
@@ -66,14 +66,14 @@ class ShopCouponsController extends Controller
     {
         try {
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_CREATE);
 
-            $coupon = $this->repository->create($request->all());
+            $coupon = $this->repository->create ($request->all ());
 
-            return json(1001, "创建成功", $coupon);
+            return json (1001, "创建成功", $coupon);
 
         } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag());
+            return json (5001, $e->getMessageBag ());
         }
     }
 
@@ -87,9 +87,9 @@ class ShopCouponsController extends Controller
      */
     public function show($id)
     {
-        $coupon = $this->repository->with('category')->find($id);
+        $coupon = $this->repository->with ('category')->find ($id);
 
-        return json(1001, "详情获取成功", $coupon);
+        return json (1001, "详情获取成功", $coupon);
 
     }
 
@@ -106,14 +106,14 @@ class ShopCouponsController extends Controller
     {
         try {
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $coupon = $this->repository->update($request->all(), $id);
+            $coupon = $this->repository->update ($request->all (), $id);
 
-            return json(1001, "更新成功", $coupon);
+            return json (1001, "更新成功", $coupon);
 
         } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag());
+            return json (5001, $e->getMessageBag ());
         }
     }
 
@@ -127,8 +127,8 @@ class ShopCouponsController extends Controller
      */
     public function destroy($id)
     {
-        $this->repository->delete($id);
+        $this->repository->delete ($id);
 
-        return json(1001, "删除成功");
+        return json (1001, "删除成功");
     }
 }

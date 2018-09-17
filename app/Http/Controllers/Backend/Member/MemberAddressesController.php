@@ -12,7 +12,6 @@ use App\Validators\Member\MemberAddressValidator;
  *
  * @package App\Http\Controllers\Backend\Member
  */
-
 class MemberAddressesController extends Controller
 {
     /**
@@ -44,8 +43,8 @@ class MemberAddressesController extends Controller
      */
     public function index()
     {
-        $memberAddresses = $this->repository->all();
+        $memberAddresses = $this->repository->all ();
 
-        return json(1001, '列表获取成功', $memberAddresses);
+        return json (1001, '列表获取成功', $memberAddresses);
     }
 }

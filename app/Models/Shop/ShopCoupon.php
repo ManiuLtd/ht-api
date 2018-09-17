@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -12,7 +13,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class ShopCoupon extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -52,7 +53,13 @@ class ShopCoupon extends Model implements Transformable
     /**
      * @var array
      */
-    protected $hidden = ['category_id'];
+    protected $hidden = [
+        'category_id',
+        'user_id',
+        'merch_id',
+    ];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * 所属分类

@@ -22,4 +22,16 @@ class ShopOrderGoods extends Model implements Transformable
      */
     protected $fillable = [];
 
+
+    /**
+     * @var array
+     */
+    protected $hidden = [
+        'user_id',
+        'member_id',
+        'order_id',
+        'user_id',
+        'merch_id',
+        'agent_id',
+    ];
 }

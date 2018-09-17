@@ -49,7 +49,7 @@ class MemberRechargesController extends Controller
         $recharges = $this->repository
             ->pushCriteria (new DatePickerCriteria())
             ->with ('member')
-            ->paginate (request ('limit') ?? 10);
+            ->paginate (request ('limit', 10));
 
 
         return json (1001, "获取成功", $recharges);

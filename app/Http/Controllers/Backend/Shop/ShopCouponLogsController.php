@@ -31,7 +31,7 @@ class ShopCouponLogsController extends Controller
      * ShopCouponLogsController constructor.
      *
      * @param ShopCouponLogRepository $repository
-     * @param ShopCouponLogValidator  $validator
+     * @param ShopCouponLogValidator $validator
      */
     public function __construct(ShopCouponLogRepository $repository, ShopCouponLogValidator $validator)
     {
@@ -47,9 +47,9 @@ class ShopCouponLogsController extends Controller
      */
     public function index()
     {
-        $couponLogs = $this->repository->with(['member', 'coupon'])->paginate(request('limit') ?? 10);
+        $couponLogs = $this->repository->with (['member', 'coupon'])->paginate (request ('limit',10));
 
-        return json(1001, '列表获取成功', $couponLogs);
+        return json (1001, '列表获取成功', $couponLogs);
 
     }
 
@@ -63,9 +63,9 @@ class ShopCouponLogsController extends Controller
      */
     public function show($id)
     {
-        $couponLog = $this->repository->with(['member', 'coupon'])->find($id);
+        $couponLog = $this->repository->with (['member', 'coupon'])->find ($id);
 
-        return json(1001, "详情获取成功", $couponLog);
+        return json (1001, "详情获取成功", $couponLog);
 
     }
 

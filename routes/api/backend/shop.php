@@ -3,7 +3,7 @@ Route::namespace ('Shop')->prefix ('shop')->group (function () {
 
     //商品分类
     Route::resource ('goods/category', 'ShopGoodsCategoriesController', [
-        'except' => ['create', 'edit']
+        'except' => ['create', 'edit', 'show']
     ]);
 
     //商品标签
@@ -11,8 +11,7 @@ Route::namespace ('Shop')->prefix ('shop')->group (function () {
         'except' => ['create', 'edit']
     ]);
 
-
-    //商品标签
+    //商品评论
     Route::resource ('goods/comment', 'ShopGoodsCommentsController', [
         'except' => ['create', 'edit', 'store']
     ]);
@@ -36,7 +35,7 @@ Route::namespace ('Shop')->prefix ('shop')->group (function () {
 
     //优惠券分类
     Route::resource ('coupon/category', 'ShopCouponCategoriesController', [
-        'except' => ['create', 'edit']
+        'except' => ['create', 'edit', 'show']
     ]);
 
     //会员日志

@@ -50,15 +50,13 @@ class MemberRechargeRepositoryEloquent extends BaseRepository implements Recharg
         return MemberRechargeValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {
         $this->pushCriteria (app (RequestCriteria::class));
     }
-
 
     /**
      * @return string

@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Member;
 
+use App\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\MemberCreditLogRepository;
 use App\Models\Member\MemberCreditLog;
 use App\Validators\Member\MemberCreditLogValidator;
@@ -23,6 +23,7 @@ class MemberCreditLogRepositoryEloquent extends BaseRepository implements Member
         'member_id',
         'user_id',
         'type',
+        'created_at'
     ];
 
 
@@ -47,9 +48,8 @@ class MemberCreditLogRepositoryEloquent extends BaseRepository implements Member
         return MemberCreditLogValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {

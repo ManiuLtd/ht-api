@@ -31,4 +31,10 @@ class MemberLevel extends Model implements Transformable
         'status',
     ];
 
+    /**
+     * @var array
+     */
+    protected $hidden = [
+        'user_id'
+    ];
 }

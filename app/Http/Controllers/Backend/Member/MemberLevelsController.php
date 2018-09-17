@@ -47,7 +47,7 @@ class MemberLevelsController extends Controller
      */
     public function index()
     {
-        $levels = $this->repository->paginate (request ('limit') ?? 10);
+        $levels = $this->repository->paginate (request ('limit', 10));
 
         return json (1001, '列表获取成功', $levels);
     }
@@ -113,12 +113,13 @@ class MemberLevelsController extends Controller
     public function destroy($id)
     {
         //检查该等级是否已有用户
-        $user = db ('members')
+        $member = db ('members')
             ->where ('level1', $id)
             ->first ();
-        if ($user) {
-            return json (4001, "删除失败，该等级已有用户");
+        if ($member) {
+            return json (4001, "删除失败，该等级已有会员");
         }
+
         //删除等级
         $this->repository->delete ($id);
 

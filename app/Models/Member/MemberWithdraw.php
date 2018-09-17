@@ -7,12 +7,12 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberWithdraw.
- *
- * @package namespace App\Models;
+ * Class MemberWithdraw
+ * @package App\Models\Member
  */
 class MemberWithdraw extends Model implements Transformable
 {
+
     use TransformableTrait;
 
     /**
@@ -42,14 +42,8 @@ class MemberWithdraw extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
+        'user_id',
         'member_id'
     ];
-    /**
-     * 字段映射
-     * @return array
-     */
-    public function transform()
-    {
-        return $this->toArray();
-    }
+
 }

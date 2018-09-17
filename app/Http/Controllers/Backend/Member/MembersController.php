@@ -51,7 +51,7 @@ class MembersController extends Controller
         $members = $this->repository
             ->pushCriteria (new DatePickerCriteria())
             ->with (['level', 'inviter'])
-            ->paginate (request ('limit') ?? 10);
+            ->paginate (request ('limit', 10));
 
         return json (1001, '列表获取成功', $members);
     }

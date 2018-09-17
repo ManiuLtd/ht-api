@@ -16,6 +16,9 @@ use App\Validators\Member\MemberLevelValidator;
 class MemberLevelRepositoryEloquent extends BaseRepository implements MemberLevelRepository
 {
 
+    /**
+     * @var array
+     */
     protected $fieldSearchable = [
         'name' => 'like',
         'status',

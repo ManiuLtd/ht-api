@@ -22,8 +22,7 @@ class CreateMemberLevelsTable extends Migration
             $table->string ('logo');
             $table->integer ('level');
             $table->decimal ('discount')->default (0);
-            $table->decimal ('ordermoney')->default (0);
-            $table->integer ('ordernum')->default (0);
+            $table->integer ('credit')->default (0); //升级所需积分
             $table->integer ('sort')->default (100);
             $table->tinyInteger ('status');
             $table->timestamps ();

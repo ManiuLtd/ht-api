@@ -11,7 +11,6 @@ use App\Repositories\Interfaces\ShopGoodsTagRepository;
 use App\Validators\Shop\ShopGoodsTagValidator;
 
 
-
 /**
  * Class ShopGoodsTagsController.
  *
@@ -48,11 +47,10 @@ class ShopGoodsTagsController extends Controller
      */
     public function index()
     {
-        $tags = $this->repository->paginate (request ('limit') ?? 10);
+        $tags = $this->repository->paginate (request ('limit',10));
 
         return json (1001, '列表获取成功', $tags);
     }
-
 
 
     /**
@@ -70,7 +68,7 @@ class ShopGoodsTagsController extends Controller
             return json (1001, "创建成功", $tag);
 
         } catch (ValidatorException $e) {
-            return json (5001, $e->getMessageBag()->first());
+            return json (5001, $e->getMessageBag ()->first ());
         }
     }
 
@@ -85,7 +83,6 @@ class ShopGoodsTagsController extends Controller
 
         return json (1001, "详情获取成功", $tag);
     }
-
 
 
     /**
@@ -105,7 +102,7 @@ class ShopGoodsTagsController extends Controller
             return json (1001, "更新成功", $tag);
 
         } catch (ValidatorException $e) {
-            return json (5001, $e->getMessageBag()->first());
+            return json (5001, $e->getMessageBag ()->first ());
         }
     }
 

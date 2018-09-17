@@ -70,18 +70,6 @@ class BannersController extends Controller
         }
     }
 
-    /**
-     * 店招详情
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $banner = $this->repository->find ($id);
-
-        return json (1001, "详情获取成功", $banner);
-    }
-
 
     /**
      * 编辑店招

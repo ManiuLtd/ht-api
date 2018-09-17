@@ -26,7 +26,6 @@ class MemberWithdrawRepositoryEloquent extends BaseRepository implements Withdra
         'created_at',
     ];
 
-
     /**
      * Specify Model class name
      *
