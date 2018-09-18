@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\Validator;
 
 
 /**
- * Class SignUpController
+ * Class RegisterController
  *
  * @package App\Http\Controllers\Backend\Auth
  */
 
-class SignUpController extends Controller
+class RegisterController extends Controller
 {
 
 
@@ -26,7 +26,7 @@ class SignUpController extends Controller
      * @param JWTAuth $JWTAuth
      * @return \Illuminate\Http\JsonResponse
      */
-    public function signUp(SignUpRequest $request, JWTAuth $JWTAuth)
+    public function register(SignUpRequest $request, JWTAuth $JWTAuth)
     {
         $validate = $this->validator($request->all());
 

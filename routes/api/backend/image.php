@@ -1,6 +1,9 @@
 <?php
 
-Route::namespace ('Image')->prefix ('image')->group (function () {
+Route::namespace ('Image')
+    ->prefix ('image')
+    ->middleware ('jwt.auth')
+    ->group (function () {
 
     //店招
     Route::resource ('banner', 'BannersController', [

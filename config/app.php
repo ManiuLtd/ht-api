@@ -165,6 +165,7 @@ return [
          * Third Party Packeages
          */
 
+        App\Providers\PasswordResetProvider::class,
     ],
 
     /*clear

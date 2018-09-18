@@ -2,9 +2,11 @@
 
 namespace App\Models\User;
 
+use App\Notifications\ResetUserPassword;
 use Prettus\Repository\Contracts\Transformable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Prettus\Repository\Traits\TransformableTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laratrust\Traits\LaratrustUserTrait;
@@ -13,6 +15,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
 {
     use Notifiable,
         SoftDeletes,
+        TransformableTrait,
         LaratrustUserTrait;
 
     /**
@@ -39,6 +42,11 @@ class User extends Authenticatable implements JWTSubject, Transformable
     protected $dates = ['deleted_at'];
 
     /**
+     * @var string
+     */
+    protected $guarded = "user";
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -46,25 +54,6 @@ class User extends Authenticatable implements JWTSubject, Transformable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-
-    /**
-     * The "booting" method of the model.
-     */
-    public static function boot()
-    {
-        parent::boot ();
-        //创建之前 加密密码
-        self::creating (function ($model) {
-            $model->password = bcrypt (request ('password'));
-        });
-        //编辑是如果设置了密码 则更新密码
-        if (request ('password') != '') {
-            self::updating (function ($model) {
-                $model->password = bcrypt (request ('password'));
-            });
-        }
-    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -86,11 +75,32 @@ class User extends Authenticatable implements JWTSubject, Transformable
         return [];
     }
 
+
     /**
-     * @return array
+     * The "booting" method of the model.
      */
-    public function transform()
+    public static function boot()
     {
-        return $this->toArray ();
+        parent::boot ();
+        //创建之前 加密密码
+        self::creating (function ($model) {
+            $model->password = bcrypt (request ('password'));
+        });
+        //编辑是如果设置了密码 则更新密码
+        if (request ('password') != '') {
+            self::updating (function ($model) {
+                $model->password = bcrypt (request ('password'));
+            });
+        }
+    }
+
+
+    /**
+     * 使用验证码找回密码
+     * @param string $token
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify (new ResetUserPassword($token));
     }
 }

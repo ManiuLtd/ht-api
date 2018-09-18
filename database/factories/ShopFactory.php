@@ -139,7 +139,7 @@ $factory->define (App\Models\Shop\ShopOrder::class, function (Faker $faker) {
         'change_dispatch_price' => $faker->numberBetween (0, 15),
         'old_price' => $faker->numberBetween (0, 15),
         'old_dispatch_price' => $faker->numberBetween (2, 500),
-        'coupon_id' => date ("YmdHis") . time (),
+        'coupon_id' => rand (1, 50),
         'coupon_price' => $faker->numberBetween (0, 15),
         'address_id' => rand (1, 10),
         'address' => $address,

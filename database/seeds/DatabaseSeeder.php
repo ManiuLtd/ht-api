@@ -15,8 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call (ShopSeeder::class);
         $this->call (BannerSeeder::class);
         $this->call (UserSeeder::class);
-        $this->call (RechargeSeeder::class);
-        $this->call (WithdrawSeeder::class);
         $this->call (LaratrustSeeder::class);
 
     }

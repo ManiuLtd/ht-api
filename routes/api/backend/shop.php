@@ -1,5 +1,8 @@
 <?php
-Route::namespace ('Shop')->prefix ('shop')->group (function () {
+Route::namespace ('Shop')
+    ->middleware ('jwt.auth')
+    ->prefix ('shop')
+    ->group (function () {
 
     //商品分类
     Route::resource ('goods/category', 'ShopGoodsCategoriesController', [
