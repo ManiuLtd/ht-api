@@ -155,3 +155,22 @@ $factory->define (App\Models\Member\MemberWithdraw::class, function (Faker $fake
         'updated_at' => now (),
     ];
 });
+
+$factory->define (App\Models\Member\MemberAddress::class, function (Faker $faker) {
+
+    return [
+        'user_id' => 1,
+        'member_id' => rand (1, 50),
+        'realname' => $faker->name,
+        'phone' => rand (1, 999),
+        'province' => $faker->name,
+        'city' => $faker->name,
+        'area' => $faker->name,
+        'address' => $faker->name,
+        'zipcode' => rand (100000, 999999),
+        'isdefault' => rand (1, 3),
+        'type' => rand (1, 3),
+        'created_at' => now (),
+        'updated_at' => now (),
+    ];
+});
