@@ -6,7 +6,7 @@
 @if ($level == 'error')
 # @lang('Whoops!')
 @else
-# @lang('Hello!')
+# @lang('你好!')
 @endif
 @endif
 
@@ -45,18 +45,18 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards'),<br>{{ config('app.name') }}
+{{--@lang('Regards'),<br>{{ config('app.name') }}--}}
 @endif
 
 {{-- Subcopy --}}
 @isset($actionText)
 @component('mail::subcopy')
 @lang(
-    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'into your web browser: [:actionURL](:actionURL)',
+    "如果你有任何疑问请联系管理员或者访问官方网站".
+    ': [:actionURL](:actionURL)',
     [
-        'actionText' => $actionText,
-        'actionURL' => $actionUrl
+        'actionText' => env('APP_NAME'),
+        'actionURL' => env('APP_URL')
     ]
 )
 @endcomponent

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\Auth\Passwords\Facade\Password;
 use App\Http\Requests\Auth\User\ForgotPasswordRequest;
+use Validator;
 
 /**
  * 找回密码
@@ -15,6 +16,8 @@ use App\Http\Requests\Auth\User\ForgotPasswordRequest;
 class ForgotPasswordController extends Controller
 {
 
+    use SendsPasswordResetEmails;
+
     /**
      * @param ForgotPasswordRequest $request
      * @return \Illuminate\Http\JsonResponse
@@ -22,53 +25,46 @@ class ForgotPasswordController extends Controller
     public function sendResetEmail(ForgotPasswordRequest $request)
     {
 
-        $validate = $this->validator ($request->all ());
-
-        if ($validate->errors ()->first ()) {
-
-            return json (4001, $validate->errors ()->first ());
+        //验证表单内容
+        $validate = Validator::make ($request->all (), $this->rules ());
+        if ($validate->fails ()) {
+            return json (4001, $validate->getMessageBag ());
         }
 
-        $user = db ('users')->where ('email', $request->get ('email'))->first ();
-        if (!$user) {
-            return json (4001, '邮箱不存在');
+        $this->validateEmail ($request);
+
+        // We will send the password reset link to this user. Once we have attempted
+        // to send the link, we will examine the response then see the message we
+        // need to show to the user. Finally, we'll send out a proper response.
+
+        $response = $this->broker ()->sendResetLink (
+            $request->only ('email')
+        );
+
+        //验证邮件状态
+        switch ($response) {
+            case Password::INVALID_USER:
+                return json (4001, '邮箱不存在');
+                break;
+            case Password::RESET_LINK_SENT:
+                return json (1001, '邮件发送成功');
+                break;
+            default:
+                return json (4001, '邮件发送失败');
+                break;
         }
-
-        $broker = $this->getPasswordBroker ();
-        $sendingResponse = $broker->sendResetLink ($request->only ('email'));
-
-        if ($sendingResponse !== Password::RESET_LINK_SENT) {
-            return json (4001, '邮件发送失败');
-        }
-        return json (1001, '邮件发送成功');
-
     }
 
-    /**
-     * Get the broker to be used during password reset.
-     *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
-     */
-    private function getPasswordBroker()
-    {
-        return Password::broker ();
-    }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Get the password reset validation rules.
      *
-     * @param  array $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return array
      */
-    protected function validator(array $data)
+    protected function rules()
     {
-        $message = [
-            'email.required' => '请填写邮箱',
-            'email.email' => '邮箱格式错误',
+        return [
+            'email' => 'required|email',
         ];
-
-        return Validator::make ($data, [
-            'email' => 'required|string|email|max:255',
-        ], $message);
     }
 }

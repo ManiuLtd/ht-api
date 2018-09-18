@@ -13,6 +13,6 @@ class BannerSeeder extends Seeder
     {
         DB::table ('banners')->truncate ();
 
-        factory (App\Models\Banner::class, 40)->create ();
+        factory (App\Models\Image\Banner::class, 40)->create ();
     }
 }

@@ -7,3 +7,4 @@ Route::middleware ('web')->namespace ('Frontend')->group (function () {
 
     include_route_files (__DIR__ . '/api/frontend/');
 });
+
