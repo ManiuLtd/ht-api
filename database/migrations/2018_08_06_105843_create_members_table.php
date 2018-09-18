@@ -56,6 +56,11 @@ class CreateMembersTable extends Migration
             $table->index ('phone');
             $table->index ('status');
             $table->index ('created_at');
+<<<<<<< HEAD
+//            $table->unique ('openid');
+//            $table->unique ('unionid');
+=======
+>>>>>>> f25ab8417a24a560c7ab871375d8ac9537f94c56
         });
     }
 
