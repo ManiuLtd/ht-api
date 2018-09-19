@@ -2,8 +2,6 @@
 
 namespace App\Listeners;
 
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -56,7 +54,7 @@ class CreditEventSubscriber
     {
         //如果积分数组不符合规范
         if (!is_numeric ($event->credit) || !in_array ($event->type, [1, 2])) {
-            throw  new InvalidArgumentException('事件参数格式错误');
+            throw  new InvalidArgumentException('修改基本所需要传入的参数格式错误');
         }
 
         //修改积分并添加操作日志
