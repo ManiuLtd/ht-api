@@ -2,6 +2,8 @@
 
 基于laravel 5.6的多商户、多用户商城，公司内部项目，源码禁止泄露，仅供内部交流
 
+文档地址：https://documenter.getpostman.com/view/4461870/RWThV1uB
+
 ## 环境要求
 
 1. PHP >= 7.1.3

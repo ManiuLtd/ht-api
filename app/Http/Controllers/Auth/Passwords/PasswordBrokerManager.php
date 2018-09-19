@@ -24,7 +24,7 @@ class PasswordBrokerManager extends AuthPasswordBrokerManager
             throw new InvalidArgumentException("Password resetter [{$name}] is not defined.");
         }
 
-        //这里实例化我们自定义的RyanPasswordBroker来完成密码重置逻辑
+        //这里实例化我们自定义的PasswordBroker来完成密码重置逻辑
         return new PasswordBroker($this->createTokenRepository($config),
             $this->app['auth']->createUserProvider($config['provider'])
         );

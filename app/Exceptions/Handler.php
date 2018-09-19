@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        parent::report($exception);
+        parent::report ($exception);
     }
 
     /**
@@ -45,23 +45,27 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        //参数格式错误
+        if ($exception instanceof \InvalidArgumentException) {
+            return json (4001, $exception->getMessage ());
+        }
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
 
             //判断token是否存在
-            if (!auth()->guard()->parser()->setRequest($request)->hasToken()) {
-                return json(4001, 'Token not provided');
+            if (!auth ()->guard ()->parser ()->setRequest ($request)->hasToken ()) {
+                return json (4001, 'Token not provided');
             }
 
             //判断token是否正常
             try {
-                if (!auth()->guard()->parseToken()->authenticate()) {
-                    return json(4001, 'User not found');
+                if (!auth ()->guard ()->parseToken ()->authenticate ()) {
+                    return json (4001, 'User not found');
                 }
             } catch (Exception $e) {
-                return json(4001, 'Token is error');
+                return json (4001, 'Token is error');
             }
         }
 
-        return parent::render($request, $exception);
+        return parent::render ($request, $exception);
     }
 }

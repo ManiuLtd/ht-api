@@ -16,6 +16,15 @@ class EventServiceProvider extends ServiceProvider
 
     ];
 
+
+    /**
+     * 事件订阅
+     * @var array
+     */
+    protected $subscribe = [
+        'App\Listeners\CreditEventSubscriber'
+    ];
+
     /**
      * Register any events for your application.
      *
