@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Auth\Passwords;
 
+use App\Events\SendSMS;
 use App\Http\Controllers\Auth\Passwords\Facade\Password;
 use Closure;
 use Illuminate\Auth\Passwords\PasswordBroker as AuthPasswordBroker;
-use Illuminate\Support\Arr;
-use UnexpectedValueException;
-use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use UnexpectedValueException;
 
 
 /**
@@ -67,12 +68,12 @@ class PasswordBroker extends AuthPasswordBroker
 
         $token = rand (100000, 999999);
 
-        //TODO 调用发送验证码事件
-
-        $result = true;
-        if ($result['status']) {
+        try {
+            event (new SendSMS($phone, env ('JUHE_SMS_VERIFY_TEMPLATE_ID'), $token));
             Cache::put ('password:phone:' . $phone, $token, now ()->addSecond (env ('VERIFY_CODE_EXPIRED_TIME')));
             return PasswordBrokerContract::RESET_LINK_SENT;
+        } catch (\Exception $e) {
+            return Password::SEND_FAIL;
         }
     }
 

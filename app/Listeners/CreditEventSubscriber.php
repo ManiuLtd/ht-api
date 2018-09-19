@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Events\CreditDecrement;
+use App\Events\CreditIncrement;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -9,20 +11,19 @@ class CreditEventSubscriber
 {
 
     /**
-     * @param $event
+     * @param CreditIncrement $event
      * @throws \Throwable
      */
-    public function onCreditIncrement($event)
+    public function onCreditIncrement(CreditIncrement $event)
     {
         $this->updateCredit ($event, true);
     }
 
     /**
-     * 积分或者余额减少
-     * @param $event
+     * @param CreditDecrement $event
      * @throws \Throwable
      */
-    public function onCreditDecrement($event)
+    public function onCreditDecrement(CreditDecrement $event)
     {
         $this->updateCredit ($event, false);
     }
