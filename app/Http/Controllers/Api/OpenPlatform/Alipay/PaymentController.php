@@ -15,6 +15,5 @@ class PaymentController extends Controller
     //TODO 支付宝app支付
     public function index()
     {
-        $app = factory ('wechat.payment');
     }
 }
