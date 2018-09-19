@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Wechat;
+namespace App\Http\Controllers\Api\MiniProgram\Wechat;
 
 
 use App\Http\Controllers\Controller;
@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 
 /**
- * Class WechatController.
- *
- * @package namespace App\Http\Controllers;
+ * 微信小程序注册
+ * Class RegisterController
+ * @package App\Http\Controllers\Api\MiniProgram\Wechat
  */
-class WechatController extends Controller
+class RegisterController extends Controller
 {
 
     /**
@@ -24,8 +24,7 @@ class WechatController extends Controller
 
 
     /**
-     * MembersController constructor.
-     *
+     * RegisterController constructor.
      * @param MemberRepository $repository
      */
     public function __construct(MemberRepository $repository)
@@ -34,6 +33,7 @@ class WechatController extends Controller
     }
 
     /**
+     * 微信小程序注册用户
      * @param Request $request
      * @param String iv             微信授权参数
      * @param String code           微信授权参数
@@ -41,7 +41,7 @@ class WechatController extends Controller
      * @param String openid         邀请人openid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+    public function index(Request $request)
     {
         //验证参数
         $validate = $this->validator ($request->all ());
@@ -52,12 +52,12 @@ class WechatController extends Controller
 
         try {
             //注册或者更新用户
-            $miniProgram = app ('wechat.wechat.mini_program'); // 小程序
+            $app = app ('wechat.wechat.mini_program'); // 小程序
 
-            $session = $miniProgram->auth->session (request ('code'));
+            $session = $app->auth->session (request ('code'));
 
             //解密用户信息
-            $decryptData = $miniProgram->encryptor->decryptData ($session['session_key'], request ('iv'), request ('encryptedData'));
+            $decryptData = $app->encryptor->decryptData ($session['session_key'], request ('iv'), request ('encryptedData'));
             if (!$decryptData) {
                 return json (4001, 'UserInfo Decode Failed');
 
@@ -65,25 +65,25 @@ class WechatController extends Controller
             //需要插入的字段
             $insert['nickname'] = $decryptData['nickName'];
             $insert['headimgurl'] = $decryptData['avatarUrl'];
-            $insert['openid'] = $decryptData['openId'];
-            $insert['unionid'] = $decryptData['unionID'] ?? '';
+            $insert['wx_openid2'] = $decryptData['openId'];
+            $insert['wx_unionid'] = $decryptData['unionID'] ?? '';
 
             //验证上级
             if ($inviter = request ('inviter')) {
-                $inviterModel = db ('members')->where ('openid', $inviter)->first ();
+                $inviterModel = db ('members')->where ('wx_openid2', $inviter)->first ();
                 if ($inviterModel) {
                     $insert['inviter_id'] = $inviterModel->id;
                 }
             }
             //创建或者更新用户
             $member = $this->repository->updateOrCreate ([
-                'openid' => $insert['openid']
+                'wx_openid2' => $insert['wx_openid2']
             ], $insert);
 
             return $this->respondWithToken ($member);
 
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage () ());
+            return json (5001, $e->getMessage ());
         }
     }
 

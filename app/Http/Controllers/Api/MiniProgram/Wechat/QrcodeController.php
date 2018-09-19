@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\Wechat;
+namespace App\Http\Controllers\Api\MiniProgram\Wechat;
 
 
 use App\Http\Controllers\Controller;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Intervention\Image\Facades\Image;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * Class QrcodeController
- * @package App\Http\Controllers\Api\Wechat
+ * @package App\Http\Controllers\Api\MiniProgram\Wechat
  */
 class QrcodeController extends Controller
 {
@@ -18,7 +18,7 @@ class QrcodeController extends Controller
      * 生成小程序码
      * @return bool|\Illuminate\Http\JsonResponse|string
      */
-    public function index()
+    public function appCode()
     {
         try {
             $member = JWTAuth::parseToken ()->authenticate ();
@@ -26,8 +26,9 @@ class QrcodeController extends Controller
 
             //目录路径
             $templateImage = public_path ('images/template.jpg');
+            $openId = $member->wx_openid2;
             //文件名
-            $fileName = $member->openid . '.jpeg';
+            $fileName = $openId . '.jpeg';
             //图片
             $cacheImage = public_path ('images/cache/') . $fileName;
             $qrcodeImage = public_path ('images/qrcode/') . $fileName;
@@ -36,7 +37,7 @@ class QrcodeController extends Controller
                 return $qrcodeImage;
             }
             //缓存二维码 最终小程序码地址为 pages/index/index?senne=你的openid
-            $response = $miniProgram->app_code->getUnlimit ($member->openid, [
+            $response = $miniProgram->app_code->getUnlimit ($openId, [
                 'page' => 'pages/index/index'
             ]);
             $response->saveAs (public_path ('images/cache'), $fileName);
@@ -55,6 +56,12 @@ class QrcodeController extends Controller
         } catch (\Exception $e) {
             return json (5001, $e->getMessage ());
         }
+    }
+
+    //TODO  生成小程序二维码
+    public function qrCode()
+    {
+
     }
 
 }
