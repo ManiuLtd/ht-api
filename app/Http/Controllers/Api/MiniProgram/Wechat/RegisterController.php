@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\MemberRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Overtrue\LaravelWeChat\Facade;
 
 
 /**
@@ -52,7 +53,7 @@ class RegisterController extends Controller
 
         try {
             //注册或者更新用户
-            $app = app ('wechat.wechat.mini_program'); // 小程序
+            $app = Facade::miniProgram (); // 小程序
 
             $session = $app->auth->session (request ('code'));
 

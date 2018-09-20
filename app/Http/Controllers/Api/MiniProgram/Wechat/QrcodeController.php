@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\MiniProgram\Wechat;
 
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use Overtrue\LaravelWeChat\Facade;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
@@ -22,7 +23,7 @@ class QrcodeController extends Controller
     {
         try {
             $member = JWTAuth::parseToken ()->authenticate ();
-            $miniProgram = app ('wechat.wechat.mini_program'); // 小程序
+            $miniProgram = Facade::miniProgram (); // 小程序
 
             //目录路径
             $templateImage = public_path ('images/template.jpg');

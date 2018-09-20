@@ -9,6 +9,7 @@ use App\Handler\TextMessageHandler;
 use App\Handler\TransferMessageHandler;
 use App\Http\Controllers\Controller;
 use EasyWeChat\Kernel\Messages\Message;
+use Overtrue\LaravelWeChat\Facade;
 
 
 /**
@@ -22,10 +23,14 @@ class MiniProgramController extends Controller
     /**
      * 文档地址：https://www.easywechat.com/docs/master/zh-CN/mini-program/customer_service
      * @return mixed
+     * @throws \EasyWeChat\Kernel\Exceptions\BadRequestException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \ReflectionException
      */
     public function serve()
     {
-        $app = factory ('wechat.mini_program');
+        $app = Facade::miniProgram ();
 
 
         $app->server->push (new TextMessageHandler($app), Message::TEXT);

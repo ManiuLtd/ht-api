@@ -4,6 +4,10 @@
 
 文档地址：https://documenter.getpostman.com/view/4461870/RWThV1uB
 
+内网映射工具：https://open-doc.dingtalk.com/microapp/debug/ucof2g
+
+微信测试号申请： https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
+
 ## 环境要求
 
 1. PHP >= 7.1.3

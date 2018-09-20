@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\MiniProgram\Wechat;
 
 
 use App\Http\Controllers\Controller;
+use Overtrue\LaravelWeChat\Facade;
 
 
 /**
@@ -24,7 +25,7 @@ class PaymentController extends Controller
                 throw  new \InvalidArgumentException('支付失败，缺少prepayId');
             }
 
-            $app = factory ('wechat.payment');
+            $app = Facade::payment ();
             $config = $app->jssdk->sdkConfig ($prepayId);
 
             return response (1001, '支付参数获取成功', $config);
