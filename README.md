@@ -2,7 +2,9 @@
 
 基于laravel 5.6的多商户、多用户商城，公司内部项目，源码禁止泄露，仅供内部交流
 
-文档地址：https://documenter.getpostman.com/view/4461870/RWThV1uB
+接口文档地址：https://documenter.getpostman.com/view/4461870/RWThV1uB
+
+使用文档地址：https://www.yuque.com/hongtang/api/agmgft
 
 内网映射工具：https://open-doc.dingtalk.com/microapp/debug/ucof2g
 
