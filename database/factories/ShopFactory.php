@@ -32,11 +32,9 @@ $factory->define (App\Models\Shop\ShopCoupon::class, function (Faker $faker) {
         'user_id' => 1,
         'category_id' => rand (1, 10),
         'name' => $faker->name,
-        'thumb' => $faker->imageUrl (100, 100),
         'total' => rand (100, 10000),
         'max_receive' => rand (0, 100),
         'enough' => rand (0, 100),
-        'color' => '#444',
         'coupon_type' => rand (1, 2),
         'is_show' => rand (0, 1),
         'discount_type' => rand (1, 2),
@@ -72,7 +70,6 @@ $factory->define (App\Models\Shop\ShopCouponLog::class, function (Faker $faker) 
         'discount' => $faker->randomFloat (2, 0, 1),
         'deduct' => $faker->randomFloat (2, 99, 99999),
         'get_type' => rand (0, 5),
-        'pay_type' => rand (1, 5),
         'status' => rand (0, 1),
         'get_time' => now (),
         'use_time' => now (),
@@ -82,7 +79,7 @@ $factory->define (App\Models\Shop\ShopCouponLog::class, function (Faker $faker) 
 });
 
 
-$factory->define (App\Models\Shop\ShopGoodsCategory::class, function (Faker $faker) {
+$factory->define (App\Models\Shop\ShopCategory::class, function (Faker $faker) {
 
     return [
         'user_id' => 1,
@@ -115,20 +112,9 @@ $factory->define (App\Models\Shop\ShopGoodsTag::class, function (Faker $faker) {
 
 
 $factory->define (App\Models\Shop\ShopOrder::class, function (Faker $faker) {
-    $address = json_encode ([
-        'user_id' => 1,
-        'name' => $faker->name,
-        'phone' => $faker->phoneNumber,
-        'province' => $faker->name,
-        'city' => $faker->name,
-        'area' => $faker->name,
-        'address' => $faker->text,
-        'isdefault' => 0
-    ]);
     return [
         'user_id' => 1,
         'member_id' => rand (1, 50),
-        'agent_id' => rand (1, 50),
         'orderno' => "HT" . $faker->randomNumber (),
         'total_price' => $faker->numberBetween (2, 500),
         'discount_price' => $faker->numberBetween (2, 20),
@@ -142,33 +128,21 @@ $factory->define (App\Models\Shop\ShopOrder::class, function (Faker $faker) {
         'coupon_id' => rand (1, 50),
         'coupon_price' => $faker->numberBetween (0, 15),
         'address_id' => rand (1, 10),
-        'address' => $address,
-        'express' => $faker->name,
-        'expresscom' => $faker->name,
-        'expresssn' => $faker->bankAccountNumber,
+        'address' => $faker->text,
         'paytype' => rand (1, 4),
         'type' => rand (1, 4),
         'status' => rand (1, 5),
         'remark' => $faker->text,
         'close_reason' => $faker->name,
         'pay_time' => now (),
-        'send_time' => now (),
         'cancel_time' => now (),
-        'finish_time' => now ()
     ];
 });
 
 
 $factory->define (App\Models\Shop\ShopOrderGoodsRefund::class, function (Faker $faker) {
-    $address = json_encode ([
-        'name' => $faker->name,
-        'phone' => $faker->phoneNumber,
-        'province' => $faker->name,
-        'city' => $faker->name,
-        'area' => $faker->name,
-        'address' => $faker->text,
-        'isdefault' => 0
-    ]);
+
+
     return [
         'user_id' => 1,
         'member_id' => rand (1, 50),
@@ -178,15 +152,13 @@ $factory->define (App\Models\Shop\ShopOrderGoodsRefund::class, function (Faker $
         'price' => $faker->numberBetween (2, 500),
         'apply_price' => $faker->numberBetween (2, 500),
         'reason' => $faker->name,
-        'content' => $faker->text,
-        'refund_address' => $address,
-        'express' => $faker->name,
+        'refund_address' => $faker->text,
         'expresscom' => $faker->name,
         'expresssn' => $faker->name,
-        'rexpress' => $faker->name,
         'rexpresscom' => $faker->name,
         'rexpresssn' => $faker->name,
         'type' => rand (1, 2),
+        'refund_type' => rand (1, 3),
         'status' => rand (1, 3),
         'send_time' => now (),
         'operate_time' => now (),
@@ -199,32 +171,28 @@ $factory->define (App\Models\Shop\ShopOrderGoodsRefund::class, function (Faker $
 $factory->define (App\Models\Shop\ShopOrderGoods::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => rand (1, 50),
         'order_id' => rand (1, 100),
         'agent_id' => rand (1, 50),
         'price' => $faker->numberBetween (2, 500),
-        'change_price' => $faker->numberBetween (2, 500),
         'old_price' => $faker->numberBetween (2, 20),
-        'bugagain_price' => $faker->numberBetween (0, 10),
         'total' => rand (1, 10),
         'refund_total' => rand (1, 10),
+        'nocommission' => 1,
         'commissions' => 0,
         'commission0' => 0,
         'commission1' => 0,
         'commission2' => 0,
         'commission3' => 0,
-        'nocommission' => 1,
         'title' => $faker->text (80),
         'thumb' => $faker->imageUrl (100, 100),
         'goodssn' => $faker->randomLetter,
         'productsn' => $faker->randomLetter,
-        'express' => $faker->name,
         'expresscom' => $faker->name,
-        'refund_state' => 0,
+        'expresssn' => $faker->name,
+        'refund_status' => rand (1, 3),
         'send_time' => now (),
         'refund_time' => now (),
         'fetch_time' => now (),
-        'finish_time' => now (),
     ];
 });
 
@@ -238,12 +206,10 @@ $factory->define (App\Models\Shop\ShopGoodsComment::class, function (Faker $fake
         'headimgurl' => $faker->imageUrl (100, 100),
         'level' => rand (1, 5),
         'content' => $faker->text,
-        'reply_content' => $faker->text,
         'append_content' => $faker->text,
-        'append_reply_content' => $faker->text,
+        'reply_content' => $faker->text,
         'istop' => 0,
-        'checked' => 1,
-        'reply_checked' => 1,
+        'status' => rand (0, 1),
     ];
 });
 

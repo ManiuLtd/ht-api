@@ -3,37 +3,37 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Shop\ShopGoodsCategoryCreateRequest;
 use App\Http\Requests\Shop\ShopGoodsCategoryUpdateRequest;
-use App\Repositories\Interfaces\ShopGoodsCategoryRepository;
-use App\Validators\Shop\ShopGoodsCategoryValidator;
+use App\Repositories\Interfaces\ShopCategoryRepository;
+use App\Validators\Shop\ShopCategoryValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
- * Class ShopGoodsCategoriesController
+ * Class ShopCategoriesController
  * @package App\Http\Controllers\Backend\Shop
  */
-class ShopGoodsCategoriesController extends Controller
+class ShopCategoriesController extends Controller
 {
 
     /**
-     * @var ShopGoodsCategoryRepository
+     * @var ShopCategoryRepository
      */
     protected $repository;
 
     /**
-     * @var ShopGoodsCategoryValidator
+     * @var ShopCategoryValidator
      */
     protected $validator;
 
     /**
      * GoodsCategorysController constructor.
      *
-     * @param ShopGoodsCategoryRepository $repository
-     * @param ShopGoodsCategoryValidator $validator
+     * @param ShopCategoryRepository $repository
+     * @param ShopCategoryValidator $validator
      */
-    public function __construct(ShopGoodsCategoryRepository $repository, ShopGoodsCategoryValidator $validator)
+    public function __construct(ShopCategoryRepository $repository, ShopCategoryValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;

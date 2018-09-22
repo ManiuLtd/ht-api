@@ -30,7 +30,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind (\App\Repositories\Interfaces\ShopCouponLogRepository::class, \App\Repositories\Shop\ShopCouponLogRepositoryEloquent::class);
         $this->app->bind (\App\Repositories\Interfaces\ShopOrderRepository::class, \App\Repositories\Shop\ShopOrderRepositoryEloquent::class);
         $this->app->bind (\App\Repositories\Interfaces\ShopGoodsRepository::class, \App\Repositories\Shop\ShopGoodsRepositoryEloquent::class);
-        $this->app->bind (\App\Repositories\Interfaces\ShopGoodsCategoryRepository::class, \App\Repositories\Shop\ShopGoodsCategoryRepositoryEloquent::class);
+        $this->app->bind (\App\Repositories\Interfaces\ShopCategoryRepository::class, \App\Repositories\Shop\ShopCategoryRepositoryEloquent::class);
         $this->app->bind (\App\Repositories\Interfaces\ShopOrderGoodsRefundRepository::class, \App\Repositories\Shop\ShopOrderGoodsRefundRepositoryEloquent::class);
         $this->app->bind (\App\Repositories\Interfaces\ShopGoodsTagRepository::class, \App\Repositories\Shop\ShopGoodsTagRepositoryEloquent::class);
         $this->app->bind (\App\Repositories\Interfaces\ShopGoodsCommentRepository::class, \App\Repositories\Shop\ShopGoodsCommentRepositoryEloquent::class);

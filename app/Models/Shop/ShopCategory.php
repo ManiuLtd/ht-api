@@ -8,11 +8,11 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class ShopGoodsCategory.
+ * Class ShopCategory.
  *
  * @package namespace App\Models\Shop;
  */
-class ShopGoodsCategory extends Model implements Transformable
+class ShopCategory extends Model implements Transformable
 {
     use TransformableTrait, SoftDeletes;
 
@@ -33,11 +33,18 @@ class ShopGoodsCategory extends Model implements Transformable
         'isrecommand'
     ];
 
+    /**
+     * @var array
+     */
     protected $dates = ['deleted_at'];
 
+    /**
+     * @var array
+     */
     protected $hidden = [
         'user_id'
     ];
+
 
     /**
      * 字段映射

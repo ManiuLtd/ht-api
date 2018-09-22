@@ -26,7 +26,7 @@ class ShopSeeder extends Seeder
         factory (App\Models\Shop\ShopGoodsComment::class, 40)->create ();
         factory (App\Models\Shop\ShopOrderGoodsRefund::class, 40)->create ();
         factory (App\Models\Shop\ShopGoodsTag::class, 40)->create ();
-        factory (App\Models\Shop\ShopGoodsCategory::class, 40)->create ();
+        factory (App\Models\Shop\ShopCategory::class, 40)->create ();
         factory (App\Models\Shop\ShopCouponCategory::class, 20)->create ();
         factory (App\Models\Shop\ShopCoupon::class, 100)->create ();
         factory (App\Models\Shop\ShopCouponLog::class, 40)->create ();

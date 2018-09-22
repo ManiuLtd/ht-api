@@ -1,11 +1,11 @@
 <?php
 Route::namespace ('Shop')
-    ->middleware ('jwt.auth')
+//    ->middleware ('jwt.auth')
     ->prefix ('shop')
     ->group (function () {
 
     //商品分类
-    Route::resource ('goods/category', 'ShopGoodsCategoriesController', [
+        Route::resource ('goods/category', 'ShopCategoriesController', [
         'except' => ['create', 'edit', 'show']
     ]);
 

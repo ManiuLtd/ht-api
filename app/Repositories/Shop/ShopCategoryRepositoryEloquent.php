@@ -2,18 +2,18 @@
 
 namespace App\Repositories\Shop;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\ShopGoodsCategoryRepository;
-use App\Models\Shop\ShopGoodsCategory;
-use App\Validators\Shop\ShopGoodsCategoryValidator;
+use App\Models\Shop\ShopCategory;
+use App\Repositories\Interfaces\ShopCategoryRepository;
+use App\Validators\Shop\ShopCategoryValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
- * Class ShopGoodsCategoryRepositoryEloquent.
+ * Class ShopCategoryRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class ShopGoodsCategoryRepositoryEloquent extends BaseRepository implements ShopGoodsCategoryRepository
+class ShopCategoryRepositoryEloquent extends BaseRepository implements ShopCategoryRepository
 {
     /**
      * @var array
@@ -30,7 +30,7 @@ class ShopGoodsCategoryRepositoryEloquent extends BaseRepository implements Shop
      */
     public function model()
     {
-        return ShopGoodsCategory::class;
+        return ShopCategory::class;
     }
 
     /**
@@ -41,7 +41,7 @@ class ShopGoodsCategoryRepositoryEloquent extends BaseRepository implements Shop
     public function validator()
     {
 
-        return ShopGoodsCategoryValidator::class;
+        return ShopCategoryValidator::class;
     }
 
 
