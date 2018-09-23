@@ -4,9 +4,9 @@ namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberFavourite;
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Validators\Member\MemberFavouriteValidator;
 use App\Repositories\Interfaces\MemberFavouriteRepository;
+use App\Validators\Member\MemberFavouriteValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class MemberFavouriteRepositoryEloquent.

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\OfficialAccount\Wechat;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\MemberRepository;
+use Illuminate\Http\Request;
 
 /**
  * Class RegisterController.

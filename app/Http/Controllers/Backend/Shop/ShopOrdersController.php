@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Backend\Shop;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Validators\Shop\ShopOrderValidator;
 use App\Http\Requests\Shop\ShopOrderUpdateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\ShopOrderRepository;
+use App\Validators\Shop\ShopOrderValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 /**

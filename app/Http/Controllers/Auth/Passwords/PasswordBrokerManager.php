@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth\Passwords;
 
 use Closure;
-use InvalidArgumentException;
 use Illuminate\Auth\Passwords\PasswordBrokerManager as AuthPasswordBrokerManager;
+use InvalidArgumentException;
 
 /**
  * Class PasswordBrokerManager.

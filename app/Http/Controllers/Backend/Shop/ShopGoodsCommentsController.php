@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Shop\ShopGoodsCommentUpdateRequest;
+use App\Repositories\Interfaces\ShopGoodsCommentRepository;
 use App\Validators\Shop\ShopGoodsCommentValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\Shop\ShopGoodsCommentUpdateRequest;
-use App\Repositories\Interfaces\ShopGoodsCommentRepository;
 
 /**
  * Class ShopGoodsCommentsController.

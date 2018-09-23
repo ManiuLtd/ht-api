@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\MiniProgram\Wechat;
 
-use Illuminate\Http\Request;
-use Overtrue\LaravelWeChat\Facade;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Repositories\Interfaces\MemberRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Overtrue\LaravelWeChat\Facade;
 
 /**
  * 微信小程序注册

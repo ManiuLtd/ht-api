@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\OfficialAccount\Wechat;
 
-use Overtrue\LaravelWeChat\Facade;
 use App\Http\Controllers\Controller;
+use Overtrue\LaravelWeChat\Facade;
 
 /**
  * Class PaymentController.

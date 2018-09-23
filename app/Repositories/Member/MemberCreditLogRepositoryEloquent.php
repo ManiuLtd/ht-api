@@ -4,9 +4,9 @@ namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberCreditLog;
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Validators\Member\MemberCreditLogValidator;
 use App\Repositories\Interfaces\MemberCreditLogRepository;
+use App\Validators\Member\MemberCreditLogValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class MemberCreditLogRepositoryEloquent.

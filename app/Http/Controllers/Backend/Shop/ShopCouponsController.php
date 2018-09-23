@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Shop\ShopCouponValidator;
 use App\Http\Requests\Shop\ShopCouponCreateRequest;
 use App\Http\Requests\Shop\ShopCouponUpdateRequest;
+use App\Repositories\Interfaces\ShopCouponRepository;
+use App\Validators\Shop\ShopCouponValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Repositories\Interfaces\ShopCouponRepository;
 
 /**
  * Class ShopCouponsController.

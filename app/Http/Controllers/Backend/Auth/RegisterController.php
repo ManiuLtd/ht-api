@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
-use Carbon\Carbon;
-use App\Models\User\User;
-use Tymon\JWTAuth\JWTAuth;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Auth\User\SignUpRequest;
+use App\Models\User\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\JWTAuth;
 
 /**
  * Class RegisterController.

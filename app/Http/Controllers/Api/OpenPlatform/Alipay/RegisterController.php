@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\OpenPlatform\Alipay;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\MemberRepository;
+use Illuminate\Http\Request;
 
 /**
  * Class RegisterController.

@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\SendSMS;
+use Illuminate\Support\Facades\Cache;
 use InvalidArgumentException;
 use Overtrue\EasySms\EasySms;
-use Illuminate\Support\Facades\Cache;
 
 class SendSMSNotification
 {

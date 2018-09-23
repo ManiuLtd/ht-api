@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Backend\Member;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Validators\Member\MemberHistoryValidator;
 use App\Repositories\Interfaces\MemberHistoryRepository;
+use App\Validators\Member\MemberHistoryValidator;
 
 /**
  * Class MemberHistoriesController.

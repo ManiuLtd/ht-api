@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
-use Auth;
 use App\Http\Controllers\Controller;
+use Auth;
 
 /**
  * Class LogoutController.

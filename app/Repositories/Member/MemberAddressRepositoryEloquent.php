@@ -4,9 +4,9 @@ namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberAddress;
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Validators\Member\MemberAddressValidator;
 use App\Repositories\Interfaces\MemberAddressRepository;
+use App\Validators\Member\MemberAddressValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class MemberAddressRepositoryEloquent.

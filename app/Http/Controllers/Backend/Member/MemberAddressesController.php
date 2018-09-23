@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Backend\Member;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\MemberAddressValidator;
 use App\Repositories\Interfaces\MemberAddressRepository;
+use App\Validators\Member\MemberAddressValidator;
 
 /**
  * Class MemberAddressesController.

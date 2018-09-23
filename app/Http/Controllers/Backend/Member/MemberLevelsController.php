@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend\Member;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\MemberLevelValidator;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Member\MemberLevelCreateRequest;
 use App\Http\Requests\Member\MemberLevelUpdateRequest;
 use App\Repositories\Interfaces\MemberLevelRepository;
+use App\Validators\Member\MemberLevelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
  * Class MemberLevelsController.

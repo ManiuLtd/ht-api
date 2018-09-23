@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\MiniProgram\Wechat;
 
-use Overtrue\LaravelWeChat\Facade;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use Overtrue\LaravelWeChat\Facade;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * Class QrcodeController.
