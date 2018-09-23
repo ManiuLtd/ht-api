@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Backend\Member;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\Member\FavouriteRepository;
 use App\Validators\Member\FavouriteValidator;
+use App\Repositories\Interfaces\Member\FavouriteRepository;
 
 /**
  * Class FavouritesController.

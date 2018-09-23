@@ -16,7 +16,7 @@ class MemberWithdraw extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "member_withdraws";
+    protected $table = 'member_withdraws';
 
     /**
      * The attributes that are mass assignable.

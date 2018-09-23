@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Wechat;
 
+use Overtrue\LaravelWeChat\Facade;
+use App\Handler\TextMessageHandler;
 use App\Handler\EventMessageHandler;
 use App\Handler\ImageMessageHandler;
 use App\Handler\MediaMessageHandler;
-use App\Handler\TextMessageHandler;
 use App\Http\Controllers\Controller;
 use EasyWeChat\Kernel\Messages\Message;
-use Overtrue\LaravelWeChat\Facade;
 
 /**
  * 微信公众号开发请搭配内网穿透工具，这样方便本地调试

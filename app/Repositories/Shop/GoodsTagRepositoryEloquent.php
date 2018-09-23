@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Shop;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Shop\GoodsTag;
+use App\Criteria\RequestCriteria;
 use App\Validators\Shop\GoodsTagValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\ShopGoodsTagRepository;

@@ -8,8 +8,8 @@
 
 namespace App\Http\Controllers\Api\OfficialAccount\Wechat;
 
-use App\Http\Controllers\Controller;
 use Overtrue\LaravelWeChat\Facade;
+use App\Http\Controllers\Controller;
 
 /**
  * Class JSSDKController.

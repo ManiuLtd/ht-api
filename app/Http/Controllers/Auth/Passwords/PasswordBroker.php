@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Auth\Passwords;
 
-use App\Events\SendSMS;
-use App\Http\Controllers\Auth\Passwords\Facade\Password;
 use Closure;
-use Illuminate\Auth\Passwords\PasswordBroker as AuthPasswordBroker;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
+use App\Events\SendSMS;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 use UnexpectedValueException;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Auth\Passwords\Facade\Password;
+use Illuminate\Auth\Passwords\PasswordBroker as AuthPasswordBroker;
+use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
  * Class PasswordBroker.

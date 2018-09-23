@@ -3,9 +3,9 @@
 namespace App\Repositories\Shop;
 
 use App\Models\Shop\RefundOrder;
+use App\Validators\Shop\RefundOrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Validators\Shop\RefundOrderValidator;
 use App\Repositories\Interfaces\ShopRefundOrderRepository;
 
 /**

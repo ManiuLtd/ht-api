@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Backend\Image;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Image\BannerValidator;
 use App\Http\Requests\Image\BannerCreateRequest;
 use App\Http\Requests\Image\BannerUpdateRequest;
 use App\Repositories\Interfaces\BannerRepository;
-use App\Validators\Image\BannerValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 

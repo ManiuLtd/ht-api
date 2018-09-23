@@ -19,7 +19,6 @@ class Coupon extends Model implements Transformable
      */
     protected $table = 'shop_coupons';
 
-
     /**
      * The attributes that are mass assignable.
      *

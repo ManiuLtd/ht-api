@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Backend\Member;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Member\MemberUpdateRequest;
-use App\Repositories\Interfaces\Member\MemberRepository;
 use App\Validators\Member\MemberValidator;
+use App\Http\Requests\Member\MemberUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Member\MemberRepository;
 
 /**
  * Class MembersController.

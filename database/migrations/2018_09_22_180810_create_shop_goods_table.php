@@ -52,7 +52,7 @@ class CreateShopGoodsTable extends Migration
             $table->tinyInteger('isdiscount')->nullable();
             $table->string('discount_title', 191)->nullable();
             $table->timestamp('discount_end')->nullable();
-            $table->decimal('discount_price',8, 2)->nullable();
+            $table->decimal('discount_price', 8, 2)->nullable();
             $table->tinyInteger('issendfree')->nullable();
             $table->tinyInteger('iscomment')->nullable();
             $table->integer('views')->nullable()->default(0);

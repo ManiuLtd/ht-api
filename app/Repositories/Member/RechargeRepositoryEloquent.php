@@ -4,8 +4,8 @@ namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberRecharge;
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Member\RechargeValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\RechargeRepository;
 
 /**

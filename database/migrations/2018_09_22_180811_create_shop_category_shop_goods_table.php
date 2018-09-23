@@ -17,12 +17,12 @@ class CreateShopCategoryShopGoodsTable extends Migration
      */
     public function up()
     {
-        Schema::create ('shop_category_shop_goods', function (Blueprint $table) {
-            $table->integer ('shop_goods_id')->nullable ();
-            $table->integer ('shop_category_id')->nullable ();
+        Schema::create('shop_category_shop_goods', function (Blueprint $table) {
+            $table->integer('shop_goods_id')->nullable();
+            $table->integer('shop_category_id')->nullable();
 
-            $table->index ('goods_id');
-            $table->index ('category_id');
+            $table->index('goods_id');
+            $table->index('category_id');
         });
     }
 
@@ -33,6 +33,6 @@ class CreateShopCategoryShopGoodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists ('shop_category_shop_goods');
+        Schema::dropIfExists('shop_category_shop_goods');
     }
 }

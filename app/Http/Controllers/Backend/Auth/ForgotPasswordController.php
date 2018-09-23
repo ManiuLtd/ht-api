@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
-use App\Http\Controllers\Auth\Passwords\Facade\Password;
+use Validator;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\User\ForgotPasswordRequest;
+use App\Http\Controllers\Auth\Passwords\Facade\Password;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Validator;
 
 /**
  * 找回密码

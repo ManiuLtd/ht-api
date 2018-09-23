@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Backend\Member;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Member\WithdrawUpdateRequest;
-use App\Repositories\Interfaces\Member\WithdrawRepository;
 use App\Validators\Member\WithdrawValidator;
+use App\Http\Requests\Member\WithdrawUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Member\WithdrawRepository;
 
 /**
  * Class WithdrawsController.

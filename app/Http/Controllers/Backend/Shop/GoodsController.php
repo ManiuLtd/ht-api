@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Shop\GoodsValidator;
 use App\Http\Requests\Shop\GoodsCreateRequest;
 use App\Http\Requests\Shop\GoodsUpdateRequest;
-use App\Repositories\Interfaces\Shop\GoodsRepository;
-use App\Validators\Shop\GoodsValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Shop\GoodsRepository;
 
 /**
  * Class GoodsController.
