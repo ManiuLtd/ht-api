@@ -17,7 +17,7 @@ class MemberFavourite extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "member_favourites";
+    protected $table = 'member_favourites';
 
     /**
      * @var array

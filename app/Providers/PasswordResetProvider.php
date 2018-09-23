@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Auth\Passwords\PasswordBrokerManager;
 use Illuminate\Support\ServiceProvider;
+use App\Http\Controllers\Auth\Passwords\PasswordBrokerManager;
 
 class PasswordResetProvider extends ServiceProvider
 {

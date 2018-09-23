@@ -2,10 +2,10 @@
 
 namespace App\Listeners;
 
+use InvalidArgumentException;
 use App\Events\CreditDecrement;
 use App\Events\CreditIncrement;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 
 class CreditEventSubscriber
 {

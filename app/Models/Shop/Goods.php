@@ -34,7 +34,7 @@ class Goods extends Model implements Transformable
     ];
 
     /**
-     * 产品所属分类
+     * 产品所属分类.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categories()

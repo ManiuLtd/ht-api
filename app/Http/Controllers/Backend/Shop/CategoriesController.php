@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Shop\CategoryValidator;
 use App\Http\Requests\Shop\CategoryCreateRequest;
 use App\Http\Requests\Shop\CategoryUpdateRequest;
-use App\Repositories\Interfaces\Shop\CategoryRepository;
-use App\Validators\Shop\CategoryValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Shop\CategoryRepository;
 
 /**
  * Class CategoriesController.

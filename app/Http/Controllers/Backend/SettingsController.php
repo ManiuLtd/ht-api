@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Validators\SettingValidator;
 use App\Http\Requests\SettingUpdateRequest;
 use App\Repositories\Interfaces\SettingRepository;
-use App\Validators\SettingValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 

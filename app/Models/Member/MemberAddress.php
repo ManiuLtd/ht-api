@@ -17,7 +17,7 @@ class MemberAddress extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "member_addresses";
+    protected $table = 'member_addresses';
 
     /**
      * @var array

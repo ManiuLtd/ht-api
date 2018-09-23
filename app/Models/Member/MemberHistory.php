@@ -16,7 +16,7 @@ class MemberHistory extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "member_histories";
+    protected $table = 'member_histories';
 
     /**
      * The attributes that are mass assignable.

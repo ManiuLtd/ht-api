@@ -39,7 +39,7 @@ class RefundOrder extends Model implements Transformable
      */
     public function goods()
     {
-        return $this->belongsTo ('App\Models\Shop\OrderGoods', 'order_goods_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\OrderGoods', 'order_goods_id')->withDefault(null);
     }
 
     /**
@@ -48,7 +48,7 @@ class RefundOrder extends Model implements Transformable
      */
     public function order()
     {
-        return $this->belongsTo ('App\Models\Shop\Order', 'order_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\Order', 'order_id')->withDefault(null);
     }
 
     /**
@@ -57,7 +57,7 @@ class RefundOrder extends Model implements Transformable
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
     }
 
     /**
@@ -73,7 +73,7 @@ class RefundOrder extends Model implements Transformable
             'reason' => $this->reason,
             'image' => $this->image,
             'content' => $this->content,
-            'refund_address' => json_decode ($this->refund_address) ?? '',
+            'refund_address' => json_decode($this->refund_address) ?? '',
             'reply' => $this->reply,
             'type' => $this->type,
             'refund_type' => $this->refund_type,

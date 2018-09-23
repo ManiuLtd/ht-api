@@ -16,7 +16,7 @@ class MemberRecharge extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "member_recharges";
+    protected $table = 'member_recharges';
 
     /**
      * The attributes that are mass assignable.

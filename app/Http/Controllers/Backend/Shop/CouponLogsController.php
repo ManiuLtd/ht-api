@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\Shop\CouponLogRepository;
 use App\Validators\Shop\CouponLogValidator;
+use App\Repositories\Interfaces\Shop\CouponLogRepository;
 
 /**
  * Class CouponLogsController.

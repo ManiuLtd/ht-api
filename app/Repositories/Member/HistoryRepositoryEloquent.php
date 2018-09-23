@@ -4,9 +4,9 @@ namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberHistory;
-use App\Repositories\Interfaces\MemberHistoryRepository;
 use App\Validators\Member\HistoryValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\MemberHistoryRepository;
 
 /**
  * Class HistoryRepositoryEloquent.

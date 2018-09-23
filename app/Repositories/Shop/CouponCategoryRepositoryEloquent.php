@@ -4,8 +4,8 @@ namespace App\Repositories\Shop;
 
 use App\Models\Shop\CouponCategory;
 use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
 use App\Validators\Shop\CouponCategoryValidator;
+use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\ShopCouponCategoryRepository;
 
 /**

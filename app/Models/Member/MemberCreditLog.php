@@ -16,7 +16,7 @@ class MemberCreditLog extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "member_credit_logs";
+    protected $table = 'member_credit_logs';
 
     /**
      * The attributes that are mass assignable.

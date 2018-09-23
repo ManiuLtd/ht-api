@@ -17,7 +17,7 @@ class Member extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "members";
+    protected $table = 'members';
 
     /**
      * The attributes that are mass assignable.
