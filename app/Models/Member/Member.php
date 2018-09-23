@@ -15,6 +15,11 @@ class Member extends Model implements Transformable
     use TransformableTrait, SoftDeletes;
 
     /**
+     * @var string
+     */
+    protected $table = "members";
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

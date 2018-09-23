@@ -14,6 +14,11 @@ class MemberLevel extends Model implements Transformable
     use TransformableTrait;
 
     /**
+     * @var string
+     */
+    protected $table = "member_levels";
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

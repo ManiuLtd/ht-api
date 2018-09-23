@@ -15,6 +15,11 @@ class MemberAddress extends Model implements Transformable
     use TransformableTrait, SoftDeletes;
 
     /**
+     * @var string
+     */
+    protected $table = "member_addresses";
+
+    /**
      * @var array
      */
     protected $fillable = [

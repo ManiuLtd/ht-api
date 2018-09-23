@@ -193,7 +193,7 @@ return [
         |   Ex:
         |   http://prettus.local/?search=lorem&filter=id,name
         |
-        | - orderBy : ShopOrder By
+        | - orderBy : Order By
         |   Ex:
         |   http://prettus.local/?search=lorem&orderBy=id
         |

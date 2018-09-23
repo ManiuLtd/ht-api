@@ -14,6 +14,11 @@ class MemberCreditLog extends Model implements Transformable
     use TransformableTrait;
 
     /**
+     * @var string
+     */
+    protected $table = "member_credit_logs";
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

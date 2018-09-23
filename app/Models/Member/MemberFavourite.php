@@ -15,6 +15,11 @@ class MemberFavourite extends Model implements Transformable
     use TransformableTrait, SoftDeletes;
 
     /**
+     * @var string
+     */
+    protected $table = "member_favourites";
+
+    /**
      * @var array
      */
     protected $fillable = [
@@ -45,6 +50,6 @@ class MemberFavourite extends Model implements Transformable
      */
     public function goods()
     {
-        return $this->belongsTo('App\Models\Shop\ShopGoods', 'goods_id')->withDefault(null);
+        return $this->belongsTo('App\Models\Shop\Goods', 'goods_id')->withDefault(null);
     }
 }

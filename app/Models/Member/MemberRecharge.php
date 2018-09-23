@@ -14,6 +14,11 @@ class MemberRecharge extends Model implements Transformable
     use TransformableTrait;
 
     /**
+     * @var string
+     */
+    protected $table = "member_recharges";
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

@@ -20,12 +20,11 @@ class CreateShopGoodsTable extends Migration
         Schema::create('shop_goods', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->string('title', 191)->nullable();
             $table->string('keywords', 191)->nullable();
             $table->string('short_title', 191)->nullable();
-            $table->string('thumb', 191)->nullable();
+            $table->text('thumb')->nullable();
             $table->string('description', 191)->nullable();
             $table->text('content')->nullable();
             $table->string('goodssn', 191)->nullable();
@@ -53,7 +52,7 @@ class CreateShopGoodsTable extends Migration
             $table->tinyInteger('isdiscount')->nullable();
             $table->string('discount_title', 191)->nullable();
             $table->timestamp('discount_end')->nullable();
-            $table->timestamp('discount_price')->nullable();
+            $table->decimal('discount_price',8, 2)->nullable();
             $table->tinyInteger('issendfree')->nullable();
             $table->tinyInteger('iscomment')->nullable();
             $table->integer('views')->nullable()->default(0);
