@@ -8,8 +8,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class ShopCoupon
- * @package App\Models\Shop
+ * Class ShopCoupon.
  */
 class ShopCoupon extends Model implements Transformable
 {
@@ -47,7 +46,7 @@ class ShopCoupon extends Model implements Transformable
         'limit_agent_ids',
         'description',
         'sort',
-        'status'
+        'status',
     ];
 
     /**
@@ -62,11 +61,11 @@ class ShopCoupon extends Model implements Transformable
     protected $dates = ['deleted_at'];
 
     /**
-     * 所属分类
+     * 所属分类.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category()
     {
-        return $this->belongsTo ('App\Models\Shop\ShopCouponCategory')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\ShopCouponCategory')->withDefault(null);
     }
 }

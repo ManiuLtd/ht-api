@@ -2,21 +2,20 @@
 
 namespace App\Listeners;
 
+use InvalidArgumentException;
 use App\Events\CreditDecrement;
 use App\Events\CreditIncrement;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 
 class CreditEventSubscriber
 {
-
     /**
      * @param CreditIncrement $event
      * @throws \Throwable
      */
     public function onCreditIncrement(CreditIncrement $event)
     {
-        $this->updateCredit ($event, true);
+        $this->updateCredit($event, true);
     }
 
     /**
@@ -25,28 +24,28 @@ class CreditEventSubscriber
      */
     public function onCreditDecrement(CreditDecrement $event)
     {
-        $this->updateCredit ($event, false);
+        $this->updateCredit($event, false);
     }
 
     /**
-     * 为订阅者注册监听器
+     * 为订阅者注册监听器.
      * @param $events
      */
     public function subscribe($events)
     {
-        $events->listen (
+        $events->listen(
             'App\Events\CreditIncrement',
             'App\Listeners\CreditEventSubscriber@onCreditIncrement'
         );
 
-        $events->listen (
+        $events->listen(
             'App\Events\CreditDecrement',
             'App\Listeners\CreditEventSubscriber@onCreditDecrement'
         );
     }
 
     /**
-     * 改变积分并写入日志
+     * 改变积分并写入日志.
      * @param $event
      * @param bool $isIncrement 是否为增加
      * @throws \Throwable
@@ -54,21 +53,21 @@ class CreditEventSubscriber
     protected function updateCredit($event, bool $isIncrement): void
     {
         //如果积分数组不符合规范
-        if (!is_numeric ($event->credit) || !in_array ($event->type, [1, 2])) {
+        if (! is_numeric($event->credit) || ! in_array($event->type, [1, 2])) {
             throw  new InvalidArgumentException('修改基本所需要传入的参数格式错误');
         }
 
         //修改积分并添加操作日志
-        DB::transaction (function () use ($event, $isIncrement) {
+        DB::transaction(function () use ($event, $isIncrement) {
             $column = $event->type == 1 ? 'credit1' : 'credit2';
-            if (!$isIncrement) {
-                db ('members')
-                    ->where ('id', $event->member->id)
-                    ->decrement ($column, $event->credit);
+            if (! $isIncrement) {
+                db('members')
+                    ->where('id', $event->member->id)
+                    ->decrement($column, $event->credit);
             } else {
-                db ('members')
-                    ->where ('id', $event->member->id)
-                    ->increment ($column, $event->credit);
+                db('members')
+                    ->where('id', $event->member->id)
+                    ->increment($column, $event->credit);
             }
             //需要插入的日志
             $insert = [
@@ -78,11 +77,11 @@ class CreditEventSubscriber
                 'credit' => $event->credit,
                 'type' => $event->type,
                 'remark' => $event->remark,
-                'created_at' => now ()->toDateTimeString (),
-                'updated_at' => now ()->toDateTimeString (),
+                'created_at' => now()->toDateTimeString(),
+                'updated_at' => now()->toDateTimeString(),
             ];
 
-            db ('member_credit_logs')->insert ($insert);
+            db('member_credit_logs')->insert($insert);
         });
     }
 }

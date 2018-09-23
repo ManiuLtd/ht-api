@@ -1,4 +1,5 @@
 <?php
+
 //api文档：https://packagist.org/packages/overtrue/easy-sms
 
 return [
@@ -55,7 +56,7 @@ return [
         ],
         //聚合数据
         'juhe' => [
-            'app_key' => env ('JUHE_SMS_APP_KEY', ''),
+            'app_key' => env('JUHE_SMS_APP_KEY', ''),
         ],
         //SendCloud
         'sendcloud' => [

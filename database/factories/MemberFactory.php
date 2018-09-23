@@ -13,8 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define (App\Models\Member\Member::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\Member::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'inviter_id' => null,
@@ -26,149 +25,138 @@ $factory->define (App\Models\Member\Member::class, function (Faker $faker) {
         'ali_openid2' => $faker->uuid,
         'nickname' => $faker->name,
         'phone' => $faker->phoneNumber,
-        'isagent' => $faker->randomKey ([0, 1]),
-        'credit1' => $faker->randomFloat (2, 0, 9999),
-        'credit2' => rand (10, 9999),
-        'level1' => rand (1, 4),
-        'level2' => rand (1, 4),
-        'password' => bcrypt ('123456'),
-        'headimgurl' => $faker->imageUrl (100, 100),
-        'status' => $faker->randomKey ([0, 1]),
-        'agent_time' => now (),
-        'created_at' => now (),
-        'updated_at' => now (),
+        'isagent' => $faker->randomKey([0, 1]),
+        'credit1' => $faker->randomFloat(2, 0, 9999),
+        'credit2' => rand(10, 9999),
+        'level1' => rand(1, 4),
+        'level2' => rand(1, 4),
+        'password' => bcrypt('123456'),
+        'headimgurl' => $faker->imageUrl(100, 100),
+        'status' => $faker->randomKey([0, 1]),
+        'agent_time' => now(),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
 
-
-$factory->define (App\Models\Member\MemberCreditLog::class, function (Faker $faker) {
+$factory->define(App\Models\Member\MemberCreditLog::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => rand (1, 50),
-        'credit' => rand (100, 1000),
-        'type' => $faker->randomKey ([1, 2]),
+        'member_id' => rand(1, 50),
+        'credit' => rand(100, 1000),
+        'type' => $faker->randomKey([1, 2]),
         'remark' => $faker->name,
-        'created_at' => now (),
-        'updated_at' => now (),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
 
-
-$factory->define (App\Models\Member\MemberLevel::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\MemberLevel::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'name' => $faker->name,
-        'logo' => $faker->imageUrl (100, 100),
-        'level' => $faker->numberBetween (1, 100),
-        'credit' => $faker->numberBetween (200, 10000),
-        'discount' => $faker->randomFloat (2, 0.01, 0.99),
-        'sort' => $faker->numberBetween (1, 9999),
-        'status' => $faker->randomKey ([0, 1]),
-        'created_at' => now (),
-        'updated_at' => now (),
+        'logo' => $faker->imageUrl(100, 100),
+        'level' => $faker->numberBetween(1, 100),
+        'credit' => $faker->numberBetween(200, 10000),
+        'discount' => $faker->randomFloat(2, 0.01, 0.99),
+        'sort' => $faker->numberBetween(1, 9999),
+        'status' => $faker->randomKey([0, 1]),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
 
-$factory->define (App\Models\Member\MemberHistory::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\MemberHistory::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => rand (1, 50),//会员id
-        'merch_id' => rand (1, 50),//商户id
-        'goods_id' => rand (1, 50),//商品id
-        'views' => $faker->numberBetween (1, 9999),//浏览次数
+        'member_id' => rand(1, 50), //会员id
+        'merch_id' => rand(1, 50), //商户id
+        'goods_id' => rand(1, 50), //商品id
+        'views' => $faker->numberBetween(1, 9999), //浏览次数
     ];
 });
 
-
-$factory->define (App\Models\Member\MemberAddress::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\MemberAddress::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => 1,
         'realname' => $faker->name,
-        'phone' => $faker->numberBetween (1, 100),
+        'phone' => $faker->numberBetween(1, 100),
         'province' => $faker->name,
         'city' => $faker->name,
         'area' => $faker->name,
         'address' => $faker->name,
         'zipcode' => $faker->name,
-        'isdefault' => $faker->numberBetween (1, 4),
-        'type' => $faker->numberBetween (1, 4),
-        'created_at' => now (),
-        'updated_at' => now (),
+        'isdefault' => $faker->numberBetween(1, 4),
+        'type' => $faker->numberBetween(1, 4),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
 
-$factory->define (App\Models\Member\MemberFavourite::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\MemberFavourite::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => 1,
         'merch_id' => 1,
         'goods_id' => 1,
-        'created_at' => now (),
-        'updated_at' => now (),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
 
-
-$factory->define (App\Models\Member\MemberRecharge::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\MemberRecharge::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => rand (1, 50),
+        'member_id' => rand(1, 50),
         'title' => $faker->name,
         'out_trade_no' => $faker->bankAccountNumber,
-        'money' => rand (10, 999),
-        'real_money' => rand (10, 999),
-        'giving_money' => rand (10, 999),
-        'status' => rand (0, 2),
-        'type' => rand (1, 3),
-        'pay_time' => now (),
-        'created_at' => now (),
-        'updated_at' => now (),
+        'money' => rand(10, 999),
+        'real_money' => rand(10, 999),
+        'giving_money' => rand(10, 999),
+        'status' => rand(0, 2),
+        'type' => rand(1, 3),
+        'pay_time' => now(),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
 
-$factory->define (App\Models\Member\MemberWithdraw::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\MemberWithdraw::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => rand (1, 50),
-        'money' => rand (1, 999),
-        'real_money' => rand (1, 999),
-        'deduct_money' => rand (1, 999),
+        'member_id' => rand(1, 50),
+        'money' => rand(1, 999),
+        'real_money' => rand(1, 999),
+        'deduct_money' => rand(1, 999),
         'realname' => $faker->name,
         'alipay' => $faker->email,
         'bankname' => $faker->name,
         'bankcard' => $faker->bankAccountNumber,
         'reason' => $faker->text,
-        'status' => rand (1, 3),
-        'pay_type' => rand (1, 3),
-        'pay_time' => now (),
-        'refused_time' => now (),
-        'created_at' => now (),
-        'updated_at' => now (),
+        'status' => rand(1, 3),
+        'pay_type' => rand(1, 3),
+        'pay_time' => now(),
+        'refused_time' => now(),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
 
-$factory->define (App\Models\Member\MemberAddress::class, function (Faker $faker) {
-
+$factory->define(App\Models\Member\MemberAddress::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => rand (1, 50),
+        'member_id' => rand(1, 50),
         'realname' => $faker->name,
-        'phone' => rand (1, 999),
+        'phone' => rand(1, 999),
         'province' => $faker->name,
         'city' => $faker->name,
         'area' => $faker->name,
         'address' => $faker->name,
-        'zipcode' => rand (100000, 999999),
-        'isdefault' => rand (1, 3),
-        'type' => rand (1, 3),
-        'created_at' => now (),
-        'updated_at' => now (),
+        'zipcode' => rand(100000, 999999),
+        'isdefault' => rand(1, 3),
+        'type' => rand(1, 3),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });

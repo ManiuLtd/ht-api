@@ -25,7 +25,7 @@ class AuthController extends Controller
     {
         $credentials = request(['name', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (! $token = auth()->attempt($credentials)) {
             return json(4001, '账号或者密码错误');
         }
 
@@ -76,7 +76,7 @@ class AuthController extends Controller
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ];
 
         return json(1001, '登录成功', $data);

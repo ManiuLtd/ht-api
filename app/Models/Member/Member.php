@@ -9,8 +9,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Member.
- *
- * @package namespace App\Models\Member;
  */
 class Member extends Model implements Transformable
 {
@@ -29,7 +27,7 @@ class Member extends Model implements Transformable
         'credit2',
         'level1',
         'level2',
-        'status'
+        'status',
     ];
 
     /**
@@ -53,36 +51,36 @@ class Member extends Model implements Transformable
      */
     public static function boot()
     {
-        parent::boot ();
+        parent::boot();
         //创建之前 加密密码
-        self::creating (function ($model) {
-            $model->password = bcrypt (request ('password'));
+        self::creating(function ($model) {
+            $model->password = bcrypt(request('password'));
         });
 
         //编辑用户时 如果设置了密码  则更新密码
-        if (request ('password') != '') {
-            self::updating (function ($model) {
-                $model->password = bcrypt (request ('password'));
+        if (request('password') != '') {
+            self::updating(function ($model) {
+                $model->password = bcrypt(request('password'));
             });
         }
     }
 
     /**
-     * 当前用户邀请人
+     * 当前用户邀请人.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
      */
     public function inviter()
     {
-        return $this->belongsTo (Member::class, 'inviter_id')->withDefault (null);
+        return $this->belongsTo(self::class, 'inviter_id')->withDefault(null);
     }
 
     /**
-     * 当前用户会员等级
+     * 当前用户会员等级.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
      */
     public function level()
     {
-        return $this->belongsTo ('App\Models\Member\MemberLevel', 'level1')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\MemberLevel', 'level1')->withDefault(null);
     }
 
     /**
@@ -91,27 +89,24 @@ class Member extends Model implements Transformable
      */
     public function addresses()
     {
-        return $this->hasMany (MemberAddress::class);
+        return $this->hasMany(MemberAddress::class);
     }
 
     /**
-     * 用户订单
+     * 用户订单.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders()
     {
-        return $this->hasMany ('App\Models\Order');
+        return $this->hasMany('App\Models\Order');
     }
 
-
     /**
-     * 用户评论
+     * 用户评论.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments()
     {
-        return $this->hasMany ('App\Models\Comment');
+        return $this->hasMany('App\Models\Comment');
     }
-
-
 }

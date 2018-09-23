@@ -2,27 +2,23 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
-use App\Http\Controllers\Controller;
 use Auth;
+use App\Http\Controllers\Controller;
 
 /**
- * Class LogoutController
- *
- * @package App\Http\Controllers\Backend\Auth
+ * Class LogoutController.
  */
 class LogoutController extends Controller
 {
-
-
     /**
-     * 退出登录
+     * 退出登录.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
     {
-        Auth::guard ()->logout ();
+        Auth::guard()->logout();
 
-        return json ('1001', '退出成功');
+        return json('1001', '退出成功');
     }
 }

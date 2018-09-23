@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Shop;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\ShopGoodsCommentRepository;
 use App\Models\Shop\ShopGoodsComment;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Shop\ShopGoodsCommentValidator;
+use App\Repositories\Interfaces\ShopGoodsCommentRepository;
 
 /**
  * Class ShopGoodsCommentRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class ShopGoodsCommentRepositoryEloquent extends BaseRepository implements ShopGoodsCommentRepository
 {
-
     /**
      * @var array
      */
@@ -28,7 +25,7 @@ class ShopGoodsCommentRepositoryEloquent extends BaseRepository implements ShopG
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -38,31 +35,28 @@ class ShopGoodsCommentRepositoryEloquent extends BaseRepository implements ShopG
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return ShopGoodsCommentValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 
     /**
      * @return string
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

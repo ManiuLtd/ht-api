@@ -20,13 +20,12 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
-
     /**
-     * 事件订阅
+     * 事件订阅.
      * @var array
      */
     protected $subscribe = [
-        'App\Listeners\CreditEventSubscriber'
+        'App\Listeners\CreditEventSubscriber',
     ];
 
     /**
@@ -36,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        parent::boot ();
+        parent::boot();
 
         //
     }

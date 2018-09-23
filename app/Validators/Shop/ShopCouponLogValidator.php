@@ -2,17 +2,16 @@
 
 namespace App\Validators\Shop;
 
-use \Prettus\Validator\Contracts\ValidatorInterface;
-use \Prettus\Validator\LaravelValidator;
+use Prettus\Validator\LaravelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class ShopCouponLogValidator
- * @package App\Validators\Shop
+ * Class ShopCouponLogValidator.
  */
 class ShopCouponLogValidator extends LaravelValidator
 {
     /**
-     * Validation Rules
+     * Validation Rules.
      *
      * @var array
      */

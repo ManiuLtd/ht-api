@@ -9,8 +9,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class MemberAddress.
- *
- * @package namespace App\Models\Member;
  */
 class MemberAddress extends Model implements Transformable
 {
@@ -30,7 +28,7 @@ class MemberAddress extends Model implements Transformable
         'address',
         'zipcode',
         'isdefault',
-        'type'
+        'type',
     ];
 
     /**
@@ -43,7 +41,6 @@ class MemberAddress extends Model implements Transformable
      */
     protected $hidden = [
         'member_id',
-        'user_id'
+        'user_id',
     ];
-
 }

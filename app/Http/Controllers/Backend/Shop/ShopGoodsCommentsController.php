@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Shop\ShopGoodsCommentValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Shop\ShopGoodsCommentUpdateRequest;
 use App\Repositories\Interfaces\ShopGoodsCommentRepository;
-use App\Validators\Shop\ShopGoodsCommentValidator;
 
 /**
  * Class ShopGoodsCommentsController.
- *
- * @package namespace App\Http\Controllers;
  */
 class ShopGoodsCommentsController extends Controller
 {
@@ -39,19 +37,18 @@ class ShopGoodsCommentsController extends Controller
     }
 
     /**
-     * 商品评论列表
+     * 商品评论列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $comments = $this->repository->with (['member', 'order', 'goods'])->all ();
+        $comments = $this->repository->with(['member', 'order', 'goods'])->all();
 
-        return json (1001, "列表获取成功", $comments);
-
+        return json(1001, '列表获取成功', $comments);
     }
 
     /**
-     * 编辑评论
+     * 编辑评论.
      * @param ShopGoodsCommentUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -59,20 +56,18 @@ class ShopGoodsCommentsController extends Controller
     public function update(ShopGoodsCommentUpdateRequest $request, $id)
     {
         try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
+            $couponCategory = $this->repository->update($request->all(), $id);
 
-            $couponCategory = $this->repository->update ($request->all (), $id);
-
-            return json (1001, "更新成功", $couponCategory);
-
+            return json(1001, '更新成功', $couponCategory);
         } catch (ValidatorException $e) {
-            return json (5001, $e->getMessageBag ());
+            return json(5001, $e->getMessageBag());
         }
     }
 
     /**
-     * 评论详情
+     * 评论详情.
      *
      * @param $id
      *
@@ -80,12 +75,10 @@ class ShopGoodsCommentsController extends Controller
      */
     public function show($id)
     {
-        $comment = $this->repository->with (['member', 'order', 'goods'])->find ($id);
+        $comment = $this->repository->with(['member', 'order', 'goods'])->find($id);
 
-        return json (1001, "详情获取成功", $comment);
-
+        return json(1001, '详情获取成功', $comment);
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -96,16 +89,15 @@ class ShopGoodsCommentsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete ($id);
+        $deleted = $this->repository->delete($id);
 
-        if (request ()->wantsJson ()) {
-
-            return response ()->json ([
+        if (request()->wantsJson()) {
+            return response()->json([
                 'message' => 'ShopGoodsComment deleted.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect ()->back ()->with ('message', 'ShopGoodsComment deleted.');
+        return redirect()->back()->with('message', 'ShopGoodsComment deleted.');
     }
 }

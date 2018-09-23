@@ -8,8 +8,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberFavourite
- * @package App\Models\Member
+ * Class MemberFavourite.
  */
 class MemberFavourite extends Model implements Transformable
 {
@@ -22,7 +21,7 @@ class MemberFavourite extends Model implements Transformable
         'user_id',
         'member_id',
         'merch_id',
-        'goods_id'
+        'goods_id',
     ];
 
     /**
@@ -40,14 +39,12 @@ class MemberFavourite extends Model implements Transformable
         'goods_id',
     ];
 
-
     /**
      * 所属商品
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
      */
     public function goods()
     {
-        return $this->belongsTo ('App\Models\Shop\ShopGoods', 'goods_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\ShopGoods', 'goods_id')->withDefault(null);
     }
-
 }

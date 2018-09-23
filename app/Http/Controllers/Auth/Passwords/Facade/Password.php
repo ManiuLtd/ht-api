@@ -4,20 +4,18 @@ namespace App\Http\Controllers\Auth\Passwords\Facade;
 
 use Illuminate\Support\Facades\Password as AuthPassword;
 
-
 /**
- * Class Password
- * @package App\Http\Controllers\Backend\Auth\Passwords\Facade
+ * Class Password.
  */
 class Password extends AuthPassword
 {
     /**
-     * 验证码错误次数过多
+     * 验证码错误次数过多.
      */
     const MAX_ERROR = 'passwords.max_error';
 
     /**
-     * 验证码发送失败
+     * 验证码发送失败.
      */
     const SEND_FAIL = 'passwords.send_fail';
 

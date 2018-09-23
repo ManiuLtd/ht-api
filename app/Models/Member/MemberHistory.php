@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class MemberHistory.
- *
- * @package namespace App\Models\Member;
  */
 class MemberHistory extends Model implements Transformable
 {
@@ -35,7 +33,6 @@ class MemberHistory extends Model implements Transformable
      */
     public function goods()
     {
-        return $this->belongsTo ('App\Models\Shop\ShopGoods', 'goods_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\ShopGoods', 'goods_id')->withDefault(null);
     }
-
 }

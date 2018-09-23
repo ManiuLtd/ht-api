@@ -2,23 +2,19 @@
 
 namespace App\Validators\User;
 
-use \Prettus\Validator\Contracts\ValidatorInterface;
-use \Prettus\Validator\LaravelValidator;
+use Prettus\Validator\LaravelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class UserValidator.
- *
- * @package namespace App\Validators;
  */
 class UserValidator extends LaravelValidator
 {
     /**
-     * Validation Rules
+     * Validation Rules.
      *
      * @var array
      */
-
-
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
             'email' => 'required|email|unique:users',

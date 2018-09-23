@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class MemberLevel.
- *
- * @package namespace App\Models\Member;
  */
 class MemberLevel extends Model implements Transformable
 {
@@ -35,6 +33,6 @@ class MemberLevel extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
-        'user_id'
+        'user_id',
     ];
 }

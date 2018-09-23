@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class ShopOrder.
- *
- * @package namespace App\Models\Shop;
  */
 class ShopOrder extends Model implements Transformable
 {
@@ -34,21 +32,21 @@ class ShopOrder extends Model implements Transformable
     ];
 
     /**
-     * 子订单
+     * 子订单.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subOrders()
     {
-        return $this->hasMany ('App\Models\Shop\ShopOrderGoods', 'order_id');
+        return $this->hasMany('App\Models\Shop\ShopOrderGoods', 'order_id');
     }
 
     /**
-     * 所属用户
+     * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
     }
 
     /**
@@ -57,7 +55,6 @@ class ShopOrder extends Model implements Transformable
      */
     public function address()
     {
-        return $this->belongsTo ('App\Models\Member\MemberAddress', 'address_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\MemberAddress', 'address_id')->withDefault(null);
     }
-
 }

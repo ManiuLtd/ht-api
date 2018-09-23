@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Member;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\WithdrawRepository;
 use App\Models\Member\MemberWithdraw;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Member\MemberWithdrawValidator;
+use App\Repositories\Interfaces\WithdrawRepository;
 
 /**
  * Class MemberWithdrawRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberWithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepository
 {
-
     /**
      * @var array
      */
@@ -27,7 +24,7 @@ class MemberWithdrawRepositoryEloquent extends BaseRepository implements Withdra
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -37,31 +34,28 @@ class MemberWithdrawRepositoryEloquent extends BaseRepository implements Withdra
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return MemberWithdrawValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 
     /**
      * @return string
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

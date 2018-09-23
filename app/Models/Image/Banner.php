@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Banner.
- *
- * @package namespace App\Models;
  */
 class Banner extends Model implements Transformable
 {
@@ -24,15 +22,15 @@ class Banner extends Model implements Transformable
         'image',
         'sort',
         'tag',
-        'status'
+        'status',
     ];
 
     protected $hidden = [
-        'user_id'
+        'user_id',
     ];
 
     /**
-     * 字段映射
+     * 字段映射.
      * @return array
      */
     public function transform()

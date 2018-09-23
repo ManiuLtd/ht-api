@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class ShopCouponCategory.
- *
- * @package namespace App\Models\Shop;
  */
 class ShopCouponCategory extends Model implements Transformable
 {
@@ -23,7 +21,7 @@ class ShopCouponCategory extends Model implements Transformable
     protected $fillable = [
         'name',
         'sort',
-        'status'
+        'status',
     ];
 
     /**
@@ -33,5 +31,4 @@ class ShopCouponCategory extends Model implements Transformable
         'user_id',
         'merch_id',
     ];
-
 }
