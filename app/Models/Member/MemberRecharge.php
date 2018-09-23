@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberRecharge
- * @package App\Models\Member
+ * Class MemberRecharge.
  */
 class MemberRecharge extends Model implements Transformable
 {
@@ -21,7 +20,6 @@ class MemberRecharge extends Model implements Transformable
      */
     protected $fillable = [];
 
-
     /**
      * @var array
      */
@@ -33,11 +31,11 @@ class MemberRecharge extends Model implements Transformable
     ];
 
     /**
-     * 所属用户
+     * 所属用户.
      * @return bool|\Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member', 'member_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
     }
 }

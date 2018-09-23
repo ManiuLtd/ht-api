@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Member;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\MemberRepository;
 use App\Models\Member\Member;
+use App\Criteria\RequestCriteria;
 use App\Validators\Member\MemberValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\MemberRepository;
 
 /**
  * Class MemberRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberRepositoryEloquent extends BaseRepository implements MemberRepository
 {
-
     /**
      * @var array
      */
@@ -26,9 +23,8 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         'member_id',
     ];
 
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -38,36 +34,33 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return MemberValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 
     /**
      * @return string
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
     /**
-     * 获取三级粉丝
+     * 获取三级粉丝.
      * @param $member
      * @param $level
      * @return mixed

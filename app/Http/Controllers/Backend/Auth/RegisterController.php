@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
-use App\Models\User\User;
 use Carbon\Carbon;
+use App\Models\User\User;
 use Tymon\JWTAuth\JWTAuth;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\User\SignUpRequest;
 use Illuminate\Support\Facades\Validator;
-
+use App\Http\Requests\Auth\User\SignUpRequest;
 
 /**
- * Class RegisterController
- *
- * @package App\Http\Controllers\Backend\Auth
+ * Class RegisterController.
  */
-
 class RegisterController extends Controller
 {
-
-
     /**
-     * 注册用户
+     * 注册用户.
      * @param SignUpRequest $request
      * @param JWTAuth $JWTAuth
      * @return \Illuminate\Http\JsonResponse
@@ -31,24 +25,22 @@ class RegisterController extends Controller
         $validate = $this->validator($request->all());
 
         if ($validate->errors()->first()) {
-
-            return json(4001,$validate->errors()->first());
+            return json(4001, $validate->errors()->first());
         }
 
         $user = $this->create($request->all());
 
-
-        if (!$user) {
-            return json (4001, '用户注册失败');
+        if (! $user) {
+            return json(4001, '用户注册失败');
         }
 
-        $token = $JWTAuth->fromUser ($user);
+        $token = $JWTAuth->fromUser($user);
 
-        return $this->respondWithToken ($token);
+        return $this->respondWithToken($token);
     }
 
     /**
-     * 获取Token
+     * 获取Token.
      * @param $token
      * @return \Illuminate\Http\JsonResponse
      */
@@ -57,10 +49,10 @@ class RegisterController extends Controller
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth ()->factory ()->getTTL () * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ];
 
-        return json (1001, '注册成功', $data);
+        return json(1001, '注册成功', $data);
     }
 
     /**
@@ -88,7 +80,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * 创建用户
+     * 创建用户.
      * @param array $data
      * @return mixed
      */
@@ -98,7 +90,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
         ]);
     }
 }

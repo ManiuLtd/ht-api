@@ -11,8 +11,8 @@ class BannerSeeder extends Seeder
      */
     public function run()
     {
-        DB::table ('banners')->truncate ();
+        DB::table('banners')->truncate();
 
-        factory (App\Models\Image\Banner::class, 40)->create ();
+        factory(App\Models\Image\Banner::class, 40)->create();
     }
 }

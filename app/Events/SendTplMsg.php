@@ -2,47 +2,47 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class SendTplMsg
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * 接收人id
+     * 接收人id.
      * @var
      */
     public $openid;
 
     /**
-     * 模板ID
+     * 模板ID.
      * @var
      */
     public $templateId;
 
     /**
-     * 模板内容
+     * 模板内容.
      * @var
      */
     public $data;
 
     /**
-     * 是否为小程序模板消息
+     * 是否为小程序模板消息.
      * @var
      */
     public $isMiniProgram;
 
     /**
-     * 小程序formId
+     * 小程序formId.
      * @var
      */
     public $formId;
 
     /**
-     * 跳转页面
+     * 跳转页面.
      * @var
      */
     public $page;

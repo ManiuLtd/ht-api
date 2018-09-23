@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Backend\Image;
 
 use App\Http\Controllers\Controller;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use App\Validators\Image\BannerValidator;
 use App\Http\Requests\Image\BannerCreateRequest;
 use App\Http\Requests\Image\BannerUpdateRequest;
 use App\Repositories\Interfaces\BannerRepository;
-use App\Validators\Image\BannerValidator;
-
-
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
- * Class BannersController
- * @package App\Http\Controllers\Backend
+ * Class BannersController.
  */
 class BannersController extends Controller
 {
@@ -41,38 +38,36 @@ class BannersController extends Controller
     }
 
     /**
-     * 店招列表
+     * 店招列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $banners = $this->repository->paginate (request ('limit', 10));
+        $banners = $this->repository->paginate(request('limit', 10));
 
-        return json (1001, '列表获取成功', $banners);
+        return json(1001, '列表获取成功', $banners);
     }
 
     /**
-     * 添加店招
+     * 添加店招.
      * @param BannerCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(BannerCreateRequest $request)
     {
         try {
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_CREATE);
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $banner = $this->repository->create ($request->all ());
+            $banner = $this->repository->create($request->all());
 
-            return json (1001, "创建成功", $banner);
-
+            return json(1001, '创建成功', $banner);
         } catch (ValidatorException $e) {
-            return json (5001, $e->getMessageBag ());
+            return json(5001, $e->getMessageBag());
         }
     }
 
-
     /**
-     * 编辑店招
+     * 编辑店招.
      * @param BannerUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -80,27 +75,25 @@ class BannersController extends Controller
     public function update(BannerUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $banner = $this->repository->update ($request->all (), $id);
+            $banner = $this->repository->update($request->all(), $id);
 
-            return json (1001, "更新成功", $banner);
-
+            return json(1001, '更新成功', $banner);
         } catch (ValidatorException $e) {
-            return json (5001, $e->getMessageBag ());
+            return json(5001, $e->getMessageBag());
         }
     }
 
-
     /**
-     * 删除店招
+     * 删除店招.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        $this->repository->delete ($id);
+        $this->repository->delete($id);
 
-        return json (1001, "删除成功");
+        return json(1001, '删除成功');
     }
 }

@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Backend\Member;
 
 use App\Http\Controllers\Controller;
-
-use App\Repositories\Interfaces\MemberAddressRepository;
 use App\Validators\Member\MemberAddressValidator;
+use App\Repositories\Interfaces\MemberAddressRepository;
 
 /**
- * Class MemberAddressesController
- *
- * @package App\Http\Controllers\Backend\Member
+ * Class MemberAddressesController.
  */
 class MemberAddressesController extends Controller
 {
@@ -36,15 +33,14 @@ class MemberAddressesController extends Controller
         $this->validator = $validator;
     }
 
-
     /**
-     * 地址列表
+     * 地址列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $memberAddresses = $this->repository->all ();
+        $memberAddresses = $this->repository->all();
 
-        return json (1001, '列表获取成功', $memberAddresses);
+        return json(1001, '列表获取成功', $memberAddresses);
     }
 }

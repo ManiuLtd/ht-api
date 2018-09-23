@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Member;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\RechargeRepository;
 use App\Models\Member\MemberRecharge;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Member\MemberRechargeValidator;
+use App\Repositories\Interfaces\RechargeRepository;
 
 /**
  * Class MemberRechargeRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberRechargeRepositoryEloquent extends BaseRepository implements RechargeRepository
 {
-
     /**
      * @var array
      */
@@ -28,9 +25,8 @@ class MemberRechargeRepositoryEloquent extends BaseRepository implements Recharg
         'created_at',
     ];
 
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -40,13 +36,12 @@ class MemberRechargeRepositoryEloquent extends BaseRepository implements Recharg
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return MemberRechargeValidator::class;
     }
 
@@ -55,7 +50,7 @@ class MemberRechargeRepositoryEloquent extends BaseRepository implements Recharg
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
@@ -63,6 +58,6 @@ class MemberRechargeRepositoryEloquent extends BaseRepository implements Recharg
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

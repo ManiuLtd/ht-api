@@ -3,19 +3,16 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\MemberCreditLogRepository;
 use App\Models\Member\MemberCreditLog;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Member\MemberCreditLogValidator;
+use App\Repositories\Interfaces\MemberCreditLogRepository;
 
 /**
  * Class MemberCreditLogRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberCreditLogRepositoryEloquent extends BaseRepository implements MemberCreditLogRepository
 {
-
     /**
      * @var array
      */
@@ -23,12 +20,11 @@ class MemberCreditLogRepositoryEloquent extends BaseRepository implements Member
         'member_id',
         'user_id',
         'type',
-        'created_at'
+        'created_at',
     ];
 
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -38,13 +34,12 @@ class MemberCreditLogRepositoryEloquent extends BaseRepository implements Member
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return MemberCreditLogValidator::class;
     }
 
@@ -53,7 +48,7 @@ class MemberCreditLogRepositoryEloquent extends BaseRepository implements Member
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
@@ -61,6 +56,6 @@ class MemberCreditLogRepositoryEloquent extends BaseRepository implements Member
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

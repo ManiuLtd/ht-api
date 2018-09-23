@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env ('FILESYSTEM_DRIVER', 'oss'),
+    'default' => env('FILESYSTEM_DRIVER', 'oss'),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'cloud' => env ('FILESYSTEM_CLOUD', 's3'),
+    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,22 +45,22 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path ('app'),
+            'root' => storage_path('app'),
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path ('app/public'),
-            'url' => env ('APP_URL') . '/storage',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
         's3' => [
             'driver' => 's3',
-            'key' => env ('AWS_KEY'),
-            'secret' => env ('AWS_SECRET'),
-            'region' => env ('AWS_REGION'),
-            'bucket' => env ('AWS_BUCKET'),
+            'key' => env('AWS_KEY'),
+            'secret' => env('AWS_SECRET'),
+            'region' => env('AWS_REGION'),
+            'bucket' => env('AWS_BUCKET'),
         ],
         'oss' => [
             'driver' => 'oss',
@@ -72,7 +72,7 @@ return [
 //            'cdnDomain' => '', // 如果isCName为true, getUrl会判断cdnDomain是否设定来决定返回的url，如果cdnDomain未设置，则使用endpoint来生成url，否则使用cdn
             'isCName' => false,
             'ssl' => false,
-            'debug' => true
+            'debug' => true,
         ],
     ],
 

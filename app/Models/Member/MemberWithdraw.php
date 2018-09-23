@@ -7,12 +7,10 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberWithdraw
- * @package App\Models\Member
+ * Class MemberWithdraw.
  */
 class MemberWithdraw extends Model implements Transformable
 {
-
     use TransformableTrait;
 
     /**
@@ -30,12 +28,12 @@ class MemberWithdraw extends Model implements Transformable
     ];
 
     /**
-     * 提现所属用户
+     * 提现所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member', 'member_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
     }
 
     /**
@@ -43,7 +41,6 @@ class MemberWithdraw extends Model implements Transformable
      */
     protected $hidden = [
         'user_id',
-        'member_id'
+        'member_id',
     ];
-
 }

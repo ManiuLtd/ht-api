@@ -2,21 +2,19 @@
 
 namespace App\Repositories;
 
+use App\Models\Setting;
+use App\Validators\SettingValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\SettingRepository;
-use App\Models\Setting;
-use App\Validators\SettingValidator;
 
 /**
  * Class SettingRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class SettingRepositoryEloquent extends BaseRepository implements SettingRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,7 +24,7 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
@@ -35,21 +33,19 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
         return SettingValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 
     /**
      * @return string
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class ShopOrderGoodsRefund
- * @package App\Models\Shop
+ * Class ShopOrderGoodsRefund.
  */
 class ShopOrderGoodsRefund extends Model implements Transformable
 {
@@ -21,16 +20,13 @@ class ShopOrderGoodsRefund extends Model implements Transformable
      */
     protected $fillable = [];
 
-
-
     /**
      * @var array
      */
     protected $hidden = [
         'member_id',
-        'order_goods_id'
+        'order_goods_id',
     ];
-
 
     /**
      * 所属商品
@@ -38,25 +34,25 @@ class ShopOrderGoodsRefund extends Model implements Transformable
      */
     public function goods()
     {
-        return $this->belongsTo ('App\Models\Shop\ShopOrderGoods','order_goods_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\ShopOrderGoods', 'order_goods_id')->withDefault(null);
     }
 
     /**
-     * 所属订单
+     * 所属订单.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function order()
     {
-        return $this->belongsTo ('App\Models\Shop\ShopOrder','order_id')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\ShopOrder', 'order_id')->withDefault(null);
     }
 
     /**
-     * 所属用户
+     * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
     }
 
     /**

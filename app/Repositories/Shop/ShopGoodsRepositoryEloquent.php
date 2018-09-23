@@ -2,21 +2,19 @@
 
 namespace App\Repositories\Shop;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\ShopGoodsRepository;
 use App\Models\Shop\ShopGoods;
+use App\Criteria\RequestCriteria;
 use App\Validators\Shop\ShopGoodsValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\ShopGoodsRepository;
 
 /**
  * Class ShopGoodsRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class ShopGoodsRepositoryEloquent extends BaseRepository implements ShopGoodsRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,23 +24,20 @@ class ShopGoodsRepositoryEloquent extends BaseRepository implements ShopGoodsRep
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return ShopGoodsValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 }

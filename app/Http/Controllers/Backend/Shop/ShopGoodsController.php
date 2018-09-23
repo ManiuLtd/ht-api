@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\Backend\Shop;
 
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use App\Http\Controllers\Controller;
+use App\Validators\Shop\ShopGoodsValidator;
 use App\Http\Requests\Shop\ShopGoodsCreateRequest;
 use App\Http\Requests\Shop\ShopGoodsUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\ShopGoodsRepository;
-use App\Validators\Shop\ShopGoodsValidator;
-use App\Http\Controllers\Controller;
-
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
- * Class ShopGoodsController
- *
- * @package App\Http\Controllers\Backend\Shop
+ * Class ShopGoodsController.
  */
 class ShopGoodsController extends Controller
 {
@@ -42,7 +39,7 @@ class ShopGoodsController extends Controller
 
     /**
      * 商品列表
-     * return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response.
      */
     public function index()
     {
@@ -61,20 +58,18 @@ class ShopGoodsController extends Controller
     public function store(ShopGoodsCreateRequest $request)
     {
         try {
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $goods = $this->repository->create($request->all());
 
             return json(1001, '添加成功', $goods);
-
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
         }
     }
 
     /**
-     * 商品详情
+     * 商品详情.
      *
      * @param $id
      *
@@ -84,8 +79,7 @@ class ShopGoodsController extends Controller
     {
         $goods = $this->repository->find($id);
 
-        return json(1001, "详情获取成功", $goods);
-
+        return json(1001, '详情获取成功', $goods);
     }
 
     /**
@@ -99,20 +93,15 @@ class ShopGoodsController extends Controller
     public function update(ShopGoodsUpdateRequest $request, $id)
     {
         try {
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $goods = $this->repository->update($request->all(), $id);
 
-            return json(1001, "编辑成功", $goods);
-
+            return json(1001, '编辑成功', $goods);
         } catch (ValidatorException $e) {
-
             return json(5001, $e->getMessageBag());
-
         }
     }
-
 
     /**
      * 删除商品
@@ -125,6 +114,6 @@ class ShopGoodsController extends Controller
     {
         $deleted = $this->repository->delete($id);
 
-        return json(1001, "删除成功");
+        return json(1001, '删除成功');
     }
 }

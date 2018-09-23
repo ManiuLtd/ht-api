@@ -4,14 +4,11 @@ namespace App\Handler;
 
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 
-
 /**
- * Class TextMessageHandler
- * @package App\Handler
+ * Class TextMessageHandler.
  */
 class TextMessageHandler implements EventHandlerInterface
 {
-
     /**
      * @var
      */
@@ -32,12 +29,8 @@ class TextMessageHandler implements EventHandlerInterface
      */
     public function handle($payload = null)
     {
-
         $openID = $payload['FromUserName'];
 
-        $this->app->customer_service->message ("接收到了文字")->to ($openID)->send ();
-
+        $this->app->customer_service->message('接收到了文字')->to($openID)->send();
     }
-
-
 }

@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Backend\Member;
 
-use App\Http\Controllers\Controller;
 use App\Criteria\DatePickerCriteria;
-use App\Repositories\Interfaces\RechargeRepository;
+use App\Http\Controllers\Controller;
 use App\Validators\Member\MemberRechargeValidator;
-
+use App\Repositories\Interfaces\RechargeRepository;
 
 /**
  * 充值记录
  * Class MemberRechargesController.
- *
- * @package namespace App\Http\Controllers;
  */
 class MemberRechargesController extends Controller
 {
@@ -26,7 +23,6 @@ class MemberRechargesController extends Controller
      */
     protected $validator;
 
-
     /**
      * MemberRechargesController constructor.
      *
@@ -39,20 +35,17 @@ class MemberRechargesController extends Controller
         $this->validator = $validator;
     }
 
-
     /**
-     * 充值列表
+     * 充值列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $recharges = $this->repository
-            ->pushCriteria (new DatePickerCriteria())
-            ->with ('member')
-            ->paginate (request ('limit', 10));
+            ->pushCriteria(new DatePickerCriteria())
+            ->with('member')
+            ->paginate(request('limit', 10));
 
-
-        return json (1001, "获取成功", $recharges);
+        return json(1001, '获取成功', $recharges);
     }
-
 }

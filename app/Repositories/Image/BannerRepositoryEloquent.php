@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Image;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\BannerRepository;
 use App\Models\Image\Banner;
+use App\Criteria\RequestCriteria;
 use App\Validators\Image\BannerValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\BannerRepository;
 
 /**
  * Class BannerRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class BannerRepositoryEloquent extends BaseRepository implements BannerRepository
 {
-
     /**
      * @var array
      */
@@ -25,7 +22,7 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -35,7 +32,7 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
@@ -44,13 +41,12 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
         return BannerValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
@@ -58,6 +54,6 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

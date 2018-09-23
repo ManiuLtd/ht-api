@@ -9,8 +9,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class ShopGoodsComment.
- *
- * @package namespace App\Models\Shop;
  */
 class ShopGoodsComment extends Model implements Transformable
 {
@@ -34,26 +32,23 @@ class ShopGoodsComment extends Model implements Transformable
         'goods_id',
     ];
 
-
     /**
-     * 所属用户
+     * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
     }
 
-
     /**
-     * 所属订单
+     * 所属订单.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function order()
     {
-        return $this->belongsTo ('App\Models\Shop\ShopOrder')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\ShopOrder')->withDefault(null);
     }
-
 
     /**
      * 所属商品
@@ -61,6 +56,6 @@ class ShopGoodsComment extends Model implements Transformable
      */
     public function goods()
     {
-        return $this->belongsTo ('App\Models\Shop\ShopGoods')->withDefault (null);
+        return $this->belongsTo('App\Models\Shop\ShopGoods')->withDefault(null);
     }
 }

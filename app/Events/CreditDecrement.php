@@ -6,41 +6,39 @@ use App\Models\Member\Member;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class CreditDecrement
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * 需要操作的会员
+     * 需要操作的会员.
      * @var Member
      */
     public $member;
 
     /**
-     * 1积分 2余额
+     * 1积分 2余额.
      * @var
      */
     public $type;
 
     /**
-     * 改变的积分或者余额数量
+     * 改变的积分或者余额数量.
      * @var float
      */
     public $credit;
 
     /**
-     * 备注
+     * 备注.
      * @var string
      */
     public $remark;
 
     /**
-     * 后端操作人ID，管理员手动修改积分或者余额使用
+     * 后端操作人ID，管理员手动修改积分或者余额使用.
      * @var int|null
      */
     public $operaterId;

@@ -3,19 +3,16 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\MemberLevelRepository;
 use App\Models\Member\MemberLevel;
 use App\Validators\Member\MemberLevelValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\MemberLevelRepository;
 
 /**
  * Class MemberLevelRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberLevelRepositoryEloquent extends BaseRepository implements MemberLevelRepository
 {
-
     /**
      * @var array
      */
@@ -26,7 +23,7 @@ class MemberLevelRepositoryEloquent extends BaseRepository implements MemberLeve
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -36,31 +33,28 @@ class MemberLevelRepositoryEloquent extends BaseRepository implements MemberLeve
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return MemberLevelValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 
     /**
      * @return string
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

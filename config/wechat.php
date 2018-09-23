@@ -32,8 +32,8 @@ return [
          * file：日志文件位置(绝对路径!!!)，要求可写权限
          */
         'log' => [
-            'level' => env ('WECHAT_LOG_LEVEL', 'debug'),
-            'file' => env ('WECHAT_LOG_FILE', storage_path ('logs/wechat.log')),
+            'level' => env('WECHAT_LOG_LEVEL', 'debug'),
+            'file' => env('WECHAT_LOG_FILE', storage_path('logs/wechat.log')),
         ],
     ],
 
@@ -59,10 +59,10 @@ return [
      */
     'official_account' => [
         'default' => [
-            'app_id' => env ('WECHAT_OFFICIAL_ACCOUNT_APPID', 'wx522731ea9cff28b1'),         // AppID
-            'secret' => env ('WECHAT_OFFICIAL_ACCOUNT_SECRET', '82b66ac96e19e703618c301656b5c5c3'),    // AppSecret
-            'token' => env ('WECHAT_OFFICIAL_ACCOUNT_TOKEN', '1234'),           // Token
-            'aes_key' => env ('WECHAT_OFFICIAL_ACCOUNT_AES_KEY', '12345'),                 // EncodingAESKey
+            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', 'wx522731ea9cff28b1'),         // AppID
+            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', '82b66ac96e19e703618c301656b5c5c3'),    // AppSecret
+            'token' => env('WECHAT_OFFICIAL_ACCOUNT_TOKEN', '1234'),           // Token
+            'aes_key' => env('WECHAT_OFFICIAL_ACCOUNT_AES_KEY', '12345'),                 // EncodingAESKey
 
             /*
              * OAuth 配置

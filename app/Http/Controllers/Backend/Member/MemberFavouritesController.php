@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Backend\Member;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\MemberFavouriteRepository;
 use App\Validators\Member\MemberFavouriteValidator;
+use App\Repositories\Interfaces\MemberFavouriteRepository;
 
 /**
- * Class MemberFavouritesController
- * @package App\Http\Controllers\Backend\Member
+ * Class MemberFavouritesController.
  */
 class MemberFavouritesController extends Controller
 {
@@ -35,18 +34,15 @@ class MemberFavouritesController extends Controller
     }
 
     /**
-     * 收藏列表
+     * 收藏列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $memberFavourites = $this->repository
-            ->with ('goods')
-            ->paginate (request ('limit', 10));
+            ->with('goods')
+            ->paginate(request('limit', 10));
 
-        return json (1001, '列表获取成功', $memberFavourites);
-
+        return json(1001, '列表获取成功', $memberFavourites);
     }
 }
-
-

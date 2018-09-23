@@ -34,6 +34,7 @@ class SetAuthGuard
     public function handle($request, Closure $next, $guard)
     {
         $this->auth->shouldUse($guard);
+
         return $next($request);
     }
 }

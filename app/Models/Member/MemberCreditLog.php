@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberCreditLog
- * @package App\Models\Member
+ * Class MemberCreditLog.
  */
 class MemberCreditLog extends Model implements Transformable
 {
@@ -27,24 +26,24 @@ class MemberCreditLog extends Model implements Transformable
     protected $hidden = [
         'user_id',
         'member_id',
-        'operater_id'
+        'operater_id',
     ];
 
     /**
-     * 所属会员
+     * 所属会员.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member')->withDefault (null);
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
     }
 
     /**
-     * 所属用户
+     * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo ('App\Models\User\User')->withDefault (null);
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
     }
 }

@@ -18,7 +18,7 @@ class SendTplMsgNotification
     }
 
     /**
-     * 处理模板消息，具体用法看easyWechat文档
+     * 处理模板消息，具体用法看easyWechat文档.
      * @param SendTplMsg $event
      */
     public function handle(SendTplMsg $event)
@@ -28,12 +28,12 @@ class SendTplMsgNotification
         }
 
         try {
-            $app = $event->isMiniProgram ? Facade::miniProgram () : Facade::officialAccount ();
+            $app = $event->isMiniProgram ? Facade::miniProgram() : Facade::officialAccount();
             //消息内容
             $message = [
                 'touser' => $event->openid,
                 'template_id' => $event->templateId,
-                'data' => $event->data
+                'data' => $event->data,
 
             ];
             //小程序模板消息额外字段
@@ -42,9 +42,9 @@ class SendTplMsgNotification
                 $message['form_id'] = $event->formId;
             }
 
-            $app->template_message->send ($message);
+            $app->template_message->send($message);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException($e->getMessage ());
+            throw new \InvalidArgumentException($e->getMessage());
         }
     }
 }
