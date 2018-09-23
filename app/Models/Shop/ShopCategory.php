@@ -9,8 +9,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class ShopCategory.
- *
- * @package namespace App\Models\Shop;
  */
 class ShopCategory extends Model implements Transformable
 {
@@ -30,7 +28,7 @@ class ShopCategory extends Model implements Transformable
         'advurl',
         'status',
         'ishome',
-        'isrecommand'
+        'isrecommand',
     ];
 
     /**
@@ -42,17 +40,15 @@ class ShopCategory extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
-        'user_id'
+        'user_id',
     ];
 
-
     /**
-     * 字段映射
+     * 字段映射.
      * @return array
      */
     public function transform()
     {
-        return $this->toArray ();
+        return $this->toArray();
     }
-
 }

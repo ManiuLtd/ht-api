@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Backend\Shop;
 
 use App\Http\Controllers\Controller;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\Shop\ShopCouponLogCreateRequest;
-use App\Repositories\Interfaces\ShopCouponLogRepository;
 use App\Validators\Shop\ShopCouponLogValidator;
-
+use App\Repositories\Interfaces\ShopCouponLogRepository;
 
 /**
  * Class ShopCouponLogsController.
- *
- * @package namespace App\Http\Controllers;
  */
 class ShopCouponLogsController extends Controller
 {
@@ -39,23 +33,20 @@ class ShopCouponLogsController extends Controller
         $this->validator = $validator;
     }
 
-
     /**
-     * 优惠券领取日志列表
+     * 优惠券领取日志列表.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $couponLogs = $this->repository->with (['member', 'coupon'])->paginate (request ('limit',10));
+        $couponLogs = $this->repository->with(['member', 'coupon'])->paginate(request('limit', 10));
 
-        return json (1001, '列表获取成功', $couponLogs);
-
+        return json(1001, '列表获取成功', $couponLogs);
     }
 
-
     /**
-     * 日志详情
+     * 日志详情.
      *
      * @param $id
      *
@@ -63,11 +54,8 @@ class ShopCouponLogsController extends Controller
      */
     public function show($id)
     {
-        $couponLog = $this->repository->with (['member', 'coupon'])->find ($id);
+        $couponLog = $this->repository->with(['member', 'coupon'])->find($id);
 
-        return json (1001, "详情获取成功", $couponLog);
-
+        return json(1001, '详情获取成功', $couponLog);
     }
-
-
 }

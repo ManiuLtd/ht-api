@@ -2,18 +2,16 @@
 
 namespace App\Validators\Member;
 
-use \Prettus\Validator\Contracts\ValidatorInterface;
-use \Prettus\Validator\LaravelValidator;
+use Prettus\Validator\LaravelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class MemberLevelValidator.
- *
- * @package namespace App\Validators\Member;
  */
 class MemberLevelValidator extends LaravelValidator
 {
     /**
-     * Validation Rules
+     * Validation Rules.
      *
      * @var array
      */

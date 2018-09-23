@@ -60,7 +60,6 @@ $factory->define (App\Models\Shop\ShopCoupon::class, function (Faker $faker) {
 $factory->define (App\Models\Shop\ShopCouponLog::class, function (Faker $faker) {
 
     return [
-        'user_id' => 1,
         'member_id' => rand (1, 30),
         'coupon_id' => rand (1, 30),
         'ordersn' => $faker->bankAccountNumber,

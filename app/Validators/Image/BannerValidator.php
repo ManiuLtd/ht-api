@@ -2,8 +2,8 @@
 
 namespace App\Validators\Image;
 
-use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\LaravelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class BannerValidator.

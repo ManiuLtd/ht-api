@@ -26,7 +26,7 @@ class MemberUpdateRequest extends FormRequest
         $id = $this->route('member'); //获取当前需要排除的id
 
         return [
-            'phone' => "required|unique:members,phone,".$id,
+            'phone' => 'required|unique:members,phone,'.$id,
         ];
     }
 }

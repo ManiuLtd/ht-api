@@ -1,10 +1,7 @@
 <?php
 
-Route::namespace ('Cms')
-    ->middleware ('jwt.auth')
-    ->prefix ('cms')
-    ->group (function () {
-
-
-
-});
+Route::namespace('Cms')
+    ->middleware('jwt.auth')
+    ->prefix('cms')
+    ->group(function () {
+    });

@@ -2,32 +2,28 @@
 
 namespace App\Repositories\Member;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\MemberHistoryRepository;
 use App\Models\Member\MemberHistory;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Member\MemberHistoryValidator;
+use App\Repositories\Interfaces\MemberHistoryRepository;
 
 /**
  * Class MemberHistoryRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberHistoryRepositoryEloquent extends BaseRepository implements MemberHistoryRepository
 {
-
     /**
      * @var array
      */
     protected $fieldSearchable = [
         'member_id',
         'user_id',
-        'created_at'
+        'created_at',
     ];
 
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -37,23 +33,20 @@ class MemberHistoryRepositoryEloquent extends BaseRepository implements MemberHi
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return MemberHistoryValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 }

@@ -9,8 +9,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class ShopGoodsTag.
- *
- * @package namespace App\Models\Shop;
  */
 class ShopGoodsTag extends Model implements Transformable
 {
@@ -25,7 +23,7 @@ class ShopGoodsTag extends Model implements Transformable
         'name',
         'sort',
         'color',
-        'status'
+        'status',
     ];
 
     /**
@@ -37,16 +35,15 @@ class ShopGoodsTag extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
-       'user_id'
+       'user_id',
     ];
 
     /**
-     * 字段映射
+     * 字段映射.
      * @return array
      */
     public function transform()
     {
-        return $this->toArray ();
+        return $this->toArray();
     }
-
 }

@@ -2,25 +2,20 @@
 
 namespace App\Http\Controllers\Api\Wechat;
 
-
-use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\MemberRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-
+use App\Repositories\Interfaces\MemberRepository;
 
 /**
- * Class RegisterController
- * @package App\Http\Controllers\Api\Wechat
+ * Class RegisterController.
  */
 class RegisterController extends Controller
 {
-
     /**
      * @var MemberRepository
      */
     protected $repository;
-
 
     /**
      * RegisterController constructor.
@@ -34,9 +29,7 @@ class RegisterController extends Controller
     // TODO  支付宝小程序注册
     public function index(Request $request)
     {
-
     }
-
 
     /**
      * 验证密码
@@ -51,13 +44,12 @@ class RegisterController extends Controller
             'iv.required' => 'iv is missing',
         ];
 
-        return Validator::make ($data, [
+        return Validator::make($data, [
             'code' => 'required',
             'encryptedData' => 'required',
             'iv' => 'required',
         ], $message);
     }
-
 
     /**
      * @param $member
@@ -65,16 +57,15 @@ class RegisterController extends Controller
      */
     protected function respondWithToken($member)
     {
-        $token = auth ('member')->login ($member);
+        $token = auth('member')->login($member);
 
         $data = [
             'member' => $member,
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth ()->factory ()->getTTL () * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ];
 
-        return json (1001, '登录成功', $data);
+        return json(1001, '登录成功', $data);
     }
-
 }

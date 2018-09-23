@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use App\Validators\SettingValidator;
 use App\Http\Requests\SettingUpdateRequest;
 use App\Repositories\Interfaces\SettingRepository;
-use App\Validators\SettingValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
- * 系统设置
+ * 系统设置.
  *
  * Class SettingsController.
- *
- * @package namespace App\Http\Controllers;
  */
 class SettingsController extends Controller
 {
@@ -41,19 +39,18 @@ class SettingsController extends Controller
     }
 
     /**
-     * 设置信息
+     * 设置信息.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $settings = $this->repository->firstOrCreate ();
+        $settings = $this->repository->firstOrCreate();
 
-        return json (1001, '列表获取成功', $settings);
-
+        return json(1001, '列表获取成功', $settings);
     }
 
     /**
-     * 更新设置
+     * 更新设置.
      * @param SettingUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -61,19 +58,13 @@ class SettingsController extends Controller
     public function update(SettingUpdateRequest $request, $id)
     {
         try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
+            $setting = $this->repository->update($request->all(), $id);
 
-            $setting = $this->repository->update ($request->all (), $id);
-
-            return json (1001, "更新成功", $setting);
-
+            return json(1001, '更新成功', $setting);
         } catch (ValidatorException $e) {
-
-            return json (5001, $e->getMessageBag ());
-
+            return json(5001, $e->getMessageBag());
         }
     }
-
 }
-

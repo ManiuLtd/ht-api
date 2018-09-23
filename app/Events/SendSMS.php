@@ -2,36 +2,35 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class SendSMS
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * 接受短信的手机号
+     * 接受短信的手机号.
      * @var
      */
     public $phone;
 
     /**
-     * 模板ID
+     * 模板ID.
      * @var
      */
     public $template;
 
     /**
-     * 网关
+     * 网关.
      * @var array
      */
     public $gateways;
 
-
     /**
-     * 短信内容
+     * 短信内容.
      * @var
      */
     public $content;

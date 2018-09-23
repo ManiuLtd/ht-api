@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Shop;
 
+use App\Models\Shop\ShopCouponCategory;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\ShopCouponCategoryRepository;
-use App\Models\Shop\ShopCouponCategory;
 use App\Validators\Shop\ShopCouponCategoryValidator;
+use App\Repositories\Interfaces\ShopCouponCategoryRepository;
 
 /**
  * Class ShopCouponCategoryRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class ShopCouponCategoryRepositoryEloquent extends BaseRepository implements ShopCouponCategoryRepository
 {
-
     /**
      * @var array
      */
@@ -25,7 +22,7 @@ class ShopCouponCategoryRepositoryEloquent extends BaseRepository implements Sho
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -35,23 +32,21 @@ class ShopCouponCategoryRepositoryEloquent extends BaseRepository implements Sho
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return ShopCouponCategoryValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
@@ -59,7 +54,6 @@ class ShopCouponCategoryRepositoryEloquent extends BaseRepository implements Sho
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
-
 }

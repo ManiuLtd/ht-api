@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Member;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\MemberFavouriteRepository;
 use App\Models\Member\MemberFavourite;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Member\MemberFavouriteValidator;
+use App\Repositories\Interfaces\MemberFavouriteRepository;
 
 /**
  * Class MemberFavouriteRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberFavouriteRepositoryEloquent extends BaseRepository implements MemberFavouriteRepository
 {
-
     /**
      * @var array
      */
@@ -25,7 +22,7 @@ class MemberFavouriteRepositoryEloquent extends BaseRepository implements Member
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -39,7 +36,6 @@ class MemberFavouriteRepositoryEloquent extends BaseRepository implements Member
      */
     public function validator()
     {
-
         return MemberFavouriteValidator::class;
     }
 
@@ -48,7 +44,6 @@ class MemberFavouriteRepositoryEloquent extends BaseRepository implements Member
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 }

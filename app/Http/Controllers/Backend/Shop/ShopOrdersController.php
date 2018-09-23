@@ -4,20 +4,17 @@ namespace App\Http\Controllers\Backend\Shop;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\Shop\ShopOrderUpdateRequest;
-use App\Repositories\Interfaces\ShopOrderRepository;
 use App\Validators\Shop\ShopOrderValidator;
+use App\Http\Requests\Shop\ShopOrderUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use App\Repositories\Interfaces\ShopOrderRepository;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
  * Class ShopOrdersController.
- *
- * @package namespace App\Http\Controllers;
  */
 class ShopOrdersController extends Controller
 {
-
     /**
      * @var ShopOrderRepository
      */
@@ -40,34 +37,33 @@ class ShopOrdersController extends Controller
     }
 
     /**
-     *  订单列表
+     *  订单列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $orders = $this->repository
-            ->pushCriteria (new DatePickerCriteria())
-            ->with (['goods', 'member', 'address'])
-            ->paginate (request ('limit',10));
+            ->pushCriteria(new DatePickerCriteria())
+            ->with(['goods', 'member', 'address'])
+            ->paginate(request('limit', 10));
 
-        return json (1001, '列表获取成功', $orders);
+        return json(1001, '列表获取成功', $orders);
     }
 
-
     /**
-     * 订单详情
+     * 订单详情.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        $order = $this->repository->with (['subOrders', 'member'])->find ($id);
+        $order = $this->repository->with(['subOrders', 'member'])->find($id);
 
-        return json (1001, "详情获取成功", $order);
+        return json(1001, '详情获取成功', $order);
     }
 
     /**
-     * 编辑订单
+     * 编辑订单.
      * @param ShopOrderUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -75,31 +71,28 @@ class ShopOrdersController extends Controller
     public function update(ShopOrderUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $insert = $request->all ();
+            $insert = $request->all();
 
             //TODO 根据status处理订单结果
-            $order = $this->repository->update ($insert, $id);
+            $order = $this->repository->update($insert, $id);
 
-            return json (1001, "更新成功", $order);
-
+            return json(1001, '更新成功', $order);
         } catch (ValidatorException $e) {
-
-            return json (5001, $e->getMessageBag ());
+            return json(5001, $e->getMessageBag());
         }
     }
 
-
     /**
-     * 删除订单
+     * 删除订单.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        $this->repository->delete ($id);
+        $this->repository->delete($id);
 
-        return json (1001, "删除成功");
+        return json(1001, '删除成功');
     }
 }

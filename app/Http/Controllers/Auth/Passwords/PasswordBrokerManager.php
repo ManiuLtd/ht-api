@@ -7,8 +7,7 @@ use InvalidArgumentException;
 use Illuminate\Auth\Passwords\PasswordBrokerManager as AuthPasswordBrokerManager;
 
 /**
- * Class PasswordBrokerManager
- * @package App\Http\Controllers\Backend\Auth\Passwords
+ * Class PasswordBrokerManager.
  */
 class PasswordBrokerManager extends AuthPasswordBrokerManager
 {
@@ -20,7 +19,7 @@ class PasswordBrokerManager extends AuthPasswordBrokerManager
     {
         $config = $this->getConfig($name);
 
-        if(is_null($config)) {
+        if (is_null($config)) {
             throw new InvalidArgumentException("Password resetter [{$name}] is not defined.");
         }
 

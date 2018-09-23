@@ -4,14 +4,11 @@ namespace App\Http\Controllers\Backend\Member;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\MemberHistoryRepository;
 use App\Validators\Member\MemberHistoryValidator;
-
+use App\Repositories\Interfaces\MemberHistoryRepository;
 
 /**
  * Class MemberHistoriesController.
- *
- * @package namespace App\Http\Controllers;
  */
 class MemberHistoriesController extends Controller
 {
@@ -37,19 +34,17 @@ class MemberHistoriesController extends Controller
         $this->validator = $validator;
     }
 
-
     /**
-     * 浏览记录
+     * 浏览记录.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $memberHistories = $this->repository
-            ->with ('goods')
-            ->pushCriteria (new DatePickerCriteria())
-            ->paginate (request ('limit', 10));
+            ->with('goods')
+            ->pushCriteria(new DatePickerCriteria())
+            ->paginate(request('limit', 10));
 
-        return json (1001, '列表获取成功', $memberHistories);
-
+        return json(1001, '列表获取成功', $memberHistories);
     }
 }

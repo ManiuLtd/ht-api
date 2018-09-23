@@ -4,14 +4,11 @@ namespace App\Handler;
 
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 
-
 /**
- * Class ImageMessageHandler
- * @package App\Handler
+ * Class ImageMessageHandler.
  */
 class ImageMessageHandler implements EventHandlerInterface
 {
-
     /**
      * @var
      */
@@ -32,12 +29,8 @@ class ImageMessageHandler implements EventHandlerInterface
      */
     public function handle($payload = null)
     {
-
         $openID = $payload['FromUserName'];
 
-        $this->app->customer_service->message ("接收到了图片")->to ($openID)->send ();
-
+        $this->app->customer_service->message('接收到了图片')->to($openID)->send();
     }
-
-
 }

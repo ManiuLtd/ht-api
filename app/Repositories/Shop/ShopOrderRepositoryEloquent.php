@@ -2,16 +2,14 @@
 
 namespace App\Repositories\Shop;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\ShopOrderRepository;
 use App\Models\Shop\ShopOrder;
+use App\Criteria\RequestCriteria;
 use App\Validators\Shop\ShopOrderValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\ShopOrderRepository;
 
 /**
  * Class ShopOrderRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class ShopOrderRepositoryEloquent extends BaseRepository implements ShopOrderRepository
 {
@@ -24,7 +22,7 @@ class ShopOrderRepositoryEloquent extends BaseRepository implements ShopOrderRep
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -34,31 +32,28 @@ class ShopOrderRepositoryEloquent extends BaseRepository implements ShopOrderRep
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return ShopOrderValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
-
 
     /**
      * @return string
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

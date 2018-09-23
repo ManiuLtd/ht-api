@@ -2,20 +2,17 @@
 
 namespace App\Repositories\Member;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\MemberAddressRepository;
 use App\Models\Member\MemberAddress;
+use Prettus\Repository\Eloquent\BaseRepository;
 use App\Validators\Member\MemberAddressValidator;
+use App\Repositories\Interfaces\MemberAddressRepository;
 
 /**
  * Class MemberAddressRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class MemberAddressRepositoryEloquent extends BaseRepository implements MemberAddressRepository
 {
-
     /**
      * @var array
      */
@@ -25,7 +22,7 @@ class MemberAddressRepositoryEloquent extends BaseRepository implements MemberAd
     ];
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -35,23 +32,21 @@ class MemberAddressRepositoryEloquent extends BaseRepository implements MemberAd
     }
 
     /**
-     * Specify Validator class name
+     * Specify Validator class name.
      *
      * @return mixed
      */
     public function validator()
     {
-
         return MemberAddressValidator::class;
     }
-
 
     /**
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
@@ -59,6 +54,6 @@ class MemberAddressRepositoryEloquent extends BaseRepository implements MemberAd
      */
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

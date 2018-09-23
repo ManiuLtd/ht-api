@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Api\OfficialAccount\Alipay;
 
-
 use App\Http\Controllers\Controller;
 
-
 /**
- * Class PaymentController
- * @package App\Http\Controllers\Api\OfficialAccount\Alipay
+ * Class PaymentController.
  */
 class PaymentController extends Controller
 {
