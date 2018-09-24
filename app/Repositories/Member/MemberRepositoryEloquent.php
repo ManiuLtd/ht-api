@@ -6,7 +6,7 @@ use App\Models\Member\Member;
 use App\Criteria\RequestCriteria;
 use App\Validators\Member\MemberValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\MemberRepository;
+use App\Repositories\Interfaces\Member\MemberRepository;
 
 /**
  * Class MemberRepositoryEloquent.

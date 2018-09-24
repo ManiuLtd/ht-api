@@ -6,7 +6,7 @@ use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberRecharge;
 use App\Validators\Member\RechargeValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\RechargeRepository;
+use App\Repositories\Interfaces\Member\RechargeRepository;
 
 /**
  * Class RechargeRepositoryEloquent.

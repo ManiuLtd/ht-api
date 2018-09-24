@@ -6,12 +6,12 @@ use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberLevel;
 use App\Validators\Member\LevelValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\MemberLevelRepository;
+use App\Repositories\Interfaces\Member\LevelRepository;
 
 /**
  * Class LevelRepositoryEloquent.
  */
-class LevelRepositoryEloquent extends BaseRepository implements MemberLevelRepository
+class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
 {
     /**
      * @var array

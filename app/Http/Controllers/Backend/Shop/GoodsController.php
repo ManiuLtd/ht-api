@@ -29,7 +29,7 @@ class GoodsController extends Controller
      * GoodsController constructor.
      *
      * @param GoodsRepository $repository
-     * @param GoodsValidator  $validator
+     * @param GoodsValidator $validator
      */
     public function __construct(GoodsRepository $repository, GoodsValidator $validator)
     {
@@ -43,28 +43,27 @@ class GoodsController extends Controller
      */
     public function index()
     {
-        $goods = $this->repository->all();
+        $goods = $this->repository->with (['categories','params'])->paginate (request ('limit', 10));
 
-        return json(1001, '列表获取成功', $goods);
+        return json (1001, '列表获取成功', $goods);
     }
 
     /**
      * 添加商品
-     *
      * @param GoodsCreateRequest $request
-     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function store(GoodsCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_CREATE);
 
-            $goods = $this->repository->create($request->all());
+            $goods = $this->repository->create ($request->all ());
 
-            return json(1001, '添加成功', $goods);
+            return json (1001, '添加成功', $goods);
         } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag());
+            return json (5001, $e->getMessageBag ());
         }
     }
 
@@ -77,9 +76,9 @@ class GoodsController extends Controller
      */
     public function show($id)
     {
-        $goods = $this->repository->with('categories')->find($id);
+        $goods = $this->repository->with ('categories')->find ($id);
 
-        return json(1001, '详情获取成功', $goods);
+        return json (1001, '详情获取成功', $goods);
     }
 
     /**
@@ -93,13 +92,13 @@ class GoodsController extends Controller
     public function update(GoodsUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $goods = $this->repository->update($request->all(), $id);
+            $goods = $this->repository->update ($request->all (), $id);
 
-            return json(1001, '编辑成功', $goods);
+            return json (1001, '编辑成功', $goods);
         } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag());
+            return json (5001, $e->getMessageBag ());
         }
     }
 
@@ -112,8 +111,8 @@ class GoodsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
+        $deleted = $this->repository->delete ($id);
 
-        return json(1001, '删除成功');
+        return json (1001, '删除成功');
     }
 }

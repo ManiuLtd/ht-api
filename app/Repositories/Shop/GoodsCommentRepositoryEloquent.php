@@ -6,12 +6,12 @@ use App\Criteria\RequestCriteria;
 use App\Models\Shop\GoodsComment;
 use App\Validators\Shop\GoodsCommentValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\ShopGoodsCommentRepository;
+use App\Repositories\Interfaces\Shop\GoodsCommentRepository;
 
 /**
  * Class GoodsCommentRepositoryEloquent.
  */
-class GoodsCommentRepositoryEloquent extends BaseRepository implements ShopGoodsCommentRepository
+class GoodsCommentRepositoryEloquent extends BaseRepository implements GoodsCommentRepository
 {
     /**
      * @var array

@@ -234,7 +234,7 @@ $factory->define(App\Models\Shop\Goods::class, function (Faker $faker) {
         'hasoption' => rand(0, 1),
         'isnew' => rand(0, 1),
         'ishot' => rand(0, 1),
-        'isrecommand' => rand(0, 1),
+        'isrecommend' => rand(0, 1),
         'isdiscount' => rand(0, 1),
         'discount_title' => $faker->title,
         'discount_end' => $faker->date('Y-m-d H:i:s'),

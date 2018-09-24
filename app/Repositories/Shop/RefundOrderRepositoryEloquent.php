@@ -6,12 +6,12 @@ use App\Models\Shop\RefundOrder;
 use App\Validators\Shop\RefundOrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\ShopRefundOrderRepository;
+use App\Repositories\Interfaces\Shop\RefundOrderRepository;
 
 /**
- * Class RefundOrderOrderRepositoryEloquent.
+ * Class RefundOrderRepositoryEloquent.
  */
-class RefundOrderOrderRepositoryEloquent extends BaseRepository implements ShopRefundOrderRepository
+class RefundOrderRepositoryEloquent extends BaseRepository implements RefundOrderRepository
 {
     /**
      * @var array

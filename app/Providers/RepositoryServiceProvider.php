@@ -31,7 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Shop\OrderRepository::class, \App\Repositories\Shop\OrderRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\GoodsRepository::class, \App\Repositories\Shop\GoodsRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\CategoryRepository::class, \App\Repositories\Shop\CategoryRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Shop\RefundOrderRepository::class, \App\Repositories\Shop\RefundOrderOrderRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Shop\RefundOrderRepository::class, \App\Repositories\Shop\RefundOrderRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\GoodsTagRepository::class, \App\Repositories\Shop\GoodsTagRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\GoodsCommentRepository::class, \App\Repositories\Shop\GoodsCommentRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Member\RechargeRepository::class, \App\Repositories\Member\RechargeRepositoryEloquent::class);

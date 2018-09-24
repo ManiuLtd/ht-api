@@ -6,12 +6,12 @@ use App\Models\Shop\GoodsTag;
 use App\Criteria\RequestCriteria;
 use App\Validators\Shop\GoodsTagValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\ShopGoodsTagRepository;
+use App\Repositories\Interfaces\Shop\GoodsTagRepository;
 
 /**
  * Class GoodsTagRepositoryEloquent.
  */
-class GoodsTagRepositoryEloquent extends BaseRepository implements ShopGoodsTagRepository
+class GoodsTagRepositoryEloquent extends BaseRepository implements GoodsTagRepository
 {
     /**
      * @var array

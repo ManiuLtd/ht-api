@@ -6,7 +6,7 @@ use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberAddress;
 use App\Validators\Member\AddressValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\AddressRepository;
+use App\Repositories\Interfaces\Member\AddressRepository;
 
 /**
  * Class AddressRepositoryEloquent.

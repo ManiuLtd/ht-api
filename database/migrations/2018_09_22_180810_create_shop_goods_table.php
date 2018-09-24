@@ -41,14 +41,14 @@ class CreateShopGoodsTable extends Migration
             $table->tinyInteger('show_sales')->nullable()->default(1);
             $table->tinyInteger('show_spec')->nullable();
             $table->decimal('weight', 8, 2)->nullable();
-            $table->string('credit', 191)->nullable();
+            $table->decimal('credit', 8, 2)->nullable();
             $table->integer('minbuy')->nullable();
             $table->integer('maxbuy')->nullable();
             $table->integer('total_maxbuy')->nullable();
             $table->tinyInteger('hasoption')->nullable();
             $table->tinyInteger('isnew')->nullable();
             $table->tinyInteger('ishot')->nullable();
-            $table->tinyInteger('isrecommand')->nullable();
+            $table->tinyInteger('isrecommend')->nullable();
             $table->tinyInteger('isdiscount')->nullable();
             $table->string('discount_title', 191)->nullable();
             $table->timestamp('discount_end')->nullable();

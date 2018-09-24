@@ -6,12 +6,12 @@ use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberHistory;
 use App\Validators\Member\HistoryValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\MemberHistoryRepository;
+use App\Repositories\Interfaces\Member\HistoryRepository;
 
 /**
  * Class HistoryRepositoryEloquent.
  */
-class HistoryRepositoryEloquent extends BaseRepository implements MemberHistoryRepository
+class HistoryRepositoryEloquent extends BaseRepository implements HistoryRepository
 {
     /**
      * @var array

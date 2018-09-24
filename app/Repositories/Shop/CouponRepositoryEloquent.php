@@ -6,12 +6,12 @@ use App\Models\Shop\Coupon;
 use App\Validators\Shop\CouponValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\ShopCouponRepository;
+use App\Repositories\Interfaces\Shop\CouponRepository;
 
 /**
  * Class CouponRepositoryEloquent.
  */
-class CouponRepositoryEloquent extends BaseRepository implements ShopCouponRepository
+class CouponRepositoryEloquent extends BaseRepository implements CouponRepository
 {
     /**
      * @var array

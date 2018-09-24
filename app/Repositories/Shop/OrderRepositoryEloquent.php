@@ -6,12 +6,12 @@ use App\Models\Shop\Order;
 use App\Criteria\RequestCriteria;
 use App\Validators\Shop\OrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\ShopOrderRepository;
+use App\Repositories\Interfaces\Shop\OrderRepository;
 
 /**
  * Class OrderRepositoryEloquent.
  */
-class OrderRepositoryEloquent extends BaseRepository implements ShopOrderRepository
+class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 {
     /**
      * @var array

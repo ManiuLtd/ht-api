@@ -6,12 +6,12 @@ use App\Criteria\RequestCriteria;
 use App\Models\Member\MemberFavourite;
 use App\Validators\Member\FavouriteValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\MemberFavouriteRepository;
+use App\Repositories\Interfaces\Member\FavouriteRepository;
 
 /**
  * Class FavouriteRepositoryEloquent.
  */
-class FavouriteRepositoryEloquent extends BaseRepository implements MemberFavouriteRepository
+class FavouriteRepositoryEloquent extends BaseRepository implements FavouriteRepository
 {
     /**
      * @var array
