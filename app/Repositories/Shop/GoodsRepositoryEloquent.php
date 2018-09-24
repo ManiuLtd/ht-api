@@ -4,9 +4,9 @@ namespace App\Repositories\Shop;
 
 use App\Models\Shop\Goods;
 use App\Criteria\RequestCriteria;
+use Illuminate\Support\Facades\DB;
 use App\Validators\Shop\GoodsValidator;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Shop\GoodsRepository;
 
@@ -40,7 +40,7 @@ class GoodsRepositoryEloquent extends BaseRepository implements GoodsRepository
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
@@ -62,19 +62,19 @@ class GoodsRepositoryEloquent extends BaseRepository implements GoodsRepository
     {
         try {
             //使用数据库事务，有一个创建失败，则回滚
-            DB::transaction (function () use ($attributes) {
+            DB::transaction(function () use ($attributes) {
                 //添加产品
-                $goods = $this->model ()::create ($attributes);
+                $goods = $this->model()::create($attributes);
                 //添加所属分类
-                $goods->categories ()->attach (request ('categories'));
+                $goods->categories()->attach(request('categories'));
                 //添加属性
-                if ($params = request ('params')) {
+                if ($params = request('params')) {
                     foreach ($params as &$param) {
                         $param['goods_id'] = $goods->id;
-                        $param['created_at'] = now ();
-                        $param['updated_at'] = now ();
+                        $param['created_at'] = now();
+                        $param['updated_at'] = now();
                     }
-                    db ('shop_goods_params')->insert ($params);
+                    db('shop_goods_params')->insert($params);
                 }
                 //TODO 添加规格
             });
@@ -94,22 +94,22 @@ class GoodsRepositoryEloquent extends BaseRepository implements GoodsRepository
     {
         try {
             //使用数据库事务，有一个编辑失败，则回滚
-            DB::transaction (function () use ($attributes, $id) {
+            DB::transaction(function () use ($attributes, $id) {
                 //当前商品模型
-                $goods = $this->model ()::find ($id);
+                $goods = $this->model()::find($id);
                 //编辑商品
-                $goods->update ($attributes);
+                $goods->update($attributes);
                 //编辑所属分类
-                $goods->categories ()->sync (request ('categories'));
+                $goods->categories()->sync(request('categories'));
                 //编辑属性
-                if ($params = request ('params')) {
+                if ($params = request('params')) {
                     foreach ($params as &$param) {
                         $param['goods_id'] = $goods->id;
-                        $param['created_at'] = now ();
-                        $param['updated_at'] = now ();
+                        $param['created_at'] = now();
+                        $param['updated_at'] = now();
                     }
-                    db ('shop_goods_params')->where ('goods_id', $goods->id)->delete ();
-                    db ('shop_goods_params')->insert ($params);
+                    db('shop_goods_params')->where('goods_id', $goods->id)->delete();
+                    db('shop_goods_params')->insert($params);
                 }
                 //TODO 更新规格
             });
