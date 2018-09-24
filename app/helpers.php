@@ -3,7 +3,7 @@
 /**
  * Global helpers file with misc functions.
  */
-if (!function_exists ('app_name')) {
+if (! function_exists('app_name')) {
     /**
      * Helper to grab the application name.
      *
@@ -11,21 +11,21 @@ if (!function_exists ('app_name')) {
      */
     function app_name()
     {
-        return config ('app.name');
+        return config('app.name');
     }
 }
 
-if (!function_exists ('history')) {
+if (! function_exists('history')) {
     /**
      * Access the history facade anywhere.
      */
     function history()
     {
-        return app ('history');
+        return app('history');
     }
 }
 
-if (!function_exists ('db')) {
+if (! function_exists('db')) {
 
     /**
      * @param $table
@@ -33,11 +33,11 @@ if (!function_exists ('db')) {
      */
     function db($table)
     {
-        return \Illuminate\Support\Facades\DB::table ($table);
+        return \Illuminate\Support\Facades\DB::table($table);
     }
 }
 
-if (!function_exists ('storage')) {
+if (! function_exists('storage')) {
 
     /**
      * @param $disk
@@ -45,11 +45,11 @@ if (!function_exists ('storage')) {
      */
     function storage($disk = null)
     {
-        return \Illuminate\Support\Facades\Storage::disk ($disk);
+        return \Illuminate\Support\Facades\Storage::disk($disk);
     }
 }
 
-if (!function_exists ('json')) {
+if (! function_exists('json')) {
     /**
      * @param int $code 状态码
      * @param string $message 状态描述
@@ -67,11 +67,11 @@ if (!function_exists ('json')) {
             $array['data'] = $data;
         }
 
-        return response ()->json ($array);
+        return response()->json($array);
     }
 }
 
-if (!function_exists ('include_route_files')) {
+if (! function_exists('include_route_files')) {
     /**
      * Loops through a folder and requires all PHP files
      * Searches sub-directories as well.
@@ -83,19 +83,19 @@ if (!function_exists ('include_route_files')) {
         try {
             $rdi = new recursiveDirectoryIterator($folder);
             $it = new recursiveIteratorIterator($rdi);
-            while ($it->valid ()) {
-                if (!$it->isDot () && $it->isFile () && $it->isReadable () && $it->current ()->getExtension () === 'php') {
-                    require $it->key ();
+            while ($it->valid()) {
+                if (! $it->isDot() && $it->isFile() && $it->isReadable() && $it->current()->getExtension() === 'php') {
+                    require $it->key();
                 }
-                $it->next ();
+                $it->next();
             }
         } catch (Exception $e) {
-            echo $e->getMessage ();
+            echo $e->getMessage();
         }
     }
 }
 
-if (!function_exists ('getUserId')) {
+if (! function_exists('getUserId')) {
 
     /**
      * @return int|mixed

@@ -59,7 +59,7 @@ class GoodsValidator extends LaravelValidator
             'can_not_refund' => 'required|in:0,1',
             'type' => 'required|in:1,2,3',
             'status' => 'required|in:0,1',
-            'sort' => 'required|integer'
+            'sort' => 'required|integer',
         ],
         ValidatorInterface::RULE_UPDATE => [
             'title' => 'required',
@@ -104,7 +104,7 @@ class GoodsValidator extends LaravelValidator
             'can_not_refund' => 'required|in:0,1',
             'type' => 'required|in:1,2,3',
             'status' => 'required|in:0,1',
-            'sort' => 'required|integer'
+            'sort' => 'required|integer',
         ],
     ];
 }

@@ -27,7 +27,7 @@ class Goods extends Model implements Transformable
         'merch_id',
         'categories', //分类
         'specs', //多规格
-        'params' //参数
+        'params', //参数
     ];
 
     /**
@@ -48,18 +48,18 @@ class Goods extends Model implements Transformable
      */
     public static function boot()
     {
-        parent::boot ();
+        parent::boot();
 
         //创建
-        self::creating (function ($model) {
-            $model->thumb = json_encode ($model->thumb);
+        self::creating(function ($model) {
+            $model->thumb = json_encode($model->thumb);
             //TODO 判断是否为多商户 以下代码为单商户的
-            $model->user_id = getUserId ();
+            $model->user_id = getUserId();
         });
 
         //更新
-        self::updating (function ($model) {
-            $model->thumb = json_encode ($model->thumb);
+        self::updating(function ($model) {
+            $model->thumb = json_encode($model->thumb);
         });
     }
 
@@ -69,7 +69,7 @@ class Goods extends Model implements Transformable
      */
     public function categories()
     {
-        return $this->belongsToMany ('App\Models\Shop\Category', 'shop_category_shop_goods', 'goods_id', 'category_id');
+        return $this->belongsToMany('App\Models\Shop\Category', 'shop_category_shop_goods', 'goods_id', 'category_id');
     }
 
     /**
@@ -78,17 +78,17 @@ class Goods extends Model implements Transformable
      */
     public function params()
     {
-      return $this->hasMany ('App\Models\Shop\GoodsParams');
+        return $this->hasMany('App\Models\Shop\GoodsParams');
     }
 
     /**
-     * 处理返回的字段信息
+     * 处理返回的字段信息.
      * @return array
      */
     public function transform()
     {
-        $array = $this->toArray ();
-        $array['thumb'] = json_decode ($array['thumb']);
+        $array = $this->toArray();
+        $array['thumb'] = json_decode($array['thumb']);
 
         return $array;
     }
