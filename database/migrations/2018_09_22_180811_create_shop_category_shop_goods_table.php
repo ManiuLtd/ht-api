@@ -18,8 +18,8 @@ class CreateShopCategoryShopGoodsTable extends Migration
     public function up()
     {
         Schema::create('shop_category_shop_goods', function (Blueprint $table) {
-            $table->integer('shop_goods_id')->nullable();
-            $table->integer('shop_category_id')->nullable();
+            $table->integer('goods_id')->nullable();
+            $table->integer('category_id')->nullable();
 
             $table->index('goods_id');
             $table->index('category_id');
