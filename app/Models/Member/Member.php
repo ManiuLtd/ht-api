@@ -85,7 +85,7 @@ class Member extends Model implements Transformable
      */
     public function level()
     {
-        return $this->belongsTo('App\Models\Member\MemberLevel', 'level1')->withDefault(null);
+        return $this->belongsTo('App\Models\Member\Level', 'level1')->withDefault(null);
     }
 
     /**
@@ -94,7 +94,7 @@ class Member extends Model implements Transformable
      */
     public function addresses()
     {
-        return $this->hasMany(MemberAddress::class);
+        return $this->hasMany(Address::class);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Member\MemberRecharge;
+use App\Models\Member\Recharge;
 use App\Validators\Member\RechargeValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\RechargeRepository;
@@ -32,7 +32,7 @@ class RechargeRepositoryEloquent extends BaseRepository implements RechargeRepos
      */
     public function model()
     {
-        return MemberRecharge::class;
+        return Recharge::class;
     }
 
     /**

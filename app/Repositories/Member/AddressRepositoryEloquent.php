@@ -3,7 +3,7 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Member\MemberAddress;
+use App\Models\Member\Address;
 use App\Validators\Member\AddressValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\AddressRepository;
@@ -28,7 +28,7 @@ class AddressRepositoryEloquent extends BaseRepository implements AddressReposit
      */
     public function model()
     {
-        return MemberAddress::class;
+        return Address::class;
     }
 
     /**

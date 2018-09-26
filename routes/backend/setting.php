@@ -3,4 +3,5 @@
 //设置
 Route::resource('setting', 'SettingsController', [
     'except' => ['create', 'edit', 'store', 'destroy', 'show'],
-])->middleware('jwt.auth');
+]);
+//])->middleware('jwt.auth');

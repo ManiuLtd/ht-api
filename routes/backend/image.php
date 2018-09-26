@@ -2,7 +2,7 @@
 
 Route::namespace('Image')
     ->prefix('image')
-    ->middleware('jwt.auth')
+//    ->middleware('jwt.auth')
     ->group(function () {
 
     //店招

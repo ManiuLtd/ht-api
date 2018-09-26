@@ -3,7 +3,7 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Member\MemberCreditLog;
+use App\Models\Member\CreditLog;
 use App\Validators\Member\CreditLogValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\CreditLogRepository;
@@ -30,7 +30,7 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
      */
     public function model()
     {
-        return MemberCreditLog::class;
+        return CreditLog::class;
     }
 
     /**

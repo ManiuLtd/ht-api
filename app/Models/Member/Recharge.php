@@ -7,9 +7,9 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberRecharge.
+ * Class Recharge.
  */
-class MemberRecharge extends Model implements Transformable
+class Recharge extends Model implements Transformable
 {
     use TransformableTrait;
 

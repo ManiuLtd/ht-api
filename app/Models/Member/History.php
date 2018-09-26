@@ -7,9 +7,9 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberHistory.
+ * Class History.
  */
-class MemberHistory extends Model implements Transformable
+class History extends Model implements Transformable
 {
     use TransformableTrait;
 

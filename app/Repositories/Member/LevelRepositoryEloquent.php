@@ -3,7 +3,7 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Member\MemberLevel;
+use App\Models\Member\Level;
 use App\Validators\Member\LevelValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\LevelRepository;
@@ -29,7 +29,7 @@ class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
      */
     public function model()
     {
-        return MemberLevel::class;
+        return Level::class;
     }
 
     /**

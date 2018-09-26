@@ -1,7 +1,7 @@
 <?php
 
 Route::namespace('Member')
-    ->middleware('jwt.auth')
+//    ->middleware('jwt.auth')
     ->group(function () {
 
     //会员日志

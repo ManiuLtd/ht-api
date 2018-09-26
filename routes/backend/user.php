@@ -1,7 +1,7 @@
 <?php
 
 Route::namespace('User')
-    ->middleware('jwt.auth')
+//    ->middleware('jwt.auth')
     ->group(function () {
 
     //用户

@@ -3,7 +3,7 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Member\MemberHistory;
+use App\Models\Member\History;
 use App\Validators\Member\HistoryValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\HistoryRepository;
@@ -29,7 +29,7 @@ class HistoryRepositoryEloquent extends BaseRepository implements HistoryReposit
      */
     public function model()
     {
-        return MemberHistory::class;
+        return History::class;
     }
 
     /**

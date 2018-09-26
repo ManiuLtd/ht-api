@@ -8,16 +8,16 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberAddress.
+ * Class Favourite.
  */
-class MemberAddress extends Model implements Transformable
+class Favourite extends Model implements Transformable
 {
     use TransformableTrait, SoftDeletes;
 
     /**
      * @var string
      */
-    protected $table = 'member_addresses';
+    protected $table = 'member_favourites';
 
     /**
      * @var array
@@ -25,15 +25,8 @@ class MemberAddress extends Model implements Transformable
     protected $fillable = [
         'user_id',
         'member_id',
-        'realname',
-        'phone',
-        'province',
-        'city',
-        'area',
-        'address',
-        'zipcode',
-        'isdefault',
-        'type',
+        'merch_id',
+        'goods_id',
     ];
 
     /**
@@ -47,5 +40,16 @@ class MemberAddress extends Model implements Transformable
     protected $hidden = [
         'member_id',
         'user_id',
+        'merch_id',
+        'goods_id',
     ];
+
+    /**
+     * 所属商品
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
+     */
+    public function goods()
+    {
+        return $this->belongsTo('App\Models\Shop\Goods', 'goods_id')->withDefault(null);
+    }
 }

@@ -60,6 +60,6 @@ class Order extends Model implements Transformable
      */
     public function address()
     {
-        return $this->belongsTo('App\Models\Member\MemberAddress', 'address_id')->withDefault(null);
+        return $this->belongsTo('App\Models\Member\Address', 'address_id')->withDefault(null);
     }
 }

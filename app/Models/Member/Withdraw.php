@@ -7,9 +7,9 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberWithdraw.
+ * Class Withdraw.
  */
-class MemberWithdraw extends Model implements Transformable
+class Withdraw extends Model implements Transformable
 {
     use TransformableTrait;
 

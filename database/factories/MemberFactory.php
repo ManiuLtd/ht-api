@@ -39,7 +39,7 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\MemberCreditLog::class, function (Faker $faker) {
+$factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),
@@ -51,7 +51,7 @@ $factory->define(App\Models\Member\MemberCreditLog::class, function (Faker $fake
     ];
 });
 
-$factory->define(App\Models\Member\MemberLevel::class, function (Faker $faker) {
+$factory->define(App\Models\Member\Level::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'name' => $faker->name,
@@ -66,7 +66,7 @@ $factory->define(App\Models\Member\MemberLevel::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\MemberHistory::class, function (Faker $faker) {
+$factory->define(App\Models\Member\History::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50), //会员id
@@ -76,7 +76,7 @@ $factory->define(App\Models\Member\MemberHistory::class, function (Faker $faker)
     ];
 });
 
-$factory->define(App\Models\Member\MemberAddress::class, function (Faker $faker) {
+$factory->define(App\Models\Member\Address::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => 1,
@@ -94,7 +94,7 @@ $factory->define(App\Models\Member\MemberAddress::class, function (Faker $faker)
     ];
 });
 
-$factory->define(App\Models\Member\MemberFavourite::class, function (Faker $faker) {
+$factory->define(App\Models\Member\Favourite::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => 1,
@@ -105,7 +105,7 @@ $factory->define(App\Models\Member\MemberFavourite::class, function (Faker $fake
     ];
 });
 
-$factory->define(App\Models\Member\MemberRecharge::class, function (Faker $faker) {
+$factory->define(App\Models\Member\Recharge::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),
@@ -122,7 +122,7 @@ $factory->define(App\Models\Member\MemberRecharge::class, function (Faker $faker
     ];
 });
 
-$factory->define(App\Models\Member\MemberWithdraw::class, function (Faker $faker) {
+$factory->define(App\Models\Member\Withdraw::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),
@@ -143,7 +143,7 @@ $factory->define(App\Models\Member\MemberWithdraw::class, function (Faker $faker
     ];
 });
 
-$factory->define(App\Models\Member\MemberAddress::class, function (Faker $faker) {
+$factory->define(App\Models\Member\Address::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),

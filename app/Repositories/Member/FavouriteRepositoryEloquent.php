@@ -3,7 +3,7 @@
 namespace App\Repositories\Member;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Member\MemberFavourite;
+use App\Models\Member\Favourite;
 use App\Validators\Member\FavouriteValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\FavouriteRepository;
@@ -28,7 +28,7 @@ class FavouriteRepositoryEloquent extends BaseRepository implements FavouriteRep
      */
     public function model()
     {
-        return MemberFavourite::class;
+        return Favourite::class;
     }
 
     /**
