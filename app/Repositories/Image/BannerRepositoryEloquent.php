@@ -6,7 +6,7 @@ use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
 use App\Validators\Image\BannerValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\BannerRepository;
+use App\Repositories\Interfaces\Image\BannerRepository;
 
 /**
  * Class BannerRepositoryEloquent.
