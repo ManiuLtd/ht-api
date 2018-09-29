@@ -11,9 +11,9 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
- * Class ArticleController.
+ * Class ArticlesController.
  */
-class ArticleController extends Controller
+class ArticlesController extends Controller
 {
     /**
      * @var ArticleRepository
@@ -26,7 +26,7 @@ class ArticleController extends Controller
     protected $validator;
 
     /**
-     * ArticleController constructor.
+     * ArticlesController constructor.
      *
      * @param ArticleRepository $repository
      * @param ArticleValidator $validator

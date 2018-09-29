@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\Cms\Categories::class, function (Faker $faker) {
+$factory->define(App\Models\Cms\Category::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'keywords' => $faker->title,
@@ -38,7 +38,7 @@ $factory->define(App\Models\Cms\Article::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Cms\Projects::class, function (Faker $faker) {
+$factory->define(App\Models\Cms\Project::class, function (Faker $faker) {
     return [
         'user_id' => getUserId(),
         'category_id' => rand(1,20),

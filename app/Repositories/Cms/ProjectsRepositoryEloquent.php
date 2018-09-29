@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Cms;
 
-use App\Models\Cms\Categories;
-use App\Models\Cms\Projects;
+use App\Models\Cms\Category;
+use App\Models\Cms\Project;
 use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
 use App\Validators\Cms\CategoriesValidator;
@@ -31,7 +31,7 @@ class ProjectsRepositoryEloquent extends BaseRepository implements BannerReposit
      */
     public function model()
     {
-        return Projects::class;
+        return Project::class;
     }
 
     /**

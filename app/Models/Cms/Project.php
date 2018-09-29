@@ -7,9 +7,9 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Projects.
+ * Class Project.
  */
-class Projects extends Model implements Transformable
+class Project extends Model implements Transformable
 {
     use TransformableTrait;
 
@@ -47,7 +47,7 @@ class Projects extends Model implements Transformable
      */
     public function categories()
     {
-        return $this->belongsTo('App\Models\Cms\Categories')->withDefault(null);
+        return $this->belongsTo('App\Models\Cms\Category')->withDefault(null);
     }
 
 

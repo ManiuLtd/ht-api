@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Cms;
 
-use App\Models\Cms\Categories;
+use App\Models\Cms\Category;
 use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
 use App\Validators\Cms\CategoriesValidator;
@@ -28,7 +28,7 @@ class CategoriesRepositoryEloquent extends BaseRepository implements BannerRepos
      */
     public function model()
     {
-        return Categories::class;
+        return Category::class;
     }
 
     /**

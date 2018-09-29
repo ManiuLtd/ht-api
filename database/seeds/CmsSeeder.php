@@ -15,9 +15,9 @@ class CmsSeeder extends Seeder
         DB::table('cms_articles')->truncate();
         DB::table('cms_projects')->truncate();
 
-        factory(App\Models\Cms\Categories::class, 20)->create();
+        factory(App\Models\Cms\Category::class, 20)->create();
         factory(App\Models\Cms\Article::class, 30)->create();
-        factory(App\Models\Cms\Projects::class, 50)->create();
+        factory(App\Models\Cms\Project::class, 50)->create();
 
     }
 }
