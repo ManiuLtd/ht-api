@@ -117,7 +117,7 @@ class CategoriesController extends Controller
     protected function checkCategory($id, $isEdit = false, $parentId = 0)
     {
         //验证是否有子分类
-        $hasChild = db('shop_goods_categories')->where('parentid', $id)->first() ?? false;
+        $hasChild = db('shop_categories')->where('parentid', $id)->first() ?? false;
         //禁止删除拥有子分类的分类
         if (! $isEdit && $hasChild) {
             return false;
