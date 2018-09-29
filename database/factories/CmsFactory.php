@@ -24,6 +24,20 @@ $factory->define(App\Models\Cms\Categories::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\Models\Cms\Article::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'title' => $faker->name,
+        'category_id' => rand(1, 50),
+        'thumb' => $faker->imageUrl(300, 100),
+        'keywords' => $faker->title,
+        'description' => $faker->title,
+        'content' => $faker->text,
+        'views' => rand(0, 1000),
+        'sort' => rand(0, 1000),
+    ];
+});
+
 $factory->define(App\Models\Cms\Projects::class, function (Faker $faker) {
     return [
         'user_id' => getUserId(),
@@ -33,7 +47,7 @@ $factory->define(App\Models\Cms\Projects::class, function (Faker $faker) {
         'keywords' => $faker->title,
         'description' => $faker->title,
         'content' => $faker->text,
-        'views' => rand(0, 1000),
-        'sort' => rand(0, 1000),
+        'views' => rand(100, 9999),//浏览量
+        'sort' => rand(10, 99),//排序
     ];
 });
