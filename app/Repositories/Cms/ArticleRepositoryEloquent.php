@@ -9,7 +9,8 @@ use App\Validators\Cms\ArticleValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
- * Class CategoriesRepositoryEloquent.
+ * Class ArticleRepositoryEloquent
+ * @package App\Repositories\Cms
  */
 class ArticleRepositoryEloquent extends BaseRepository implements ArticleRepository
 {

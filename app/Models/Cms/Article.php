@@ -7,7 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Categories.
+ * Class Article.
  */
 class Article extends Model implements Transformable
 {
@@ -29,5 +29,23 @@ class Article extends Model implements Transformable
     public function transform()
     {
         return $this->toArray();
+    }
+
+    /**
+     * 后台用户
+     * @return mixed
+     */
+    public function user()
+    {
+        return $this->hasMany('App\Models\User','user_id')->withDefault(null);
+    }
+
+    /**
+     * 分类
+     * @return mixed
+     */
+    public function category()
+    {
+        return $this->hasMany('App\Models\Categories','category_id')->withDefault(null);
     }
 }

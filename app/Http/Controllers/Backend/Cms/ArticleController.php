@@ -43,7 +43,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $article = $this->repository->paginate(request('limit', 10));
+        $article = $this->repository->with(['user','category'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $article);
     }
