@@ -38,18 +38,18 @@ class ProjectsController extends Controller
     }
 
     /**
-     * 分类列表.
+     * 产品列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $projects = $this->repository->paginate(request('limit', 10));
+        $projects = $this->repository->with(['categories','user'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $projects);
     }
 
     /**
-     * 添加分类.
+     * 添加产品.
      * @param ProjectsCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -67,7 +67,7 @@ class ProjectsController extends Controller
     }
 
     /**
-     * 编辑分类.
+     * 编辑产品.
      * @param ProjectsUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -86,7 +86,7 @@ class ProjectsController extends Controller
     }
 
     /**
-     * 删除分类.
+     * 删除产品.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

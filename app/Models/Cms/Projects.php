@@ -30,4 +30,25 @@ class Projects extends Model implements Transformable
     {
         return $this->toArray();
     }
+
+
+    /**
+     * 所属用户.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
+    }
+
+    /**
+     * 所属分类.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categories()
+    {
+        return $this->belongsTo('App\Models\Cms\Categories')->withDefault(null);
+    }
+
+
 }
