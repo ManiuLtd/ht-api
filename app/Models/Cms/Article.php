@@ -13,7 +13,11 @@ class Article extends Model implements Transformable
 {
     use TransformableTrait;
 
+    /**
+     * @var string 
+     */
     protected $table = 'cms_articles';
+
     /**
      * The attributes that are mass assignable.
      *

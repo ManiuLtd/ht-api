@@ -13,7 +13,11 @@ class Category extends Model implements Transformable
 {
     use TransformableTrait;
 
+    /**
+     * @var string
+     */
     protected $table = 'cms_categories';
+
     /**
      * The attributes that are mass assignable.
      *

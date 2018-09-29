@@ -13,14 +13,17 @@ class Project extends Model implements Transformable
 {
     use TransformableTrait;
 
+    /**
+     * @var string
+     */
     protected $table = 'cms_projects';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $guarded = [];
-
 
     /**
      * 字段映射.
