@@ -17,7 +17,7 @@ class MemberValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'phone' => 'required|unique:members',
+            'phone' => 'unique:members',
             'password' => 'required',
             'credit1' => 'numeric',
             'credit2' => 'integer',

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Validators\Image\BannerValidator;
 use App\Http\Requests\Image\BannerCreateRequest;
 use App\Http\Requests\Image\BannerUpdateRequest;
-use App\Repositories\Interfaces\BannerRepository;
+use App\Repositories\Interfaces\Image\BannerRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
