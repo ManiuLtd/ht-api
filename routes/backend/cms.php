@@ -5,4 +5,5 @@ Route::namespace('Cms')
     ->prefix('cms')
     ->group(function () {
         Route::resource('categories', 'CategoriesController');
+        Route::resource('projects', 'ProjectsController');
     });
