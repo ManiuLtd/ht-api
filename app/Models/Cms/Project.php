@@ -36,21 +36,21 @@ class Project extends Model implements Transformable
 
 
     /**
-     * 所属用户.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * 后台用户
+     * @return mixed
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User\User')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User','user_id')->withDefault(null);
     }
 
     /**
-     * 所属分类.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * 分类
+     * @return mixed
      */
-    public function categories()
+    public function category()
     {
-        return $this->belongsTo('App\Models\Cms\Category')->withDefault(null);
+        return $this->belongsTo('App\Models\Cms\Category','category_id')->withDefault(null);
     }
 
 

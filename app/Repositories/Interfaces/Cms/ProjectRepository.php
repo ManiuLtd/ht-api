@@ -5,9 +5,9 @@ namespace App\Repositories\Interfaces\Cms;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface ProjectsRepository.
+ * Interface ProjectRepository.
  */
-interface ProjectsRepository extends RepositoryInterface
+interface ProjectRepository extends RepositoryInterface
 {
     //
 }
