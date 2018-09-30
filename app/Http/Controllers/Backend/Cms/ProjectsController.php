@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend\Cms;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cms\ProjectsCreateRequest;
 use App\Http\Requests\Cms\ProjectsUpdateRequest;
-use App\Repositories\Interfaces\Cms\ProjectsRepository;
+use App\Repositories\Interfaces\Cms\ProjectRepository;
 use App\Validators\Cms\ProjectsValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -16,7 +16,7 @@ use Prettus\Validator\Exceptions\ValidatorException;
 class ProjectsController extends Controller
 {
     /**
-     * @var ProjectsRepository
+     * @var ProjectRepository
      */
     protected $repository;
 
@@ -28,10 +28,10 @@ class ProjectsController extends Controller
     /**
      * ProjectsController constructor.
      *
-     * @param ProjectsRepository $repository
+     * @param ProjectRepository $repository
      * @param ProjectsValidator $validator
      */
-    public function __construct(ProjectsRepository $repository, ProjectsValidator $validator)
+    public function __construct(ProjectRepository $repository, ProjectsValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -43,7 +43,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = $this->repository->with(['categories','user'])->paginate(request('limit', 10));
+        $projects = $this->repository->with(['user','category'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $projects);
     }

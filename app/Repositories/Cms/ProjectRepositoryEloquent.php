@@ -2,19 +2,17 @@
 
 namespace App\Repositories\Cms;
 
-use App\Models\Cms\Category;
 use App\Models\Cms\Project;
-use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
-use App\Validators\Cms\CategoriesValidator;
+use App\Repositories\Interfaces\Cms\ProjectRepository;
 use App\Validators\Cms\ProjectsValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Image\BannerRepository;
 
 /**
- * Class ProjectsRepositoryEloquent.
+ * Class ProjectRepositoryEloquent
+ * @package App\Repositories\Cms
  */
-class ProjectsRepositoryEloquent extends BaseRepository implements BannerRepository
+class ProjectRepositoryEloquent extends BaseRepository implements ProjectRepository
 {
     /**
      * @var array
@@ -22,6 +20,8 @@ class ProjectsRepositoryEloquent extends BaseRepository implements BannerReposit
     protected $fieldSearchable = [
         'user_id',
         'category_id',
+        'title'=>'like',
+        'keywords'=>'like',
     ];
 
     /**

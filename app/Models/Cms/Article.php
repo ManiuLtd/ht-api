@@ -41,7 +41,7 @@ class Article extends Model implements Transformable
      */
     public function user()
     {
-        return $this->hasMany('App\Models\User','user_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User','user_id')->withDefault(null);
     }
 
     /**
@@ -50,6 +50,6 @@ class Article extends Model implements Transformable
      */
     public function category()
     {
-        return $this->hasMany('App\Models\Categories','category_id')->withDefault(null);
+        return $this->belongsTo('App\Models\Cms\Category','category_id')->withDefault(null);
     }
 }

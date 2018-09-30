@@ -7,12 +7,12 @@ use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
 use App\Validators\Cms\CategoriesValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Image\BannerRepository;
+use App\Repositories\Interfaces\Cms\CategoriesRepository;
 
 /**
  * Class CategoriesRepositoryEloquent.
  */
-class CategoriesRepositoryEloquent extends BaseRepository implements BannerRepository
+class CategoriesRepositoryEloquent extends BaseRepository implements CategoriesRepository
 {
     /**
      * @var array
