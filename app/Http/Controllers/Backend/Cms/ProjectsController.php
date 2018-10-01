@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Cms\ProjectsValidator;
 use App\Http\Requests\Cms\ProjectsCreateRequest;
 use App\Http\Requests\Cms\ProjectsUpdateRequest;
-use App\Repositories\Interfaces\Cms\ProjectRepository;
-use App\Validators\Cms\ProjectsValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Cms\ProjectRepository;
 
 /**
  * Class ProjectsController.
@@ -43,7 +43,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = $this->repository->with(['user','category'])->paginate(request('limit', 10));
+        $projects = $this->repository->with(['user', 'category'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $projects);
     }

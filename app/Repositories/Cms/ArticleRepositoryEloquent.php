@@ -4,13 +4,12 @@ namespace App\Repositories\Cms;
 
 use App\Models\Cms\Article;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Cms\ArticleRepository;
 use App\Validators\Cms\ArticleValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\Cms\ArticleRepository;
 
 /**
- * Class ArticleRepositoryEloquent
- * @package App\Repositories\Cms
+ * Class ArticleRepositoryEloquent.
  */
 class ArticleRepositoryEloquent extends BaseRepository implements ArticleRepository
 {

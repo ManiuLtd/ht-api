@@ -4,13 +4,12 @@ namespace App\Repositories\Cms;
 
 use App\Models\Cms\Project;
 use App\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Cms\ProjectRepository;
 use App\Validators\Cms\ProjectsValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\Cms\ProjectRepository;
 
 /**
- * Class ProjectRepositoryEloquent
- * @package App\Repositories\Cms
+ * Class ProjectRepositoryEloquent.
  */
 class ProjectRepositoryEloquent extends BaseRepository implements ProjectRepository
 {
