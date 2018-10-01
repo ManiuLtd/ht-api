@@ -12,7 +12,7 @@
 
 1. 默认只有控制器命名使用复数，其他模块不要使用复数。
 
-2. 数据库统一由我来创建migration,你们git pull之后执行php artisan migrate就行了
+2. 数据库统一由我来创建migration，你们`git pull`之后执行`php artisan migrate`就行了
 
 3. 每个人负责的模块写完之后，记得更新接口文档和雨雀的数据库字典
 
