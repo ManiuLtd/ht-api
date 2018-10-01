@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Member;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Member\Withdraw;
+use App\Criteria\RequestCriteria;
 use App\Validators\Member\WithdrawValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\WithdrawRepository;

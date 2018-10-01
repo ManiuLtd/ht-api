@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Backend\System;
 use App\Http\Controllers\Controller;
 use App\Validators\System\SettingValidator;
 use App\Http\Requests\System\SettingUpdateRequest;
-use App\Repositories\Interfaces\System\SettingRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\System\SettingRepository;
 
 /**
  * 系统设置.

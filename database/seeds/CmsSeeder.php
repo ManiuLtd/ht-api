@@ -18,6 +18,5 @@ class CmsSeeder extends Seeder
         factory(App\Models\Cms\Category::class, 20)->create();
         factory(App\Models\Cms\Article::class, 30)->create();
         factory(App\Models\Cms\Project::class, 50)->create();
-
     }
 }

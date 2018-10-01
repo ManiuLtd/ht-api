@@ -3,7 +3,6 @@
 namespace App\Repositories\Cms;
 
 use App\Models\Cms\Category;
-use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
 use App\Validators\Cms\CategoriesValidator;
 use Prettus\Repository\Eloquent\BaseRepository;

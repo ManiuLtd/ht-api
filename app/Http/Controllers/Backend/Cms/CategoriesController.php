@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Cms\CategoriesValidator;
 use App\Http\Requests\Cms\CategoriesCreateRequest;
 use App\Http\Requests\Cms\CategoriesUpdateRequest;
-use App\Repositories\Interfaces\Cms\CategoriesRepository;
-use App\Validators\Cms\CategoriesValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Cms\CategoriesRepository;
 
 /**
  * Class CategoriesController.

@@ -37,7 +37,7 @@ class Taobao extends Command
      */
     public function handle()
     {
-        $this->info ('Hello World');
+        $this->info('Hello World');
         //TODO 代码参考之前项目  爬取大淘客，地址http://www.dataoke.com/pmc/api-help.html
         //大淘客账号 18538549898 密码 123456@@
 

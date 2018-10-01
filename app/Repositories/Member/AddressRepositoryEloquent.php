@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Member;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Member\Address;
+use App\Criteria\RequestCriteria;
 use App\Validators\Member\AddressValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\AddressRepository;

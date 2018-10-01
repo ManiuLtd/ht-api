@@ -1,11 +1,11 @@
 <?php
 
 
-Route::namespace ('System')
+Route::namespace('System')
 //    ->middleware('jwt.auth')
-    ->group (function () {
+    ->group(function () {
         //设置
-        Route::resource ('setting', 'SettingsController', [
+        Route::resource('setting', 'SettingsController', [
             'only' => ['index', 'edit'],
         ]);
     });
