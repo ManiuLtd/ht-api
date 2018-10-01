@@ -25,6 +25,8 @@ class CreateCommissionLevelsTable extends Migration
             $table->integer('level')->nullable(); //等级大小
             $table->string('name', 100)->nullable(); //等级名
             $table->string('logo', 191)->nullable();  //等级图标
+            $table->decimal('group_rate1', 4, 2)->nullable(); //组长拿团队每笔订单的佣金比例
+            $table->decimal('group_rate2', 4, 2)->nullable(); //团队某个人升级为组长后，老组长拿的新组长团队的佣金比例
             $table->decimal('commission_rate1', 4, 2)->nullable();  //自购佣金比例
             $table->decimal('commission_rate2', 4, 2)->nullable();  //拿下级的佣金比例
             $table->decimal('min_commission', 9, 2)->nullable();  //升级最低佣金
@@ -34,6 +36,7 @@ class CreateCommissionLevelsTable extends Migration
             $table->decimal('price', 9, 2)->nullable(); //升级所需支付金额
             $table->integer('duration')->nullable(); // 等级有效时长 按天计算
             $table->string('description', 191)->nullable(); //等级描述
+            $table->tinyInteger ('type')->nullable (); //1分销等级 2组等级
             $table->nullableTimestamps();
 
             $table->index('user_id');
