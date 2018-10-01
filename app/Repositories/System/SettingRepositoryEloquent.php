@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\System;
 
-use App\Models\Setting;
-use App\Validators\SettingValidator;
+use App\Models\System\Setting;
+use App\Validators\System\SettingValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\SettingRepository;
+use App\Repositories\Interfaces\System\SettingRepository;
 
 /**
  * Class SettingRepositoryEloquent.

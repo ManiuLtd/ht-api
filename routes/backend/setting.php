@@ -1,7 +1,11 @@
 <?php
 
-//设置
-Route::resource('setting', 'SettingsController', [
-    'except' => ['create', 'edit', 'store', 'destroy', 'show'],
-]);
-//])->middleware('jwt.auth');
+
+Route::namespace ('System')
+//    ->middleware('jwt.auth')
+    ->group (function () {
+        //设置
+        Route::resource ('setting', 'SettingsController', [
+            'only' => ['index', 'edit'],
+        ]);
+    });
