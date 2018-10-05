@@ -43,7 +43,6 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-
         $article = $this->repository
             ->with(['user','category'])
             ->paginate(request('limit', 10));
