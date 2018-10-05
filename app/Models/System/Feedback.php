@@ -7,10 +7,10 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Notification
+ * Class Feedback
  * @package App\Models\System
  */
-class Notification extends Model implements Transformable
+class Feedback extends Model implements Transformable
 {
     use TransformableTrait;
 
@@ -19,7 +19,7 @@ class Notification extends Model implements Transformable
      *
      * @var array
      */
-    protected $table = 'notifications';
+    protected $table = 'feedbacks';
     protected $guarded = [];
 
     protected $hidden = [

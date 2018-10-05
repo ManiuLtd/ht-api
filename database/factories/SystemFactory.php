@@ -25,3 +25,12 @@ $factory->define(App\Models\System\Notification::class, function (Faker $faker) 
         'type' => array_rand([1, 0]),
     ];
 });
+
+$factory->define(App\Models\System\Feedback::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'member_id' => rand(1, 50),
+        'content' => $faker->text,
+        'images' => $faker->imageUrl(300, 100),
+    ];
+});
