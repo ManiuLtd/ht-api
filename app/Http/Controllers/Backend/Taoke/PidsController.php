@@ -94,7 +94,7 @@ class PidsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(PidUpdateRequest $request, $id)
-    {   
+    {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
@@ -117,5 +117,4 @@ class PidsController extends Controller
 
         return json(1001, '删除成功');
     }
-
 }
