@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Cms\ArticleValidator;
 use App\Http\Requests\Cms\ArticleCreateRequest;
 use App\Http\Requests\Cms\ArticleUpdateRequest;
-use App\Repositories\Interfaces\Cms\ArticleRepository;
-use App\Validators\Cms\ArticleValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Cms\ArticleRepository;
 
 /**
  * Class ArticlesController.
@@ -43,9 +43,13 @@ class ArticlesController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $article = $this->repository
             ->with(['user','category'])
             ->paginate(request('limit', 10));
+=======
+        $article = $this->repository->with(['user', 'category'])->paginate(request('limit', 10));
+>>>>>>> 60d4d9b83437c76d59cb99310c2bd6a40de20c8b
 
         return json(1001, '列表获取成功', $article);
     }

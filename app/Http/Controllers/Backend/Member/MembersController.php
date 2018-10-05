@@ -58,7 +58,7 @@ class MembersController extends Controller
      */
     public function show($id)
     {
-        $member = $this->repository->find($id);
+        $member = $this->repository->with(['level', 'inviter'])->find($id);
 
         return json(1001, '详情获取成功', $member);
     }

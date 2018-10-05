@@ -25,7 +25,6 @@ class Article extends Model implements Transformable
      */
     protected $guarded = [];
 
-
     /**
      * 字段映射.
      * @return array
@@ -36,20 +35,20 @@ class Article extends Model implements Transformable
     }
 
     /**
-     * 后台用户
+     * 后台用户.
      * @return mixed
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User\User','user_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
     }
 
     /**
-     * 分类
+     * 分类.
      * @return mixed
      */
     public function category()
     {
-        return $this->belongsTo('App\Models\Cms\Category','category_id')->withDefault(null);
+        return $this->belongsTo('App\Models\Cms\Category', 'category_id')->withDefault(null);
     }
 }

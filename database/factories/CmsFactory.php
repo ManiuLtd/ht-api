@@ -41,13 +41,13 @@ $factory->define(App\Models\Cms\Article::class, function (Faker $faker) {
 $factory->define(App\Models\Cms\Project::class, function (Faker $faker) {
     return [
         'user_id' => getUserId(),
-        'category_id' => rand(1,20),
+        'category_id' => rand(1, 20),
         'title' => $faker->title,
         'thumb' => $faker->imageUrl(300, 100),
         'keywords' => $faker->title,
         'description' => $faker->title,
         'content' => $faker->text,
-        'views' => rand(100, 9999),//浏览量
-        'sort' => rand(10, 99),//排序
+        'views' => rand(100, 9999), //浏览量
+        'sort' => rand(10, 99), //排序
     ];
 });

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Image;
 
-use App\Models\Image\Banner;
+use App\Models\Image\Notification;
 use App\Criteria\RequestCriteria;
 use App\Validators\Image\BannerValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
@@ -28,7 +28,7 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
      */
     public function model()
     {
-        return Banner::class;
+        return Notification::class;
     }
 
     /**

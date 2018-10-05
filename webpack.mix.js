@@ -11,12 +11,5 @@ var mix = require('laravel-mix');
  |
  */
 
-//前台
-// mix.js('resources/assets/js/frontend.js', 'public/js/frontend.js')
-//     .sass('resources/assets/sass/frontend.scss', 'public/css/frontend.css');
-//
-// //后台
-// mix.js('resources/assets/js/admin.js', 'public/js/admin.js')
-//     .sass('resources/assets/sass/admin.scss', 'public/css/admin.css');
-//
-// mix.version();
+mix.js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css');

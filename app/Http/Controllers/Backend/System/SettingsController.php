@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\System;
 
 use App\Http\Controllers\Controller;
-use App\Validators\SettingValidator;
-use App\Http\Requests\SettingUpdateRequest;
-use App\Repositories\Interfaces\SettingRepository;
+use App\Validators\System\SettingValidator;
+use App\Http\Requests\System\SettingUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\System\SettingRepository;
 
 /**
  * 系统设置.
