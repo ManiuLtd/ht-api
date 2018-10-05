@@ -160,3 +160,17 @@ $factory->define(App\Models\Member\Address::class, function (Faker $faker) {
         'updated_at' => now(),
     ];
 });
+
+$factory->define(App\Models\Member\Group::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'member_id' => rand(1, 50),
+        'name' => $faker->name,
+        'logo' => $faker->imageUrl(100, 100),
+        'description' => $faker->title,
+        'status' => rand(0, 1),
+        'default' => rand(0, 1),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ];
+});

@@ -16,6 +16,7 @@ class MemberSeeder extends Seeder
         DB::table('member_levels')->truncate();
         DB::table('member_recharges')->truncate();
         DB::table('member_withdraws')->truncate();
+        DB::table('groups')->truncate();
 
         factory(App\Models\Member\Level::class, 5)->create();
         factory(App\Models\Member\Favourite::class, 10)->create();
@@ -24,5 +25,6 @@ class MemberSeeder extends Seeder
         factory(App\Models\Member\Recharge::class, 100)->create();
         factory(App\Models\Member\Member::class, 50)->create();
         factory(App\Models\Member\History::class, 100)->create();
+        factory(App\Models\Member\Group::class, 50)->create();
     }
 }

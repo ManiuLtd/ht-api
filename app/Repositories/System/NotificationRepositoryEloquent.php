@@ -1,26 +1,19 @@
 <?php
 
-namespace App\Repositories\Image;
+namespace App\Repositories\System;
 
-use App\Models\Image\Banner;
-use App\Criteria\RequestCriteria;
-use App\Validators\Image\BannerValidator;
+use App\Models\System\Notification;
+use App\Repositories\Interfaces\System\NotificationRepository;
+use App\Validators\System\NotificationValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Image\BannerRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
- * Class BannerRepositoryEloquent.
+ * Class NotificationRepositoryEloquent
+ * @package App\Repositories\System
  */
-class BannerRepositoryEloquent extends BaseRepository implements BannerRepository
+class NotificationRepositoryEloquent extends BaseRepository implements NotificationRepository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'tag' => 'like',
-        'status',
-    ];
-
     /**
      * Specify Model class name.
      *
@@ -28,7 +21,7 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
      */
     public function model()
     {
-        return Banner::class;
+        return Notification::class;
     }
 
     /**
@@ -38,7 +31,7 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
      */
     public function validator()
     {
-        return BannerValidator::class;
+        return NotificationValidator::class;
     }
 
     /**

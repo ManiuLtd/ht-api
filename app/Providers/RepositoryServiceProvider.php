@@ -44,7 +44,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Member\CreditLogRepository::class, \App\Repositories\Member\CreditLogRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Member\AddressRepository::class, \App\Repositories\Member\AddressRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Member\FavouriteRepository::class, \App\Repositories\Member\FavouriteRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Member\GroupRepository::class, \App\Repositories\Member\GroupRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\SettingRepository::class, \App\Repositories\System\SettingRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\System\NotificationRepository::class, \App\Repositories\System\NotificationRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Cms\CategoriesRepository::class, \App\Repositories\Cms\CategoriesRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Cms\ProjectRepository::class, \App\Repositories\Cms\ProjectRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Cms\ArticleRepository::class, \App\Repositories\Cms\ArticleRepositoryEloquent::class);

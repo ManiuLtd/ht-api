@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Repositories\Image;
+namespace App\Repositories\Member;
 
-use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
-use App\Validators\Image\BannerValidator;
+use App\Models\Member\Group;
+use App\Repositories\Interfaces\Member\GroupRepository;
+use App\Validators\Member\GroupValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Image\BannerRepository;
 
 /**
- * Class BannerRepositoryEloquent.
+ * Class GroupRepositoryEloquent
+ * @package App\Repositories\Member
  */
-class BannerRepositoryEloquent extends BaseRepository implements BannerRepository
+class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'tag' => 'like',
-        'status',
+        'member_id',
+        'user_id',
     ];
 
     /**
@@ -28,7 +29,7 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
      */
     public function model()
     {
-        return Banner::class;
+        return Group::class;
     }
 
     /**
@@ -38,11 +39,11 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
      */
     public function validator()
     {
-        return BannerValidator::class;
+        return GroupValidator::class;
     }
 
     /**
-     * Boot up the repository, pushing criteria.
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {

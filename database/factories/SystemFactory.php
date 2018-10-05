@@ -13,12 +13,15 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\Image\Notification::class, function (Faker $faker) {
+$factory->define(App\Models\System\Notification::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'image' => $faker->imageUrl(300, 100),
-        'sort' => rand(0, 1000),
-        'tag' => 'category',
-        'status' => array_rand([1, 0]),
+        'member_id' => rand(1, 50),
+        'msg_id' => rand(1, 20),
+        'logo' => $faker->imageUrl(300, 100),
+        'sendno' => 'HT'.$faker->randomNumber(),
+        'title' => $faker->title,
+        'message' => $faker->text,
+        'type' => array_rand([1, 0]),
     ];
 });

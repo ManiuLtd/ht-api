@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Image;
+namespace App\Models\System;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -18,12 +18,8 @@ class Notification extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = [
-        'image',
-        'sort',
-        'tag',
-        'status',
-    ];
+    protected $table = 'notifications';
+    protected $guarded = [];
 
     protected $hidden = [
         'user_id',
@@ -36,5 +32,22 @@ class Notification extends Model implements Transformable
     public function transform()
     {
         return $this->toArray();
+    }
+    /**
+     * 后台用户.
+     * @return mixed
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
+    }
+
+    /**
+     * 前端用户
+     * @return $this
+     */
+    public function member()
+    {
+        return $this->belongsTo('App\Models\Member\Member','member_id')->withDefault(null);
     }
 }
