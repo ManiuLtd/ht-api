@@ -26,6 +26,17 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        //淘宝  半小时执行
+        $schedule->command('spider:tb ')->everyThirtyMinutes();
+        //每5分钟更新
+        $schedule->command('spider:tb --type=paoliang --all=false')->hourlyAt(50);
+        $schedule->command('spider:tb --type=top100 --all=false')->hourlyAt(30);
+        //每10分钟更新
+        $schedule->command('spider:tb --type=total --all=false')->hourlyAt(9);
+        //京东
+        $schedule->command('spider:jd')->everyThirtyMinutes();
+
+        $schedule->command('spider:pdd')->everyThirtyMinutes();
     }
 
     /**
