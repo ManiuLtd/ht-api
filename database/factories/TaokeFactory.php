@@ -22,4 +22,24 @@ $factory->define(App\Models\Taoke\Pid::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'member_id' => rand(1, 50),
+        'group_id' => rand(1, 50),
+        'ordernum' => $faker->randomNumber(),
+        'title' => $faker->title,
+        'itemid' => rand(1, 100),
+        'count' => rand(1, 10),
+        'price' => $faker->numberBetween(2, 500),
+        'final_price' => $faker->numberBetween(2, 500),
+        'commission_rate' => rand(10, 999),
+        'commission_amount' => $faker->numberBetween(2, 100),
+        'pid' => $faker->uuid,
+        'status' => array_rand([1,2,3,4,5]),
+        'type' => array_rand([1, 2,3]),
+        'complete_at' => now(),
+    ];
+});
+
 

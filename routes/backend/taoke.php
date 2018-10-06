@@ -9,4 +9,8 @@ Route::namespace('Taoke')
         //推广位
         Route::resource('pid','PidsController');
 
+        //推广位
+        Route::resource('order','OrdersController',[
+            'only' => ['index', 'destroy'],
+        ]);
     });
