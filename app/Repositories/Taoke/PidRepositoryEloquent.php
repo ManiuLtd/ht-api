@@ -45,7 +45,7 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria (app (RequestCriteria::class));
     }
 
     /**
@@ -55,4 +55,28 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
+
+
+    /**
+     * @param array $attributes
+     * @return bool|mixed
+     */
+    public function create(array $attributes)
+    {
+        $pids = preg_split ('/\s+/', $attributes->pid);
+        if (count ($pids) > 0) {
+            foreach ($pids as $pid) {
+                $pid = db ('tbk_pids')->where ('pid', $pid)->first ();
+                if (!$pid) {
+                    db ('tbk_pids')->insert ([
+                        'pid' => $pid
+                    ]);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+
 }

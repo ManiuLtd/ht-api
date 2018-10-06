@@ -58,20 +58,9 @@ class PidsController extends Controller
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $pieces = preg_split('/\s+/', $request->pid);
-            if(count($pieces)){
-                foreach ($pieces as $v){
-                    $pid = db('tbk_pids')->where('pid',$v)->first();
-                    if (!$pid){
-                        $this->repository->create([
-                            'user_id' => getUserId(),
-                            'member_id' => $request->member_id,
-                            'type' => $request->type,
-                            'pid' => $v,
-                        ]);
-                    }
-                }
-            }
+
+            $this->repository->create($request->all());
+
             return json(1001, '创建成功');
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
@@ -104,6 +93,7 @@ class PidsController extends Controller
             $pids = $this->repository->update($request->all(), $id);
 
             return json(1001, '更新成功', $pids);
+            
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
         }
