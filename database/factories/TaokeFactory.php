@@ -42,4 +42,28 @@ $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
     ];
 });
 
-
+$factory->define(App\Models\Taoke\Quan::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'item_id' => rand(1, 50),
+        'nickname' => $faker->title,
+        'headimg' => $faker->imageUrl(100, 100),
+        'introduce' => $faker->text,
+        'images' => json_encode([
+            $faker->imageUrl(400, 400),
+            $faker->imageUrl(400, 400),
+            $faker->imageUrl(400, 400),
+            $faker->imageUrl(400, 400),
+        ]),
+        'comments' => json_encode([
+            $faker->title,
+            $faker->title,
+            $faker->title,
+            $faker->title,
+        ]),
+        'taokouling' => array_rand([1, 0]),
+        'shares' => rand(10, 999),
+        'share_at' => $faker->date('Y-m-d H:i:s'),
+        'type' => array_rand([1,2,3,4]),
+    ];
+});
