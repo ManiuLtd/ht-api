@@ -34,3 +34,11 @@ $factory->define(App\Models\System\Feedback::class, function (Faker $faker) {
         'images' => $faker->imageUrl(300, 100),
     ];
 });
+
+$factory->define(App\Models\System\Sms::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'phone' => $faker->phoneNumber,
+        'code' => rand(1000,9999),
+    ];
+});

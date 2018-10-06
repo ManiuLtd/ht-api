@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LaratrustSeeder::class);
         $this->call(CmsSeeder::class);
         $this->call(SystemSeeder::class);
+        $this->call(TaokeSeeder::class);
     }
 }

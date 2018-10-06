@@ -48,17 +48,18 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\System\SettingRepository::class, \App\Repositories\System\SettingRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\NotificationRepository::class, \App\Repositories\System\NotificationRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\FeedbackRepository::class, \App\Repositories\System\FeedbackRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\System\SmsRepository::class, \App\Repositories\System\SmsRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Cms\CategoriesRepository::class, \App\Repositories\Cms\CategoriesRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Cms\ProjectRepository::class, \App\Repositories\Cms\ProjectRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Cms\ArticleRepository::class, \App\Repositories\Cms\ArticleRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\CategoryRepository::class, \App\Repositories\Taoke\CategoryRepositoryEloquent::class);
-<<<<<<< HEAD
+
         $this->app->bind(\App\Repositories\Interfaces\Taoke\QuanRepository::class, \App\Repositories\Taoke\QuanRepositoryEloquent::class);
-=======
+
         $this->app->bind(\App\Repositories\Interfaces\Taoke\PidRepository::class, \App\Repositories\Taoke\PidRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\OrderRepository::class, \App\Repositories\Taoke\OrderRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Member\CommissionLevelRepository::class, \App\Repositories\Member\CommissionLevelRepositoryEloquent::class);
->>>>>>> abb2e97c61d73cacc9a28fe62aa8ab14f2cdb73c
+
         //:end-bindings:
     }
 }
