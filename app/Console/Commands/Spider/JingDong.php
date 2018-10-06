@@ -42,11 +42,10 @@ class JingDong extends Command
      */
     public function __construct()
     {
-        $config = config('coupon');
-        $this->appid = data_get($config,'jingdong.JD_APPID');
-        $this->appkey = data_get($config,'jingdong.JD_APPKEY');
-        $this->applisturl = data_get($config,'jingdong.JD_LIST_APPURL');
-        parent::__construct();
+        $this->appid = data_get (config ('coupon'), 'jingdong.JD_APPID');
+        $this->appkey = data_get (config ('coupon'), 'jingdong.JD_APPKEY');
+        $this->applisturl = data_get (config ('coupon'), 'jingdong.JD_LIST_APPURL');
+        parent::__construct ();
     }
 
     /**
@@ -60,37 +59,41 @@ class JingDong extends Command
         // http://www.jingtuitui.com/  账号密码 15538762226  372945452zz
 
 
-        $this->info("正在爬取京推推优惠券");
-        $result = $this->JTTSpider();
+        $this->info ("正在爬取京推推优惠券");
+        $result = $this->JTTSpider ();
         if ($result['code'] == 4001) {
-            $this->warn($result['message']);
-            return ;
+            $this->warn ($result['message']);
+            return;
         }
-        $totalPage = data_get($result,'data.totalPage',1);
+        $totalPage = data_get ($result, 'data.totalPage', 1);
 
 
-        $this->info("总页码:{$totalPage}");
-        $bar = $this->output->createProgressBar($totalPage);
+        $this->info ("总页码:{$totalPage}");
+        $bar = $this->output->createProgressBar ($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-            $response = $this->JTTSpider($page);
+            $response = $this->JTTSpider ($page);
             if ($result['code'] == 4001) {
-                $this->warn($result['message']);
-                return ;
+                $this->warn ($result['message']);
+                return;
             }
-            $data = data_get($response, 'data.data',null);
+            $data = data_get ($response, 'data.data', null);
 
             if ($data) {
-                SaveGoods::dispatch($data, 'jingdong');
+                SaveGoods::dispatch ($data, 'jingdong');
             }
-            $bar->advance();
-            $this->info(">>>已采集完第{$page}页 ");
+            $bar->advance ();
+            $this->info (">>>已采集完第{$page}页 ");
         }
-        $bar->finish();
+        $bar->finish ();
 
     }
 
-    protected function JTTSpider($page=1)
+    /**
+     * @param int $page
+     * @return array
+     */
+    protected function JTTSpider($page = 1)
     {
         $params = [
             'appid' => $this->appid,
@@ -98,10 +101,10 @@ class JingDong extends Command
             'num' => 100,
             'page' => $page
         ];
-        $response = Curl::to($this->applisturl)
-            ->withData($params)
-            ->post();
-        $response = json_decode($response);
+        $response = Curl::to ($this->applisturl)
+            ->withData ($params)
+            ->post ();
+        $response = json_decode ($response);
         if ($response->return != 0) {
             return [
                 'code' => 4001,
@@ -109,7 +112,8 @@ class JingDong extends Command
             ];
         }
         return [
-            'code' => 200,
+            'code' => 1001,
+            'message' => '优惠券获取成功',
             'data' => [
                 'totalPage' => $response->result->total_page,
                 'data' => $response->result->data,

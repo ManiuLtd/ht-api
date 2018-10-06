@@ -22,20 +22,24 @@ class Taobao extends Command
      */
     protected $description = '淘宝优惠券爬虫';
 
+    /**
+     * @var mixed
+     */
     protected $apiKey;
+
+    /**
+     * @var mixed
+     */
     protected $apiUrl;
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * Taobao constructor.
      */
     public function __construct()
     {
-        $config = config('coupon');
-        $this->apiKey = data_get($config,'taobao.TB_API_KEY');
-        $this->apiUrl = data_get($config,'taobao.TB_API_URL');
-        parent::__construct();
+        $this->apiKey = data_get (config ('coupon'), 'taobao.TB_API_KEY');
+        $this->apiUrl = data_get (config ('coupon'), 'taobao.TB_API_URL');
+        parent::__construct ();
     }
 
     /**
@@ -52,44 +56,51 @@ class Taobao extends Command
         //对应的数据库为 tbk_coupons ，type=1 ，tag 分别为 total  top100  paoliang
 
         //数据类型
-        $type = $this->option('type');
+        $type = $this->option ('type');
         //是否爬取所有
-        $all = $this->option('all');
+        $all = $this->option ('all');
 
-        $this->info("正在爬取大淘客优惠券");
-        $result = $this->DTKSpider($type, $all);
+        $this->info ("正在爬取大淘客优惠券");
+        //开始爬取
+        $result = $this->DTKSpider ($type, $all);
         if ($result['code'] == 4001) {
-            $this->warn($result['message']);
+            $this->warn ($result['message']);
             return;
         }
-        $total = data_get($result,'data.total',0);
-        $totalPage = data_get($result, 'data.totalPage',0);
 
-        $this->info("优惠券总数:{$total}");
-        $this->info("总页码:{$totalPage}");
-        $bar = $this->output->createProgressBar($totalPage);
+        $total = data_get ($result, 'data.total', 0);
+        $totalPage = data_get ($result, 'data.totalPage', 0);
+
+        $this->info ("优惠券总数:{$total}");
+        $this->info ("总页码:{$totalPage}");
+        $bar = $this->output->createProgressBar ($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-            $response = $this->DTKSpider($type, $all,$page);
+            $response = $this->DTKSpider ($type, $all, $page);
             if ($response['code'] == 4001) {
-                $this->warn($response['message']);
+                $this->warn ($response['message']);
                 return;
             }
-            $result = data_get($response,'data.result',null);
+            $result = data_get ($response, 'data.result', null);
 
             if ($result) {
-                SaveGoods::dispatch($result, 'taobao', $type, $all);
+                SaveGoods::dispatch ($result, 'taobao', $type, $all);
             }
 
-            $bar->advance();
-            $this->info(" >>>已采集完第{$page}页");
+            $bar->advance ();
+            $this->info (" >>>已采集完第{$page}页");
         }
 
 
     }
 
-
-    protected function DTKSpider($type='total', $all='true',$page=1)
+    /**
+     * @param string $type
+     * @param bool $all
+     * @param int $page
+     * @return array
+     */
+    protected function DTKSpider($type = 'total', $all = true, $page = 1)
     {
         $params = [
             'r' => 'Port/index',
@@ -97,7 +108,7 @@ class Taobao extends Command
             'v' => '2',
             'page' => $page
         ];
-
+        //爬虫类型
         switch ($type) {
             case 'total':
                 $params['type'] = 'total';
@@ -112,35 +123,34 @@ class Taobao extends Command
                 $params['type'] = 'total';
                 break;
         }
-        $response = Curl::to($this->apiUrl)
-            ->withData($params)
-            ->get();
-        $response = json_decode($response);
+        $response = Curl::to ($this->apiUrl)
+            ->withData ($params)
+            ->get ();
+        $response = json_decode ($response);
 
         //验证
         if (!isset($response->data)) {
-
             return [
-                'code'=>4001,
+                'code' => 4001,
                 'message' => '接口内容获取失败'
             ];
         }
         $total = $response->data->total_num ?? 0;
         if ($total <= 0) {
             return [
-                'code'=>4001,
+                'code' => 4001,
                 'message' => '没有获取到产品'
             ];
         }
-        $totalPage = (int)ceil($total / 50);
+        $totalPage = (int)ceil ($total / 50);
         //不爬取所有的
-        if ($all == 'false') {
+        if (!$all) {
             $totalPage = 3;
         }
 
         return [
-            'code' => '2000',
-            'message' => '',
+            'code' => 1001,
+            'message' => '优惠券获取成功',
             'data' => [
                 'totalPage' => $totalPage,
                 'total' => $total,
@@ -148,9 +158,6 @@ class Taobao extends Command
 
             ],
         ];
-
-
-
 
 
     }
