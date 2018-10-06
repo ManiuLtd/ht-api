@@ -47,4 +47,12 @@ Route::namespace('Member')
         'except' => ['create', 'edit', 'store'],
     ]);
 
-});
+
+        //分销等级
+        Route::resource('commission-level', 'CommissionLevelsController', [
+            'except' => ['create'],
+        ]);
+    });
+
+
+
