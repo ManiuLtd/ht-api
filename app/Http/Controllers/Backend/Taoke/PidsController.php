@@ -57,7 +57,7 @@ class PidsController extends Controller
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $pieces = array_unique(explode(" ", $request->pid));
+            $pieces = preg_split('/\s+/', $request->pid);
             if(count($pieces)){
                 foreach ($pieces as $v){
                     $this->repository->updateOrCreate([
