@@ -45,9 +45,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $this->repository->setPresenter("Prettus\\Repository\\Presenter\\ModelFractalPresenter");
-        $categories = $this->repository->orderBy('sort','desc')->get();
+        $categories = $this->repository->paginate(request('limit', 10));
+
         return json(1001,'获取成功',$categories);
     }
 
