@@ -6,6 +6,11 @@ Route::namespace('Taoke')
         //产品分类
         Route::resource('category','CategoriesController');
 
+        //推广位
+        Route::resource('pid','PidsController');
 
-
+        //推广位
+        Route::resource('order','OrdersController',[
+            'only' => ['index', 'destroy'],
+        ]);
     });
