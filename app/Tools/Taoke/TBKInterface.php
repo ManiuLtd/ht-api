@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/10/6
- * Time: 20:34
- */
+namespace App\Tools\Taoke;
+
 
 interface TBKInterface
 {
