@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\PidValidator;
+use App\Models\Taoke\Pid;
 use App\Http\Requests\Taoke\PidCreateRequest;
 use App\Http\Requests\Taoke\PidUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -60,13 +61,15 @@ class PidsController extends Controller
             $pieces = preg_split('/\s+/', $request->pid);
             if(count($pieces)){
                 foreach ($pieces as $v){
-                    $this->repository->updateOrCreate([
-                        'pid' => $v,
-                    ],[
-                        'user_id' => getUserId(),
-                        'member_id' => $request->member_id,
-                        'type' => $request->type,
-                    ]);
+                    $pid = Pid::query()->where('pid',$v)->first();
+                    if (!$pid){
+                        $this->repository->create([
+                            'user_id' => getUserId(),
+                            'member_id' => $request->member_id,
+                            'type' => $request->type,
+                            'pid' => $v,
+                        ]);
+                    }
                 }
             }
             return json(1001, '创建成功');
