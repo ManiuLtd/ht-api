@@ -61,7 +61,7 @@ class PidsController extends Controller
             $pieces = preg_split('/\s+/', $request->pid);
             if(count($pieces)){
                 foreach ($pieces as $v){
-                    $pid = Pid::query()->where('pid',$v)->first();
+                    $pid = db('tbk_pids')->where('pid',$v)->first();
                     if (!$pid){
                         $this->repository->create([
                             'user_id' => getUserId(),
