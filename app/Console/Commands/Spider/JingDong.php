@@ -67,7 +67,7 @@ class JingDong extends Command
                 SaveGoods::dispatch($data, 'jingdong');
             }
             $bar->advance();
-            $this->info(" >>>已采集完第{$page}页");
+            $this->info(">>>已采集完第{$page}页 ");
         }
         $bar->finish();
 
