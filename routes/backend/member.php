@@ -37,8 +37,22 @@ Route::namespace('Member')
         //充值记录
         Route::get('member/recharge', 'RechargesController@index');
 
+        //团队
+        Route::resource('member/group', 'GroupsController', [
+            'except' => ['create', 'edit', 'store','show'],
+        ]);
+
         //会员
         Route::resource('member', 'MembersController', [
         'except' => ['create', 'edit', 'store'],
     ]);
+
+
+        //分销等级
+        Route::resource('commission-level', 'CommissionLevelsController', [
+            'except' => ['create'],
+        ]);
     });
+
+
+

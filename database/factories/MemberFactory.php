@@ -160,3 +160,40 @@ $factory->define(App\Models\Member\Address::class, function (Faker $faker) {
         'updated_at' => now(),
     ];
 });
+
+
+$factory->define(App\Models\Member\CommissionLevel::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'member_id' => rand(1, 50),
+        'level' => $faker->numberBetween(1, 100),
+        'name' => $faker->name,
+        'logo' => $faker->imageUrl(100, 100),
+        'group_rate1' => rand(10, 99),
+        'group_rate2' => rand(10, 99),
+        'commission_rate1' => rand(10, 99),
+        'commission_rate2' => rand(10, 99),
+        'min_commission' => rand(10, 99),
+        'friends1' => rand(10, 999),
+        'friends2' => rand(10, 999),
+        'ordernum' => rand(10, 999),
+        'price' => rand(10, 99),
+        'duration' => rand(10, 999),
+        'description' => $faker->title,
+        'type' => rand(1, 2),
+    ];
+});
+
+$factory->define(App\Models\Member\Group::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'member_id' => rand(1, 50),
+        'name' => $faker->name,
+        'logo' => $faker->imageUrl(100, 100),
+        'description' => $faker->title,
+        'status' => rand(0, 1),
+        'default' => rand(0, 1),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ];
+});
