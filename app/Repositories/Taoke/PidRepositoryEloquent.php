@@ -63,13 +63,13 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
      */
     public function create(array $attributes)
     {
-        $pids = preg_split ('/\s+/', $attributes->pid);
+        $pids = preg_split ('/\s+/', $attributes['pid']);
         if (count ($pids) > 0) {
-            foreach ($pids as $pid) {
-                $pid = db ('tbk_pids')->where ('pid', $pid)->first ();
+            foreach ($pids as $p) {
+                $pid = db ('tbk_pids')->where ('pid', $p)->first ();
                 if (!$pid) {
                     db ('tbk_pids')->insert ([
-                        'pid' => $pid
+                        'pid' => $p
                     ]);
                 }
             }
