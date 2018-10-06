@@ -48,7 +48,6 @@ class PinDuoDuo
         $str = 'client_id'.$this->client_id.'page'.$page.'page_size100'.'sort_type0'.'timestamp'.$time.'typepdd.ddk.goods.search';
         $sign = strtoupper(md5($this->client_secret.$str.$this->client_secret));
 
-
         $params['sign'] = $sign;
         $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
             ->withData($params)
