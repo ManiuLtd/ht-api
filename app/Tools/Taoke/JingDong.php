@@ -42,11 +42,39 @@ class JingDong implements TBKInterface
     /**
      * 获取详情.
      * @param array $array
-     * @return mixed
+     * @return array|mixed
      */
     public function getDetail(array $array)
     {
-        // TODO: Implement getDetail() method.
+        // Implement getDetail() method.
+        $id = data_get($array,'id');
+        if (!is_numeric($id)) {
+            return [
+                'code'=>4004,
+                'message' => '商品id类型错误！',
+            ];
+        }
+        $params = [
+            'appid' => $this->appid,
+            'appkey' => $this->appkey,
+            'gid' => $id,
+        ];
+        $response = Curl::to('http://japi.jingtuitui.com/api/get_goods_info')
+            ->withData($params)
+            ->post();
+        $response = json_decode($response);
+        if ($response->return != 0) {
+            return [
+                'code'=>4004,
+                'message' => '接口调用失败！',
+            ];
+        }
+        return [
+            'code' => 1001,
+            'message' => '获取成功',
+            'data' => $response->result,
+        ];
+
     }
 
     /**
