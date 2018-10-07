@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Taoke;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Taoke\QuanCreateRequest;
 use App\Http\Requests\Taoke\QuanUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\QuanRepository;
 use App\Validators\Taoke\QuanValidator;
@@ -58,8 +59,7 @@ class QuansController extends Controller
     public function store(QuanCreateRequest $request)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $quan = $this->repository->create($request->all());
             return json(1001,'添加成功',$quan);
@@ -91,7 +91,7 @@ class QuansController extends Controller
     public function update(QuanUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $quan = $this->repository->update($request->all(), $id);
 
@@ -113,9 +113,7 @@ class QuansController extends Controller
      */
     public function destroy($id)
     {
-
         $this->repository->delete($id);
-
         return json(1001,'删除成功');
     }
 }
