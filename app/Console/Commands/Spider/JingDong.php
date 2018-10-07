@@ -3,9 +3,8 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
-
-use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
+use App\Tools\Taoke\TBKInterface;
 
 class JingDong extends Command
 {
@@ -34,10 +33,8 @@ class JingDong extends Command
      */
     public function __construct(TBKInterface $tbk)
     {
-
         $this->tbk = $tbk;
-        parent::__construct ();
-
+        parent::__construct();
     }
 
     /**
@@ -49,9 +46,8 @@ class JingDong extends Command
     {
         // http://www.jingtuitui.com/  账号密码 15538762226  372945452zz
 
-
-        $this->info ("正在爬取京推推优惠券");
-        $result = $this->tbk->spider ();
+        $this->info('正在爬取京推推优惠券');
+        $result = $this->tbk->spider();
 
         if ($result['code'] == 4001) {
             $this->warn($result['message']);
@@ -64,8 +60,6 @@ class JingDong extends Command
         $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-
-
             $response = $this->tbk->spider(['page'=>$page]);
 
             if ($result['code'] == 4001) {
@@ -83,6 +77,4 @@ class JingDong extends Command
         }
         $bar->finish();
     }
-
-
 }

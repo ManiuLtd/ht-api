@@ -3,8 +3,8 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
-use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
+use App\Tools\Taoke\TBKInterface;
 
 class PinDuoDuo extends Command
 {
@@ -46,7 +46,7 @@ class PinDuoDuo extends Command
     {
         // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
 
-        $this->info("正在爬取大淘客优惠券");
+        $this->info('正在爬取大淘客优惠券');
         $result = $this->tbk->spider();
 
         if ($result['code'] == 4004) {
@@ -55,9 +55,8 @@ class PinDuoDuo extends Command
             return;
         }
 
-        $total = data_get($result,'data.total_count', 0);
-        $totalPage = (int)ceil($total / 100) > 600 ? 600:(int)ceil($total / 100);
-
+        $total = data_get($result, 'data.total_count', 0);
+        $totalPage = (int) ceil($total / 100) > 600 ? 600 : (int) ceil($total / 100);
 
         $this->info("优惠券总数:{$total}");
         $bar = $this->output->createProgressBar($totalPage);
