@@ -2,15 +2,14 @@
 
 namespace App\Repositories\Member;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Member\Group;
-use App\Repositories\Interfaces\Member\GroupRepository;
+use App\Criteria\RequestCriteria;
 use App\Validators\Member\GroupValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\Member\GroupRepository;
 
 /**
- * Class GroupRepositoryEloquent
- * @package App\Repositories\Member
+ * Class GroupRepositoryEloquent.
  */
 class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
 {

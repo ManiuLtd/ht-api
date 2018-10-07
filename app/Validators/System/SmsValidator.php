@@ -6,8 +6,7 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class SmsValidator
- * @package App\Validators\System
+ * Class SmsValidator.
  */
 class SmsValidator extends LaravelValidator
 {

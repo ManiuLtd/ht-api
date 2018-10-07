@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Backend\System;
 
 use App\Http\Controllers\Controller;
 use App\Validators\System\SmsValidator;
-use App\Http\Requests\System\SmsCreateRequest;
 use App\Repositories\Interfaces\System\SmsRepository;
 
 /**
- * Class SmsController
- * @package App\Http\Controllers\Backend\System
+ * Class SmsController.
  */
 class SmsController extends Controller
 {

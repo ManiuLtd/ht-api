@@ -5,7 +5,6 @@ namespace App\Console\Commands\Spider;
 use App\Jobs\SaveGoods;
 use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
-use Ixudra\Curl\Facades\Curl;
 
 class Taobao extends Command
 {
@@ -53,27 +52,30 @@ class Taobao extends Command
         //对应的数据库为 tbk_coupons ，type=1 ，tag 分别为 total  top100  paoliang
 
         //数据类型
-        $type = $this->option ('type');
+        $type = $this->option('type');
         //是否爬取所有
-        $all = $this->option ('all');
+        $all = $this->option('all');
 
-        $this->info ("正在爬取大淘客优惠券");
+        $this->info('正在爬取大淘客优惠券');
         //开始爬取
+
         $result = $this->tbk->spider(['type'=>$type,'all'=>$all]);
 
         if ($result['code'] == 4001) {
-            $this->warn ($result['message']);
+            $this->warn($result['message']);
+
             return;
         }
 
-        $total = data_get ($result, 'data.total', 0);
-        $totalPage = data_get ($result, 'data.totalPage', 0);
+        $total = data_get($result, 'data.total', 0);
+        $totalPage = data_get($result, 'data.totalPage', 0);
 
-        $this->info ("优惠券总数:{$total}");
-        $this->info ("总页码:{$totalPage}");
-        $bar = $this->output->createProgressBar ($totalPage);
+        $this->info("优惠券总数:{$total}");
+        $this->info("总页码:{$totalPage}");
+        $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
+
             $array = [
                 'type' => $type,
                 'all' => $all,
@@ -81,22 +83,21 @@ class Taobao extends Command
             ];
 
             $response = $this->tbk->spider($array);
+
             if ($response['code'] == 4001) {
-                $this->warn ($response['message']);
+                $this->warn($response['message']);
+
                 return;
             }
-            $result = data_get ($response, 'data.result', null);
+            $result = data_get($response, 'data.result', null);
 
             if ($result) {
-                SaveGoods::dispatch ($result, 'taobao', $type, $all);
+                SaveGoods::dispatch($result, 'taobao', $type, $all);
             }
 
-            $bar->advance ();
-            $this->info (" >>>已采集完第{$page}页");
+            $bar->advance();
+            $this->info(" >>>已采集完第{$page}页");
         }
-
-
     }
-
 
 }

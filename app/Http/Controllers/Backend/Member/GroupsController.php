@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend\Member;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Member\GroupValidator;
-use App\Http\Requests\Member\GroupCreateRequest;
 use App\Http\Requests\Member\GroupUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -44,11 +43,12 @@ class GroupsController extends Controller
     public function index()
     {
         $groups = $this->repository
-            ->with(['user','member'])
+            ->with(['user', 'member'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $groups);
     }
+
     /**
      * 编辑等级.
      * @param GroupUpdateRequest $request

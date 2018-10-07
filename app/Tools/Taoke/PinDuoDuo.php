@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tools\Taoke;
-
 
 use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
@@ -39,7 +37,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 获取详情
+     * 获取详情.
      * @param array $array
      * @return mixed
      */
@@ -58,7 +56,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 获取订单
+     * 获取订单.
      * @param array $array
      * @return mixed
      */
@@ -68,7 +66,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 自动绑定订单
+     * 自动绑定订单.
      * @param array $array
      * @return mixed
      */
@@ -78,7 +76,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 手动提交订单
+     * 手动提交订单.
      * @param array $array
      * @return mixed
      */
@@ -88,7 +86,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 爬虫
+     * 爬虫.
      * @param array $array
      * @return mixed
      */
@@ -141,5 +139,4 @@ class PinDuoDuo implements TBKInterface
             ];
         }
     }
-
 }
