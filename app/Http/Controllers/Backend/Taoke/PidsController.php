@@ -93,7 +93,7 @@ class PidsController extends Controller
             $pids = $this->repository->update($request->all(), $id);
 
             return json(1001, '更新成功', $pids);
-            
+
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
         }
