@@ -12,28 +12,34 @@ namespace App\Http\Controllers\Api\Taoke;
 use App\Http\Controllers\Controller;
 
 /**
- * 订单管理
- * Class OrdersController
+ * 优惠券
+ * Class CouponsController
  * @package App\Http\Controllers\Api\Member
  */
-class OrdersController extends Controller
+class CouponsController extends Controller
 {
 
     /**
-     * OrdersController constructor.
+     * CouponsController constructor.
      */
     public function __construct()
     {
     }
 
-    //TODO 订单列表 可根据平台、时间查看
+    //TODO 优惠券列表 可根据type查看，可根据价格、券额、佣金、销量排序
     public function index()
     {
 
     }
 
-    //TODO 手动提交订单 存到tbk_member_orders  ，使用脚本订单读取这个表中的订单号，和tbk_order里面的订单绑定
-    public function  submit()
+    //TODO 优惠券详情
+    public function detail()
+    {
+
+    }
+
+    // TODO 分享
+    public function share()
     {
 
     }

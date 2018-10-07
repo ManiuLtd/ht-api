@@ -12,23 +12,24 @@ namespace App\Http\Controllers\Api\Member;
 use App\Http\Controllers\Controller;
 
 /**
- * 好友管理
- * Class OrdersController
+ * 提现
+ * Class WithdrawsController
  * @package App\Http\Controllers\Api\Member
  */
-class FriendsController extends Controller
+class WithdrawsController extends Controller
 {
 
     /**
-     * FriendsController constructor.
+     * WithdrawsController constructor.
      */
     public function __construct()
     {
     }
 
-    //TODO 好友列表 可根据inviter_id查看
+    //TODO 提现功能  不能重复提现
     public function index()
     {
 
     }
+
 }
