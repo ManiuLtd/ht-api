@@ -45,7 +45,7 @@ class Taobao extends Command
      */
     public function handle()
     {
-        //TODO 代码参考之前项目  爬取大淘客，地址http://www.dataoke.com/pmc/api-help.html
+        // 代码参考之前项目  爬取大淘客，地址http://www.dataoke.com/pmc/api-help.html
         //大淘客账号 18538549898 密码 123456@@
 
         //需要爬取这个地址里面的 http://www.dataoke.com/pmc/api-help.html  3、4、5

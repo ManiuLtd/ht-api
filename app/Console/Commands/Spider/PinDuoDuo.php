@@ -21,18 +21,19 @@ class PinDuoDuo extends Command
      * @var string
      */
     protected $description = '拼多多优惠券爬虫';
+
     /**
-     * @var
+     * @var TBKInterface
      */
-    protected $Pindd;
+    protected $tbk;
 
     /**
      * PinDuoDuo constructor.
-     * @param TBKInterface $TBK
+     * @param tbkInterface $tbk
      */
-    public function __construct(TBKInterface $TBK)
+    public function __construct(TBKInterface $tbk)
     {
-        $this->Pindd = $TBK;
+        $this->tbk = $tbk;
         parent::__construct();
     }
 
@@ -43,10 +44,10 @@ class PinDuoDuo extends Command
      */
     public function handle()
     {
-        //TODO  拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
+        // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
 
         $this->info("正在爬取大淘客优惠券");
-        $result = $this->Pindd->spider();
+        $result = $this->tbk->spider();
 
         if ($result['code'] == 4004) {
             $this->warn($result['message']);
@@ -62,7 +63,7 @@ class PinDuoDuo extends Command
         $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-            $response = $this->Pindd->spider(['page'=>$page]);
+            $response = $this->tbk->spider(['page'=>$page]);
 
             if ($response['code'] == 4004) {
                 $this->warn($response['message']);
