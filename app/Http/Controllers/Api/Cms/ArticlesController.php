@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\Cms;
 
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Interfaces\Cms\ArticleRepository;
 
 /**
  * Class ArticlesController
@@ -17,16 +18,35 @@ use App\Http\Controllers\Controller;
  */
 class ArticlesController extends  Controller
 {
+    /**
+     * @var ArticleRepository
+     */
+    protected $repository;
 
     /**
      * ArticlesController constructor.
+     * @param ArticleRepository $repository
      */
-    public function __construct()
+    public function __construct(ArticleRepository $repository)
     {
+        $this->repository = $repository;
     }
 
-    //TODO 文章列表 根据分类id调用
+    /**
+     *  文章列表 根据分类id调用
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
+        try {
+            $type = request('category_id');
+            if($type){
+                return $this->repository->type_list($type);
+            }else{
+                return $this->repository->type_list();
+            }
+        } catch (Exception $e) {
+            return json(5001,$e->getMessage());
+        }
     }
 }

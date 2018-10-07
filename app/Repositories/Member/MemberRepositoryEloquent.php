@@ -96,4 +96,38 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
                 ->paginate(20);
         }
     }
+
+    /**
+     * 好友列表  二级
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function friend_list($id)
+    {
+        $member = Member::query()->find($id);
+        if (!$member){
+            return json('4001','用户不存在');
+        }
+        $member_first =  Member::query()
+            ->with(['level', 'inviter'])
+            ->where('inviter_id', $id)
+            ->orderBy('id', 'desc')
+            ->get()->toArray();
+        if (count($member_first) > 0){
+            $er_id = [];
+            foreach ($member_first as $v){
+                $er_id[] = $v['id'];
+            }
+            $member_second = Member::query()
+                ->with(['level', 'inviter'])
+                ->whereIn('inviter_id', $er_id)
+                ->orderBy('id', 'desc')
+                ->get()->toArray();
+        }else{
+            $member_second = [];
+        }
+        $friend_list = array_merge($member_first,$member_second);
+        return json('1001','好友列表',$friend_list);
+
+    }
 }

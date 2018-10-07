@@ -58,4 +58,20 @@ class ArticleRepositoryEloquent extends BaseRepository implements ArticleReposit
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
+
+    public function type_list($type = null)
+    {
+        if($type){
+            $article = $this->model
+                ->where('category_id',$type)
+                ->with(['user', 'category'])
+                ->paginate(request('limit', 10));
+        }else{
+            $article = $this->model
+                ->with(['user', 'category'])
+                ->paginate(request('limit', 10));
+        }
+
+        return json(1001, '列表获取成功', $article);
+    }
 }
