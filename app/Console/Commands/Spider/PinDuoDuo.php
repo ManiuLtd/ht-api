@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
+use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
 
 class PinDuoDuo extends Command
@@ -20,14 +21,18 @@ class PinDuoDuo extends Command
      * @var string
      */
     protected $description = '拼多多优惠券爬虫';
+    /**
+     * @var
+     */
+    protected $Pindd;
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * PinDuoDuo constructor.
+     * @param TBKInterface $TBK
      */
-    public function __construct()
+    public function __construct(TBKInterface $TBK)
     {
+        $this->Pindd = $TBK;
         parent::__construct();
     }
 
@@ -39,23 +44,24 @@ class PinDuoDuo extends Command
     public function handle()
     {
         //TODO  拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
-        $pinduoduo = new \App\Tools\Spider\PinDuoDuo();
+
         $this->info("正在爬取大淘客优惠券");
-        $result = $pinduoduo->PDDSearch();
+        $result = $this->Pindd->spider();
 
         if ($result['code'] == 4004) {
             $this->warn($result['message']);
             return;
         }
         $total = data_get($result,'data.total_count', 0);
-        $totalPage = (int)ceil($total / 100);
+        $totalPage = (int)ceil($total / 100) > 600 ? 600:(int)ceil($total / 100);
 
         $this->info("优惠券总数:{$total}");
         $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
 
-            $response = $pinduoduo->PDDSearch($page);
+            $response = $this->Pindd->spider(['page'=>$page]);
+
             if ($response['code'] == 4004) {
                 $this->warn($response['message']);
                 return;
