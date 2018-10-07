@@ -3,8 +3,8 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
-use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
+use App\Tools\Taoke\TBKInterface;
 
 class Taobao extends Command
 {
@@ -33,9 +33,8 @@ class Taobao extends Command
      */
     public function __construct(TBKInterface $tbk)
     {
-
         $this->tbk = $tbk;
-        parent::__construct ();
+        parent::__construct();
     }
 
     /**
@@ -45,7 +44,7 @@ class Taobao extends Command
      */
     public function handle()
     {
-        //TODO 代码参考之前项目  爬取大淘客，地址http://www.dataoke.com/pmc/api-help.html
+        // 代码参考之前项目  爬取大淘客，地址http://www.dataoke.com/pmc/api-help.html
         //大淘客账号 18538549898 密码 123456@@
 
         //需要爬取这个地址里面的 http://www.dataoke.com/pmc/api-help.html  3、4、5
@@ -59,7 +58,7 @@ class Taobao extends Command
         $this->info('正在爬取大淘客优惠券');
         //开始爬取
 
-        $result = $this->tbk->spider(['type'=>$type,'all'=>$all]);
+        $result = $this->tbk->spider(['type'=>$type, 'all'=>$all]);
 
         if ($result['code'] == 4001) {
             $this->warn($result['message']);
@@ -75,7 +74,6 @@ class Taobao extends Command
         $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-
             $array = [
                 'type' => $type,
                 'all' => $all,
@@ -99,5 +97,4 @@ class Taobao extends Command
             $this->info(" >>>已采集完第{$page}页");
         }
     }
-
 }

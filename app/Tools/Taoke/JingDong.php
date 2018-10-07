@@ -2,14 +2,10 @@
 
 namespace App\Tools\Taoke;
 
-
-
-use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 
 class JingDong implements TBKInterface
 {
-
     /**
      * @var
      */
@@ -28,10 +24,11 @@ class JingDong implements TBKInterface
      */
     public function __construct()
     {
-        $this->appid = data_get (config ('coupon'), 'jingdong.JD_APPID');
-        $this->appkey = data_get (config ('coupon'), 'jingdong.JD_APPKEY');
-        $this->applisturl = data_get (config ('coupon'), 'jingdong.JD_LIST_APPURL');
+        $this->appid = data_get(config('coupon'), 'jingdong.JD_APPID');
+        $this->appkey = data_get(config('coupon'), 'jingdong.JD_APPKEY');
+        $this->applisturl = data_get(config('coupon'), 'jingdong.JD_LIST_APPURL');
     }
+
     /**
      * 获取优惠券地址
      * @param array $array
@@ -100,24 +97,25 @@ class JingDong implements TBKInterface
     {
         // TODO: Implement spider() method.
 
-        $page = data_get($array,'page',1);
+        $page = data_get($array, 'page', 1);
 
         $params = [
             'appid' => $this->appid,
             'appkey' => $this->appkey,
             'num' => 100,
-            'page' => $page
+            'page' => $page,
         ];
-        $response = Curl::to ($this->applisturl)
-            ->withData ($params)
-            ->post ();
-        $response = json_decode ($response);
+        $response = Curl::to($this->applisturl)
+            ->withData($params)
+            ->post();
+        $response = json_decode($response);
         if ($response->return != 0) {
             return [
                 'code' => 4001,
-                'message' => $response->result
+                'message' => $response->result,
             ];
         }
+
         return [
             'code' => 1001,
             'message' => '优惠券获取成功',
@@ -127,6 +125,5 @@ class JingDong implements TBKInterface
             ],
 
         ];
-
     }
 }

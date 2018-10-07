@@ -3,9 +3,8 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
-
-use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
+use App\Tools\Taoke\TBKInterface;
 
 class JingDong extends Command
 {
@@ -23,18 +22,19 @@ class JingDong extends Command
      */
     protected $description = '京东优惠券爬虫';
 
-    protected $JingDong;
+    /**
+     * @var TBKInterface
+     */
+    protected $tbk;
 
     /**
      * JingDong constructor.
-     * @param TBKInterface $TBK
+     * @param TBKInterface $tbk
      */
-    public function __construct(TBKInterface $TBK)
+    public function __construct(TBKInterface $tbk)
     {
-
-        $this->JingDong = $TBK;
-        parent::__construct ();
-
+        $this->tbk = $tbk;
+        parent::__construct();
     }
 
     /**
@@ -44,12 +44,10 @@ class JingDong extends Command
      */
     public function handle()
     {
-        //TODO 京东爬虫 爬取京推推
         // http://www.jingtuitui.com/  账号密码 15538762226  372945452zz
 
-
-        $this->info ("正在爬取京推推优惠券");
-        $result = $this->JingDong->spider ();
+        $this->info('正在爬取京推推优惠券');
+        $result = $this->tbk->spider();
 
         if ($result['code'] == 4001) {
             $this->warn($result['message']);
@@ -62,9 +60,7 @@ class JingDong extends Command
         $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-
-
-            $response = $this->JingDong->spider(['page'=>$page]);
+            $response = $this->tbk->spider(['page'=>$page]);
 
             if ($result['code'] == 4001) {
                 $this->warn($result['message']);
@@ -81,6 +77,4 @@ class JingDong extends Command
         }
         $bar->finish();
     }
-
-
 }

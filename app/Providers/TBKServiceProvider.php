@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use App\Tools\Taoke\TBKInterface;
+use App\Console\Commands\Spider\Taobao;
+use Illuminate\Support\ServiceProvider;
 use App\Console\Commands\Spider\JingDong;
 use App\Console\Commands\Spider\PinDuoDuo;
-use App\Console\Commands\Spider\Taobao;
-use App\Tools\Taoke\TBKInterface;
-use Illuminate\Support\ServiceProvider;
 
 class TBKServiceProvider extends ServiceProvider
 {
@@ -38,6 +38,5 @@ class TBKServiceProvider extends ServiceProvider
         $this->app->when(PinDuoDuo::class)
             ->needs(TBKInterface::class)
             ->give(\App\Tools\Taoke\PinDuoDuo::class);
-
     }
 }
