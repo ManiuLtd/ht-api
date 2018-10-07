@@ -2,7 +2,6 @@
 
 namespace App\Tools\Taoke;
 
-use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 
 class PinDuoDuo implements TBKInterface
@@ -22,8 +21,8 @@ class PinDuoDuo implements TBKInterface
     public function __construct()
     {
         $config = config('coupon');
-        $this->client_id = data_get($config,'pinduoduo.PDD_CLIENT_ID');
-        $this->client_secret = data_get($config,'pinduoduo.PDD_CLIENT_SECRET');
+        $this->client_id = data_get($config, 'pinduoduo.PDD_CLIENT_ID');
+        $this->client_secret = data_get($config, 'pinduoduo.PDD_CLIENT_SECRET');
     }
 
     /**
@@ -93,7 +92,7 @@ class PinDuoDuo implements TBKInterface
     public function spider(array $array = [])
     {
         // TODO: Implement spider() method.
-        $page = data_get($array,'page',1);
+        $page = data_get($array, 'page', 1);
         if ($page > 600) {
             return [
                 'code' => 4004,
@@ -121,7 +120,6 @@ class PinDuoDuo implements TBKInterface
         $result = json_decode($result);
 
         if (isset($result->error_response)) {
-
             return [
                 'code' => 4004,
                 'message' => $result->error_response->error_msg,
@@ -129,7 +127,6 @@ class PinDuoDuo implements TBKInterface
         }
 
         if (isset($result->goods_search_response)) {
-
             return [
                 'code' => 1001,
                 'data' => [
