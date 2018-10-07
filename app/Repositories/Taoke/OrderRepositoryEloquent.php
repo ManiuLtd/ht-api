@@ -18,6 +18,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     protected $fieldSearchable = [
         'type',
+        'status',
     ];
 
     /**
@@ -65,12 +66,12 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         //订单类型 1淘宝 2京东 3拼多多
         $type = request('type');
         if ($type && !in_array($type, [1, 2, 3])) {
-            return json(4002,'订单类型错误');
+            return json(4001,'订单类型错误');
         }
         //订单状态 1已失效 2已付款 3待返利 4已返利 5已退货
         $status = request('status');
         if ($status && !in_array($status, [1, 2, 3, 4, 5])) {
-            return json(4003,'订单状态错误');
+            return json(4001,'订单状态错误');
         }
 //        $member = auth_api();
         //查询条件

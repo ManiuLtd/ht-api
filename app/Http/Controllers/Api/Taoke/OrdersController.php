@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\Taoke;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
+use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 
 /**
@@ -38,7 +39,11 @@ class OrdersController extends Controller
     public function index()
     {
         try{
-            return $this->repository->orderList();
+            $order = $this->repository
+                ->findWhere(['member_id'=>1])
+//                ->with('member')
+                ->paginate('limit',10);
+            return json(1001, '列表获取成功', $order);
         }catch (\Exception $e){
             return json(5001,$e->getMessage());
         }
