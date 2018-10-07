@@ -11,8 +11,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-//        $members = Member::find (1);
-//        event (new CreditIncrement($members, 1, 20, '增加积分'));
         return view('home', compact('members'));
     }
 }

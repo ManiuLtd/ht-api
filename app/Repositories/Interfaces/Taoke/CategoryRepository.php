@@ -6,8 +6,6 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Interface CategoryRepository.
- *
- * @package namespace App\Repositories\Interfaces\Taoke;
  */
 interface CategoryRepository extends RepositoryInterface
 {

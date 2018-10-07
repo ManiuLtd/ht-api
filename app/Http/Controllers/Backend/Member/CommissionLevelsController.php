@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Backend\Member;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Member\CommissionLevelValidator;
-use App\Http\Requests\Member\CommissionLevelUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Http\Requests\Member\CommissionLevelUpdateRequest;
 use App\Repositories\Interfaces\Member\CommissionLevelRepository;
 
 /**

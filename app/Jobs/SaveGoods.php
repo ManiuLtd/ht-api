@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\Taoke\Coupon;
 use Carbon\Carbon;
+use App\Models\Taoke\Coupon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\DB;
 
 class SaveGoods implements ShouldQueue
 {
@@ -20,18 +20,18 @@ class SaveGoods implements ShouldQueue
      */
     public $tries = 1;
     /**
-     * 需要插入的数据
+     * 需要插入的数据.
      * @var
      */
     protected $results;
 
     /**
-     * 爬虫类型
+     * 爬虫类型.
      * @var
      */
     protected $spider;
     /**
-     * 优惠券类型
+     * 优惠券类型.
      * @var
      */
     protected $tag;
@@ -42,20 +42,17 @@ class SaveGoods implements ShouldQueue
      */
     protected $all;
 
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($results, $spider, $tag='total', $all=true)
+    public function __construct($results, $spider, $tag = 'total', $all = true)
     {
         $this->results = $results;
         $this->spider = $spider;
         $this->tag = $tag;
         $this->all = $all;
-
-
     }
 
     /**
@@ -80,19 +77,19 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
-     * 淘宝--大淘客
+     * 淘宝--大淘客.
      * @param $results
      * @param $tag
      */
     protected function saveDTKGoods($results, $tag)
     {
-        $coupon =new Coupon();
+        $coupon = new Coupon();
         $inserts = [];
         foreach ($results as $result) {
             $data['title'] = $result->Title;
 //            $data['short_title'] = $result->D_title;
             $data['cat'] = $this->setDTKCat($result->Cid);
-            $data['shop_type'] = $result->IsTmall ? 2:1;
+            $data['shop_type'] = $result->IsTmall ? 2 : 1;
             $data['pic_url'] = $this->setPicURL($result->Pic);
             $data['item_id'] = $result->GoodsID;
             $data['item_url'] = $result->Jihua_link;
@@ -127,16 +124,15 @@ class SaveGoods implements ShouldQueue
         if ($this->all == 'true') {
             DB::table('tbk_coupons')->insert($inserts);
         }
-        return;
     }
 
     /**
-     * 京推推
+     * 京推推.
      * @param $results
      */
     protected function saveJTTGoods($results)
     {
-        $coupon =new Coupon();
+        $coupon = new Coupon();
         $inserts = [];
         foreach ($results as $result) {
             $data['title'] = $result->goods_name;
@@ -153,7 +149,7 @@ class SaveGoods implements ShouldQueue
             $data['type'] = 2;
             $data['status'] = 0;
             $data['start_time'] = Carbon::createFromTimestamp(intval($result->discount_start / 1000))->toDateTimeString();
-            $data['end_time'] = Carbon::createFromTimestamp(intval($result->discount_end / 1000))->toDateTimeString();;
+            $data['end_time'] = Carbon::createFromTimestamp(intval($result->discount_end / 1000))->toDateTimeString();
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $inserts[] = $data;
@@ -169,16 +165,15 @@ class SaveGoods implements ShouldQueue
         if ($this->all == 'true') {
             DB::table('tbk_coupons')->insert($inserts);
         }
-        return;
     }
 
     /**
-     * 多多进宝
+     * 多多进宝.
      * @param $results
      */
     protected function savePDDGoods($results)
     {
-        $coupon =new Coupon();
+        $coupon = new Coupon();
         $inserts = [];
         foreach ($results as $result) {
             $data['title'] = $result->goods_name;
@@ -186,18 +181,18 @@ class SaveGoods implements ShouldQueue
             $data['pic_url'] = $result->goods_image_url;
             $data['item_id'] = $result->goods_id;
             $data['volume'] = $result->sold_quantity;
-            $data['price'] = $result->min_group_price /100;
-            $data['final_price'] = $result->min_group_price/100 - $result->coupon_discount/100;
-            $data['coupon_price'] = $result->coupon_discount/100;
+            $data['price'] = $result->min_group_price / 100;
+            $data['final_price'] = $result->min_group_price / 100 - $result->coupon_discount / 100;
+            $data['coupon_price'] = $result->coupon_discount / 100;
 
-            $data['commission_rate'] = $result->promotion_rate/10;
+            $data['commission_rate'] = $result->promotion_rate / 10;
             $data['introduce'] = $result->goods_desc;
             $data['total_num'] = $result->coupon_total_quantity;
             $data['receive_num'] = $result->coupon_total_quantity - $result->coupon_remain_quantity;
             $data['type'] = 3;
             $data['status'] = 0;
             $data['start_time'] = Carbon::createFromTimestamp(intval($result->coupon_start_time / 1000))->toDateTimeString();
-            $data['end_time'] = Carbon::createFromTimestamp(intval($result->coupon_end_time / 1000))->toDateTimeString();;
+            $data['end_time'] = Carbon::createFromTimestamp(intval($result->coupon_end_time / 1000))->toDateTimeString();
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $inserts[] = $data;
@@ -213,11 +208,10 @@ class SaveGoods implements ShouldQueue
         if ($this->all == 'true') {
             DB::table('tbk_coupons')->insert($inserts);
         }
-        return;
     }
 
     /**
-     * 获取佣金比例
+     * 获取佣金比例.
      * @param $result
      * @return int
      */
@@ -233,6 +227,7 @@ class SaveGoods implements ShouldQueue
 
             return $result->Commission_queqiao;
         }
+
         return 0;
     }
 
@@ -243,10 +238,9 @@ class SaveGoods implements ShouldQueue
      */
     private function setPicURL($url)
     {
-
         $url = trim($url);
 
-        $url = str_replace("http://", "https://", $url);
+        $url = str_replace('http://', 'https://', $url);
 
         if (str_contains($url, '/tfscom')) {
             $pos = strpos($url, '/tfscom');
@@ -255,13 +249,14 @@ class SaveGoods implements ShouldQueue
         }
 
         if (starts_with($url, '//')) {
-            $url = str_replace("//", "https://", $url);
+            $url = str_replace('//', 'https://', $url);
         }
+
         return $url;
     }
 
     /**
-     * 设置大淘客分类ID
+     * 设置大淘客分类ID.
      * @param $cat
      * @return int
      */
@@ -294,7 +289,7 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
-     * 设置京推推分类ID
+     * 设置京推推分类ID.
      * @param $cat
      * @return int
      */

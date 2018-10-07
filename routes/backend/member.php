@@ -39,7 +39,7 @@ Route::namespace('Member')
 
         //团队
         Route::resource('member/group', 'GroupsController', [
-            'except' => ['create', 'edit', 'store','show'],
+            'except' => ['create', 'edit', 'store', 'show'],
         ]);
 
         //会员
@@ -47,12 +47,8 @@ Route::namespace('Member')
         'except' => ['create', 'edit', 'store'],
     ]);
 
-
         //分销等级
         Route::resource('commission-level', 'CommissionLevelsController', [
             'except' => ['create'],
         ]);
     });
-
-
-

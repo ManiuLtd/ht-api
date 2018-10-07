@@ -2,21 +2,19 @@
 
 namespace App\Repositories\Taoke;
 
+use App\Models\Taoke\Coupon;
+use App\Validators\Taoke\CouponValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
-use App\Models\Taoke\Coupon;
-use App\Validators\Taoke\CouponValidator;
 
 /**
  * Class CouponRepositoryEloquent.
- *
- * @package namespace App\Repositories\Taoke;
  */
 class CouponRepositoryEloquent extends BaseRepository implements CouponRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,23 +24,20 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
+     * Specify Validator class name.
+     *
+     * @return mixed
+     */
     public function validator()
     {
-
         return CouponValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }

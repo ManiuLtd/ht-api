@@ -9,8 +9,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Category.
- *
- * @package namespace App\Models\Taoke;
  */
 class Category extends Model implements Transformable
 {
@@ -39,5 +37,4 @@ class Category extends Model implements Transformable
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
-
 }

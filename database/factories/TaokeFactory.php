@@ -36,8 +36,8 @@ $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
         'commission_rate' => rand(10, 999),
         'commission_amount' => $faker->numberBetween(2, 100),
         'pid' => $faker->uuid,
-        'status' => array_rand([1,2,3,4,5]),
-        'type' => array_rand([1, 2,3]),
+        'status' => array_rand([1, 2, 3, 4, 5]),
+        'type' => array_rand([1, 2, 3]),
         'complete_at' => now(),
     ];
 });
@@ -64,6 +64,6 @@ $factory->define(App\Models\Taoke\Quan::class, function (Faker $faker) {
         'taokouling' => array_rand([1, 0]),
         'shares' => rand(10, 999),
         'share_at' => $faker->date('Y-m-d H:i:s'),
-        'type' => array_rand([1,2,3,4]),
+        'type' => array_rand([1, 2, 3, 4]),
     ];
 });

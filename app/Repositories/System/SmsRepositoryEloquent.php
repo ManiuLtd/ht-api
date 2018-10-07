@@ -3,14 +3,13 @@
 namespace App\Repositories\System;
 
 use App\Models\System\Sms;
-use App\Repositories\Interfaces\System\SmsRepository;
 use App\Validators\System\SmsValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Repositories\Interfaces\System\SmsRepository;
 
 /**
- * Class SmsRepositoryEloquent
- * @package App\Repositories\System
+ * Class SmsRepositoryEloquent.
  */
 class SmsRepositoryEloquent extends BaseRepository implements SmsRepository
 {

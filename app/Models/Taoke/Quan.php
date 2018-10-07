@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Quan
- * @package App\Models\Taoke
+ * Class Quan.
  */
 class Quan extends Model implements Transformable
 {
@@ -36,6 +35,7 @@ class Quan extends Model implements Transformable
     protected $hidden = [
         'user_id',
     ];
+
     /**
      * 后台用户.
      * @return mixed
@@ -46,11 +46,11 @@ class Quan extends Model implements Transformable
     }
 
     /**
-     * 前端用户
+     * 前端用户.
      * @return $this
      */
     public function goods()
     {
-        return $this->belongsTo('App\Models\Shop\Goods','item_id')->withDefault(null);
+        return $this->belongsTo('App\Models\Shop\Goods', 'item_id')->withDefault(null);
     }
 }

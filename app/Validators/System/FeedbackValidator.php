@@ -6,8 +6,7 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class FeedbackValidator
- * @package App\Validators\System
+ * Class FeedbackValidator.
  */
 class FeedbackValidator extends LaravelValidator
 {

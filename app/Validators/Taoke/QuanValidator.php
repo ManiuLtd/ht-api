@@ -2,17 +2,16 @@
 
 namespace App\Validators\Taoke;
 
-use \Prettus\Validator\Contracts\ValidatorInterface;
-use \Prettus\Validator\LaravelValidator;
+use Prettus\Validator\LaravelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class QuanValidator
- * @package App\Validators\Taoke
+ * Class QuanValidator.
  */
 class QuanValidator extends LaravelValidator
 {
     /**
-     * Validation Rules
+     * Validation Rules.
      *
      * @var array
      */

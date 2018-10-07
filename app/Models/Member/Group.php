@@ -8,7 +8,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Group
+ * Class Group.
  */
 class Group extends Model implements Transformable
 {
@@ -42,20 +42,20 @@ class Group extends Model implements Transformable
     ];
 
     /**
-     * 后端用户
+     * 后端用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
-     * 前端会员
+     * 前端会员.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
-        return $this->belongsTo('App\Models\Member\Member','member_id');
+        return $this->belongsTo('App\Models\Member\Member', 'member_id');
     }
 }

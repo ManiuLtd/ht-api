@@ -6,8 +6,7 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class GroupValidator
- * @package App\Validators\Member
+ * Class GroupValidator.
  */
 class GroupValidator extends LaravelValidator
 {

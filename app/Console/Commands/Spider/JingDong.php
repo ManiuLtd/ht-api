@@ -4,7 +4,7 @@ namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
 use Illuminate\Console\Command;
-use Ixudra\Curl\Facades\Curl;
+use App\Tools\Taoke\TBKInterface;
 
 class JingDong extends Command
 {
@@ -23,29 +23,18 @@ class JingDong extends Command
     protected $description = '京东优惠券爬虫';
 
     /**
-     * @var
+     * @var TBKInterface
      */
-    protected $appid;
-    /**
-     * @var
-     */
-    protected $appkey;
-    /**
-     * @var
-     */
-    protected $applisturl;
+    protected $tbk;
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * JingDong constructor.
+     * @param TBKInterface $tbk
      */
-    public function __construct()
+    public function __construct(TBKInterface $tbk)
     {
-        $this->appid = data_get (config ('coupon'), 'jingdong.JD_APPID');
-        $this->appkey = data_get (config ('coupon'), 'jingdong.JD_APPKEY');
-        $this->applisturl = data_get (config ('coupon'), 'jingdong.JD_LIST_APPURL');
-        parent::__construct ();
+        $this->tbk = $tbk;
+        parent::__construct();
     }
 
     /**
@@ -55,71 +44,37 @@ class JingDong extends Command
      */
     public function handle()
     {
-        //TODO 京东爬虫 爬取京推推
         // http://www.jingtuitui.com/  账号密码 15538762226  372945452zz
 
+        $this->info('正在爬取京推推优惠券');
+        $result = $this->tbk->spider();
 
-        $this->info ("正在爬取京推推优惠券");
-        $result = $this->JTTSpider ();
         if ($result['code'] == 4001) {
-            $this->warn ($result['message']);
+            $this->warn($result['message']);
+
             return;
         }
-        $totalPage = data_get ($result, 'data.totalPage', 1);
+        $totalPage = data_get($result, 'data.totalPage', 1);
 
-
-        $this->info ("总页码:{$totalPage}");
-        $bar = $this->output->createProgressBar ($totalPage);
+        $this->info("总页码:{$totalPage}");
+        $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-            $response = $this->JTTSpider ($page);
+            $response = $this->tbk->spider(['page'=>$page]);
+
             if ($result['code'] == 4001) {
-                $this->warn ($result['message']);
+                $this->warn($result['message']);
+
                 return;
             }
-            $data = data_get ($response, 'data.data', null);
+            $data = data_get($response, 'data.data', null);
 
             if ($data) {
-                SaveGoods::dispatch ($data, 'jingdong');
+                SaveGoods::dispatch($data, 'jingdong');
             }
-            $bar->advance ();
-            $this->info (">>>已采集完第{$page}页 ");
+            $bar->advance();
+            $this->info(">>>已采集完第{$page}页 ");
         }
-        $bar->finish ();
-
-    }
-
-    /**
-     * @param int $page
-     * @return array
-     */
-    protected function JTTSpider($page = 1)
-    {
-        $params = [
-            'appid' => $this->appid,
-            'appkey' => $this->appkey,
-            'num' => 100,
-            'page' => $page
-        ];
-        $response = Curl::to ($this->applisturl)
-            ->withData ($params)
-            ->post ();
-        $response = json_decode ($response);
-        if ($response->return != 0) {
-            return [
-                'code' => 4001,
-                'message' => $response->result
-            ];
-        }
-        return [
-            'code' => 1001,
-            'message' => '优惠券获取成功',
-            'data' => [
-                'totalPage' => $response->result->total_page,
-                'data' => $response->result->data,
-            ],
-
-        ];
-
+        $bar->finish();
     }
 }

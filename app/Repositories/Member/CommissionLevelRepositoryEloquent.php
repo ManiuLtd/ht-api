@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Member;
 
-use App\Models\Member\CommissionLevel;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\CommissionLevelValidator;
+use App\Models\Member\CommissionLevel;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Validators\Member\CommissionLevelValidator;
 use App\Repositories\Interfaces\Member\CommissionLevelRepository;
 
 /**
