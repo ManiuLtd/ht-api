@@ -166,11 +166,13 @@ return [
          */
 
         App\Providers\PasswordResetProvider::class,
+        Orzcc\TopClient\TopClientServiceProvider::class,
 
         /*
          * this is customize
          */
         App\Providers\TBKServiceProvider::class,
+
 
     ],
 
@@ -220,6 +222,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'TopClient' => Orzcc\TopClient\Facades\TopClient::class,
 
     ],
 
