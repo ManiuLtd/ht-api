@@ -6,7 +6,7 @@
  * Time: 16:18
  */
 
-namespace App\Http\Controllers\Api\Member;
+namespace App\Http\Controllers\Api\Taoke;
 
 
 use App\Http\Controllers\Controller;
