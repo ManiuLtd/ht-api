@@ -4,6 +4,10 @@ namespace App\Tools\Taoke;
 
 use Ixudra\Curl\Facades\Curl;
 
+use Orzcc\TopClient\Facades\TopClient;
+use TopClient\request\TbkItemInfoGetRequest;
+use TopClient\request\TbkItemGetRequest;
+
 class Taobao implements TBKInterface
 {
     /**
@@ -42,7 +46,36 @@ class Taobao implements TBKInterface
      */
     public function getDetail(array $array)
     {
-        // TODO: Implement getDetail() method.
+        //  Implement getDetail() method.
+        $id = data_get($array,'id');
+        if (!is_numeric($id)) {
+            return [
+                'code'=>4004,
+                'message' => '商品id类型错误！',
+            ];
+        }
+        $topclient = TopClient::connection();
+        $req = new TbkItemInfoGetRequest();
+        $req->setFields('title,small_images,pict_url,zk_final_price,user_type,volume');
+        $req->setNumIids($id);
+        $resp = $topclient->execute($req);
+
+        if (!isset($resp->results->n_tbk_item)) {
+
+            return [
+                'code' => 4004,
+                'message' => '淘宝客接口调用失败'
+            ];
+        }
+        $data = (array)$resp->results->n_tbk_item[0];
+
+        return [
+            'code' => 1001,
+            'message' => '商品详情获取成功',
+            'data' => $data
+        ];
+
+
     }
 
     /**
