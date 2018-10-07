@@ -14,6 +14,6 @@ Route::namespace('Taoke')
 
         //订单
         Route::resource('order', 'OrdersController', [
-            'only' => ['index', 'destroy'],
+            'only' => ['index', 'show'],
         ]);
     });

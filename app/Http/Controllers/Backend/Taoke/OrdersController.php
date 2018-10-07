@@ -45,14 +45,14 @@ class OrdersController extends Controller
     }
 
     /**
-     * 删除订单.
+     * 订单详情.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function show($id)
     {
-        $this->repository->delete($id);
+        $orders = $this->repository->find($id);
 
-        return json(1001, '删除成功');
+        return json(1001, '详情获取成功', $orders);
     }
 }
