@@ -7,6 +7,7 @@ use App\Validators\System\FeedbackValidator;
 use App\Repositories\Interfaces\System\FeedbackRepository;
 use Illuminate\Http\Request;
 use Mockery\Exception;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class FeedbacksController.
@@ -45,20 +46,15 @@ class FeedbacksController extends Controller
 //            return json('5001','该用户不存在');
 //        }
         try{
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $data = $request->all();
-            if(!$data['contents']){
-                return json('4001','留言不能为空');
-            }else{
                 //添加留言反馈
                 $feedback = $this->repository->create([
                     'member_id'=>1,
-                    'content'=>$data['contents'],
+                    'content'=>$data['content'],
                     'images'=>$data['images'],
-                    'created_at'=>now()
                 ]);
                 return json('1001','留言反馈成功',$feedback);
-            }
-
         }catch (Exception $e)
         {
             return json('5001',$e->getMessage());

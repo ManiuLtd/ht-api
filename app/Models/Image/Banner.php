@@ -28,12 +28,6 @@ class Banner extends Model implements Transformable
     protected $hidden = [
         'user_id',
     ];
-    //user关联
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User\User','user_id')->withDefault(null);
-    }
-
     /**
      * 字段映射.
      * @return array

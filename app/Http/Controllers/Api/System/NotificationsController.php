@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\System;
 
 use App\Http\Controllers\Controller;
 use App\Validators\System\NotificationValidator;
+use Illuminate\Http\Request;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\System\NotificationCreateRequest;
@@ -39,8 +40,14 @@ class NotificationsController extends Controller
     /**
      * //TODO 通知列表 可根据类型创建
      */
-    public function index()
+    public function index(Request $request)
     {
+//       $member = auth()->user();
+//        if(!$member){
+//            return json('5001','该用户不存在');
+//        }
+        $data = $request->all();
+
 
     }
 
