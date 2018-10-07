@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
-use Ixudra\Curl\Facades\Curl;
+use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
 
 class Taobao extends Command
@@ -23,23 +23,19 @@ class Taobao extends Command
     protected $description = '淘宝优惠券爬虫';
 
     /**
-     * @var mixed
+     * @var
      */
-    protected $apiKey;
-
-    /**
-     * @var mixed
-     */
-    protected $apiUrl;
+    protected $tbk;
 
     /**
      * Taobao constructor.
+     * @param TBKInterface $tbk
      */
-    public function __construct()
+    public function __construct(TBKInterface $tbk)
     {
-        $this->apiKey = data_get(config('coupon'), 'taobao.TB_API_KEY');
-        $this->apiUrl = data_get(config('coupon'), 'taobao.TB_API_URL');
-        parent::__construct();
+
+        $this->tbk = $tbk;
+        parent::__construct ();
     }
 
     /**
@@ -62,7 +58,9 @@ class Taobao extends Command
 
         $this->info('正在爬取大淘客优惠券');
         //开始爬取
-        $result = $this->DTKSpider($type, $all);
+
+        $result = $this->tbk->spider(['type'=>$type,'all'=>$all]);
+
         if ($result['code'] == 4001) {
             $this->warn($result['message']);
 
@@ -77,7 +75,15 @@ class Taobao extends Command
         $bar = $this->output->createProgressBar($totalPage);
 
         for ($page = 1; $page <= $totalPage; $page++) {
-            $response = $this->DTKSpider($type, $all, $page);
+
+            $array = [
+                'type' => $type,
+                'all' => $all,
+                'page' => $page,
+            ];
+
+            $response = $this->tbk->spider($array);
+
             if ($response['code'] == 4001) {
                 $this->warn($response['message']);
 
@@ -94,69 +100,4 @@ class Taobao extends Command
         }
     }
 
-    /**
-     * @param string $type
-     * @param bool $all
-     * @param int $page
-     * @return array
-     */
-    protected function DTKSpider($type = 'total', $all = true, $page = 1)
-    {
-        $params = [
-            'r' => 'Port/index',
-            'appkey' => $this->apiKey,
-            'v' => '2',
-            'page' => $page,
-        ];
-        //爬虫类型
-        switch ($type) {
-            case 'total':
-                $params['type'] = 'total';
-                break;
-            case 'paoliang':
-                $params['type'] = 'paoliang';
-                break;
-            case 'top100':
-                $params['type'] = 'top100';
-                break;
-            default:
-                $params['type'] = 'total';
-                break;
-        }
-        $response = Curl::to($this->apiUrl)
-            ->withData($params)
-            ->get();
-        $response = json_decode($response);
-
-        //验证
-        if (! isset($response->data)) {
-            return [
-                'code' => 4001,
-                'message' => '接口内容获取失败',
-            ];
-        }
-        $total = $response->data->total_num ?? 0;
-        if ($total <= 0) {
-            return [
-                'code' => 4001,
-                'message' => '没有获取到产品',
-            ];
-        }
-        $totalPage = (int) ceil($total / 50);
-        //不爬取所有的
-        if (! $all) {
-            $totalPage = 3;
-        }
-
-        return [
-            'code' => 1001,
-            'message' => '优惠券获取成功',
-            'data' => [
-                'totalPage' => $totalPage,
-                'total' => $total,
-                'result' => $response->result,
-
-            ],
-        ];
-    }
 }

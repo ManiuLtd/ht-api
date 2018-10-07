@@ -166,6 +166,12 @@ return [
          */
 
         App\Providers\PasswordResetProvider::class,
+
+        /*
+         * this is customize
+         */
+        App\Providers\TBKServiceProvider::class,
+
     ],
 
     /*clear

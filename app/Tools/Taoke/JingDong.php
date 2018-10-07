@@ -2,8 +2,36 @@
 
 namespace App\Tools\Taoke;
 
+
+
+use Illuminate\Support\Facades\Log;
+use Ixudra\Curl\Facades\Curl;
+
 class JingDong implements TBKInterface
 {
+
+    /**
+     * @var
+     */
+    protected $appid;
+    /**
+     * @var
+     */
+    protected $appkey;
+    /**
+     * @var
+     */
+    protected $applisturl;
+
+    /**
+     * JingDong constructor.
+     */
+    public function __construct()
+    {
+        $this->appid = data_get (config ('coupon'), 'jingdong.JD_APPID');
+        $this->appkey = data_get (config ('coupon'), 'jingdong.JD_APPKEY');
+        $this->applisturl = data_get (config ('coupon'), 'jingdong.JD_LIST_APPURL');
+    }
     /**
      * 获取优惠券地址
      * @param array $array
@@ -66,10 +94,39 @@ class JingDong implements TBKInterface
     /**
      * 爬虫.
      * @param array $array
-     * @return mixed
+     * @return array|mixed
      */
     public function spider(array $array = [])
     {
         // TODO: Implement spider() method.
+
+        $page = data_get($array,'page',1);
+
+        $params = [
+            'appid' => $this->appid,
+            'appkey' => $this->appkey,
+            'num' => 100,
+            'page' => $page
+        ];
+        $response = Curl::to ($this->applisturl)
+            ->withData ($params)
+            ->post ();
+        $response = json_decode ($response);
+        if ($response->return != 0) {
+            return [
+                'code' => 4001,
+                'message' => $response->result
+            ];
+        }
+        return [
+            'code' => 1001,
+            'message' => '优惠券获取成功',
+            'data' => [
+                'totalPage' => $response->result->total_page,
+                'data' => $response->result->data,
+            ],
+
+        ];
+
     }
 }
