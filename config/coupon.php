@@ -14,7 +14,7 @@ return [
     ],
 
     'pinduoduo' => [
-        'PDD_CLIENT_ID' => env('PDD_CLIENT_ID','cdd7fdd7c6164e96b9525f8a9d2d7ddf'),
-        'PDD_CLIENT_SECRET' => env('PDD_CLIENT_SECRET', '6896f97f33c5836f96bc663a708cf85cbde6ee86')
+        'PDD_CLIENT_ID' => env('PDD_CLIENT_ID', 'cdd7fdd7c6164e96b9525f8a9d2d7ddf'),
+        'PDD_CLIENT_SECRET' => env('PDD_CLIENT_SECRET', '6896f97f33c5836f96bc663a708cf85cbde6ee86'),
     ],
 ];

@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\PidValidator;
-use App\Models\Taoke\Pid;
 use App\Http\Requests\Taoke\PidCreateRequest;
 use App\Http\Requests\Taoke\PidUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\PidRepository;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
  * Class PidsController.
@@ -93,7 +92,6 @@ class PidsController extends Controller
             $pids = $this->repository->update($request->all(), $id);
 
             return json(1001, '更新成功', $pids);
-
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
         }

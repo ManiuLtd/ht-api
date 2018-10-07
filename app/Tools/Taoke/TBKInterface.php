@@ -1,10 +1,9 @@
 <?php
-namespace App\Tools\Taoke;
 
+namespace App\Tools\Taoke;
 
 interface TBKInterface
 {
-
     /**
      * 获取优惠券地址
      * @param array $array
@@ -12,9 +11,8 @@ interface TBKInterface
      */
     public function getCouponUrl(array $array);
 
-
     /**
-     * 获取详情
+     * 获取详情.
      * @param array $array
      * @return mixed
      */
@@ -27,31 +25,30 @@ interface TBKInterface
     public function search(array $array);
 
     /**
-     * 获取订单
+     * 获取订单.
      * @param array $array
      * @return mixed
      */
     public function getOrders(array $array = []);
 
     /**
-     * 自动绑定订单
+     * 自动绑定订单.
      * @param array $array
      * @return mixed
      */
     public function autoBindOrder(array $array = []);
 
     /**
-     * 手动提交订单
+     * 手动提交订单.
      * @param array $array
      * @return mixed
      */
     public function submitOrder(array $array);
 
     /**
-     * 爬虫
+     * 爬虫.
      * @param array $array
      * @return mixed
      */
     public function spider(array $array = []);
-
 }

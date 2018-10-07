@@ -2,18 +2,16 @@
 
 namespace App\Validators\Taoke;
 
-use \Prettus\Validator\Contracts\ValidatorInterface;
-use \Prettus\Validator\LaravelValidator;
+use Prettus\Validator\LaravelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class CouponValidator.
- *
- * @package namespace App\Validators\Taoke;
  */
 class CouponValidator extends LaravelValidator
 {
     /**
-     * Validation Rules
+     * Validation Rules.
      *
      * @var array
      */

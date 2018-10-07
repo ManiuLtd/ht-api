@@ -22,7 +22,4 @@ class CommissionLevel extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
-
-
-
 }

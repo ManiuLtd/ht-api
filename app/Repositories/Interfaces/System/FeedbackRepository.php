@@ -5,8 +5,7 @@ namespace App\Repositories\Interfaces\System;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface FeedbackRepository
- * @package App\Repositories\Interfaces\System
+ * Interface FeedbackRepository.
  */
 interface FeedbackRepository extends RepositoryInterface
 {

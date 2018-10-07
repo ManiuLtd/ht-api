@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Sms
- * @package App\Models\System
+ * Class Sms.
  */
 class Sms extends Model implements Transformable
 {
@@ -34,6 +33,7 @@ class Sms extends Model implements Transformable
     {
         return $this->toArray();
     }
+
     /**
      * 后台用户.
      * @return mixed

@@ -5,8 +5,7 @@ namespace App\Repositories\Interfaces\Member;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface GroupRepository
- * @package App\Repositories\Interfaces\Member
+ * Interface GroupRepository.
  */
 interface GroupRepository extends RepositoryInterface
 {

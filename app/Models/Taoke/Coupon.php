@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Coupon.
- *
- * @package namespace App\Models\Taoke;
  */
 class Coupon extends Model implements Transformable
 {
@@ -22,5 +20,4 @@ class Coupon extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
-
 }
