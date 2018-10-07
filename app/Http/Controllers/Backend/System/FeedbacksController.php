@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend\System;
 
 use App\Http\Controllers\Controller;
 use App\Validators\System\FeedbackValidator;
-use App\Http\Requests\System\FeedbackCreateRequest;
 use App\Repositories\Interfaces\System\FeedbackRepository;
 
 /**
@@ -41,7 +40,7 @@ class FeedbacksController extends Controller
     public function index()
     {
         $feedbacks = $this->repository
-            ->with(['user','member'])
+            ->with(['user', 'member'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $feedbacks);

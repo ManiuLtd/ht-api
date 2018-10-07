@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Taoke\CategoryValidator;
 use App\Http\Requests\Taoke\CategoryCreateRequest;
 use App\Http\Requests\Taoke\CategoryUpdateRequest;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CategoryRepository;
-use App\Validators\Taoke\CategoryValidator;
 
 /**
  * Class CategoriesController.
- *
- * @package namespace App\Http\Controllers\Taoke;
  */
 class CategoriesController extends Controller
 {
@@ -35,7 +33,7 @@ class CategoriesController extends Controller
     public function __construct(CategoryRepository $repository, CategoryValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -47,7 +45,7 @@ class CategoriesController extends Controller
     {
         $categories = $this->repository->paginate(request('limit', 10));
 
-        return json(1001,'获取成功',$categories);
+        return json(1001, '获取成功', $categories);
     }
 
     /**
@@ -57,13 +55,13 @@ class CategoriesController extends Controller
     public function store(CategoryCreateRequest $request)
     {
         try {
-
             $this->validator->with($request->all())->passesOrFail();
 
             $category = $this->repository->create($request->all());
-            return json(1001,'添加成功',$category);
+
+            return json(1001, '添加成功', $category);
         } catch (ValidatorException $e) {
-            return json(4001,$e->getMessageBag()->first());
+            return json(4001, $e->getMessageBag()->first());
         }
     }
 
@@ -78,9 +76,8 @@ class CategoriesController extends Controller
     {
         $category = $this->repository->find($id);
 
-        return json(1001,'获取成功',$category);
+        return json(1001, '获取成功', $category);
     }
-
 
     /**
      * @param CategoryUpdateRequest $request
@@ -94,14 +91,11 @@ class CategoriesController extends Controller
 
             $category = $this->repository->update($request->all(), $id);
 
-            return json(1001,'修改成功', $category);
-
+            return json(1001, '修改成功', $category);
         } catch (ValidatorException $e) {
-
-            return json(4001,$e->getMessageBag()->first());
+            return json(4001, $e->getMessageBag()->first());
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -112,9 +106,8 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-
         $this->repository->delete($id);
 
-        return json(1001,'删除成功');
+        return json(1001, '删除成功');
     }
 }

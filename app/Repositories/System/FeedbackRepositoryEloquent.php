@@ -3,14 +3,13 @@
 namespace App\Repositories\System;
 
 use App\Models\System\Feedback;
-use App\Repositories\Interfaces\System\FeedbackRepository;
 use App\Validators\System\FeedbackValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Repositories\Interfaces\System\FeedbackRepository;
 
 /**
- * Class FeedbackRepositoryEloquent
- * @package App\Repositories\System
+ * Class FeedbackRepositoryEloquent.
  */
 class FeedbackRepositoryEloquent extends BaseRepository implements FeedbackRepository
 {

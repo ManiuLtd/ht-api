@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\Backend\Taoke;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use App\Http\Controllers\Controller;
+use App\Validators\Taoke\CouponValidator;
 use App\Http\Requests\CouponCreateRequest;
 use App\Http\Requests\CouponUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
-use App\Validators\Taoke\CouponValidator;
 
 /**
  * Class CouponsController.
- *
- * @package namespace App\Http\Controllers\Taoke;
  */
 class CouponsController extends Controller
 {
@@ -39,7 +35,7 @@ class CouponsController extends Controller
     public function __construct(CouponRepository $repository, CouponValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -53,7 +49,6 @@ class CouponsController extends Controller
         $coupons = $this->repository->all();
 
         if (request()->wantsJson()) {
-
             return response()->json([
                 'data' => $coupons,
             ]);
@@ -74,7 +69,6 @@ class CouponsController extends Controller
     public function store(CouponCreateRequest $request)
     {
         try {
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $coupon = $this->repository->create($request->all());
@@ -85,7 +79,6 @@ class CouponsController extends Controller
             ];
 
             if ($request->wantsJson()) {
-
                 return response()->json($response);
             }
 
@@ -94,7 +87,7 @@ class CouponsController extends Controller
             if ($request->wantsJson()) {
                 return response()->json([
                     'error'   => true,
-                    'message' => $e->getMessageBag()
+                    'message' => $e->getMessageBag(),
                 ]);
             }
 
@@ -114,7 +107,6 @@ class CouponsController extends Controller
         $coupon = $this->repository->find($id);
 
         if (request()->wantsJson()) {
-
             return response()->json([
                 'data' => $coupon,
             ]);
@@ -150,7 +142,6 @@ class CouponsController extends Controller
     public function update(CouponUpdateRequest $request, $id)
     {
         try {
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $coupon = $this->repository->update($request->all(), $id);
@@ -161,25 +152,21 @@ class CouponsController extends Controller
             ];
 
             if ($request->wantsJson()) {
-
                 return response()->json($response);
             }
 
             return redirect()->back()->with('message', $response['message']);
         } catch (ValidatorException $e) {
-
             if ($request->wantsJson()) {
-
                 return response()->json([
                     'error'   => true,
-                    'message' => $e->getMessageBag()
+                    'message' => $e->getMessageBag(),
                 ]);
             }
 
             return redirect()->back()->withErrors($e->getMessageBag())->withInput();
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -193,7 +180,6 @@ class CouponsController extends Controller
         $deleted = $this->repository->delete($id);
 
         if (request()->wantsJson()) {
-
             return response()->json([
                 'message' => 'Coupon deleted.',
                 'deleted' => $deleted,

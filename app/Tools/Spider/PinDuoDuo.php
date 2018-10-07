@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: hongtang
  * Date: 2018/10/6
- * Time: 16:49
+ * Time: 16:49.
  */
 
 namespace App\Tools\Spider;
-
 
 use Ixudra\Curl\Facades\Curl;
 
@@ -22,18 +21,17 @@ class PinDuoDuo
     public function __construct()
     {
         $config = config('coupon');
-        $this->client_id = data_get($config,'pinduoduo.PDD_CLIENT_ID');
-        $this->client_secret = data_get($config,'pinduoduo.PDD_CLIENT_SECRET');
+        $this->client_id = data_get($config, 'pinduoduo.PDD_CLIENT_ID');
+        $this->client_secret = data_get($config, 'pinduoduo.PDD_CLIENT_SECRET');
     }
 
     /**
      * @param int $page
      * @return array
      */
-    public function PDDSearch($page=1)
+    public function PDDSearch($page = 1)
     {
         $time = time();
-
 
         $params = [
             'client_id' => $this->client_id,
@@ -55,7 +53,6 @@ class PinDuoDuo
         $result = json_decode($result);
 
         if (isset($result->error_response)) {
-
             return [
                 'code' => 4004,
                 'message' => $result->error_response->error_msg,
@@ -63,7 +60,6 @@ class PinDuoDuo
         }
 
         if (isset($result->goods_search_response)) {
-
             return [
                 'code' => 1001,
                 'data' => [
@@ -73,6 +69,4 @@ class PinDuoDuo
             ];
         }
     }
-
-
 }

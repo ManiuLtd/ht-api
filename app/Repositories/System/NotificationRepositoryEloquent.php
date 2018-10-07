@@ -3,14 +3,13 @@
 namespace App\Repositories\System;
 
 use App\Models\System\Notification;
-use App\Repositories\Interfaces\System\NotificationRepository;
-use App\Validators\System\NotificationValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Validators\System\NotificationValidator;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Repositories\Interfaces\System\NotificationRepository;
 
 /**
- * Class NotificationRepositoryEloquent
- * @package App\Repositories\System
+ * Class NotificationRepositoryEloquent.
  */
 class NotificationRepositoryEloquent extends BaseRepository implements NotificationRepository
 {

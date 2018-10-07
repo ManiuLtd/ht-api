@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
+use App\Validators\Taoke\QuanValidator;
 use App\Http\Requests\Taoke\QuanCreateRequest;
 use App\Http\Requests\Taoke\QuanUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\QuanRepository;
-use App\Validators\Taoke\QuanValidator;
 
 /**
  * Class CategoriesController.
- *
- * @package namespace App\Http\Controllers\Taoke;
  */
 class QuansController extends Controller
 {
@@ -36,7 +34,7 @@ class QuansController extends Controller
     public function __construct(QuanRepository $repository, QuanValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -47,9 +45,10 @@ class QuansController extends Controller
     public function index()
     {
         $quans = $this->repository
-            ->with(['user','goods'])
+            ->with(['user', 'goods'])
             ->paginate(request('limit', 10));
-        return json(1001,'获取成功',$quans);
+
+        return json(1001, '获取成功', $quans);
     }
 
     /**
@@ -62,9 +61,10 @@ class QuansController extends Controller
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $quan = $this->repository->create($request->all());
-            return json(1001,'添加成功',$quan);
+
+            return json(1001, '添加成功', $quan);
         } catch (ValidatorException $e) {
-            return json(4001,$e->getMessageBag()->first());
+            return json(4001, $e->getMessageBag()->first());
         }
     }
 
@@ -79,9 +79,8 @@ class QuansController extends Controller
     {
         $quan = $this->repository->find($id);
 
-        return json(1001,'获取成功',$quan);
+        return json(1001, '获取成功', $quan);
     }
-
 
     /**
      * @param QuanUpdateRequest $request
@@ -95,14 +94,11 @@ class QuansController extends Controller
 
             $quan = $this->repository->update($request->all(), $id);
 
-            return json(1001,'修改成功', $quan);
-
+            return json(1001, '修改成功', $quan);
         } catch (ValidatorException $e) {
-
-            return json(4001,$e->getMessageBag()->first());
+            return json(4001, $e->getMessageBag()->first());
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -114,6 +110,7 @@ class QuansController extends Controller
     public function destroy($id)
     {
         $this->repository->delete($id);
-        return json(1001,'删除成功');
+
+        return json(1001, '删除成功');
     }
 }

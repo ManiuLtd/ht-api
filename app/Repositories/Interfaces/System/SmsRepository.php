@@ -5,8 +5,7 @@ namespace App\Repositories\Interfaces\System;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface SmsRepository
- * @package App\Repositories\Interfaces\System
+ * Interface SmsRepository.
  */
 interface SmsRepository extends RepositoryInterface
 {

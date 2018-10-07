@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Feedback
- * @package App\Models\System
+ * Class Feedback.
  */
 class Feedback extends Model implements Transformable
 {
@@ -34,6 +33,7 @@ class Feedback extends Model implements Transformable
     {
         return $this->toArray();
     }
+
     /**
      * 后台用户.
      * @return mixed
@@ -44,11 +44,11 @@ class Feedback extends Model implements Transformable
     }
 
     /**
-     * 前端用户
+     * 前端用户.
      * @return $this
      */
     public function member()
     {
-        return $this->belongsTo('App\Models\Member\Member','member_id')->withDefault(null);
+        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
     }
 }

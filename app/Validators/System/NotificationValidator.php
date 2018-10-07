@@ -6,8 +6,7 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class NotificationValidator
- * @package App\Validators\System
+ * Class NotificationValidator.
  */
 class NotificationValidator extends LaravelValidator
 {

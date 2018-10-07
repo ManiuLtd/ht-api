@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Backend\System;
 
 use App\Http\Controllers\Controller;
 use App\Validators\System\NotificationValidator;
-use App\Http\Requests\System\NotificationCreateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
+use App\Http\Requests\System\NotificationCreateRequest;
 use App\Repositories\Interfaces\System\NotificationRepository;
 
 /**
@@ -43,7 +43,7 @@ class NotificationsController extends Controller
     public function index()
     {
         $notifications = $this->repository
-            ->with(['user','member'])
+            ->with(['user', 'member'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $notifications);
