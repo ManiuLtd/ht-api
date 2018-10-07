@@ -5,7 +5,7 @@ namespace App\Repositories\Image;
 use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
 use App\Validators\Image\BannerValidator;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Image\BannerRepository;
 
@@ -56,19 +56,5 @@ class BannerRepositoryEloquent extends BaseRepository implements BannerRepositor
     public function presenter()
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
-    }
-
-    public function getImage(Request $request)
-    {
-        $where = [];
-        $tag = $request->tag;
-        if($tag){
-            $where['tag'] = $tag;
-        }
-        $image = db('banners')
-            ->where($where)
-            ->orderBy('sort','desc')
-            ->get();
-        return json('1001','图标列表获取成功',$image);
     }
 }

@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Api\Image;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Image\BannerRepository;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Mockery\Exception;
 
 /**
@@ -34,15 +34,15 @@ class BannersController extends Controller
     public function index(Request $request)
     {
         try{
-            $where = [];
+            $where = ['status'=>1];
             $tag = $request->tag;
             if($tag){
                 $where['tag'] = $tag;
             }
-            $image = db('banners')
-                ->where($where)
+            $image = $this->bannerrepository
+                ->with('user')
                 ->orderBy('sort','desc')
-                ->get();
+                ->findWhere($where);
             return json('1001','图标列表获取成功',$image);
         }catch (Exception $e)
         {
