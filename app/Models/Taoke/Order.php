@@ -33,4 +33,9 @@ class Order extends Model implements Transformable
     {
         return $this->toArray();
     }
+
+    public function member()
+    {
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
+    }
 }
