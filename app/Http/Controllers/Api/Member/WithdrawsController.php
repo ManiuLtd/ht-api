@@ -11,6 +11,8 @@ namespace App\Http\Controllers\Api\Member;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Member\WithdrawRepository;
+use App\Validators\Member\WithdrawValidator;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
  * 提现
@@ -23,27 +25,38 @@ class WithdrawsController extends Controller
      * @var
      */
     protected $withdrawRepository;
+    /**
+     * @var
+     */
+    protected $withdrawValidator;
 
     /**
      * WithdrawsController constructor.
      * @param WithdrawRepository $withdrawRepository
+     * @param WithdrawValidator $withdrawValidator
      */
-    public function __construct(WithdrawRepository $withdrawRepository)
+    public function __construct(WithdrawRepository $withdrawRepository,WithdrawValidator $withdrawValidator)
     {
         $this->withdrawRepository = $withdrawRepository;
+        $this->withdrawValidator = $withdrawValidator;
     }
 
-    //TODO 提现功能  不能重复提现
+    //提现功能  不能重复提现
     public function index()
     {
-//        try {
-            return $this->withdrawRepository->recharge();
-//        } catch (\Exception $e) {
-//            return response()->json([
-//                'code' => 5001,
-//                'message' => $e->getMessage()
-//            ]);
-//        }
+        try {
+            $this->withdrawValidator->with(request()->all())->passesOrFail();
+        }catch (ValidatorException $e){
+            return json(4001,$e->getMessageBag()->first());
+        }
+        try {
+            return $this->withdrawRepository->withdraw();
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 4001,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -53,10 +66,11 @@ class WithdrawsController extends Controller
     {
         //提现
         try {
-            return $this->withdrawRepository->getWithdrawData();
+            $withdraw = $this->withdrawRepository->getWithdrawData();
+            return json(1001,'获取成功',$withdraw);
         }catch (\Exception $e){
 
-            return json(4004,$e->getMessage());
+            return json(4001,$e->getMessage());
         }
 
     }

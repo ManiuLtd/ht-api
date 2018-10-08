@@ -39,7 +39,7 @@ class Commission
      */
     public function selfPush($id, $date_type='month')
     {
-        $query = DB::table('tbk_orders')->where([
+        $query = db('tbk_orders')->where([
             'member_id'=>$id,
             'status' => 3
         ])->whereYear('created_at', now()->year)
@@ -66,7 +66,7 @@ class Commission
      */
     public function subordinate($id, $date_type='month')
     {
-        $query = DB::table('tbk_orders')->where('status', 3)
+        $query = db('tbk_orders')->where('status', 3)
 
             ->whereIn('member_id',function ($query) use ($id) {
                 $query->select('id')
@@ -103,7 +103,7 @@ class Commission
         if ($id != $group->member_id) {
             return 0;
         }
-        $query = DB::table('tbk_orders')->where('status', 3)
+        $query = db('tbk_orders')->where('status', 3)
             ->whereYear('created_at', now()->year)
             ->whereMonth('created_at',now()->month)
             ->whereIn('member_id',function ($query) use ($group){
@@ -134,13 +134,13 @@ class Commission
         //我的团队
         $group = Member::find($id)->group;
         //不是其他用户的老组长
-        if (!count($old_group = DB::table('members')->select(['group_id'])->where('oldgroup_id', $group->id)->get())) {
+        if (!count($old_group = db('members')->select(['group_id'])->where('oldgroup_id', $group->id)->get())) {
             return 0;
         }
         $group_arr = $old_group->pluck('group_id')->toArray();
         $group_arr = array_unique($group_arr);
 
-        $query = DB::table('tbk_orders')->where('status', 3)
+        $query = db('tbk_orders')->where('status', 3)
             ->whereYear('created_at', now()->year)
             ->whereMonth('created_at',now()->month)
             ->whereIn('member_id',function ($query) use ($group_arr){
@@ -166,7 +166,7 @@ class Commission
      */
     public function level($id)
     {
-        return Member::find($id)->level_com;
+        return Member::find($id)->commissionLevel;
     }
 
 }

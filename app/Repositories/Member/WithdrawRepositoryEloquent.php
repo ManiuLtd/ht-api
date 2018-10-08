@@ -2,20 +2,12 @@
 
 namespace App\Repositories\Member;
 
-use App\Models\Member\Member;
 use App\Models\Member\Withdraw;
 use App\Criteria\RequestCriteria;
-use App\Models\Taoke\Order;
-use App\Repositories\Interfaces\Member\CreditLogRepository;
-use App\Repositories\Interfaces\Member\MemberRepository;
-use App\Repositories\Interfaces\Taoke\OrderRepository;
 use App\Tools\Taoke\Commission;
 use App\Validators\Member\WithdrawValidator;
-use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\WithdrawRepository;
-use Prettus\Validator\Exceptions\ValidatorException;
-
 /**
  * Class WithdrawRepositoryEloquent.
  */
@@ -26,20 +18,16 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      * @var
      */
     protected $commission;
-    /**
-     * @var
-     */
-    protected $withdrawValidator;
+
 
     /**
      * WithdrawRepositoryEloquent constructor.
      * @param Commission $commission
-     * @param WithdrawValidator $withdrawValidator
      */
-    public function __construct( Commission $commission,WithdrawValidator $withdrawValidator)
+    public function __construct( Commission $commission)
     {
         $this->commission = $commission;
-        $this->withdrawValidator = $withdrawValidator;
+
     }
     /**
      * @var array
@@ -65,31 +53,24 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      * 申请提现
      * @return \Illuminate\Http\JsonResponse
      */
-    public function recharge()
+    public function withdraw()
     {
-
-        try {
-            $this->withdrawValidator->with(request()->all())->passesOrFail();
-        }catch (ValidatorException $e){
-            return json(4004,$e->getMessageBag()->first());
-        }
         //TODO 判断系统设置提现上线和提现下线
-
 
         //对比提现金额和余额
         $id = getMemberId();
-        $member = DB::table('members')->find($id);
+        $member = db('members')->find($id);
         $amount = request('amount');
         if ($amount > $member->credit1) {
-            return json(5001,'可提现金额不足');
+            return json(4001,'可提现金额不足');
         }
-        $withdraw = DB::table('member_withdraws')->orderBy('id','desc')->where([
+        $withdraw = db('member_withdraws')->orderBy('id','desc')->where([
             'member_id' => $id,
             'status' => 0
         ])->first();
 
         if ($withdraw) {
-            return json(5001,'已有在审核中的提现申请');
+            return json(4001,'已有在审核中的提现申请');
         }
         $data = [
             'member_id' => $id,
@@ -100,18 +81,18 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
             'money' => request('amount'),
             'status' => 0,
         ];
-        DB::table('member_withdraws')->insert($data);
+        db('member_withdraws')->insert($data);
         return json(1001,'申请提现成功');
     }
 
     /**
      * 提现计算
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      */
     public function getWithdrawData()
     {
         $id = getMemberId();
-        $member = DB::table('members')->find($id);
+        $member = db('members')->find($id);
         //本月预估收益
         //自推收益
         $self_commission = $this->commission->selfPush($id);
@@ -134,18 +115,19 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         $day_old_leader = $this->commission->old_leader($id,'day');
         $day_commission = $day_self_commission + $day_subordinate + $day_leader + $day_old_leader;
 
-        $settlement = DB::table('member_credit_logs')->where([
+        $settlement = db('member_credit_logs')->where([
             'type'=>2,
             'credit_type'=>1,
         ])->whereYear('created_at', now()->year)
         ->whereMonth('created_at', now()->subMonth(1)->month)
         ->sum('credit');
-        return json(1001,'获取成功',[
+
+        return [
             'month_commission' => $month_commission,//本月预估
             'day_commission' => $day_commission,//今日收益
             'settlement' => $settlement,//上月结算
             'money' => $member->credit1 ?? 0,//可提现
-        ]);
+        ];
 
     }
 
