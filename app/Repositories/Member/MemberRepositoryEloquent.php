@@ -7,6 +7,8 @@ use App\Criteria\RequestCriteria;
 use App\Validators\Member\MemberValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\MemberRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 /**
  * Class MemberRepositoryEloquent.
@@ -21,6 +23,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         'status',
         'inviter_id',
         'member_id',
+        'phone'
     ];
 
     /**
@@ -102,32 +105,35 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function friend_list($id)
+    public function friendsList($id)
     {
-        $member = Member::query()->find($id);
-        if (!$member){
-            return json('4001','用户不存在');
-        }
         $member_first =  Member::query()
             ->with(['level', 'inviter'])
             ->where('inviter_id', $id)
             ->orderBy('id', 'desc')
-            ->get()->toArray();
+            ->get()
+            ->toArray();
         if (count($member_first) > 0){
-            $er_id = [];
-            foreach ($member_first as $v){
-                $er_id[] = $v['id'];
-            }
             $member_second = Member::query()
-                ->with(['level', 'inviter'])
-                ->whereIn('inviter_id', $er_id)
+                ->whereIn('inviter_id', function ($query) use ($id) {
+                    $query->select('id')
+                        ->from('members')
+                        ->where('inviter_id', $id);
+                })
                 ->orderBy('id', 'desc')
-                ->get()->toArray();
+                ->with(['level', 'inviter'])
+                ->get()
+                ->toArray();
         }else{
             $member_second = [];
         }
         $friend_list = array_merge($member_first,$member_second);
-        return json('1001','好友列表',$friend_list);
-
+        $currentPage =  LengthAwarePaginator::resolveCurrentPage() - 1;
+        $collection = new Collection($friend_list);
+        $perPage = 20;
+        $currentPageSearchResults = $collection->slice($currentPage * $perPage, $perPage)->all();
+        $paginatedSearchResults= new LengthAwarePaginator($currentPageSearchResults, count($friend_list), $perPage);
+        $paginatedSearchResults = $paginatedSearchResults->setPath($_SERVER['HTTP_HOST'].'/api/member/friend_list');
+        return json('1001','好友列表',$paginatedSearchResults);
     }
 }

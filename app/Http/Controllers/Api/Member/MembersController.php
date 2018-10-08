@@ -58,9 +58,9 @@ class MembersController extends Controller
         $member_id = getMemberId();
         try {
             if($inviter_id){
-                return $this->repository->friend_list($inviter_id);
+                return $this->repository->friendsList($inviter_id);
             }else{
-                return $this->repository->friend_list($member_id);
+                return $this->repository->friendsList($member_id);
             }
         } catch (Exception $e) {
             return json(5001,$e->getMessage());

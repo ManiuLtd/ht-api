@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Cms\ArticleRepository;
+use App\Criteria\ArticleCriteria;
 
 /**
  * Class ArticlesController
@@ -39,12 +40,11 @@ class ArticlesController extends  Controller
     public function index()
     {
         try {
-            $type = request('category_id');
-            if($type){
-                return $this->repository->type_list($type);
-            }else{
-                return $this->repository->type_list();
-            }
+            $article = $this->repository
+                ->pushCriteria(new ArticleCriteria())
+                ->with(['user', 'category'])
+                ->paginate(request('limit', 10));
+            return json(1001, '列表获取成功', $article);
         } catch (Exception $e) {
             return json(5001,$e->getMessage());
         }
