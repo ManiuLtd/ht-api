@@ -88,6 +88,16 @@ class Member extends Model implements Transformable
         return $this->belongsTo('App\Models\Member\Level', 'level1')->withDefault(null);
     }
 
+
+    /**
+     * 组
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id')->withDefault(null);
+    }
+
     /**
      * 当前用户会员分销等级.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
@@ -95,6 +105,7 @@ class Member extends Model implements Transformable
     public function commissionLevel()
     {
         return $this->belongsTo('App\Models\Member\CommissionLevel', 'level2')->withDefault(null);
+
     }
 
     /**

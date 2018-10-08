@@ -16,11 +16,19 @@ class WithdrawValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
-        ValidatorInterface::RULE_UPDATE => [
-            'deduct_money' => 'number',
-            'status' => 'integer|in:0,1,2',
-            'pay_type' => 'integer|in:1,2,3',
-        ],
+        'realname' => 'required',
+        'bankname' => 'required',
+        'bankcard' => 'required|numeric',
+        'alipay' => 'required',
+        'amount' => 'required|numeric',
+    ];
+    protected $messages = [
+        'realname.required' => '姓名不能为空',
+        'bankname.required' => '银行名称不能为空',
+        'bankcard.numeric' => '银行卡号不合法',
+        'bankcard.required' => '银行卡号不能为空',
+        'alipay.required' => '支付宝不能为空',
+        'amount.numeric' => '提现金额不合法',
+        'amount.required' => '提现金额不能为空'
     ];
 }

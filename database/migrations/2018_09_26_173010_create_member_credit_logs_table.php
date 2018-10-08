@@ -23,7 +23,8 @@ class CreateMemberCreditLogsTable extends Migration
             $table->integer('member_id')->nullable();
             $table->integer('operater_id')->nullable();
             $table->decimal('credit', 8, 2)->nullable()->default(0.00);
-            $table->tinyInteger('type')->nullable();
+            $table->tinyInteger('type')->nullable();// 1充值 2订单返利 3邀请返利 4提现 5积分兑换余额 6后台增加积分  7后台删除积分
+            $table->tinyInteger('credit_type')->nullable();// 1 余额 2积分
             $table->string('remark', 191)->nullable();
             $table->nullableTimestamps();
 
