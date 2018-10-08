@@ -34,14 +34,9 @@ class BannersController extends Controller
     public function index(Request $request)
     {
         try{
-            $where = ['status'=>1];
-            $tag = $request->tag;
-            if($tag){
-                $where['tag'] = $tag;
-            }
             $image = $this->bannerrepository
                 ->orderBy('sort','desc')
-                ->findWhere($where);
+                ->findWhere(['status'=>1]);
             return json('1001','图标列表获取成功',$image);
         }catch (Exception $e)
         {

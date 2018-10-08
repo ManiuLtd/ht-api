@@ -43,5 +43,13 @@ class NotificationsController extends Controller
      */
     public function index(Request $request)
     {
+        try{
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $notification = $this->repository->create($request->all());
+            return json('1001','创建成功',$notification);
+        }catch (ValidatorException $e)
+        {
+            return json('4001',$e->getMessageBag()->first());
+        }
     }
 }

@@ -41,7 +41,6 @@ class SettingsController extends Controller
     // TODO 获取设置信息
     public function index()
     {
-
     }
 
 }

@@ -34,6 +34,20 @@ class Notification extends Model implements Transformable
         return $this->toArray();
     }
 
+
+    /**
+     * The "booting" method of the model.
+     */
+    public static function boot()
+    {
+        parent::boot();
+        //创建之前
+        self::creating(function ($model) {
+            $model->member_id = getMemberId();
+            $model->user_id = getUserId();
+            $model->sendno = 'HT'.rand(10000,99999);
+        });
+    }
     /**
      * 后台用户.
      * @return mixed
