@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\System;
 
+use App\Criteria\DatePickerCriteria;
+use App\Criteria\MemberCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\System\NotificationValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -35,13 +37,23 @@ class NotificationsController extends Controller
         $this->repository = $repository;
         $this->validator = $validator;
     }
-
     /**
      * //TODO 通知列表 可根据类型创建
+     * 通知列表
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-
+        try{
+            $notification = $this->repository
+                ->pushCriteria(new DatePickerCriteria())
+                ->pushCriteria(new MemberCriteria())
+                ->with(['member'])
+                ->paginate(request('limit', 10));
+            return json(1001,'',$notification);
+        }catch (\Exception $e){
+            return json(5001,$e->getMessage());
+        }
     }
 
 
