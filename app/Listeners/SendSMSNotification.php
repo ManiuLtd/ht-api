@@ -34,7 +34,7 @@ class SendSMSNotification
         $lastSendTime = cache('SMS_'.$phone);
         if (! $lastSendTime) {
             $lastSendTime = time();
-            Cache::put('SMS_'.$phone, $lastSendTime, now()->addSecond(60));
+            Cache::put('SMS_'.$phone, $lastSendTime, now()->addSecond(1));
         } elseif (time() - $lastSendTime < 60) {
             throw  new InvalidArgumentException('验证码发送过于频繁');
         }

@@ -4,7 +4,6 @@ namespace App\Criteria;
 
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
-use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 /**
  * Class MemberCriteria.
