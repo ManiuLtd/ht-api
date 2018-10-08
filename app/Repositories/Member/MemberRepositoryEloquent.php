@@ -63,16 +63,16 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
     }
 
     /**
-     * 获取三级粉丝.
-     * @param $member
-     * @param $level
+     * 获取三级粉丝
+     * @param int $level
      * @return mixed
      */
-    public function getFriends($member, $level)
+    public function getFrineds($level = 1)
     {
+        $inviterId = request ('inviter_id') ? request ('inviter_id') : getMemberId ();
         //一级粉丝
         if ($level == 1) {
-            return Member::where('inviter_id', $member->id)
+            return Member::where('inviter_id', $inviterId)
                 ->orderBy('id', 'desc')
                 ->paginate(20);
         }
@@ -100,40 +100,4 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         }
     }
 
-    /**
-     * 好友列表  二级
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function friendsList($id)
-    {
-        $member_first =  Member::query()
-            ->with(['level', 'inviter'])
-            ->where('inviter_id', $id)
-            ->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
-        if (count($member_first) > 0){
-            $member_second = Member::query()
-                ->whereIn('inviter_id', function ($query) use ($id) {
-                    $query->select('id')
-                        ->from('members')
-                        ->where('inviter_id', $id);
-                })
-                ->orderBy('id', 'desc')
-                ->with(['level', 'inviter'])
-                ->get()
-                ->toArray();
-        }else{
-            $member_second = [];
-        }
-        $friend_list = array_merge($member_first,$member_second);
-        $currentPage =  LengthAwarePaginator::resolveCurrentPage() - 1;
-        $collection = new Collection($friend_list);
-        $perPage = 20;
-        $currentPageSearchResults = $collection->slice($currentPage * $perPage, $perPage)->all();
-        $paginatedSearchResults= new LengthAwarePaginator($currentPageSearchResults, count($friend_list), $perPage);
-        $paginatedSearchResults = $paginatedSearchResults->setPath($_SERVER['HTTP_HOST'].'/api/member/friend_list');
-        return json('1001','好友列表',$paginatedSearchResults);
-    }
 }

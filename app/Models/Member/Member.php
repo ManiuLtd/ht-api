@@ -89,6 +89,15 @@ class Member extends Model implements Transformable
     }
 
     /**
+     * 当前用户会员分销等级.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
+     */
+    public function commissionLevel()
+    {
+        return $this->belongsTo('App\Models\Member\CommissionLevel', 'level2')->withDefault(null);
+    }
+
+    /**
      * 用户收货地址
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

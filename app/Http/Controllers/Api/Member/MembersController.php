@@ -39,12 +39,13 @@ class MembersController extends Controller
      */
     public function index()
     {
-        $member_id = getMemberId();
         try {
-            $members = $this->repository->with(['level', 'inviter'])->find($member_id);
-            return json(1001, '会员信息获取成功', $members);
-        } catch (Exception $e) {
-            return json(5001,$e->getMessage());
+            $memberId = getMemberId ();
+            $members = $this->repository->with (['commissionLevel', 'inviter'])->find ($memberId);
+
+            return json (1001, '会员信息获取成功', $members);
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -54,16 +55,11 @@ class MembersController extends Controller
      */
     public function friends()
     {
-        $inviter_id = request('inviter_id');
-        $member_id = getMemberId();
+
         try {
-            if($inviter_id){
-                return $this->repository->friendsList($inviter_id);
-            }else{
-                return $this->repository->friendsList($member_id);
-            }
-        } catch (Exception $e) {
-            return json(5001,$e->getMessage());
+            return $this->repository->getFrineds ();
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessage ());
         }
     }
 }
