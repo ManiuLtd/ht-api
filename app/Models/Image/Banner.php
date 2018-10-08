@@ -28,7 +28,6 @@ class Banner extends Model implements Transformable
     protected $hidden = [
         'user_id',
     ];
-
     /**
      * 字段映射.
      * @return array

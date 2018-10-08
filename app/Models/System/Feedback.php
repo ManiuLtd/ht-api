@@ -51,4 +51,16 @@ class Feedback extends Model implements Transformable
     {
         return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
     }
+
+    /**
+     * The "booting" method of the model.
+     */
+    public static function boot()
+    {
+        parent::boot();
+        //创建之前 修改memberid
+        self::creating(function ($model) {
+            $model->member_id = getMemberId();
+        });
+    }
 }

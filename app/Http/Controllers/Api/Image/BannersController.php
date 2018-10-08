@@ -6,10 +6,13 @@
  * Time: 16:18
  */
 
-namespace App\Http\Controllers\Api\Member;
+namespace App\Http\Controllers\Api\Image;
 
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Interfaces\Image\BannerRepository;
+use Illuminate\Http\Request;
+use Mockery\Exception;
 
 /**
  * 图片管理
@@ -22,13 +25,20 @@ class BannersController extends Controller
     /**
      * FriendsController constructor.
      */
-    public function __construct()
+    public function __construct(BannerRepository $bannerRepository)
     {
+        $this->bannerrepository = $bannerRepository;
     }
 
     //TODO 图标列表 可根据tag查看,根据sort排序
-    public function index()
+    public function index(Request $request)
     {
-
+        try{
+            $image = $this->bannerrepository->all();
+            return json('1001','图标列表获取成功',$image);
+        }catch (Exception $e)
+        {
+            return json('5001',$e->getMessage());
+        }
     }
 }

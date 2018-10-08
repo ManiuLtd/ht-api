@@ -21,7 +21,6 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->only(['email', 'password']);
-
         try {
             $token = Auth::guard()->attempt($credentials);
 
@@ -31,7 +30,6 @@ class LoginController extends Controller
         } catch (JWTException $e) {
             return json(5001, $e->getMessage());
         }
-
         return $this->respondWithToken($token);
     }
 

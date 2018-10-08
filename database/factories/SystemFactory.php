@@ -31,6 +31,7 @@ $factory->define(App\Models\System\Feedback::class, function (Faker $faker) {
         'user_id' => 1,
         'member_id' => rand(1, 50),
         'content' => $faker->text,
+        'title' => $faker->text,
         'images' => $faker->imageUrl(300, 100),
     ];
 });

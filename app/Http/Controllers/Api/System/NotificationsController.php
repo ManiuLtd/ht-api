@@ -6,6 +6,8 @@ use App\Criteria\DatePickerCriteria;
 use App\Criteria\MemberCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\System\NotificationValidator;
+use Illuminate\Http\Request;
+use Mockery\Exception;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\System\NotificationCreateRequest;
@@ -42,7 +44,7 @@ class NotificationsController extends Controller
      * 通知列表
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         try{
             $notification = $this->repository
