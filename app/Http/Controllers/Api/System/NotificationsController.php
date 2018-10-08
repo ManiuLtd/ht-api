@@ -46,6 +46,5 @@ class NotificationsController extends Controller
      */
     public function index(Request $request)
     {
-        
     }
 }
