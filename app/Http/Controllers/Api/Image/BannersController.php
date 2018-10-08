@@ -40,7 +40,6 @@ class BannersController extends Controller
                 $where['tag'] = $tag;
             }
             $image = $this->bannerrepository
-                ->with('user')
                 ->orderBy('sort','desc')
                 ->findWhere($where);
             return json('1001','图标列表获取成功',$image);

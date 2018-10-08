@@ -41,20 +41,11 @@ class FeedbacksController extends Controller
      */
     public function index(Request $request)
     {
-//        $member = auth()->user();
-//        if(!$member){
-//            return json('5001','该用户不存在');
-//        }
         try{
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $data = $request->all();
-                //添加留言反馈
-                $feedback = $this->repository->create([
-                    'member_id'=>1,
-                    'content'=>$data['content'],
-                    'images'=>$data['images'],
-                ]);
-                return json('1001','留言反馈成功',$feedback);
+            //添加留言反馈
+            $feedback = $this->repository->create($request->all());
+            return json('1001','留言反馈成功',$feedback);
         }catch (Exception $e)
         {
             return json('5001',$e->getMessage());
