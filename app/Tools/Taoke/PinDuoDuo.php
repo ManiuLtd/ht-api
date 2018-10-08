@@ -42,7 +42,48 @@ class PinDuoDuo implements TBKInterface
      */
     public function getDetail(array $array)
     {
-        // TODO: Implement getDetail() method.
+        //  Implement getDetail() method.
+
+        $id = data_get($array,'id');
+        if (!is_numeric($id)) {
+            return [
+                'code'=>4004,
+                'message' => '商品id类型错误！',
+            ];
+        }
+        $time = time();
+        $params = [
+            'client_id' => $this->client_id,
+            'goods_id_list' => "[$id]",
+            'timestamp' => $time,
+            'type' => 'pdd.ddk.goods.detail',
+
+        ];
+
+        $str = 'client_id'.$this->client_id.'goods_id_list['.$id.']timestamp'.$time.'typepdd.ddk.goods.detail';
+        $sign = strtoupper(md5($this->client_secret.$str.$this->client_secret));
+
+        $params['sign'] = $sign;
+
+        $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
+            ->withData($params)
+            ->post();
+        $result = json_decode($result);
+
+        if (isset($result->error_response)) {
+            return [
+                'code' => 4004,
+                'message' => $result->error_response,
+            ];
+        }
+
+        return [
+            'code' => 1001,
+            'message' => '获取成功',
+            'data' => data_get($result,'goods_detail_response.goods_details.0',[]),
+        ];
+
+
     }
 
     /**

@@ -105,3 +105,15 @@ if (! function_exists('getUserId')) {
         return 1;
     }
 }
+
+
+if (! function_exists('getMemberId')) {
+
+    /**
+     * @return int|mixed
+     */
+    function getMemberId()
+    {
+        return 1;
+    }
+}
