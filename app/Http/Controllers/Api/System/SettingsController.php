@@ -41,7 +41,7 @@ class SettingsController extends Controller
     // TODO 获取设置信息
     public function index()
     {
-        $setting = $this->repository->find(1);
+        $setting = $this->repository->firstOrNew();
         return json('1001','设置信息',$setting);
     }
 
