@@ -8,9 +8,9 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 use App\Criteria\DatePickerCriteria;
+use App\Criteria\MemberCriteria;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
-use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 
 /**
@@ -39,13 +39,12 @@ class OrdersController extends Controller
      */
     public function index()
     {
-//        $where['member_id'] = Auth::user()->id;
-        $where['member_id'] = 1;
         try{
             $order = $this->repository
                 ->with('member')
                 ->pushCriteria(new DatePickerCriteria())
-                ->findWhere($where);
+                ->pushCriteria(new MemberCriteria())
+                ->paginate(request('limit', 10));
             return json(1001, '列表获取成功', $order);
         }catch (\Exception $e){
             return json(5001,$e->getMessage());
