@@ -6,9 +6,9 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class ArticleCriteria.
+ * Class ArticleCategoryCriteria.
  */
-class ArticleCriteria implements CriteriaInterface
+class ArticleCategoryCriteria implements CriteriaInterface
 {
     /**
      * 根据分类id筛选，
@@ -18,9 +18,10 @@ class ArticleCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $type = request('category_id');
-        if ($type) {
-            return $model->where('category_id',$type);
+        $cateID = request('category_id');
+        
+        if ($cateID) {
+            return $model->where('category_id',$cateID);
         }
 
         return $model;

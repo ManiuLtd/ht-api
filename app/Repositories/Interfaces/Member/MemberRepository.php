@@ -9,5 +9,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface MemberRepository extends RepositoryInterface
 {
-    //
+    public function getFrineds($level = 1);
 }
