@@ -48,9 +48,8 @@ class NotificationsController extends Controller
             $notification = $this->repository
                 ->pushCriteria(new DatePickerCriteria())
                 ->pushCriteria(new MemberCriteria())
-                ->with(['member'])
                 ->paginate(request('limit', 10));
-            return json(1001,'',$notification);
+            return json(1001,'列表获取成功',$notification);
         }catch (\Exception $e){
             return json(5001,$e->getMessage());
         }

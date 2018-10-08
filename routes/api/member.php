@@ -12,8 +12,8 @@ Route::namespace('Member')
         //会员信息
         Route::get('friend', 'MembersController@index');
         //好友列表
-        Route::get('friend_list', 'MembersController@friends');
+        Route::get('friends', 'MembersController@friends');
         //积分余额日志列表
-        Route::get('creditLog', 'CreditLogsController@index');
+        Route::get('credit_log', 'CreditLogsController@index');
     });
 
