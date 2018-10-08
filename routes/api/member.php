@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Created by PhpStorm.
  * User: niugengyun
@@ -8,6 +9,11 @@
 Route::namespace('Member')
     ->prefix('member')
     ->group(function () {
-        //积分余额日志
+        //会员信息
+        Route::get('friend', 'MembersController@index');
+        //好友列表
+        Route::get('friend_list', 'MembersController@friends');
+        //积分余额日志列表
         Route::get('creditLog', 'CreditLogsController@index');
     });
+
