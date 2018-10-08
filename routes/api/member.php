@@ -13,6 +13,8 @@ Route::namespace('Member')
         Route::get('friend', 'MembersController@index');
         //好友列表
         Route::get('friends', 'MembersController@friends');
+        //分销等级列表
+        Route::get('commissionLevel', 'CommissionLevelsController@index');
         //积分余额日志列表
         Route::get('credit_log', 'CreditLogsController@index');
     });

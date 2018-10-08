@@ -10,4 +10,6 @@ Route::namespace('Taoke')
     ->group(function () {
         //订单
         Route::get('order', 'OrdersController@index');
+        //收藏
+        Route::resource('favourite', 'FavouritesController');
     });
