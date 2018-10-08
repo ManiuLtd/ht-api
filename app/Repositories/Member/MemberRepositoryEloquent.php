@@ -7,6 +7,8 @@ use App\Criteria\RequestCriteria;
 use App\Validators\Member\MemberValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\MemberRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 /**
  * Class MemberRepositoryEloquent.
@@ -21,6 +23,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         'status',
         'inviter_id',
         'member_id',
+        'phone'
     ];
 
     /**
@@ -60,16 +63,16 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
     }
 
     /**
-     * 获取三级粉丝.
-     * @param $member
-     * @param $level
+     * 获取三级粉丝
+     * @param int $level
      * @return mixed
      */
-    public function getFriends($member, $level)
+    public function getFrineds($level = 1)
     {
+        $inviterId = request ('inviter_id') ? request ('inviter_id') : getMemberId ();
         //一级粉丝
         if ($level == 1) {
-            return Member::where('inviter_id', $member->id)
+            return Member::where('inviter_id', $inviterId)
                 ->orderBy('id', 'desc')
                 ->paginate(20);
         }
@@ -96,4 +99,5 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
                 ->paginate(20);
         }
     }
+
 }

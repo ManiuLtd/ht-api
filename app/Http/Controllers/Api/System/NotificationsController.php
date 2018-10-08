@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\System;
 
+use App\Criteria\DatePickerCriteria;
+use App\Criteria\MemberCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\System\NotificationValidator;
 use Illuminate\Http\Request;
@@ -37,19 +39,13 @@ class NotificationsController extends Controller
         $this->repository = $repository;
         $this->validator = $validator;
     }
-
     /**
      * //TODO 通知列表 可根据类型创建
+     * 通知列表
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
-        try{
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $notification = $this->repository->create($request->all());
-            return json('1001','创建成功',$notification);
-        }catch (ValidatorException $e)
-        {
-            return json('4001',$e->getMessageBag()->first());
-        }
+        
     }
 }

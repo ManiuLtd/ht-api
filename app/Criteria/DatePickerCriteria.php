@@ -20,6 +20,7 @@ class DatePickerCriteria implements CriteriaInterface
     {
         $start = request('start');
         $end = request('end');
+
         if ($start && $end) {
             return $model->where([
                 ['created_at', '>=', $start],

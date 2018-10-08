@@ -25,12 +25,12 @@ class Order extends Model implements Transformable
      */
     protected $guarded = [];
 
+
     /**
-     * 字段映射.
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transform()
+    public function member()
     {
-        return $this->toArray();
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
     }
 }
