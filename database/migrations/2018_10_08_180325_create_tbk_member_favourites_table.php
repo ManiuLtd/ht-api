@@ -20,14 +20,14 @@ class CreateTbkMemberFavouritesTable extends Migration
         Schema::create('tbk_member_favourites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('member_id')->nullable();
-            $table->string('title', 190)->nullable();
-            $table->string('pic_url', 190)->nullable();
-            $table->string('item_id', 30)->nullable();
-            $table->integer('volume')->nullable();
-            $table->decimal('price', 9, 2)->nullable();
-            $table->decimal('coupon_price', 9, 2)->nullable();
-            $table->decimal('final_price', 9, 2)->nullable();
-            $table->string('type', 20)->nullable();
+            $table->string('title', 190)->nullable();//名称
+            $table->string('pic_url', 190)->nullable();//图片地址
+            $table->string('item_id', 30)->nullable();//优惠卷id
+            $table->integer('volume')->nullable();//销量
+            $table->decimal('price', 9, 2)->nullable();//原价
+            $table->decimal('coupon_price', 9, 2)->nullable();//优惠价
+            $table->decimal('final_price', 9, 2)->nullable();//最终价
+            $table->string('type', 20)->nullable();//1淘宝2京东3拼多多
             $table->nullableTimestamps();
 
             $table->index('member_id', 'member_id');

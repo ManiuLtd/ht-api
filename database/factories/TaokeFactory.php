@@ -67,3 +67,17 @@ $factory->define(App\Models\Taoke\Quan::class, function (Faker $faker) {
         'type' => array_rand([1, 2, 3, 4]),
     ];
 });
+
+$factory->define(App\Models\Taoke\Favourite::class, function (Faker $faker) {
+    return [
+        'member_id' => rand(1, 50),
+        'title' => $faker->title,
+        'pic_url' => $faker->imageUrl(100, 100),
+        'item_id' => rand(1,20),
+        'volume' => rand(1,1000),
+        'price' => $faker->numberBetween(2, 500),
+        'coupon_price' => $faker->numberBetween(2, 500),
+        'final_price' => $faker->numberBetween(2, 500),
+        'type' => array_rand([1, 2, 3, 4]),
+    ];
+});
