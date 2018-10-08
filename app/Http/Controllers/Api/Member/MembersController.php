@@ -39,9 +39,9 @@ class MembersController extends Controller
      */
     public function index()
     {
-        $member = auth()->guard('user')->user();
+        $member_id = getMemberId();
         try {
-            $members = $this->repository->with(['level', 'inviter'])->find($member->id);
+            $members = $this->repository->with(['level', 'inviter'])->find($member_id);
             return json(1001, '会员信息获取成功', $members);
         } catch (Exception $e) {
             return json(5001,$e->getMessage());
@@ -55,12 +55,12 @@ class MembersController extends Controller
     public function friends()
     {
         $inviter_id = request('inviter_id');
-        $member = auth()->guard('user')->user();
+        $member_id = getMemberId();
         try {
             if($inviter_id){
                 return $this->repository->friend_list($inviter_id);
             }else{
-                return $this->repository->friend_list($member->id);
+                return $this->repository->friend_list($member_id);
             }
         } catch (Exception $e) {
             return json(5001,$e->getMessage());
