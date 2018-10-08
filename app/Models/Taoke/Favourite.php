@@ -25,13 +25,16 @@ class Favourite extends Model implements Transformable
     protected $guarded = [];
 
 
-
     /**
-     * 所属商品
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
+     * The "booting" method of the model.
      */
-    public function goods()
+    public static function boot()
     {
-        return $this->belongsTo('App\Models\Taoke\Coupon', 'item_id')->withDefault(null);
+        parent::boot();
+        //创建之前 添加member_id
+        self::creating(function ($model) {
+            $model->member_id = getMemberId();
+        });
+
     }
 }

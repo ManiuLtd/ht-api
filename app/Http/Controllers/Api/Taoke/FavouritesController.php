@@ -61,10 +61,7 @@ class FavouritesController extends Controller
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $data = $request->all();
-            $data['member_id'] = getMemberId();
-
-            $category = $this->repository->create($data);
+            $category = $this->repository->create($request->all());
 
             return json(1001, '添加成功', $category);
         } catch (ValidatorException $e) {
