@@ -14,6 +14,15 @@ use App\Repositories\Interfaces\System\NotificationRepository;
 class NotificationRepositoryEloquent extends BaseRepository implements NotificationRepository
 {
     /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'member_id',
+        'user_id',
+        'type',
+        'created_at',
+    ];
+    /**
      * Specify Model class name.
      *
      * @return string

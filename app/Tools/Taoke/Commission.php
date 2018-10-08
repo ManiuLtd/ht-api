@@ -167,7 +167,6 @@ class Commission
     public function level($id)
     {
         return Member::find($id)->level_com;
-
     }
 
 }

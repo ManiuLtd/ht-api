@@ -18,6 +18,8 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     protected $fieldSearchable = [
         'type',
+        'status',
+        'created_at',
     ];
 
     /**
