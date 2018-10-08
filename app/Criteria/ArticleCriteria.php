@@ -11,7 +11,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 class ArticleCriteria implements CriteriaInterface
 {
     /**
-     * 根据时间筛选，需要传入开始时间和结束时间.
+     * 根据分类id筛选，
      * @param $model
      * @param RepositoryInterface $repository
      * @return mixed
