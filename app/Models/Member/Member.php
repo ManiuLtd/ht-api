@@ -89,6 +89,24 @@ class Member extends Model implements Transformable
     }
 
     /**
+     * 会员返佣等级
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function level_com()
+    {
+        return $this->belongsTo(CommissionLevel::class,'level2')->withDefault(null);
+    }
+
+    /**
+     * 组
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(Group::class,'group_id')->withDefault(null);
+    }
+
+    /**
      * 用户收货地址
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

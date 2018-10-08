@@ -10,4 +10,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface WithdrawRepository extends RepositoryInterface
 {
     //
+
+    public function getWithdrawData();
+
 }

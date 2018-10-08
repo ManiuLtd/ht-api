@@ -37,6 +37,7 @@ class CreateCommissionLevelsTable extends Migration
             $table->integer('duration')->nullable(); // 等级有效时长 按天计算
             $table->string('description', 191)->nullable(); //等级描述
             $table->tinyInteger('is_commission')->default(1)->comment('1有返佣 0没有返佣'); //1有返佣 0没有返佣
+            $table->tinyInteger('is_bindphone')->default(1)->comment('当前等级是否绑定手机号');
 
             $table->tinyInteger('type')->nullable(); //1分销等级 2组等级
             $table->nullableTimestamps();

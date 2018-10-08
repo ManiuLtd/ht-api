@@ -6,7 +6,18 @@ Route::middleware('guard:user', 'api')->namespace('Backend')->prefix('admin')->g
     include_route_files(__DIR__.'/backend/');
 });
 
-//Route::middleware ('guard:user', 'api')->namespace ('Api')->group (function () {
-//
-//    include_route_files (__DIR__ . '/api/');
-//});
+
+Route::middleware ('guard:user', 'api')->namespace ('Api')->group (function () {
+
+    include_route_files (__DIR__ . '/api/');
+});
+
+
+
+
+
+
+
+
+
+
