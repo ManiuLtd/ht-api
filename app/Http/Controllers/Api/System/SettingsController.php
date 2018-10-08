@@ -42,6 +42,7 @@ class SettingsController extends Controller
     public function index()
     {
         $setting = $this->repository->find(1);
+        return json('1001','设置信息',$setting);
     }
 
 }
