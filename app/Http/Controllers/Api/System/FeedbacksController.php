@@ -37,18 +37,21 @@ class FeedbacksController extends Controller
     }
 
     /**
-     * //TODO 添加留言反馈
+     * 添加留言反馈
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function index(Request $request)
     {
-        try{
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            //添加留言反馈
-            $feedback = $this->repository->create($request->all());
-            return json('1001','留言反馈成功',$feedback);
-        }catch (Exception $e)
-        {
-            return json('5001',$e->getMessage());
+        try {
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_CREATE);
+
+            $feedback = $this->repository->create ($request->all ());
+            return json ('1001', '留言反馈成功', $feedback);
+
+        } catch (Exception $e) {
+            return json ('5001', $e->getMessage ());
         }
     }
 }

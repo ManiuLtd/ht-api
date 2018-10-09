@@ -38,14 +38,13 @@ class CommissionLevelsController extends Controller
     }
 
     /**
-     *  分销等级列表.
+     * 分销等级列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $levels = $this->repository
-            ->orderBy('level','desc')
-            ->paginate(request('limit', 10));
-        return json(1001, '列表获取成功', $levels);
+        $levels = $this->repository->paginate (request ('limit', 10));
+
+        return json (1001, '列表获取成功', $levels);
     }
 }

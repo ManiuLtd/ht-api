@@ -4,6 +4,7 @@ namespace App\Repositories\Member;
 
 use App\Models\Member\Member;
 use App\Criteria\RequestCriteria;
+use App\Tools\Taoke\Commission;
 use App\Validators\Member\MemberValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\MemberRepository;
@@ -63,7 +64,27 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
 
     public function getTeamCharts()
     {
-        
+        $date_type = request('date_type','month');
+
+        $member = getMember();
+        $commission = new Commission();
+        // 直属
+        $query = db('members')->where('inviter_id', $member->id);
+        $query = $commission->getQuery($query,$date_type);
+        $directly = $query->count();
+        //直属成员下级
+        $query2 = db('members')->whereIn('inviter_id',function ($query3) use ($member) {
+            $query3->select('id')
+                ->from('members')
+                ->where('inviter_id', $member->id);
+        });
+        $query2 = $commission->getQuery($query2,$date_type);
+        $subordinate = $query2->count();
+        return [
+            'totalNum' => $directly + $subordinate,
+            'directly' => $directly,
+            'subordinate' => $subordinate,
+        ];
     }
 
     /**

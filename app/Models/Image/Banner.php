@@ -14,6 +14,11 @@ class Banner extends Model implements Transformable
     use TransformableTrait;
 
     /**
+     * @var string
+     */
+    protected $table = "banners";
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -28,12 +33,5 @@ class Banner extends Model implements Transformable
     protected $hidden = [
         'user_id',
     ];
-    /**
-     * 字段映射.
-     * @return array
-     */
-    public function transform()
-    {
-        return $this->toArray();
-    }
+
 }

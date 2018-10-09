@@ -10,7 +10,11 @@ namespace App\Tools\Taoke;
 
 use App\Models\Member\Member;
 
-
+/**
+ * TODO NEED REVIEW
+ * Class Commission
+ * @package App\Tools\Taoke
+ */
 class Commission
 {
 
@@ -18,14 +22,21 @@ class Commission
      * 自推返佣
      * @param $id
      * @param string $date_type
-     * @return array
+     * @param int $type
+     * @return array|mixed
      */
-    public function selfPush($id, $date_type='month')
+    public function selfPush($id, $date_type='month',$type=null)
     {
         $query = db('tbk_orders')->where([
             'member_id'=>$id,
             'status' => 3
         ])->whereYear('created_at', now()->year);
+
+        //全部待结算
+        if ($type == 1) {
+            $cash = $query->sum('commission_amount');
+            return $cash * $this->level($id)->commission_rate1;
+        }
 
         $query = $this->getQuery($query,$date_type);
         $amount = $query->sum('commission_amount');
@@ -43,9 +54,10 @@ class Commission
      * 下级订单我的提成
      * @param $id
      * @param string $date_type
+     * @param null $type
      * @return float|int
      */
-    public function subordinate($id, $date_type='month')
+    public function subordinate($id, $date_type='month',$type=null)
     {
         $query = db('tbk_orders')->where('status', 3)
             ->whereIn('member_id',function ($query) use ($id) {
@@ -56,6 +68,11 @@ class Commission
                         'isagent' => 0,
                     ]);
         })->whereYear('created_at', now()->year);
+        //全部待结算
+        if ($type == 1) {
+            $cash = $query->sum('commission_amount');
+            return $cash * $this->level($id)->commission_rate2;
+        }
 
         $query = $this->getQuery($query, $date_type);
 
@@ -73,9 +90,10 @@ class Commission
      * 组长返佣
      * @param $id
      * @param string $date_type
-     * @return float|int
+     * @param null $type
+     * @return float|int|mixed
      */
-    public function leader($id, $date_type='month')
+    public function leader($id, $date_type='month',$type=null)
     {
         $group = Member::find($id)->group;
         //我不是组长
@@ -89,6 +107,11 @@ class Commission
                     ->from('members')
                     ->where('group_id', $group->id);
             });
+        //全部待结算
+        if ($type == 1) {
+            $cash = $query->sum('commission_amount');
+            return $cash * $this->level($id)->group_rate1;
+        }
 
         $query = $this->getQuery($query, $date_type);
         $commission_amount = $query->sum('commission_amount');
@@ -101,9 +124,10 @@ class Commission
      * 老组长拿的新组长团队的佣金
      * @param $id
      * @param string $date_type
-     * @return float|int
+     * @param null $type
+     * @return float|int|mixed
      */
-    public function old_leader($id, $date_type='month')
+    public function old_leader($id, $date_type='month',$type=null)
     {
         //我的团队
         $group = Member::find($id)->group;
@@ -121,6 +145,12 @@ class Commission
                     ->from('members')
                     ->whereIn('group_id', $group_arr);
             });
+
+        //全部待结算
+        if ($type == 1) {
+            $cash = $query->sum('commission_amount');
+            return $cash * $this->level($id)->group_rate2;
+        }
         $query = $this->getQuery($query, $date_type);
         $commission_amount = $query->sum('commission_amount');
 

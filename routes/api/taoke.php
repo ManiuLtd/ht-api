@@ -13,6 +13,17 @@ Route::namespace('Taoke')
         //收藏
         Route::resource('favourite', 'FavouritesController');
 
-        //数据报表
-        Route::get('chart','ChartsController@order');
+
+        //订单报表
+        Route::get('orderchart','ChartsController@order');
+        //团队报表
+        Route::get('teamchart', 'ChartsController@team');
+        //提现报表
+        Route::get('withdraw', 'ChartsController@withdraw');
+
+        //浏览记录
+        Route::resource('history', 'HistoriesController',[
+            'only' => ['index','store']
+        ]);
+
     });
