@@ -134,11 +134,11 @@ class Commission
         //我的团队
         $group = Member::find($id)->group;
         //不是其他用户的老组长
-        if (!count($old_group = db('members')->select(['group_id'])->where('oldgroup_id', $group->id)->get())) {
+        if (!count($old_group = db('members')->select(['group_id'])->where('oldgroup_id', $group->id)->get())) {//通过老组长ID查找老组长ID相同的人的组长ID
             return 0;
         }
         $group_arr = $old_group->pluck('group_id')->toArray();
-        $group_arr = array_unique($group_arr);
+        $group_arr = array_unique($group_arr);//移除数组中重复的值
 
         $query = db('tbk_orders')->where('status', 3)
             ->whereYear('created_at', now()->year)
@@ -146,7 +146,7 @@ class Commission
             ->whereIn('member_id',function ($query) use ($group_arr){
                 $query->select('id')
                     ->from('members')
-                    ->whereIn('group_id', $group_arr);
+                    ->whereIn('group_id', $group_arr);//在新组ID的人的订单
             });
          $commission_amount = 0;
         if ($date_type == 'month') {
