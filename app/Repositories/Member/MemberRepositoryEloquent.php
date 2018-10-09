@@ -7,8 +7,7 @@ use App\Criteria\RequestCriteria;
 use App\Validators\Member\MemberValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\MemberRepository;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+
 
 /**
  * Class MemberRepositoryEloquent.
@@ -60,6 +59,11 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
     public function presenter()
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
+    }
+
+    public function getTeamCharts()
+    {
+        
     }
 
     /**
