@@ -19,8 +19,19 @@ class Feedback extends Model implements Transformable
      * @var array
      */
     protected $table = 'feedbacks';
-    protected $guarded = [];
 
+    /**
+     * @var array
+     */
+    protected $fillable= [
+        'title',
+        'content',
+        'images'
+    ];
+
+    /**
+     * @var array
+     */
     protected $hidden = [
         'user_id',
     ];
@@ -44,8 +55,8 @@ class Feedback extends Model implements Transformable
     }
 
     /**
-     * 前端用户.
-     * @return $this
+     * 所属会员
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()
     {
