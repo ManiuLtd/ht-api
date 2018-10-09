@@ -9,5 +9,14 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface MemberRepository extends RepositoryInterface
 {
+    /**
+     * @param int $level
+     * @return mixed
+     */
     public function getFrineds($level = 1);
+
+    /**
+     * @return mixed
+     */
+    public function getTeamCharts();
 }

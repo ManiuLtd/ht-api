@@ -131,8 +131,10 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         //组长收益
         $leader = $this->commission->leader ($id);
         //当前用户是其他组的旧组长
-        $old_leader = $this->commission->old_leader ($id);
-        $month_commission = $self_commission + $subordinate + $leader + $old_leader;
+
+        $old_leader = $this->commission->old_leader($id);
+        $month_commission = $self_commission['money'] + $subordinate + $leader + $old_leader;
+
 
         //今天收益
         //自推收益
@@ -142,8 +144,10 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         //组长收益
         $day_leader = $this->commission->leader ($id, 'day');
         //当前用户是其他组的旧组长
-        $day_old_leader = $this->commission->old_leader ($id, 'day');
-        $day_commission = $day_self_commission + $day_subordinate + $day_leader + $day_old_leader;
+
+        $day_old_leader = $this->commission->old_leader($id,'day');
+        $day_commission = $day_self_commission['money'] + $day_subordinate + $day_leader + $day_old_leader;
+
 
         $settlement = db ('member_credit_logs')->where ([
             'type' => 2,
