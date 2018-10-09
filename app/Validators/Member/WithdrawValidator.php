@@ -22,6 +22,10 @@ class WithdrawValidator extends LaravelValidator
         'alipay' => 'required',
         'amount' => 'required|numeric',
     ];
+
+    /**
+     * @var array
+     */
     protected $messages = [
         'realname.required' => '姓名不能为空',
         'bankname.required' => '银行名称不能为空',

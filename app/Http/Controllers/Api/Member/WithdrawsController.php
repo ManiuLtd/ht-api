@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\Member;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Member\WithdrawCreateRequest;
 use App\Repositories\Interfaces\Member\WithdrawRepository;
 use App\Validators\Member\WithdrawValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -24,55 +25,51 @@ class WithdrawsController extends Controller
     /**
      * @var
      */
-    protected $withdrawRepository;
+    protected $repository;
     /**
      * @var
      */
-    protected $withdrawValidator;
+    protected $validator;
 
     /**
      * WithdrawsController constructor.
-     * @param WithdrawRepository $withdrawRepository
-     * @param WithdrawValidator $withdrawValidator
+     * @param WithdrawRepository $repository
+     * @param WithdrawValidator $validator
      */
-    public function __construct(WithdrawRepository $withdrawRepository,WithdrawValidator $withdrawValidator)
+    public function __construct(WithdrawRepository $repository, WithdrawValidator $validator)
     {
-        $this->withdrawRepository = $withdrawRepository;
-        $this->withdrawValidator = $withdrawValidator;
+        $this->repository = $repository;
+        $this->validator = $validator;
     }
 
-    //提现功能  不能重复提现
-    public function index()
-    {
-        try {
-            $this->withdrawValidator->with(request()->all())->passesOrFail();
-        }catch (ValidatorException $e){
-            return json(4001,$e->getMessageBag()->first());
-        }
-        try {
-            return $this->withdrawRepository->withdraw();
-        } catch (\Exception $e) {
-            return response()->json([
-                'code' => 4001,
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
 
     /**
+     * 获取提现信息
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show()
+    public function index()
     {
-        //提现
-        try {
-            $withdraw = $this->withdrawRepository->getWithdrawData();
-            return json(1001,'获取成功',$withdraw);
-        }catch (\Exception $e){
+        $withdraw = $this->repository->getWithdrawData ();
 
-            return json(4001,$e->getMessage());
-        }
-
+        return json (1001, '获取成功', $withdraw);
     }
 
+
+    /**
+     * 发起提现
+     * @param WithdrawCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function store(WithdrawCreateRequest $request)
+    {
+
+        try {
+            $this->validator->with (request ()->all ())->passesOrFail ();
+
+            return $this->repository->withdraw ();
+
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessage ());
+        }
+    }
 }

@@ -38,11 +38,16 @@ class SettingsController extends Controller
         $this->validator = $validator;
     }
 
-    // TODO 获取设置信息
+    /**
+     * 获取设置信息
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-        $setting = $this->repository->firstOrNew();
-        return json('1001','设置信息',$setting);
+        $setting = $this->repository->firstOrNew ();
+
+        return json ('1001', '设置信息', $setting);
+
     }
 
 }

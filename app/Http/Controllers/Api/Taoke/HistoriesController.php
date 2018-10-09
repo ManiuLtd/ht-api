@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\FavouriteValidator;
-use App\Repositories\Interfaces\Taoke\FavouriteRepository;
+use App\Validators\Taoke\HistoryValidator;
+use App\Repositories\Interfaces\Taoke\HistoryRepository;
 use App\Criteria\MemberCriteria;
-use App\Http\Requests\Taoke\FavouriteCreateRequest;
-use App\Http\Requests\Taoke\FavouriteUpdateRequest;
+use App\Http\Requests\Taoke\HistoryCreateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
- * Class FavouritesController.
+ * Class HistoriesController.
  */
-class FavouritesController extends Controller
+class HistoriesController extends Controller
 {
     /**
      * @var FavouriteRepository
@@ -27,19 +26,19 @@ class FavouritesController extends Controller
     protected $validator;
 
     /**
-     * FavouritesController constructor.
+     * HistoriesController constructor.
      *
-     * @param FavouriteRepository $repository
-     * @param FavouriteValidator $validator
+     * @param HistoryRepository $repository
+     * @param HistoryValidator $validator
      */
-    public function __construct(FavouriteRepository $repository, FavouriteValidator $validator)
+    public function __construct(HistoryRepository $repository, HistoryValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
     }
 
     /**
-     * 收藏列表.
+     * 浏览记录列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
@@ -51,11 +50,12 @@ class FavouritesController extends Controller
     }
 
     /**
-     * 添加收藏
-     * @param FavouriteCreateRequest $request
+     * 添加浏览记录
+     * @param HistoryCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(FavouriteCreateRequest $request)
+    public function store(HistoryCreateRequest $request)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
@@ -63,20 +63,8 @@ class FavouritesController extends Controller
             $category = $this->repository->create($request->all());
 
             return json(1001, '添加成功', $category);
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage);
+        } catch (ValidatorException $e) {
+            return json(4001, $e->getMessageBag()->first());
         }
-    }
-
-    /**
-     * 取消收藏
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id)
-    {
-        $this->repository->delete($id);
-
-        return json(1001, '取消成功');
     }
 }

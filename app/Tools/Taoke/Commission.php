@@ -12,7 +12,11 @@ use App\Models\Member\Member;
 use App\Repositories\Interfaces\Member\CommissionLevelRepository;
 use Illuminate\Support\Facades\DB;
 
-
+/**
+ * TODO NEED REVIEW
+ * Class Commission
+ * @package App\Tools\Taoke
+ */
 class Commission
 {
     /**
