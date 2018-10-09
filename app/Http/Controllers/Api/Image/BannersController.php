@@ -1,44 +1,43 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/10/7
- * Time: 16:18
- */
 
 namespace App\Http\Controllers\Api\Image;
-
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Image\BannerRepository;
 use Illuminate\Http\Request;
-use Mockery\Exception;
 
 /**
  * 图片管理
- * Class OrdersController
- * @package App\Http\Controllers\Api\Member
+ * Class BannersController
+ * @package App\Http\Controllers\Api\Image
  */
 class BannersController extends Controller
 {
 
     /**
-     * FriendsController constructor.
+     * @var BannerRepository
      */
-    public function __construct(BannerRepository $bannerRepository)
+    protected $repository;
+
+    /**
+     * BannersController constructor.
+     * @param BannerRepository $repository
+     */
+    public function __construct(BannerRepository $repository)
     {
-        $this->bannerrepository = $bannerRepository;
+        $this->repository = $repository;
     }
 
-    //TODO 图标列表 可根据tag查看,根据sort排序
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request)
     {
-        try{
-            $image = $this->bannerrepository->all();
-            return json('1001','图标列表获取成功',$image);
-        }catch (Exception $e)
-        {
-            return json('5001',$e->getMessage());
-        }
+
+        $banners = $this->repository->paginate (request ('limit', 10));
+
+        return json ('1001', '图片获取成功', $banners);
+
     }
 }

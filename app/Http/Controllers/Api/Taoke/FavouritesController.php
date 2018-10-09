@@ -54,7 +54,6 @@ class FavouritesController extends Controller
      * 添加收藏
      * @param FavouriteCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(FavouriteCreateRequest $request)
     {
@@ -64,8 +63,8 @@ class FavouritesController extends Controller
             $category = $this->repository->create($request->all());
 
             return json(1001, '添加成功', $category);
-        } catch (ValidatorException $e) {
-            return json(4001, $e->getMessageBag()->first());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage);
         }
     }
 
