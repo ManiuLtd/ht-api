@@ -48,7 +48,7 @@ class QuansController extends Controller
     public function index()
     {
         $quans = $this->repository
-            ->with(['goods'])
+            ->with('goods')
             ->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $quans);
