@@ -19,6 +19,7 @@ class CommissionLevelRepositoryEloquent extends BaseRepository implements Commis
     protected $fieldSearchable = [
         'member_id',
         'user_id',
+        'type'
     ];
 
     /**
