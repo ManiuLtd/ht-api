@@ -22,6 +22,7 @@ class CreateTbkOrdersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('member_id')->nullable();
             $table->integer('group_id')->nullable()->comment('组ID');
+            $table->integer('oldgroup_id')->nullable()->comment('旧组ID');
             $table->string('ordernum', 20)->nullable()->comment('订单号');
             $table->string('title', 190)->nullable()->comment('订单名');
             $table->string('itemid', 20)->nullable()->comment('商品ID');

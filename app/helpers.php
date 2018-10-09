@@ -117,3 +117,13 @@ if (! function_exists('getMemberId')) {
         return 1;
     }
 }
+if (! function_exists('getMember')) {
+
+    /**
+     * @return int|mixed
+     */
+    function getMember()
+    {
+        return \App\Models\Member\Member::find(1);
+    }
+}
