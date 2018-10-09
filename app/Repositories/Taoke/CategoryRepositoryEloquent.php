@@ -13,6 +13,14 @@ use App\Repositories\Interfaces\Taoke\CategoryRepository;
  */
 class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
 {
+
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'type',
+    ];
+
     /**
      * Specify Model class name.
      *

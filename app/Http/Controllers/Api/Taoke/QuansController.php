@@ -10,31 +10,31 @@ namespace App\Http\Controllers\Api\Taoke;
 
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CategoryValidator;
-use App\Repositories\Interfaces\Taoke\CategoryRepository;
+use App\Validators\Taoke\QuanValidator;
+use App\Repositories\Interfaces\Taoke\QuanRepository;
 
 /**
- * Class CategoriesController.
+ * Class QuansController.
  */
-class CategoriesController extends Controller
+class QuansController extends Controller
 {
     /**
-     * @var CategoryRepository
+     * @var QuanRepository
      */
     protected $repository;
 
     /**
-     * @var CategoryValidator
+     * @var QuanValidator
      */
     protected $validator;
 
     /**
      * CategoriesController constructor.
      *
-     * @param CategoryRepository $repository
-     * @param CategoryValidator $validator
+     * @param QuanRepository $repository
+     * @param QuanValidator $validator
      */
-    public function __construct(CategoryRepository $repository, CategoryValidator $validator)
+    public function __construct(QuanRepository $repository, QuanValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -47,8 +47,11 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository
+        $quans = $this->repository
+            ->with('goods')
             ->paginate(request('limit', 10));
 
-        return json(1001, '获取成功', $categories);
-    }}
+        return json(1001, '获取成功', $quans);
+    }
+
+}
