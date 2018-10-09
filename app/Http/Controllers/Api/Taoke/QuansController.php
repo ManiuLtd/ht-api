@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\QuanValidator;
-use App\Criteria\TypeCriteria;
 use App\Repositories\Interfaces\Taoke\QuanRepository;
 
 /**
@@ -49,8 +48,7 @@ class QuansController extends Controller
     public function index()
     {
         $quans = $this->repository
-            ->pushCriteria (new TypeCriteria())
-            ->with(['user', 'goods'])
+            ->with(['goods'])
             ->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $quans);

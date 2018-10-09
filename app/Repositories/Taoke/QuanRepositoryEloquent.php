@@ -14,6 +14,13 @@ use App\Repositories\Interfaces\Taoke\QuanRepository;
 class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
 {
     /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'type',
+    ];
+    
+    /**
      * Specify Model class name.
      *
      * @return string

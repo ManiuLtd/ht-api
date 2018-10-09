@@ -10,8 +10,7 @@ namespace App\Http\Controllers\Api\Taoke;
 
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CategoryValidator; 
-use App\Criteria\TypeCriteria;
+use App\Validators\Taoke\CategoryValidator;
 use App\Repositories\Interfaces\Taoke\CategoryRepository;
 
 /**
@@ -49,7 +48,6 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = $this->repository
-            ->pushCriteria (new TypeCriteria())
             ->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $categories);
