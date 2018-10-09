@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Api\Taoke;
 
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CategoryValidator;
+use App\Validators\Taoke\CategoryValidator; 
 use App\Criteria\TypeCriteria;
 use App\Repositories\Interfaces\Taoke\CategoryRepository;
 
