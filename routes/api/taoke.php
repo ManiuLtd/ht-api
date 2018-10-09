@@ -16,4 +16,8 @@ Route::namespace('Taoke')
         Route::resource('history', 'HistoriesController',[
             'only' => ['index','store']
         ]);
+        //分类
+        Route::get('category', 'CategoriesController@index');
+        //圈子
+        Route::get('quan', 'QuansController@index');
     });
