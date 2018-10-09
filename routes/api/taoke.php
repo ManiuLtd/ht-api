@@ -12,4 +12,8 @@ Route::namespace('Taoke')
         Route::get('order', 'OrdersController@index');
         //收藏
         Route::resource('favourite', 'FavouritesController');
+        //浏览记录
+        Route::resource('history', 'HistoriesController',[
+            'only' => ['index','store']
+        ]);
     });
