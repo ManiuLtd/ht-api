@@ -20,4 +20,14 @@ class Coupon extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * 关联产品.
+     * @return $this
+     */
+    public function goods()
+    {
+        return $this->belongsTo('App\Models\Shop\Goods', 'item_id')->withDefault(null);
+    }
+
 }

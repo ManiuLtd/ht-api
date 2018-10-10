@@ -21,7 +21,6 @@ class CreateCommissionLevelsTable extends Migration
         Schema::create('commission_levels', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('level')->nullable(); //等级大小
             $table->string('name', 100)->nullable(); //等级名
             $table->string('logo', 191)->nullable();  //等级图标
@@ -43,7 +42,6 @@ class CreateCommissionLevelsTable extends Migration
             $table->nullableTimestamps();
 
             $table->index('user_id');
-            $table->index('member_id');
         });
     }
 
