@@ -62,7 +62,10 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
-    //TODO
+    /**
+     * 团队报表
+     * @return array|mixed
+     */
     public function getTeamCharts()
     {
         $date_type = request('date_type','month');
