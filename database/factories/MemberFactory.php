@@ -179,7 +179,6 @@ $factory->define(App\Models\Member\CommissionLevel::class, function (Faker $fake
         'duration' => rand(10, 999),
         'description' => $faker->title,
         'is_commission' => rand(0,1),
-        'is_bindphone' => rand(0,1),
         'type' => rand(1, 2),
     ];
 });

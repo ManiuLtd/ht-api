@@ -38,7 +38,6 @@ class CreateMembersTable extends Migration
             $table->integer('credit2')->nullable()->default(0);
             $table->integer('level1')->nullable();
             $table->integer('level2')->nullable();
-            $table->integer('level3')->nullable();
             /*--- 提现审核通过时更新---*/
             $table->string('realname', 191)->nullable();
             $table->string('alipay', 191)->nullable();
@@ -70,7 +69,6 @@ class CreateMembersTable extends Migration
             $table->index('nickname', 'members_nickname_index');
             $table->index('level1', 'members_level1_index');
             $table->index('level2', 'members_level2_index');
-            $table->index('level3', 'members_level3_index');
             $table->index('phone', 'members_phone_index');
             $table->index('status', 'members_status_index');
             $table->index('created_at', 'members_created_at_index');
