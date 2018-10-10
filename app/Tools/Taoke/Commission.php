@@ -14,7 +14,6 @@ use function GuzzleHttp\Promise\queue;
 class Commission
 {
 
-
     /**
      * @param $memberId
      * @param $commission
@@ -23,6 +22,7 @@ class Commission
      */
     public function getComminnsionByMember($memberId, $commission, $type)
     {
+
         $memberModel = Member::with ('commissionLevel')->find ($memberId);
 
         //用户不存在
@@ -56,7 +56,7 @@ class Commission
      * @param null $dateType
      * @return float|int
      */
-    public function getOrdersOrCommissionByDate($memberId, $orderStatus, $type, $isCalculateTotalCommission = false, $dateType = null)
+    public function getOrdersOrCommissionByDate($memberId,array $orderStatus, $type, $isCalculateTotalCommission = false, $dateType = null)
     {
         $memberModel = Member::with ('commissionLevel')->find ($memberId);
 
@@ -65,7 +65,7 @@ class Commission
             return 0;
         }
         //订单
-        $query = db ('tbk_orders')->where ('status', $orderStatus);
+        $query = db ('tbk_orders')->whereIn('status', $orderStatus);
 
         //根据用户返佣层级筛选
         switch ($type) {
@@ -82,14 +82,14 @@ class Commission
             case 'group_rate1':
                 //用户不是组长 不能结算组长返佣
                 if ($memberModel->commissionLevel->type != 2 && ($type == 'group_rate1') || $type == 'group_rate2') {
-                    break;
+                    return 0;
                 }
                 $query = $query->where ('group_id', $memberModel->group_id);
                 break;
             case 'group_rate2':
                 //用户不是组长 不能结算组长返佣
                 if ($memberModel->commissionLevel->type != 2 && ($type == 'group_rate1') || $type == 'group_rate2') {
-                    break;
+                    return 0;
                 }
                 $query = $query->where ('group_id', $memberModel->oldgroup_id);
                 break;
@@ -97,7 +97,22 @@ class Commission
                 break;
         }
 
+        $query = $this->getQuery($query,$dateType);
 
+        if($isCalculateTotalCommission){
+            return $this->getComminnsionByMember ($memberId, $query->sum ('commission_amount'), $type);
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param $query
+     * @param $dateType
+     * @return mixed
+     */
+    public function getQuery($query, $dateType)
+    {
         //根据日期筛选
         switch ($dateType) {
             case 'today':
@@ -121,10 +136,6 @@ class Commission
             default:
                 break;
         }
-        if($isCalculateTotalCommission){
-            return $this->getComminnsionByMember ($memberModel, $query->sum ('commission_amount'), $type);
-        }
-
         return $query;
     }
 

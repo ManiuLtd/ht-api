@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Api\Taoke\CouponsController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Models\Taoke\Coupon;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
@@ -40,12 +42,30 @@ class TBKServiceProvider extends ServiceProvider
             ->needs(TBKInterface::class)
             ->give(\App\Tools\Taoke\PinDuoDuo::class);
 
+        //优惠券详情
         switch (request ('type')){
             case '1':
-                $this->app->when(PinDuoDuo::class)  //这里不变
+                $this->app->when(CouponsController::class)
                     ->needs(TBKInterface::class)
-                    ->give(\App\Tools\Taoke\PinDuoDuo::class);  //这里变
+                    ->give(\App\Tools\Taoke\Taobao::class);
+                break;
+            case '2':
+                $this->app->when(CouponsController::class)
+                    ->needs(TBKInterface::class)
+                    ->give(\App\Tools\Taoke\JingDong::class);
+                break;
+            case '3':
+                $this->app->when(CouponsController::class)
+                    ->needs(TBKInterface::class)
+                    ->give(\App\Tools\Taoke\PinDuoDuo::class);
+                break;
+            default :
+                $this->app->when(CouponsController::class)
+                    ->needs(TBKInterface::class)
+                    ->give(\App\Tools\Taoke\Taobao::class);
+                break;
         }
+
         //测试
 //        $this->app->when( ::class)
 //            ->needs(TBKInterface::class)

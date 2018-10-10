@@ -122,37 +122,39 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
     public function getWithdrawData()
     {
         $id = getMemberId ();
+
         $member = db ('members')->find ($id);
         //本月预估收益
         //自推收益
-        $self_commission = $this->commission->selfPush ($id);
+        $self_commission = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate1',true,'month');
+
         //下级收益
-        $subordinate = $this->commission->subordinate ($id);
+        $subordinate = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate2',true,'month');
         //组长收益
-        $leader = $this->commission->leader ($id);
+        $leader = $this->commission->getOrdersOrCommissionByDate($id,[1],'group_rate1',true,'month');
         //当前用户是其他组的旧组长
 
-        $old_leader = $this->commission->old_leader($id);
-        $month_commission = $self_commission['money'] + $subordinate + $leader + $old_leader;
+        $old_leader = $this->commission->getOrdersOrCommissionByDate($id,[1],'group_rate2',true,'month');
+        $month_commission = $self_commission + $subordinate + $leader + $old_leader;
 
 
         //今天收益
         //自推收益
-        $day_self_commission = $this->commission->selfPush ($id, 'day');
+        $day_self_commission = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate1',true,'today');
         //下级收益
-        $day_subordinate = $this->commission->subordinate ($id, 'day');
+        $day_subordinate = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate2',true,'today') ;
         //组长收益
-        $day_leader = $this->commission->leader ($id, 'day');
+        $day_leader = $this->commission->getOrdersOrCommissionByDate ($id,[1],'group_rate1',true,'today');
         //当前用户是其他组的旧组长
 
-        $day_old_leader = $this->commission->old_leader($id,'day');
-        $day_commission = $day_self_commission['money'] + $day_subordinate + $day_leader + $day_old_leader;
-
-
+        $day_old_leader = $this->commission->getOrdersOrCommissionByDate($id,[1],'group_rate2',true,'today');
+        $day_commission = $day_self_commission + $day_subordinate + $day_leader + $day_old_leader;
+        //上月结算
+        $year = now ()->month == 1 ? now ()->addMonth (-1)->year : now ()->year;
         $settlement = db ('member_credit_logs')->where ([
             'type' => 2,
             'credit_type' => 1,
-        ])->whereYear ('created_at', now ()->year)
+        ])->whereYear ('created_at', $year)
             ->whereMonth ('created_at', now ()->subMonth (1)->month)
             ->sum ('credit');
 

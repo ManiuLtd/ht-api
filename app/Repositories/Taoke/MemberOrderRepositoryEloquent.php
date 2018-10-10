@@ -2,25 +2,19 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\Quan;
-use App\Validators\Taoke\QuanValidator;
+use App\Models\Taoke\MemberOrder;
+use App\Repositories\Interfaces\Taoke\MemberOrderRepository;
+use App\Validators\Taoke\MemberOrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Taoke\QuanRepository;
 
 /**
- * Class QuanRepositoryEloquent
+ * Class MemberOrderRepositoryEloquent
  * @package App\Repositories\Taoke
  */
-class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
+class MemberOrderRepositoryEloquent extends BaseRepository implements MemberOrderRepository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'type',
-    ];
-    
+
     /**
      * Specify Model class name.
      *
@@ -28,7 +22,7 @@ class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
      */
     public function model()
     {
-        return Quan::class;
+        return MemberOrder::class;
     }
 
     /**
@@ -38,12 +32,9 @@ class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
      */
     public function validator()
     {
-        return QuanValidator::class;
+        return MemberOrderValidator::class;
     }
 
-    /**
-     * @return string
-     */
     public function presenter()
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';

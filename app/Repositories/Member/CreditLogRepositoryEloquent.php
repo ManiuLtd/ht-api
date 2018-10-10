@@ -60,7 +60,7 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
-    //TODO
+    // 提现报表
     public function getWithdrawCharts()
     {
         $type = request('type', 1);
@@ -71,13 +71,13 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
         if ($type == 1) {
 
             //自推收益
-            $self_commission = $commission->selfPush ($member->id,'',1);
+            $self_commission = $commission->getOrdersOrCommissionByDate($member->id,[1],'commission_rate1',true);
             //下级收益
-            $subordinate = $commission->subordinate ($member->id,'',1);
+            $subordinate = $commission->getOrdersOrCommissionByDate($member->id,[1],'commission_rate2',true);
             //组长收益
-            $leader = $commission->leader ($member->id,'',1);
+            $leader = $commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate1',true);
             //当前用户是其他组的旧组长
-            $old_leader = $commission->old_leader($member->id,'',1);
+            $old_leader = $commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate2',true);
 
             $month_commission = $self_commission + $subordinate + $leader + $old_leader;
             return [

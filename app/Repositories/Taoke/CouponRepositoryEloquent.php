@@ -13,6 +13,14 @@ use App\Repositories\Interfaces\Taoke\CouponRepository;
  */
 class CouponRepositoryEloquent extends BaseRepository implements CouponRepository
 {
+
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'type'
+    ];
+
     /**
      * Specify Model class name.
      *

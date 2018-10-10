@@ -49,6 +49,7 @@ class WithdrawsController extends Controller
      */
     public function index()
     {
+
         $withdraw = $this->repository->getWithdrawData ();
 
         return json (1001, '获取成功', $withdraw);

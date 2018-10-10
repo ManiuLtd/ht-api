@@ -13,6 +13,6 @@ interface OrderRepository extends RepositoryInterface
      * @return mixed
      */
     public function getOrderCharts();
-
+    public function submitOrder();
 
 }

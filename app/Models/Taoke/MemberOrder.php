@@ -7,13 +7,18 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Coupon.
+ * Class MemberOrder
+ * @package App\Models\Taoke
  */
-class Coupon extends Model implements Transformable
+class MemberOrder extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $table = 'tbk_coupons';
+    /**
+     * @var string
+     */
+    protected $table = 'tbk_member_orders';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,13 +26,12 @@ class Coupon extends Model implements Transformable
      */
     protected $guarded = [];
 
-    /**
-     * 关联产品.
-     * @return $this
-     */
-    public function goods()
-    {
-        return $this->belongsTo('App\Models\Shop\Goods', 'item_id')->withDefault(null);
-    }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function member()
+    {
+        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
+    }
 }

@@ -5,10 +5,10 @@ namespace App\Repositories\Interfaces\Taoke;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface QuanRepository
+ * Interface MemberOrderRepository
  * @package App\Repositories\Interfaces\Taoke
  */
-interface QuanRepository extends RepositoryInterface
+interface MemberOrderRepository extends RepositoryInterface
 {
     //
 }
