@@ -38,6 +38,7 @@ class CreateMembersTable extends Migration
             $table->integer('credit2')->nullable()->default(0);
             $table->integer('level1')->nullable();
             $table->integer('level2')->nullable();
+            $table->integer('level3')->nullable();
             /*--- 提现审核通过时更新---*/
             $table->string('realname', 191)->nullable();
             $table->string('alipay', 191)->nullable();

@@ -164,7 +164,6 @@ $factory->define(App\Models\Member\Address::class, function (Faker $faker) {
 $factory->define(App\Models\Member\CommissionLevel::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => rand(1, 50),
         'level' => $faker->numberBetween(1, 100),
         'name' => $faker->name,
         'logo' => $faker->imageUrl(100, 100),
@@ -180,6 +179,7 @@ $factory->define(App\Models\Member\CommissionLevel::class, function (Faker $fake
         'duration' => rand(10, 999),
         'description' => $faker->title,
         'is_commission' => rand(0,1),
+        'is_bindphone' => rand(0,1),
         'type' => rand(1, 2),
     ];
 });
