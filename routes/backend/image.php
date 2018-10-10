@@ -10,7 +10,7 @@ Route::namespace('Image')
         'except' => ['create', 'edit', 'show'],
     ]);
 
-        Route::post('file/upload', 'FileController@upload');
+        Route::any('file/upload', 'FileController@upload');
 
         Route::get('list', 'ImagesController@index');
     });

@@ -47,7 +47,7 @@ class TBKServiceProvider extends ServiceProvider
                     ->give(\App\Tools\Taoke\PinDuoDuo::class);  //这里变
         }
         //测试
-//        $this->app->when(HomeController::class)
+//        $this->app->when( ::class)
 //            ->needs(TBKInterface::class)
 //            ->give(\App\Tools\Taoke\PinDuoDuo::class);
     }
