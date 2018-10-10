@@ -17,7 +17,9 @@ class MemberOrderValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
+        ValidatorInterface::RULE_CREATE => [
+            'ordernum'=>'required|numeric',
+        ],
 //        ValidatorInterface::RULE_UPDATE => [],
     ];
 }
