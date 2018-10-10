@@ -7,6 +7,7 @@ use App\Validators\Member\CommissionLevelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Member\CommissionLevelUpdateRequest;
+use App\Http\Requests\Member\CommissionLevelCreateRequest;
 use App\Repositories\Interfaces\Member\CommissionLevelRepository;
 
 /**
@@ -57,6 +58,24 @@ class CommissionLevelsController extends Controller
         $level = $this->repository->find($id);
 
         return json(1001, '详情获取成功', $level);
+    }
+
+    /**
+     * 添加分销等级.
+     * @param CommissionLevelCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(CommissionLevelCreateRequest $request)
+    {
+        try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+
+            $level = $this->repository->create($request->all());
+
+            return json(1001, '创建成功', $level);
+        } catch (ValidatorException $e) {
+            return json(5001, $e->getMessageBag());
+        }
     }
 
     /**
