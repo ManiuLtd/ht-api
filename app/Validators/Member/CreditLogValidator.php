@@ -16,7 +16,13 @@ class CreditLogValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
+        ValidatorInterface::RULE_CREATE => [
+            'type' =>'required|in:1,2,3'
+        ],
         ValidatorInterface::RULE_UPDATE => [],
+    ];
+    protected $messages = [
+        'type.required' => '非法的type值',
+        'type.in' => '非法的type值',
     ];
 }

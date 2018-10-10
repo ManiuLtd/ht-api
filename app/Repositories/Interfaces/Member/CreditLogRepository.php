@@ -10,4 +10,8 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface CreditLogRepository extends RepositoryInterface
 {
     //
+    /**
+     * @return mixed
+     */
+    public function getWithdrawCharts();
 }
