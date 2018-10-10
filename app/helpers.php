@@ -117,6 +117,8 @@ if (! function_exists('getMemberId')) {
         return 1;
     }
 }
+
+//TODO  解密token
 if (! function_exists('getMember')) {
 
     /**

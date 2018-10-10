@@ -62,6 +62,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
+    //TODO
     public function getTeamCharts()
     {
         $date_type = request('date_type','month');
@@ -103,22 +104,22 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         }
         //二级粉丝
         if ($level == 2) {
-            return Member::whereIn('inviter_id', function ($query) use ($member) {
+            return Member::whereIn('inviter_id', function ($query) use ($inviterId) {
                 $query->select('id')
                     ->from('members')
-                    ->where('inviter_id', $member->id);
+                    ->where('inviter_id', $inviterId);
             })->orderBy('id', 'desc')
                 ->paginate(20);
         }
         //三级粉丝
         if ($level == 3) {
-            return Member::whereIn('inviter_id', function ($query) use ($member) {
+            return Member::whereIn('inviter_id', function ($query) use ($inviterId) {
                 $query->select('id')
                     ->from('members')
-                    ->whereIn('inviter_id', function ($query2) use ($member) {
+                    ->whereIn('inviter_id', function ($query2) use ($inviterId) {
                         $query2->select('id')
                             ->from('members')
-                            ->where('inviter_id', $member->id);
+                            ->where('inviter_id', $inviterId);
                     });
             })->orderBy('id', 'desc')
                 ->paginate(20);
