@@ -32,7 +32,6 @@ class CommissionLevelValidator extends LaravelValidator
             'duration' => 'required',
             'description' => 'required',
             'is_commission' => 'required',
-            'is_bindphone' => 'required',
         ],
         ValidatorInterface::RULE_UPDATE => [],
     ];

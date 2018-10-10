@@ -67,7 +67,7 @@ return [
             'access_id' => 'LTAI9IGCcZGSoiIC',
             'access_key' => 'Yf0SOOaerzjyJeYDQWFdWznHzrGorc',
             'bucket' => 'ht-dev',
-            'endpoint' => 'http://oss-cn-beijing.aliyuncs.com',
+            'endpoint' => 'oss-cn-beijing.aliyuncs.com',
 //            'endpoint_internal' => '',
 //            'cdnDomain' => '', // 如果isCName为true, getUrl会判断cdnDomain是否设定来决定返回的url，如果cdnDomain未设置，则使用endpoint来生成url，否则使用cdn
             'isCName' => false,

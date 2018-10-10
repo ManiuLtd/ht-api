@@ -67,7 +67,7 @@ class TBKServiceProvider extends ServiceProvider
         }
 
         //测试
-//        $this->app->when(HomeController::class)
+//        $this->app->when( ::class)
 //            ->needs(TBKInterface::class)
 //            ->give(\App\Tools\Taoke\PinDuoDuo::class);
     }
