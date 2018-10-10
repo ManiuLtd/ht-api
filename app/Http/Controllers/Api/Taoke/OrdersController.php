@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\Taoke;
 use App\Criteria\DatePickerCriteria;
 use App\Criteria\MemberCriteria;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Taoke\MemberOrderCreateRequest;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
 
 
@@ -55,8 +56,16 @@ class OrdersController extends Controller
     }
 
     //TODO 手动提交订单 存到tbk_member_orders  ，使用脚本订单读取这个表中的订单号，和tbk_order里面的订单绑定
+    /**
+     * 提交订单
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function submit()
     {
-
+        try{
+            return $this->repository->submitOrder();
+        }catch (\Exception $e){
+            return json(5001,$e->getMessage());
+        }
     }
 }
