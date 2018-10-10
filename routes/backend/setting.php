@@ -6,6 +6,6 @@ Route::namespace('System')
     ->group(function () {
         //设置
         Route::resource('setting', 'SettingsController', [
-            'only' => ['index', 'edit'],
+            'only' => ['index', 'update'],
         ]);
     });
