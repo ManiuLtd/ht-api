@@ -84,7 +84,37 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 
     }
 
-
+    /**
+     * 提交订单
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function submitOrder()
+    {
+        $member = getMember();
+        $ordernum = request('ordernum');
+        if(is_numeric($ordernum) && strlen($ordernum) >= 16){
+            $re = db('tbk_member_orders')
+                ->where('ordernum',$ordernum)
+                ->first();
+            if($re){
+                return json(4001,'订单号已提交');
+            }
+            $order = db('tbk_orders')->where([
+                'ordernum'=>$ordernum
+            ])->first();
+            if($order){
+               db('tbk_member_orders')->insert([
+                    'user_id' => $member->user_id,
+                    'member_id' => $member->id,
+                    'ordernum' => $ordernum,
+                    'created_at' => now()->toDateTimeString(),
+                    'updated_at' => now()->toDateTimeString(),
+                ]);
+               return json(1001,'订单提交成功');
+            }
+        }
+        return json(4001,'订单格式不对');
+    }
     /**
      * Specify Model class name.
      *
