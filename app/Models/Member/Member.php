@@ -47,7 +47,6 @@ class Member extends Model implements Transformable
         'user_id',
         'inviter_id',
         'level1',
-        'level2',
         'password',
     ];
 

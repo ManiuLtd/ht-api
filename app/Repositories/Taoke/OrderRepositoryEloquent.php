@@ -47,24 +47,31 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         $member = getMember();
 
         $date_type = request('date_type','month');
+
         //自推佣金
-        $moneyData = $this->commission->selfPush($member->id, $date_type);
+        $moneyData = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'commission_rate1',true,$date_type);
 
         //团队订佣金
         //下级佣金
-        $subordinateData = $this->commission->subordinate($member->id, $date_type);
+        $subordinateData = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'commission_rate2',true,$date_type);
         //组长提成
-        $moneyLeader = $this->commission->leader($member->id, $date_type) + $this->commission->old_leader($member->id, $date_type);
-        $amount = $moneyLeader + $subordinateData + $moneyData['money'];
+        $leader = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate1',true,$date_type);
+        $old_leader = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate2',true,$date_type);
+        $money = 0;
+
+       $amount = $moneyData + $subordinateData + $leader + $old_leader + $money;
+
 
         // 是否是组长
-        $orderNum = 0;
+
         $group = $member->group;
         if ($member->id == $group->member_id ?? 0) {
-            $query = db('tbk_orders')->whereYear('created_at',now()->year);
-            $query = $this->commission->getQuery($query, $date_type)
-                ->whereRaw("status = 3 and (group_id = $group->id or oldgroup_id = $group->id )");
-            $orderNum = $query->count();
+            $orderNum = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate1',false)->count();
+        }else {
+            $selfOrderNum = $this->commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate1', false);
+            $subordinateOrder = $this->commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate2', false);
+
+            $orderNum = $selfOrderNum->count() + $subordinateOrder->count();
         }
         return [
             'Independence' => $moneyData,
