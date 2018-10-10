@@ -16,12 +16,12 @@ use Prettus\Validator\Exceptions\ValidatorException;
 class HistoriesController extends Controller
 {
     /**
-     * @var FavouriteRepository
+     * @var HistoryRepository
      */
     protected $repository;
 
     /**
-     * @var FavouriteValidator
+     * @var HistoryValidator
      */
     protected $validator;
 
@@ -53,7 +53,6 @@ class HistoriesController extends Controller
      * 添加浏览记录
      * @param HistoryCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(HistoryCreateRequest $request)
     {

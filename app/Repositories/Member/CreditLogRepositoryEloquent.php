@@ -60,6 +60,7 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
+    //TODO
     public function getWithdrawCharts()
     {
         $type = request('type', 1);

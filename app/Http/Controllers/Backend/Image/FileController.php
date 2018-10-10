@@ -18,53 +18,22 @@ class FileController extends Controller
      */
     public function upload(Request $request)
     {
-//        $disk = storage();
 
         // 上传文件到云储存
-        $file = $request->file('file');
+        $file = $request->file ('file');
         if (!$file) {
-            return response()->json([
-                'status' => '500',
-                'message' => '上传失败',
-            ]);
-        }
-        if (request('type') == 2) {
-            //获取上传目录
-            $fileName = $file->getClientOriginalName();
-            if (!in_array($fileName, ['apiclient_key.pem', 'apiclient_cert.pem'])){
-                return response()->json([
-                    'status' => '500',
-                    'message' => '请上传对应名称的证书',
-                ]);
-            }
-            $fileExtension = $file->getClientOriginalExtension();
-            if ($fileExtension != "pem") {
-                return response()->json([
-                    'status' => '500',
-                    'message' => '证书格式错误',
-                ]);
-            }
-            $filePath = Storage::disk('local')->putFileAs('apiclient/' . Hashids::encode(session('uuid')), $file, $fileName);
-            return json(1001,'上传成功',[
-                'status' => '200',
-                'url' => $filePath,
-            ]);
-        } else {
-            //图片
-            $mimeType = $file->getClientMimeType();
-            if (!str_contains($mimeType, 'image/')) {
-                return response()->json([
-                    'status' => '500',
-                    'message' => '图片格式错误',
-                ]);
-            }
-            $path = 'images/' . date('Ymd');
-            $filePath = $file->store($path);
-            return json(1001,'上传成功',[
-                'status' => '200',
-                'url' => Storage::url($filePath),
-            ]);
+            return json ('4001', '上传失败，没接受到file');
         }
 
+        //图片
+        $mimeType = $file->getClientMimeType ();
+        if (!str_contains ($mimeType, 'image/')) {
+            return json ('4001', '图片格式错误');
+        }
+        $path = 'images/' . date ('Ymd');
+
+        $filePath = $file->store ($path);
+
+        return json (1001, '上传成功', ['url' => Storage::url ($filePath)]);
     }
 }

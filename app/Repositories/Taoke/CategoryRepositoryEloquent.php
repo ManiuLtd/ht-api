@@ -41,10 +41,10 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
         return CategoryValidator::class;
     }
 
-//    public function presenter()
-//    {
-//        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
-//    }
+    public function presenter()
+    {
+        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+    }
 
     /**
      * Boot up the repository, pushing criteria.

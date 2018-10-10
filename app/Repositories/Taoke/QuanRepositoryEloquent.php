@@ -40,6 +40,9 @@ class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
         return QuanValidator::class;
     }
 
+    /**
+     * @return string
+     */
     public function presenter()
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
