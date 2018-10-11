@@ -27,6 +27,7 @@ class Group extends Model implements Transformable
     protected $fillable = [
         'user_id',
         'member_id',
+        'pid',
         'name',
         'logo',
         'description',
