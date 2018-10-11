@@ -19,4 +19,9 @@ interface MemberRepository extends RepositoryInterface
      * @return mixed
      */
     public function getTeamCharts();
+
+    /**
+     * @return mixed
+     */
+    public function promotionLevel();
 }
