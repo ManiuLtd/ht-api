@@ -53,9 +53,7 @@ class Qrcode
 
 
 
-    public function
-
-    ()
+    public function generate()
     {
         $template = Image::make($this->templatePath);
 

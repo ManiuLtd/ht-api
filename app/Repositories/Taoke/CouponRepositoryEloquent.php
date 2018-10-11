@@ -5,7 +5,7 @@ namespace App\Repositories\Taoke;
 use App\Models\Taoke\Coupon;
 use App\Validators\Taoke\CouponValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
+use App\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
 /**
@@ -18,7 +18,8 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
      * @var array
      */
     protected $fieldSearchable = [
-        'type'
+        'type',
+        'title' => 'like'
     ];
 
     /**
@@ -40,7 +41,6 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     {
         return CouponValidator::class;
     }
-
     /**
      * Boot up the repository, pushing criteria.
      */
@@ -48,4 +48,14 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    /**
+     * @return string
+     */
+    public function presenter()
+    {
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
+    }
+
+
 }
