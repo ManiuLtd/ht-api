@@ -14,20 +14,7 @@ use App\Repositories\Interfaces\Taoke\OrderRepository;
  */
 class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 {
-    /**
-     * @var
-     */
-    protected $commission;
 
-    /**
-     * OrderRepositoryEloquent constructor.
-     * @param Commission $commission
-     */
-    public function __construct(Commission $commission)
-    {
-        $this->commission = $commission;
-    }
-    
     /**
      * @var array
      */
@@ -37,84 +24,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         'created_at',
     ];
 
-    /**
-     * TODO
-     * 订单数据报表
-     * @return array|mixed
-     */
-    public function getOrderCharts()
-    {
-        $member = getMember();
 
-        $date_type = request('date_type','month');
-
-        //自推佣金
-        $moneyData = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'commission_rate1',true,$date_type);
-
-        //团队订佣金
-        //下级佣金
-        $subordinateData = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'commission_rate2',true,$date_type);
-        //组长提成
-        $leader = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate1',true,$date_type);
-        $old_leader = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate2',true,$date_type);
-        $money = 0;
-
-       $amount = $moneyData + $subordinateData + $leader + $old_leader + $money;
-
-
-        // 是否是组长
-
-        $group = $member->group;
-        if ($member->id == $group->member_id ?? 0) {
-            $orderNum = $this->commission->getOrdersOrCommissionByDate($member->id,[1],'group_rate1',false)->count();
-        }else {
-            $selfOrderNum = $this->commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate1', false);
-            $subordinateOrder = $this->commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate2', false);
-
-            $orderNum = $selfOrderNum->count() + $subordinateOrder->count();
-        }
-        return [
-            'Independence' => $moneyData,
-            'team' => [
-               'money' => $amount,
-               'orderNum' => $orderNum
-            ],
-        ];
-
-
-    }
-
-    /**
-     * 提交订单
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function submitOrder()
-    {
-        $member = getMember();
-        $ordernum = request('ordernum');
-        if(is_numeric($ordernum) && strlen($ordernum) >= 16){
-            $re = db('tbk_member_orders')
-                ->where('ordernum',$ordernum)
-                ->first();
-            if($re){
-                return json(4001,'订单号已提交');
-            }
-            $order = db('tbk_orders')->where([
-                'ordernum'=>$ordernum
-            ])->first();
-            if($order){
-               db('tbk_member_orders')->insert([
-                    'user_id' => $member->user_id,
-                    'member_id' => $member->id,
-                    'ordernum' => $ordernum,
-                    'created_at' => now()->toDateTimeString(),
-                    'updated_at' => now()->toDateTimeString(),
-                ]);
-               return json(1001,'订单提交成功');
-            }
-        }
-        return json(4001,'订单格式不对');
-    }
     /**
      * Specify Model class name.
      *
@@ -140,7 +50,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria (app (RequestCriteria::class));
     }
 
     /**
@@ -150,4 +60,82 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
+
+
+    /**
+     * 订单数据报表
+     * @return array|mixed
+     */
+    public function getOrderCharts()
+    {
+        $member = getMember ();
+        $commission = new Commission();
+        $date_type = request ('date_type', 'month');
+
+        //自推佣金
+        $moneyData = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', true, $date_type);
+
+        //团队订佣金
+        //下级佣金
+        $subordinateData = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', true, $date_type);
+        //组长提成
+        $leader = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', true, $date_type);
+        $old_leader = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate2', true, $date_type);
+        $money = 0;
+
+        $amount = $moneyData + $subordinateData + $leader + $old_leader + $money;
+
+
+        // 是否是组长
+
+        $group = $member->group;
+        if ($member->id == $group->member_id ?? 0) {
+            $orderNum = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', false)->count ();
+        } else {
+            $selfOrderNum = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', false);
+            $subordinateOrder = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', false);
+
+            $orderNum = $selfOrderNum->count () + $subordinateOrder->count ();
+        }
+        return [
+            'Independence' => $moneyData,
+            'team' => [
+                'money' => $amount,
+                'orderNum' => $orderNum
+            ],
+        ];
+    }
+
+    /**
+     * 提交订单
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function submitOrder()
+    {
+        $member = getMember ();
+        $ordernum = request ('ordernum');
+        if (is_numeric ($ordernum) && strlen ($ordernum) >= 16) {
+            $re = db ('tbk_member_orders')
+                ->where ('ordernum', $ordernum)
+                ->first ();
+            if ($re) {
+                return json (4001, '订单号已提交');
+            }
+            $order = db ('tbk_orders')->where ([
+                'ordernum' => $ordernum
+            ])->first ();
+            if ($order) {
+                db ('tbk_member_orders')->insert ([
+                    'user_id' => $member->user_id,
+                    'member_id' => $member->id,
+                    'ordernum' => $ordernum,
+                    'created_at' => now ()->toDateTimeString (),
+                    'updated_at' => now ()->toDateTimeString (),
+                ]);
+                return json (1001, '订单提交成功');
+            }
+        }
+        return json (4001, '订单格式不对');
+    }
+
 }
