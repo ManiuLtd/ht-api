@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Backend\Taoke;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CouponValidator;
-use App\Http\Requests\CouponCreateRequest;
-use App\Http\Requests\CouponUpdateRequest;
+use App\Http\Requests\Taoke\CouponCreateRequest;
+use App\Http\Requests\Taoke\CouponUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
@@ -45,126 +45,44 @@ class CouponsController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $coupons = $this->repository->all();
+        $coupons = $this->repository->paginate(request('limit', 10));
 
-        if (request()->wantsJson()) {
-            return response()->json([
-                'data' => $coupons,
-            ]);
-        }
-
-        return view('coupons.index', compact('coupons'));
+        return json(1001, '获取成功', $coupons);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CouponCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @param CouponCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CouponCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $this->validator->with($request->all())->passesOrFail();
 
             $coupon = $this->repository->create($request->all());
 
-            $response = [
-                'message' => 'Coupon created.',
-                'data'    => $coupon->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
+            return json(1001, '添加成功', $coupon);
         } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag(),
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return json(4001, $e->getMessageBag()->first());
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $coupon = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-            return response()->json([
-                'data' => $coupon,
-            ]);
-        }
-
-        return view('coupons.show', compact('coupon'));
-    }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $coupon = $this->repository->find($id);
-
-        return view('coupons.edit', compact('coupon'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  CouponUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @param CouponUpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(CouponUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with($request->all())->passesOrFail();
 
-            $coupon = $this->repository->update($request->all(), $id);
+            $category = $this->repository->update($request->all(), $id);
 
-            $response = [
-                'message' => 'Coupon updated.',
-                'data'    => $coupon->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
+            return json(1001, '修改成功', $category);
         } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag(),
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return json(4001, $e->getMessageBag()->first());
         }
     }
 
@@ -177,15 +95,8 @@ class CouponsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
+        $this->repository->delete($id);
 
-        if (request()->wantsJson()) {
-            return response()->json([
-                'message' => 'Coupon deleted.',
-                'deleted' => $deleted,
-            ]);
-        }
-
-        return redirect()->back()->with('message', 'Coupon deleted.');
+        return json(1001, '删除成功');
     }
 }

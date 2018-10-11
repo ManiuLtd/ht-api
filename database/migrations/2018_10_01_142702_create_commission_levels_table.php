@@ -28,10 +28,11 @@ class CreateCommissionLevelsTable extends Migration
             $table->decimal('group_rate2', 4, 2)->nullable(); //团队某个人升级为组长后，老组长拿的新组长团队的佣金比例
             $table->decimal('commission_rate1', 4, 2)->nullable();  //自购佣金比例
             $table->decimal('commission_rate2', 4, 2)->nullable();  //拿下级的佣金比例
-            $table->decimal('min_commission', 9, 2)->nullable();  //升级最低佣金
-            $table->integer('friends1')->nullable(); //升级最低下级粉丝数
-            $table->integer('friends2')->nullable(); // 升级最低下下级粉丝数
-            $table->integer('ordernum')->nullable(); //升级最低订单数
+            $table->decimal('credit', 8, 2)->nullable();  //升级所需积分
+//            $table->decimal('min_commission', 9, 2)->nullable();  //升级最低佣金
+//            $table->integer('friends1')->nullable(); //升级最低下级粉丝数
+//            $table->integer('friends2')->nullable(); // 升级最低下下级粉丝数
+//            $table->integer('ordernum')->nullable(); //升级最低订单数
             $table->decimal('price', 9, 2)->nullable(); //升级所需支付金额
             $table->integer('duration')->nullable(); // 等级有效时长 按天计算
             $table->string('description', 191)->nullable(); //等级描述
