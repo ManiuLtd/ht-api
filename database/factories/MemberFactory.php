@@ -186,7 +186,8 @@ $factory->define(App\Models\Member\Group::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),
-        'erweima' => $faker->imageUrl(100, 100),
+        'pid' => rand(1, 50),
+        'qrcode' => $faker->imageUrl(100, 100),
         'qq' => rand(1111111, 9999999),
         'wechat' => rand(1111111, 9999999),
         'name' => $faker->name,

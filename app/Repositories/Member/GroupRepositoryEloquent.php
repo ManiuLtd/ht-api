@@ -19,6 +19,7 @@ class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
     protected $fieldSearchable = [
         'member_id',
         'user_id',
+        'pid',
     ];
 
     /**
