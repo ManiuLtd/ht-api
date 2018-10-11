@@ -37,4 +37,7 @@ Route::namespace('Taoke')
         ]);
         //优惠卷分享
         Route::get('coupon-share','CouponsController@share');
+        //搜索
+        Route::get('search','SearchController@index');
+        Route::get('search/hot','SearchController@keywords');
     });
