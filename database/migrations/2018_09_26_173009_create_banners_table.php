@@ -19,11 +19,14 @@ class CreateBannersTable extends Migration
     {
         Schema::create('banners', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->nullable();
-            $table->string('image', 191)->nullable();
-            $table->integer('sort')->nullable()->default(100);
-            $table->string('tag', 191)->nullable();
-            $table->tinyInteger('status')->nullable()->default(1);
+            $table->integer('user_id')->nullable()->comment('用户ID');
+            $table->string('title')->nullable()->comment('标题');
+            $table->string('image', 191)->nullable()->comment('图片地址');
+            $table->text('description')->nullable()->comment('描述');
+            $table->string('url')->nullable()->comment('外部链接地址');
+            $table->integer('sort')->nullable()->default(100)->comment('排序');
+            $table->string('tag', 191)->nullable()->comment('标识');
+            $table->tinyInteger('status')->nullable()->default(1)->comment('状态0隐藏 1显示');
             $table->nullableTimestamps();
 
             $table->index('user_id', 'banners_user_id_index');
