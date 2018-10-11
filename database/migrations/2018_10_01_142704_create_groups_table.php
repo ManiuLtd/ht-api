@@ -22,6 +22,9 @@ class CreateGroupsTable extends Migration
             $table->integer('user_id')->nullable();
             $table->integer('member_id')->nullable();
             $table->integer('pid')->nullable();
+            $table->string('erweima', 191)->nullable(); //组长微信二维码
+            $table->string('qq')->nullable();//组长QQ
+            $table->string('wechat')->nullable();//组长微信
             $table->string('name', 50)->nullable(); //小组名
             $table->string('logo', 191)->nullable(); //小组图标
             $table->text('description')->nullable(); //小组描述

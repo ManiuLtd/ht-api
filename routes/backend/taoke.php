@@ -16,4 +16,7 @@ Route::namespace('Taoke')
         Route::resource('order', 'OrdersController', [
             'only' => ['index', 'show'],
         ]);
+
+        //优惠卷
+        Route::resource('coupon', 'CouponsController');
     });
