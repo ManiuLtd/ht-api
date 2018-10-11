@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Member;
 
+use App\Models\Member\Level;
 use App\Models\Member\Member;
 use App\Criteria\RequestCriteria;
 use App\Tools\Taoke\Commission;
@@ -129,4 +130,26 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         }
     }
 
+    /**
+     * 会员升级
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function promotionLevel()
+    {
+        $member = getMember();//获取用户信息
+        $level = $member->level->level;
+        //判断是否有可升级等级
+        $levels = Level::where('status',1)
+            ->where('level','>',$level)
+            ->where('credit','<',$member->credit2)
+            ->orderBy('level','desc')
+            ->first();
+        if($levels){
+            db('members')
+                ->where('id',$member->id)
+                ->update(['level1'=>$levels['id']]);
+            return json(1001,'升级成功');
+        }
+        return json(4001,'升级条件不满足,请努力赚取积分');
+    }
 }
