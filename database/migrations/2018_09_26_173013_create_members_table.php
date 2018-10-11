@@ -35,7 +35,8 @@ class CreateMembersTable extends Migration
             $table->string('headimgurl', 191)->nullable();
             $table->tinyInteger('isagent')->nullable()->default(0);
             $table->decimal('credit1', 8, 2)->nullable()->default(0.00);
-            $table->integer('credit2')->nullable()->default(0);
+            $table->decimal('credit2', 8, 2)->nullable()->default(0.00);
+            $table->decimal('credit3', 8, 2)->nullable()->default(0.00);
             $table->integer('level1')->nullable();
             $table->integer('level2')->nullable();
             /*--- 提现审核通过时更新---*/

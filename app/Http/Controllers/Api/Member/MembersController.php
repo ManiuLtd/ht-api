@@ -64,4 +64,17 @@ class MembersController extends Controller
             return json (5001, $e->getMessage ());
         }
     }
+
+    /**
+     * 会员升级
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function promotion()
+    {
+        try {
+            return $this->repository->promotionLevel();
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessage ());
+        }
+    }
 }
