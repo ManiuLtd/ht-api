@@ -177,6 +177,7 @@ $factory->define(App\Models\Member\CommissionLevel::class, function (Faker $fake
         'duration' => rand(10, 999),
         'description' => $faker->title,
         'is_commission' => rand(0,1),
+        'is_default' => rand(0,1),
         'type' => rand(1, 2),
     ];
 });
@@ -185,7 +186,8 @@ $factory->define(App\Models\Member\Group::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),
-        'erweima' => $faker->imageUrl(100, 100),
+        'pid' => rand(1, 50),
+        'qrcode' => $faker->imageUrl(100, 100),
         'qq' => rand(1111111, 9999999),
         'wechat' => rand(1111111, 9999999),
         'name' => $faker->name,

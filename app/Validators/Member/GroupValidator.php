@@ -19,7 +19,11 @@ class GroupValidator extends LaravelValidator
         ValidatorInterface::RULE_CREATE => [],
         ValidatorInterface::RULE_UPDATE => [
             'member_id' => 'required|integer',
+            'pid' => 'required|integer',
             'name' => 'required',
+            'qrcode' => 'required',
+            'qq' => 'required',
+            'wechat' => 'required',
             'logo' => 'required|url',
             'description' => 'required',
             'status' => 'required|in:0,1',
