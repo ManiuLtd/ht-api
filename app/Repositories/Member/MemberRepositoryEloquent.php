@@ -141,7 +141,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         //判断是否有可升级等级
         $levels = Level::where('status',1)
             ->where('level','>',$level)
-            ->where('credit','<',$member->credit2)
+            ->where('credit','<',$member->credit3)
             ->orderBy('level','desc')
             ->first();
         if($levels){
