@@ -20,19 +20,29 @@ class CreateMemberLevelsTable extends Migration
         Schema::create('member_levels', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->string('name', 191)->nullable()->default('');
-            $table->string('logo', 191)->nullable()->default('');
-            $table->integer('level')->nullable();
-            $table->decimal('discount', 8, 2)->nullable()->default(0.00);
-            $table->integer('credit')->nullable()->default(0);
-            $table->decimal('money', 8, 2)->nullable();
-            $table->integer('sort')->nullable()->default(100);
-            $table->tinyInteger('status')->nullable();
+            $table->integer('level')->nullable(); //等级大小
+            $table->string('name', 100)->nullable(); //等级名
+            $table->string('logo', 191)->nullable();  //等级图标
+            $table->decimal('group_rate1', 4, 2)->nullable(); //组长拿团队每笔订单的佣金比例
+            $table->decimal('group_rate2', 4, 2)->nullable(); //团队某个人升级为组长后，老组长拿的新组长团队的佣金比例
+            $table->decimal('commission_rate1', 4, 2)->nullable();  //自购佣金比例
+            $table->decimal('commission_rate2', 4, 2)->nullable();  //拿下级的佣金比例
+            $table->decimal('credit', 8, 2)->nullable();  //升级所需积分
+//            $table->decimal('min_commission', 9, 2)->nullable();  //升级最低佣金
+//            $table->integer('friends1')->nullable(); //升级最低下级粉丝数
+//            $table->integer('friends2')->nullable(); // 升级最低下下级粉丝数
+//            $table->integer('ordernum')->nullable(); //升级最低订单数
+            $table->decimal('price', 9, 2)->nullable(); //升级所需支付金额
+            $table->integer('duration')->nullable(); // 等级有效时长 按天计算
+            $table->string('description', 191)->nullable(); //等级描述
+//            $table->tinyInteger('is_commission')->default(1)->comment('1有返佣 0没有返佣'); //1有返佣 0没有返佣
+            $table->tinyInteger('is_default')->default(0)->comment('1不是默认 0默认'); //0默认1不是默认
+            $table->tinyInteger('status')->default(1)->comment('0禁用，1正常'); //0禁用，1正常
+
+//            $table->tinyInteger('type')->nullable(); //1分销等级 2组等级
             $table->nullableTimestamps();
 
-            $table->index('user_id', 'member_levels_user_id_index');
-            $table->index('name', 'member_levels_name_index');
-            $table->index('status', 'member_levels_status_index');
+            $table->index('user_id');
         });
     }
 

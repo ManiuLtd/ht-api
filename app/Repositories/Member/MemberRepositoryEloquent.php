@@ -137,7 +137,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
     public function promotionLevel()
     {
         $member = getMember();//获取用户信息
-        $level = $member->level->level;
+        $level = $member->memberLevel->level;
         //判断是否有可升级等级
         $levels = Level::where('status',1)
             ->where('level','>',$level)
@@ -147,7 +147,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         if($levels){
             db('members')
                 ->where('id',$member->id)
-                ->update(['level1'=>$levels['id']]);
+                ->update(['level'=>$levels['id']]);
             return json(1001,'升级成功');
         }
         return json(4001,'升级条件不满足,请努力赚取积分');

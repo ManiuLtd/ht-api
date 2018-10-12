@@ -29,8 +29,7 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
         'credit1' => $faker->randomFloat(2, 0, 9999),
         'credit2' => $faker->randomFloat(2, 0, 9999),
         'credit3' => $faker->randomFloat(2, 0, 9999),
-        'level1' => rand(1, 4),
-        'level2' => rand(1, 4),
+        'level' => rand(1, 4),
         'password' => bcrypt('123456'),
         'headimgurl' => $faker->imageUrl(100, 100),
         'status' => $faker->randomKey([0, 1]),
@@ -52,20 +51,20 @@ $factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\Level::class, function (Faker $faker) {
-    return [
-        'user_id' => 1,
-        'name' => $faker->name,
-        'logo' => $faker->imageUrl(100, 100),
-        'level' => $faker->numberBetween(1, 100),
-        'credit' => $faker->numberBetween(200, 10000),
-        'discount' => $faker->randomFloat(2, 0.01, 0.99),
-        'sort' => $faker->numberBetween(1, 9999),
-        'status' => $faker->randomKey([0, 1]),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ];
-});
+//$factory->define(App\Models\Member\Level::class, function (Faker $faker) {
+//    return [
+//        'user_id' => 1,
+//        'name' => $faker->name,
+//        'logo' => $faker->imageUrl(100, 100),
+//        'level' => $faker->numberBetween(1, 100),
+//        'credit' => $faker->numberBetween(200, 10000),
+//        'discount' => $faker->randomFloat(2, 0.01, 0.99),
+//        'sort' => $faker->numberBetween(1, 9999),
+//        'status' => $faker->randomKey([0, 1]),
+//        'created_at' => now(),
+//        'updated_at' => now(),
+//    ];
+//});
 
 $factory->define(App\Models\Member\History::class, function (Faker $faker) {
     return [
@@ -162,7 +161,7 @@ $factory->define(App\Models\Member\Address::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\CommissionLevel::class, function (Faker $faker) {
+$factory->define(App\Models\Member\Level::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'level' => $faker->numberBetween(1, 100),
@@ -176,9 +175,10 @@ $factory->define(App\Models\Member\CommissionLevel::class, function (Faker $fake
         'price' => rand(10, 99),
         'duration' => rand(10, 999),
         'description' => $faker->title,
-        'is_commission' => rand(0,1),
+//        'is_commission' => rand(0,1),
         'is_default' => rand(0,1),
-        'type' => rand(1, 2),
+//        'type' => rand(1, 2),
+        'status' => rand(0,1),
     ];
 });
 

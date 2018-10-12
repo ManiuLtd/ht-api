@@ -42,7 +42,7 @@ class MembersController extends Controller
         try {
             $memberId = getMemberId ();
             $members = $this->repository
-                ->with (['commissionLevel', 'inviter','group'])
+                ->with (['memberLevel', 'inviter','group'])
                 ->find ($memberId);
 
             return json (1001, '会员信息获取成功', $members);
