@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Api\Taoke;
 
 
 use App\Tools\Taoke\TBKInterface;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CouponValidator;
 use App\Http\Requests\CouponCreateRequest;
