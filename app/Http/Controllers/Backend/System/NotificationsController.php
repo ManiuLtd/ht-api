@@ -8,6 +8,7 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\System\NotificationCreateRequest;
 use App\Repositories\Interfaces\System\NotificationRepository;
+use App\Events\SendNotification;
 
 /**
  * Class NotificationsController.
@@ -59,9 +60,9 @@ class NotificationsController extends Controller
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $notification = $this->repository->create($request->all());
+            event(new SendNotification($request->all()));
 
-            return json(1001, '创建成功', $notification);
+            return json(1001, '通知成功');
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
         }
