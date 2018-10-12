@@ -20,7 +20,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
      * @var array
      */
     protected $fieldSearchable = [
-        'name' => 'like',
+        'nickname' => 'like',
         'status',
         'inviter_id',
         'member_id',
