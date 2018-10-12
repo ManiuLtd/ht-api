@@ -41,8 +41,8 @@ class SendNotificationListener
      */
     protected function pushMsg($messages, $isAllAudience)
     {
-        $app_key = env('JPUSH_APP_KEY','26ec63d01d4b80de5076998d');
-        $master_secret = env('JPUSH_MASTER_SECRET','2cfc068997688742d93139fb');;
+        $app_key = env('JPUSH_APP_KEY','bd4666b8f14622d415153481');
+        $master_secret = env('JPUSH_MASTER_SECRET','52ebeda1cc40f6be53c78a28');;
         $client = new \JPush\Client($app_key, $master_secret);
         $push = $client->push();
         $push->options([
@@ -64,11 +64,9 @@ class SendNotificationListener
         $push->setNotificationAlert($messages['message']);
 
         try {
-//            $result = $push->send();
-//            $insert['sendno'] = $result['body']['sendno'];
-//            $insert['msg_id'] = $result['body']['msg_id'];
-            $insert['sendno'] = $messages['sendno'];
-            $insert['msg_id'] = $messages['msg_id'];
+            $result = $push->send();
+            $insert['sendno'] = $result['body']['sendno'];
+            $insert['msg_id'] = $result['body']['msg_id'];
             $insert['user_id'] = $messages['user_id'];
             $insert['member_id'] = $messages['member_id'];
             $insert['title'] = $messages['title'];
