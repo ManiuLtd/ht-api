@@ -51,4 +51,11 @@ interface TBKInterface
      * @return mixed
      */
     public function spider(array $array = []);
+
+    /**
+     * 热搜词
+     * @param array $array
+     * @return mixed
+     */
+    public function hotSearch(array $array = []);
 }

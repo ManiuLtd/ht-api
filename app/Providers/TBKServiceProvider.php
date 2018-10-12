@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Controllers\Api\Taoke\CouponsController;
+use App\Http\Controllers\Api\Taoke\SearchController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Models\Taoke\Coupon;
 use App\Tools\Taoke\TBKInterface;
@@ -65,6 +66,38 @@ class TBKServiceProvider extends ServiceProvider
                     ->give(\App\Tools\Taoke\Taobao::class);
                 break;
         }
+
+        //优惠券搜索
+        switch (request ('type')){
+            case '1':
+                $this->app->when(SearchController::class)
+                    ->needs(TBKInterface::class)
+                    ->give(\App\Tools\Taoke\Taobao::class);
+                break;
+            case '2':
+                $this->app->when(SearchController::class)
+                    ->needs(TBKInterface::class)
+                    ->give(\App\Tools\Taoke\JingDong::class);
+                break;
+            case '3':
+                $this->app->when(SearchController::class)
+                    ->needs(TBKInterface::class)
+                    ->give(\App\Tools\Taoke\PinDuoDuo::class);
+                break;
+            default :
+                $this->app->when(SearchController::class)
+                    ->needs(TBKInterface::class)
+                    ->give(\App\Tools\Taoke\Taobao::class);
+                break;
+        }
+
+        //热搜词
+        if (request('hot') == 1) {
+            $this->app->when(SearchController::class)
+                ->needs(TBKInterface::class)
+                ->give(\App\Tools\Taoke\Taobao::class);
+        }
+
 
         //测试
 //        $this->app->when( ::class)

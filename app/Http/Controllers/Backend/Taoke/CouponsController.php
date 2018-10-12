@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Backend\Taoke;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CouponValidator;
 use App\Http\Requests\Taoke\CouponCreateRequest;
 use App\Http\Requests\Taoke\CouponUpdateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
@@ -39,9 +37,7 @@ class CouponsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {

@@ -101,7 +101,7 @@ class ChartsController extends Controller
 
             return json(1001, '获取成功', $withdraw);
         }catch (\Exception $e){
-
+            return json(4001,$e->getMessage());
         }
     }
 
