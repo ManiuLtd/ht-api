@@ -37,7 +37,12 @@ Route::namespace('Taoke')
         ]);
         //优惠卷分享
         Route::get('coupon-share','CouponsController@share');
+
+        //淘宝生成领劵地址
+        Route::get('track','TrackOrdersController@track');
+
         //搜索
         Route::get('search','SearchController@index');
         Route::get('search/hot','SearchController@keywords');
+
     });

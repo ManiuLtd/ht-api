@@ -49,7 +49,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-<<<<<<< HEAD
+
 
     public function searchGoods()
     {
@@ -102,7 +102,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         ];
 
     }
-=======
+
     /**
      * @return string
      */
@@ -112,5 +112,5 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     }
 
 
->>>>>>> 3cbab390423d4c7cf13557bca9b32762f3681bbb
+
 }
