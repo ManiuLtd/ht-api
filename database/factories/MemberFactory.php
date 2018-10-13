@@ -29,7 +29,7 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
         'credit1' => $faker->randomFloat(2, 0, 9999),
         'credit2' => $faker->randomFloat(2, 0, 9999),
         'credit3' => $faker->randomFloat(2, 0, 9999),
-        'level' => rand(1, 4),
+        'level_id' => rand(1, 4),
         'password' => bcrypt('123456'),
         'headimgurl' => $faker->imageUrl(100, 100),
         'status' => $faker->randomKey([0, 1]),

@@ -30,8 +30,7 @@ class Member extends Model implements Transformable
         'password',
         'credit1',
         'credit2',
-        'level1',
-        'level2',
+        'level_id',
         'status',
     ];
 
@@ -46,8 +45,7 @@ class Member extends Model implements Transformable
     protected $hidden = [
         'user_id',
         'inviter_id',
-        'level1',
-        'level2',
+        'level_id',
         'password',
     ];
 
@@ -83,9 +81,9 @@ class Member extends Model implements Transformable
      * 当前用户会员等级.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
      */
-    public function memberLevel()
+    public function level()
     {
-        return $this->belongsTo('App\Models\Member\Level', 'level')->withDefault(null);
+        return $this->belongsTo('App\Models\Member\Level')->withDefault(null);
     }
 
 
