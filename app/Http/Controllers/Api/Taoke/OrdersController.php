@@ -37,6 +37,8 @@ class OrdersController extends Controller
     }
 
     /**
+     * TODO 新建一个查询条件，可查看团队订单和订单：https://dev.tencent.com/u/cnsecer/p/tbkapp/git/blob/master/app/Repositories/OrderRepository.php
+     *
      * 订单列表
      * @return \Illuminate\Http\JsonResponse
      */
@@ -55,7 +57,6 @@ class OrdersController extends Controller
         }
     }
 
-    //TODO 手动提交订单 存到tbk_member_orders  ，使用脚本订单读取这个表中的订单号，和tbk_order里面的订单绑定
     /**
      * 提交订单
      * @return \Illuminate\Http\JsonResponse

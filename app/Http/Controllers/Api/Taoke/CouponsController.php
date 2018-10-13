@@ -1,21 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/10/7
- * Time: 16:18
- */
 
 namespace App\Http\Controllers\Api\Taoke;
 
 
 use App\Tools\Taoke\TBKInterface;
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CouponValidator;
-use App\Http\Requests\CouponCreateRequest;
-use App\Http\Requests\CouponUpdateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use App\Validators\Taoke\CouponValidator;;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
 /**
@@ -35,47 +25,41 @@ class CouponsController extends Controller
     /**
      * @var
      */
-    protected $TBK;
+    protected $tbk;
 
     /**
      * CouponsController constructor.
      * @param CouponRepository $repository
      * @param CouponValidator $validator
-     * @param TBKInterface $TBK
+     * @param tbkInterface $tbk
      */
-    public function __construct(CouponRepository $repository, CouponValidator $validator,TBKInterface $TBK)
+    public function __construct(CouponRepository $repository, CouponValidator $validator,TBKInterface $tbk)
     {
         $this->repository = $repository;
         $this->validator = $validator;
-        $this->TBK = $TBK;
+        $this->tbk = $tbk;
     }
 
     /**
-     *优惠卷列表,可根据type筛选 ,可根据价格、券额、佣金、销量排序
+     * 优惠卷列表,可根据type筛选 ,可根据价格、券额、佣金、销量排序
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $coupons = $this->repository
-            ->with('goods')
-            ->paginate(request('limit','10'));
+        $coupons = $this->repository->paginate(request('limit','10'));
+
         return json('1001','优惠卷列表',$coupons);
     }
 
     /**
      * 详情
-     * @param $gid
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($gid)
+    public function show($id)
     {
         try {
-            $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-        }catch (ValidatorException $exception) {
-            return json(4001,$exception->getMessageBag()->first());
-        }
-        try {
-            $detail = $this->TBK->getDetail(['id' => $gid]);
+            $detail = $this->tbk->getDetail(['id' => $id]);
             if ($detail['code'] == 4004) {
                 return json(4001, $detail['message']);
             }
@@ -84,11 +68,5 @@ class CouponsController extends Controller
             return json(5001,$e->getMessage());
         }
 
-    }
-
-    //分享
-    public function share()
-    {
-        
     }
 }

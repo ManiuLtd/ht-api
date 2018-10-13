@@ -66,17 +66,6 @@ class PidsController extends Controller
         }
     }
 
-    /**
-     * 推广位详情.
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $pids = $this->repository->find($id);
-
-        return json(1001, '详情获取成功', $pids);
-    }
 
     /**
      * 编辑推广位.

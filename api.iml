@@ -31,6 +31,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/jacobcyl/ali-oss-storage" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-color" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-highlighter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jpush/jpush" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/justinrainbow/json-schema" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kkszymanowski/traitor" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/framework" />
@@ -38,6 +39,12 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/fractal" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-components" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-hostname-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-interfaces" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-manipulations" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-schemes" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mockery/mockery" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />

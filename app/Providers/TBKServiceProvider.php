@@ -4,8 +4,6 @@ namespace App\Providers;
 
 use App\Http\Controllers\Api\Taoke\CouponsController;
 use App\Http\Controllers\Api\Taoke\SearchController;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Models\Taoke\Coupon;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;

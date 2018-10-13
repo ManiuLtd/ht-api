@@ -37,14 +37,10 @@ class CreateMembersTable extends Migration
             $table->decimal('credit1', 8, 2)->nullable()->default(0.00);
             $table->decimal('credit2', 8, 2)->nullable()->default(0.00);
             $table->decimal('credit3', 8, 2)->nullable()->default(0.00);
-            $table->integer('level')->nullable();
-            /*--- 提现审核通过时更新---*/
+            $table->integer('level_id')->nullable();
             $table->string('realname', 191)->nullable();
             $table->string('alipay', 191)->nullable();
-            $table->string('bankname', 191)->nullable();
-            $table->string('bankcard', 191)->nullable();
-            /*------*/
-            $table->tinyInteger('status')->nullable()->default(1);//0禁止登陆--你可提现
+            $table->tinyInteger('status')->nullable()->default(1);
             $table->timestamp('agent_time')->nullable();
             $table->nullableTimestamps();
             $table->softDeletes();

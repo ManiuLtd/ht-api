@@ -3,6 +3,7 @@
 namespace App\Models\Cms;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -11,7 +12,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Category extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, SoftDeletes;
 
     /**
      * @var string
@@ -26,11 +27,18 @@ class Category extends Model implements Transformable
     protected $guarded = [];
 
     /**
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
+
+
+    /**
      * 字段映射.
      * @return array
      */
     public function transform()
     {
-        return $this->toArray();
+        return $this->toArray ();
     }
 }

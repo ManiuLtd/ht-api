@@ -77,37 +77,33 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
+
     /**
-     * 申请提现
-     * @return \Illuminate\Http\JsonResponse
+     * @param array $attributes
+     * @return \Illuminate\Http\JsonResponse|mixed
      */
-    public function withdraw()
+    public function create(array $attributes)
     {
-        $memberID = getMemberId ();
-        $member = db ('members')->find ($memberID);
-        $amount = request ('amount');
-        if ($amount > $member->credit1) {
+        $member = getMember ();
+
+
+        //验证金额
+        $money = $attributes['money'];
+        if ($money > $member->credit1) {
             return json (4001, '可提现金额不足');
         }
         $withdraw = db ('member_withdraws')->orderBy ('id', 'desc')->where ([
-            'member_id' => $memberID,
+            'member_id' => $member->id,
             'status' => 0
         ])->first ();
 
         if ($withdraw) {
             return json (4001, '已有在审核中的提现申请');
         }
-        $data = [
-            'member_id' => $memberID,
-            'realname' => request ('realname'),
-            'bankname' => request ('bankname'),
-            'bankcard' => request ('bankcard'),
-            'alipay' => request ('alipay'),
-            'money' => request ('amount'),
-            'status' => 0,
-        ];
+        $attributes['status'] = 0;
+        $attributes['member_id'] = $member->id;
         try {
-            db ('member_withdraws')->insert ($data);
+            db ('member_withdraws')->insert ($attributes);
             return json (1001, '申请提现成功，请等待审核');
         } catch (\Exception $e) {
             return json (5001, '提现申请失败');

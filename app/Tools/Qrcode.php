@@ -1,20 +1,32 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/10/6
- * Time: 20:45.
- */
+
 
 namespace App\Tools;
+
+use Intervention\Image\Facades\Image;
 
 class Qrcode
 {
 
     /**
-     * @var string 模板路径
+     * @var \Intervention\Image\Image
      */
-    protected $templatePath;
+    protected $image;
+
+    /**
+     * @var
+     */
+    public $width;
+
+    /**
+     * @var
+     */
+    public $height;
+
+    /**
+     * @var
+     */
+    public $savePath;
 
     /**
      * @var  array 所有文字数组
@@ -25,6 +37,16 @@ class Qrcode
      * @var  array 所有图片数组
      */
     protected $imageArray;
+
+    /**
+     * Qrcode constructor.
+     * @param $templatePath
+     */
+    public function __construct($templatePath)
+    {
+        $this->image = Image::make ($templatePath);
+    }
+
 
     /**
      * @param array $textArray
@@ -44,36 +66,46 @@ class Qrcode
 
 
     /**
-     * @param string $templatePath
+     * @param $width
+     * @param $height
      */
-    public function setTemplatePath(string $templatePath): void
+    public function resize($width, $height)
     {
-        $this->templatePath = $templatePath;
+        $this->image->resize ($width, $height);
     }
 
 
-
+    /**
+     * 生成二维码
+     * @return mixed
+     */
     public function generate()
     {
-        $template = Image::make($this->templatePath);
 
-        if (count ($this->imageArray)){
-            foreach ($this->imageArray as $imgArr){
-                $template->insert($imgArr['image'], $imgArr['position'], $imgArr['x'], $imgArr['y']);
+        $this->image->resize ($this->width, $this->height);
+
+
+        //生成图片
+        if (count ($this->imageArray) > 0) {
+            foreach ($this->imageArray as $imgArr) {
+                $this->image->insert ($imgArr['image'], $imgArr['position'], $imgArr['x'], $imgArr['y']);
             }
         }
-        if (count ($this->textArray)){
-            foreach ($this->textArray as $textArr){
-                $template->text($imgArr['text'], 215, 1485, function ($font) use ($textArr){
-                    $font->file(public_path('fonts/yahei.ttf'));
-                    $textArr['size'] ?? $font->size($textArr['size']);
-                    $font->color('#9b9b9b');
-                    $font->valign('left');
+        //生成文字
+        if (count ($this->textArray) > 0) {
+            foreach ($this->textArray as $textArr) {
+                $this->image->text ($textArr['text'], $textArr['x'], $textArr['y'], function ($font) use ($textArr) {
+                    $font->file (public_path ('fonts/msyh.ttf'));
+                    $font->size ($textArr['size']);
+                    $textArr['color'] ? $font->valign ($textArr['color']) : $font->valign ('#444');
+                    $textArr['valign'] ? $font->valign ($textArr['valign']) : $font->valign ('left');
                 });
 
-                $template->insert($imgArr['text'], $imgArr['position'], $imgArr['x'], $imgArr['y']);
+                $this->image->insert ($textArr['text'], $textArr['position'], $textArr['x'], $textArr['y']);
             }
         }
-      //储存图片 返回
+
+        $this->image->save (public_path ($this->savePath));
+        return asset ($this->savePath);
     }
 }

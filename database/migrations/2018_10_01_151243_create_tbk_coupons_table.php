@@ -37,7 +37,8 @@ class CreateTbkCouponsTable extends Migration
             $table->integer('receive_num')->nullable();  // 领取数量
             $table->string('tag', 50)->nullable(); //标识(主要淘宝用，total、top100等)
             $table->tinyInteger('is_recommend')->default(0); //是否首页推荐显示
-            $table->string('type', 20)->nullable(); // 1淘宝 2京东 3拼多多
+            $table->integer('sort')->default(0); //是否首页推荐显示
+            $table->tinyInteger('type')->nullable(); // 1淘宝 2京东 3拼多多
             $table->tinyInteger('status')->nullable(); // 1 显示 0不显示(爬取存到数据库的为0)
             $table->timestamp('start_time')->nullable(); //优惠开始时间
             $table->timestamp('end_time')->nullable(); //优惠结束时间

@@ -24,7 +24,9 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         'status',
         'inviter_id',
         'member_id',
-        'phone'
+        'alipay',
+        'realname',
+        'phone',
     ];
 
     /**
@@ -69,13 +71,13 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
      */
     public function getTeamCharts()
     {
-        $date_type = request('date_type','month');
+        $dateType = request('date_type','month');
 
         $member = getMember();
         $commission = new Commission();
         // 直属
         $query = db('members')->where('inviter_id', $member->id);
-        $query = $commission->getQuery($query,$date_type);
+        $query = $commission->getQuery($query,$dateType);
         $directly = $query->count();
         //直属成员下级
         $query2 = db('members')->whereIn('inviter_id',function ($query3) use ($member) {
@@ -83,7 +85,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
                 ->from('members')
                 ->where('inviter_id', $member->id);
         });
-        $query2 = $commission->getQuery($query2,$date_type);
+        $query2 = $commission->getQuery($query2,$dateType);
         $subordinate = $query2->count();
         return [
             'totalNum' => $directly + $subordinate,
@@ -128,28 +130,5 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
             })->orderBy('id', 'desc')
                 ->paginate(20);
         }
-    }
-
-    /**
-     * 会员升级
-     * @return \Illuminate\Http\JsonResponse|mixed
-     */
-    public function promotionLevel()
-    {
-        $member = getMember();//获取用户信息
-        $level = $member->level->level;
-        //判断是否有可升级等级
-        $levels = Level::where('status',1)
-            ->where('level','>',$level)
-            ->where('credit','<',$member->credit3)
-            ->orderBy('level','desc')
-            ->first();
-        if($levels){
-            db('members')
-                ->where('id',$member->id)
-                ->update(['level_id'=>$levels['id']]);
-            return json(1001,'升级成功');
-        }
-        return json(4001,'升级条件不满足,请努力赚取积分');
     }
 }

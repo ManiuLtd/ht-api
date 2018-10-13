@@ -19,6 +19,12 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      * @var array
      */
     protected $fieldSearchable = [
+        'member_id',
+        'group_id',
+        'oldgroup_id',
+        'ordernum' => 'like',
+        'title' => 'like',
+        'itemid',
         'type',
         'status',
         'created_at',

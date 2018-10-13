@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/10/7
- * Time: 16:55
- */
+
 
 namespace App\Http\Controllers\Api\Cms;
 
@@ -42,11 +37,11 @@ class ArticlesController extends  Controller
         try {
             $article = $this->repository
                 ->pushCriteria(new ArticleCategoryCriteria())
-                ->with(['user', 'category'])
+                ->with(['category'])
                 ->paginate(request('limit', 10));
 
             return json(1001, '列表获取成功', $article);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return json(5001,$e->getMessage());
         }
     }

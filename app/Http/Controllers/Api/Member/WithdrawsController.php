@@ -23,11 +23,12 @@ use Prettus\Validator\Exceptions\ValidatorException;
 class WithdrawsController extends Controller
 {
     /**
-     * @var
+     * @var WithdrawRepository
      */
     protected $repository;
+
     /**
-     * @var
+     * @var WithdrawValidator
      */
     protected $validator;
 
@@ -44,19 +45,6 @@ class WithdrawsController extends Controller
 
 
     /**
-     * 获取提现信息
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
-    {
-
-        $withdraw = $this->repository->getWithdrawData ();
-
-        return json (1001, '获取成功', $withdraw);
-    }
-
-
-    /**
      * 发起提现
      * @param WithdrawCreateRequest $request
      * @return \Illuminate\Http\JsonResponse|mixed
@@ -67,7 +55,7 @@ class WithdrawsController extends Controller
         try {
             $this->validator->with (request ()->all ())->passesOrFail ();
 
-            return $this->repository->withdraw ();
+            return $this->repository->create ($request->all ());
 
         } catch (\Exception $e) {
             return json (5001, $e->getMessage ());

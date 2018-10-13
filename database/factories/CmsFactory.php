@@ -20,7 +20,7 @@ $factory->define(App\Models\Cms\Category::class, function (Faker $faker) {
         'description' => $faker->title,
         'logo' => $faker->imageUrl(300, 100),
         'sort' => rand(0, 1000),
-        'type' => array_rand([1, 2]),
+        'type' => rand(1,2),
     ];
 });
 

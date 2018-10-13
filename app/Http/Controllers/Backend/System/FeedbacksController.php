@@ -40,7 +40,7 @@ class FeedbacksController extends Controller
     public function index()
     {
         $feedbacks = $this->repository
-            ->with(['user', 'member'])
+            ->with(['member'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $feedbacks);

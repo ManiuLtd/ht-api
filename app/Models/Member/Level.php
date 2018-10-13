@@ -3,6 +3,7 @@
 namespace App\Models\Member;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -11,7 +12,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Level extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, SoftDeletes;
 
     /**
      * @var string
@@ -31,4 +32,10 @@ class Level extends Model implements Transformable
     protected $hidden = [
         'user_id',
     ];
+
+    /**
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
 }

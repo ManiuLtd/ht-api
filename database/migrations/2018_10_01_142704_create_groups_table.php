@@ -31,6 +31,7 @@ class CreateGroupsTable extends Migration
             $table->tinyInteger('status')->nullable()->default(1); //小组状态 1正常 0禁用
             $table->tinyInteger('default')->nullable()->default(0);  //是否为默认小组
             $table->nullableTimestamps();
+            $table->softDeletes ();
 
             $table->index('user_id');
             $table->index('member_id');

@@ -41,7 +41,6 @@ class HistoriesController extends Controller
     public function index()
     {
         $memberHistories = $this->repository
-            ->with('goods')
             ->pushCriteria(new DatePickerCriteria())
             ->paginate(request('limit', 10));
 

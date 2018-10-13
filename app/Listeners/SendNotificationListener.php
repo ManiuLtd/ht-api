@@ -22,33 +22,26 @@ class SendNotificationListener
     }
 
     /**
-     * Handle the event.
-     *
-     * @param  SendNotification $event
-     * @return void
+     * 极光推送消息
+     * 文档：https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/
+     * @param SendNotification $event
      */
     public function handle(SendNotification $event)
     {
         $messages = $event->messages;
         $isAllAudience = $event->isAllAudience;
-        $this->pushMsg($messages, $isAllAudience);
-    }
-
-    /**
-     * 推送消息 并写入日志
-     * @param $messages
-     * @param $isAllAudience
-     */
-    protected function pushMsg($messages, $isAllAudience)
-    {
-        $app_key = env('JPUSH_APP_KEY','bd4666b8f14622d415153481');
-        $master_secret = env('JPUSH_MASTER_SECRET','52ebeda1cc40f6be53c78a28');;
+        $app_key = env('JPUSH_APP_KEY');
+        $master_secret = env('JPUSH_MASTER_SECRET');;
         $client = new \JPush\Client($app_key, $master_secret);
+
         $push = $client->push();
+        //默认参数
         $push->options([
             "time_to_live" => 6000,//离线保存时间，单位是 秒
-            "apns_production" => true //注意环境问题，false 代表开发环境
+            "apns_production" => false //注意环境问题，false 代表开发环境
         ]);
+
+        //推送至所有平台
         $push->setPlatform('all');
 
         //判断是否为群发
@@ -61,23 +54,21 @@ class SendNotificationListener
             $push->addAllAudience();
             $insert['type'] = 1;
         }
-        $push->setNotificationAlert($messages['message']);
+        //推送消息
+        $push->setMessage($messages['message'],$messages['title']);
 
         try {
-            $result = $push->send();
-            $insert['sendno'] = $result['body']['sendno'];
-            $insert['msg_id'] = $result['body']['msg_id'];
+            $push->send();
             $insert['user_id'] = $messages['user_id'];
             $insert['member_id'] = $messages['member_id'];
             $insert['title'] = $messages['title'];
-            $insert['logo'] = $messages['logo'];
             $insert['message'] = $messages['message'];
             $insert['created_at'] = now()->toDateTimeString();
             $insert['updated_at'] = now()->toDateTimeString();
-            DB::table('notifications')->insert($insert);
-        } catch (\JPush\Exceptions\JPushException $e) {
-            Log::info($e->getMessage());
+            db('notifications')->insert($insert);
+        } catch (\Exception $e) {
+            Log::info("极光推送错误");
         }
-
     }
+
 }

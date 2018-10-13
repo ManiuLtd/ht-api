@@ -17,9 +17,6 @@ $factory->define(App\Models\System\Notification::class, function (Faker $faker) 
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),
-        'msg_id' => rand(1, 20),
-        'logo' => $faker->imageUrl(300, 100),
-        'sendno' => 'HT'.$faker->randomNumber(),
         'title' => $faker->title,
         'message' => $faker->text,
         'type' => array_rand([1, 0]),
@@ -39,6 +36,7 @@ $factory->define(App\Models\System\Feedback::class, function (Faker $faker) {
 $factory->define(App\Models\System\Sms::class, function (Faker $faker) {
     return [
         'user_id' => 1,
+        'member_id' => rand(1, 50),
         'phone' => $faker->phoneNumber,
         'code' => rand(1000, 9999),
     ];

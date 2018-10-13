@@ -37,20 +37,20 @@ class GroupsController extends Controller
     }
 
     /**
-     *  等级列表.
+     *  小组列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $groups = $this->repository
-            ->with(['user', 'member'])
-            ->paginate(request('limit', 10));
+            ->with (['member'])
+            ->paginate (request ('limit', 10));
 
-        return json(1001, '列表获取成功', $groups);
+        return json (1001, '列表获取成功', $groups);
     }
 
     /**
-     * 编辑等级.
+     * 编辑小组.
      * @param GroupUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -58,26 +58,33 @@ class GroupsController extends Controller
     public function update(GroupUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $group = $this->repository->update($request->all(), $id);
+            $group = $this->repository->update ($request->all (), $id);
 
-            return json(1001, '更新成功', $group);
+            return json (1001, '更新成功', $group);
         } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag());
+            return json (5001, $e->getMessageBag ());
         }
     }
 
     /**
-     * 删除等级.
+     * 删除小组.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //删除等级
-        $this->repository->delete($id);
+        $member = db ('members')
+            ->where ('group_id', $id)
+            ->orWhere ('oldgroup_id', $id)
+            ->first ();
+        if ($member) {
+            return json (4001, '禁止删除已包含会员的小组');
+        }
+        //删除小组
+        $this->repository->delete ($id);
 
-        return json(1001, '删除成功');
+        return json (1001, '删除成功');
     }
 }

@@ -48,5 +48,5 @@ Route::namespace('Member')
     ]);
 
         //分销等级
-        Route::resource('commission-level', 'CommissionLevelsController');
+        Route::resource('commission-level', 'LevelsController');
     });

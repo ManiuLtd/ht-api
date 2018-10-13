@@ -4,6 +4,7 @@ namespace App\Models\Member;
 
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -12,7 +13,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Group extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, SoftDeletes;
 
     /**
      * @var string
@@ -46,12 +47,18 @@ class Group extends Model implements Transformable
     ];
 
     /**
+     * @var array 
+     */
+    protected $dates = ['deleted_at'];
+
+
+    /**
      * 后端用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo (User::class, 'user_id');
     }
 
     /**
@@ -60,6 +67,6 @@ class Group extends Model implements Transformable
      */
     public function member()
     {
-        return $this->belongsTo('App\Models\Member\Member', 'member_id');
+        return $this->belongsTo ('App\Models\Member\Member', 'member_id');
     }
 }

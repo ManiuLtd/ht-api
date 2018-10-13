@@ -19,6 +19,10 @@ class Sms extends Model implements Transformable
      * @var array
      */
     protected $table = 'sms';
+
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
     protected $hidden = [
@@ -41,5 +45,14 @@ class Sms extends Model implements Transformable
     public function user()
     {
         return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
+    }
+
+    /**
+     * 后台用户.
+     * @return mixed
+     */
+    public function member()
+    {
+        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
     }
 }

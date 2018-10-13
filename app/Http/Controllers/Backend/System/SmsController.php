@@ -39,7 +39,7 @@ class SmsController extends Controller
     public function index()
     {
         $sms = $this->repository
-            ->with('user')
+            ->with('member')
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $sms);

@@ -39,9 +39,7 @@ class FavouritesController extends Controller
      */
     public function index()
     {
-        $memberFavourites = $this->repository
-            ->with('goods')
-            ->paginate(request('limit', 10));
+        $memberFavourites = $this->repository->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $memberFavourites);
     }

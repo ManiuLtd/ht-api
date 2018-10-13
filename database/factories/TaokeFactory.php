@@ -63,7 +63,6 @@ $factory->define(App\Models\Taoke\Quan::class, function (Faker $faker) {
         ]),
         'taokouling' => array_rand([1, 0]),
         'shares' => rand(10, 999),
-        'share_at' => $faker->date('Y-m-d H:i:s'),
         'type' => array_rand([1, 2, 3, 4]),
     ];
 });

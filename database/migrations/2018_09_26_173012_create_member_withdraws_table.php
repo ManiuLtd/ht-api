@@ -21,18 +21,14 @@ class CreateMemberWithdrawsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->integer('member_id')->nullable();
-            $table->decimal('money', 8, 2)->nullable()->default(0.00);
-            $table->decimal('real_money', 8, 2)->nullable()->default(0.00);
-            $table->decimal('deduct_money', 8, 2)->nullable()->default(0.00);
-            $table->string('realname', 191)->nullable();
-            $table->string('alipay', 191)->nullable();
-            $table->string('bankname', 191)->nullable();
-            $table->string('bankcard', 191)->nullable();
-            $table->text('reason')->nullable();
+            $table->decimal('money', 8, 2)->nullable()->default(0.00); //提现金额
+            $table->decimal('real_money', 8, 2)->nullable()->default(0.00);  //实际到账金额
+            $table->decimal('deduct_money', 8, 2)->nullable()->default(0.00);  //扣除金额
+            $table->string('realname', 191)->nullable(); //从member表读取
+            $table->string('alipay', 191)->nullable(); //从member表读取
+            $table->text('reason')->nullable(); //原因
             $table->tinyInteger('status')->nullable();
-            $table->tinyInteger('pay_type')->nullable();
-            $table->timestamp('pay_time')->nullable();
-            $table->timestamp('refused_time')->nullable();
+            $table->tinyInteger('pay_type')->nullable(); // 1支付宝 2其他
             $table->nullableTimestamps();
 
             $table->index('user_id', 'member_withdraws_user_id_index');

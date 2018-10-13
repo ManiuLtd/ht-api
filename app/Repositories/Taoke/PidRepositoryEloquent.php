@@ -65,6 +65,7 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
         $pids = preg_split('/\s+/', $attributes['pid']);
         if (count($pids) > 0) {
             foreach ($pids as $p) {
+                //禁止重复
                 $pid = db('tbk_pids')->where('pid', $p)->first();
                 if (! $pid) {
                     db('tbk_pids')->insert([

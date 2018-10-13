@@ -17,6 +17,7 @@
     "itsgoingd/clockwork": "^3.0",
     "ixudra/curl": "^6.16",
     "jacobcyl/ali-oss-storage": "^2.1",
+    "jpush/jpush": "*",
     "laravel/framework": "5.7.*",
     "laravel/tinker": "~1.0",
     "league/fractal": "^0.17.0",
@@ -27,8 +28,7 @@
     "prettus/l5-repository": "^2.6",
     "santigarcor/laratrust": "5.0.*",
     "tymon/jwt-auth": "1.0.0-rc.3",
-    "vinkla/hashids": "^5.0",
-    "jpush/jpush": "*"
+    "vinkla/hashids": "^5.0"
   },
   "require-dev": {
     "filp/whoops": "~2.0",

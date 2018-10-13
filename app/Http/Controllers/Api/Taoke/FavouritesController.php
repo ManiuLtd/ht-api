@@ -44,10 +44,10 @@ class FavouritesController extends Controller
      */
     public function index()
     {
-        $memberFavourites = $this->repository
+        $favourites = $this->repository
             ->pushCriteria (new MemberCriteria())
             ->paginate(request('limit', 10));
-        return json(1001, '列表获取成功', $memberFavourites);
+        return json(1001, '列表获取成功', $favourites);
     }
 
     /**

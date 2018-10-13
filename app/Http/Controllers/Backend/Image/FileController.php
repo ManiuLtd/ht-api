@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 class FileController extends Controller
 {
     /**
-     * 上传文件
+     * 上传图片
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */

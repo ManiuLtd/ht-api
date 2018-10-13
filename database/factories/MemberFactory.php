@@ -51,20 +51,6 @@ $factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
     ];
 });
 
-//$factory->define(App\Models\Member\Level::class, function (Faker $faker) {
-//    return [
-//        'user_id' => 1,
-//        'name' => $faker->name,
-//        'logo' => $faker->imageUrl(100, 100),
-//        'level' => $faker->numberBetween(1, 100),
-//        'credit' => $faker->numberBetween(200, 10000),
-//        'discount' => $faker->randomFloat(2, 0.01, 0.99),
-//        'sort' => $faker->numberBetween(1, 9999),
-//        'status' => $faker->randomKey([0, 1]),
-//        'created_at' => now(),
-//        'updated_at' => now(),
-//    ];
-//});
 
 $factory->define(App\Models\Member\History::class, function (Faker $faker) {
     return [
@@ -131,13 +117,9 @@ $factory->define(App\Models\Member\Withdraw::class, function (Faker $faker) {
         'deduct_money' => rand(1, 999),
         'realname' => $faker->name,
         'alipay' => $faker->email,
-        'bankname' => $faker->name,
-        'bankcard' => $faker->bankAccountNumber,
         'reason' => $faker->text,
         'status' => rand(1, 3),
         'pay_type' => rand(1, 3),
-        'pay_time' => now(),
-        'refused_time' => now(),
         'created_at' => now(),
         'updated_at' => now(),
     ];
@@ -175,9 +157,7 @@ $factory->define(App\Models\Member\Level::class, function (Faker $faker) {
         'price' => rand(10, 99),
         'duration' => rand(10, 999),
         'description' => $faker->title,
-//        'is_commission' => rand(0,1),
-        'is_default' => rand(0,1),
-//        'type' => rand(1, 2),
+        'default' => rand(0,1),
         'status' => rand(0,1),
     ];
 });

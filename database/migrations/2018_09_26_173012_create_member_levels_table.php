@@ -28,18 +28,12 @@ class CreateMemberLevelsTable extends Migration
             $table->decimal('commission_rate1', 4, 2)->nullable();  //自购佣金比例
             $table->decimal('commission_rate2', 4, 2)->nullable();  //拿下级的佣金比例
             $table->decimal('credit', 8, 2)->nullable();  //升级所需积分
-//            $table->decimal('min_commission', 9, 2)->nullable();  //升级最低佣金
-//            $table->integer('friends1')->nullable(); //升级最低下级粉丝数
-//            $table->integer('friends2')->nullable(); // 升级最低下下级粉丝数
-//            $table->integer('ordernum')->nullable(); //升级最低订单数
             $table->decimal('price', 9, 2)->nullable(); //升级所需支付金额
             $table->integer('duration')->nullable(); // 等级有效时长 按天计算
             $table->string('description', 191)->nullable(); //等级描述
-//            $table->tinyInteger('is_commission')->default(1)->comment('1有返佣 0没有返佣'); //1有返佣 0没有返佣
-            $table->tinyInteger('is_default')->default(0)->comment('1不是默认 0默认'); //0默认1不是默认
+            $table->tinyInteger('default')->default(0)->comment('1不是默认 0默认'); //0默认1不是默认
             $table->tinyInteger('status')->default(1)->comment('0禁用，1正常'); //0禁用，1正常
 
-//            $table->tinyInteger('type')->nullable(); //1分销等级 2组等级
             $table->nullableTimestamps();
 
             $table->index('user_id');

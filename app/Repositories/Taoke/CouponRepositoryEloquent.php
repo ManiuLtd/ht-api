@@ -19,7 +19,9 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
      */
     protected $fieldSearchable = [
         'type',
-        'title' => 'like'
+        'title' => 'like',
+        'introduce' => 'like',
+        'item_id'
     ];
 
     /**

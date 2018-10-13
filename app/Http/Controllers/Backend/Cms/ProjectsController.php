@@ -43,7 +43,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = $this->repository->with(['user', 'category'])->paginate(request('limit', 10));
+        $projects = $this->repository->with(['category'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $projects);
     }

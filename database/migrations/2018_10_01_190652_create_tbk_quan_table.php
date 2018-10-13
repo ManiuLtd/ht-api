@@ -29,7 +29,6 @@ class CreateTbkQuanTable extends Migration
             $table->text('comments')->nullable();  //评论列表(多条评论，使用json存放一个数组，后端添加，前端不可添加)
             $table->tinyInteger('taokouling')->nullable(); //评论列表是否显示淘口令
             $table->integer('shares')->nullable()->comment('分享次数'); //分享次数
-            $table->timestamp('share_at')->nullable(); //建议分享时间
             $table->tinyInteger('type')->nullable(); //1淘宝 2京东 3拼多多 4 发圈素材
             $table->nullableTimestamps();
 

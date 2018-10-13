@@ -106,7 +106,7 @@ class LevelsController extends Controller
     {
         //检查该等级是否已有用户
         $member = db('members')
-            ->where('level1', $id)
+            ->where('level_id', $id)
             ->first();
         if ($member) {
             return json(4001, '删除失败，该等级已有会员');

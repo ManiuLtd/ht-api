@@ -20,14 +20,14 @@ class SendNotification
 
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * SendNotification constructor.
+     * @param array $messages
+     * @param bool $isAllAudience
      */
     public function __construct(array $messages, bool $isAllAudience = false)
     {
         $this->messages = $messages;
-        $this->isAll = $isAllAudience;
+        $this->isAllAudience = $isAllAudience;
     }
 
     /**

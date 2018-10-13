@@ -10,7 +10,9 @@ Route::namespace('Taoke')
         Route::resource('quan', 'QuansController');
 
         //推广位
-        Route::resource('pid', 'PidsController');
+        Route::resource('pid', 'PidsController',[
+            'except' => 'show'
+        ]);
 
         //订单
         Route::resource('order', 'OrdersController', [

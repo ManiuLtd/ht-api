@@ -39,16 +39,13 @@ class MembersController extends Controller
      */
     public function index()
     {
-        try {
-            $memberId = getMemberId ();
-            $members = $this->repository
-                ->with (['level', 'inviter','group'])
-                ->find ($memberId);
+        $memberId = getMemberId ();
+        $members = $this->repository
+            ->with (['level', 'inviter', 'group'])
+            ->find ($memberId);
 
-            return json (1001, '会员信息获取成功', $members);
-        } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
-        }
+        return json (1001, '会员信息获取成功', $members);
+
     }
 
     /**
@@ -65,16 +62,4 @@ class MembersController extends Controller
         }
     }
 
-    /**
-     * 会员升级
-     * @return \Illuminate\Http\JsonResponse|mixed
-     */
-    public function promotion()
-    {
-        try {
-            return $this->repository->promotionLevel();
-        } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
-        }
-    }
 }

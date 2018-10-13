@@ -43,10 +43,10 @@ class HistoriesController extends Controller
      */
     public function index()
     {
-        $memberFavourites = $this->repository
+        $histories = $this->repository
             ->pushCriteria (new MemberCriteria())
             ->paginate(request('limit', 10));
-        return json(1001, '列表获取成功', $memberFavourites);
+        return json(1001, '列表获取成功', $histories);
     }
 
     /**
@@ -65,5 +65,18 @@ class HistoriesController extends Controller
         } catch (ValidatorException $e) {
             return json(4001, $e->getMessageBag()->first());
         }
+    }
+
+
+    /**
+     * 取消收藏
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+
+        return json(1001, '删除成功');
     }
 }

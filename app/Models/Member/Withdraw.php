@@ -24,10 +24,10 @@ class Withdraw extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'money',
         'deduct_money',
+        'real_money',
         'pay_type',
-        'pay_time',
-        'refused_time',
         'reason',
         'status',
     ];

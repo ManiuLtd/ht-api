@@ -20,7 +20,7 @@ Route::namespace('Member')
         Route::get('promotion', 'MembersController@promotion');
 
         //分销等级列表
-        Route::get('commission-level', 'CommissionLevelsController@index');
+        Route::get('commission-level', 'LevelsController@index');
 
         //积分余额日志列表
         Route::get('credit-log', 'CreditLogsController@index');
