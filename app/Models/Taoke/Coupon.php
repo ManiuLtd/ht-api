@@ -26,7 +26,28 @@ class Coupon extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'title','cat','shop_type','pic_url','item_id','item_url','volume','price','final_price','coupon_price','coupon_link','activity_id','commission_rate','introduce','total_num','receive_num','tag','is_recommend','type','status','start_time','end_time'
+        'title',
+        'cat',
+        'shop_type',
+        'pic_url',
+        'item_id',
+        'item_url',
+        'volume',
+        'price',
+        'final_price',
+        'coupon_price',
+        'coupon_link',
+        'activity_id',
+        'commission_rate',
+        'introduce',
+        'total_num',
+        'receive_num',
+        'tag',
+        'is_recommend',
+        'type',
+        'status',
+        'start_time',
+        'end_time'
     ];
 
 }
