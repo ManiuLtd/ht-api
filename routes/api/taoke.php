@@ -39,7 +39,7 @@ Route::namespace('Taoke')
             'only' => ['index','show']
         ]);
         //优惠卷分享
-        Route::get('coupon-share','CouponsController@share');
+        Route::get('share','ShareController@index');
 
 
         //搜索

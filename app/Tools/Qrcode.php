@@ -88,7 +88,8 @@ class Qrcode
         //生成图片
         if (count ($this->imageArray) > 0) {
             foreach ($this->imageArray as $imgArr) {
-                $this->image->insert ($imgArr['image'], $imgArr['position'], $imgArr['x'], $imgArr['y']);
+                $insertImage = Image::make($imgArr['image'])->resize($imgArr['width'],$imgArr['height']);
+                $this->image->insert ($insertImage, $imgArr['position'], $imgArr['x'], $imgArr['y']);
             }
         }
         //生成文字
@@ -100,8 +101,6 @@ class Qrcode
                     $textArr['color'] ? $font->valign ($textArr['color']) : $font->valign ('#444');
                     $textArr['valign'] ? $font->valign ($textArr['valign']) : $font->valign ('left');
                 });
-
-                $this->image->insert ($textArr['text'], $textArr['position'], $textArr['x'], $textArr['y']);
             }
         }
 
