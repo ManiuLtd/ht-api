@@ -67,7 +67,7 @@ class CreateMembersTable extends Migration
             $table->index('ali_openid1', 'members_ali_openid1_index');
             $table->index('ali_openid2', 'members_ali_openid2_index');
             $table->index('nickname', 'members_nickname_index');
-            $table->index('level', 'members_level_index');
+            $table->index('level_id', 'members_level_id_index');
             $table->index('phone', 'members_phone_index');
             $table->index('status', 'members_status_index');
             $table->index('created_at', 'members_created_at_index');
