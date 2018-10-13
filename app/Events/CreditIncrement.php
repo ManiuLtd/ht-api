@@ -22,7 +22,7 @@ class CreditIncrement
      * 1积分 2余额.
      * @var
      */
-    public $type;
+    public $column;
 
     /**
      * 改变的积分或者余额数量.
@@ -30,33 +30,26 @@ class CreditIncrement
      */
     public $credit;
 
-    /**
-     * 备注.
-     * @var string
-     */
-    public $remark;
 
     /**
-     * 后端操作人ID，管理员手动修改积分或者余额使用.
-     * @var int|null
+     * 额外参数
+     * @var array
      */
-    public $operaterId;
+    public $extra;
 
     /**
      * CreditDecrement constructor.
      * @param Member $member 需要操作的会员
-     * @param int $type 1积分 2余额
+     * @param int $column 1积分 2余额 3经验
      * @param float $credit 改变的积分或者余额数量
-     * @param string $remark 备注
-     * @param int|null $operaterId 后端操作人ID，管理员手动修改积分或者余额使用
+     * @param array $extra 备注
      */
-    public function __construct(Member $member, int $type, float $credit, string $remark, int $operaterId = null)
+    public function __construct(Member $member, int $column, float $credit, array $extra)
     {
         $this->member = $member;
-        $this->type = $type;
+        $this->column = $column;
         $this->credit = $credit;
-        $this->remark = $remark;
-        $this->operaterId = $operaterId;
+        $this->extra = $extra;
     }
 
     /**

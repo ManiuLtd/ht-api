@@ -129,28 +129,3 @@ if (! function_exists('getMember')) {
         return \App\Models\Member\Member::find(1);
     }
 }
-if (! function_exists('promotion')) {
-
-    /**
-     * 升级
-     * @param $memberId 会员ID
-     * @param $credit 成长值
-     * @param $level  当前等级
-     */
-    function promotion($memberId,$credit,$level)
-    {
-        try{
-            $levels = DB::table('member_levels')
-                ->where('status',1)
-                ->where('level','>',$level)
-                ->where('credit','<',$credit)
-                ->first();
-            if($levels){
-                DB::table('members')->where('id',$memberId)->update(['level1'=>$levels['id']]);
-            }
-        }catch (Exception $e){
-            return json(5001,$e->getMessage());
-        }
-
-    }
-}

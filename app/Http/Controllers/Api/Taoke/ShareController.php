@@ -92,7 +92,7 @@ class ShareController extends Controller
         $qrcode->setTextArray ($textArr);
         $res = $qrcode->generate ();
         dd ($res);
-        return json('1001','分享成功',$res);
+        return json('1001','二维码生成分享成功',$res);
     }
 
 }
