@@ -34,7 +34,7 @@ class FavouritesController extends Controller
     }
 
     /**
-     * //TODO 这是复制后端的  改一下
+     *
      * 添加收藏.
      * @return \Illuminate\Http\JsonResponse
      */

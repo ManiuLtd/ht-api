@@ -53,7 +53,7 @@ class CreditEventSubscriber
     protected function updateCredit($event, bool $isIncrement): void
     {
         //如果积分数组不符合规范
-        if (! is_numeric($event->credit) || ! in_array($event->type, [1, 2])) {
+        if (! is_numeric($event->credit) || ! in_array($event->type, [1, 2, 3])) {
             throw  new InvalidArgumentException('修改基本所需要传入的参数格式错误');
         }
 
@@ -68,6 +68,16 @@ class CreditEventSubscriber
                 db('members')
                     ->where('id', $event->member->id)
                     ->increment($column, $event->credit);
+                //判断增长的是积分还是余额
+                if($event->type == 1){
+                    $credit = $event->credit;
+                }else{
+                    $credit = $event->credit;
+                }
+                //成长值增加
+                db('members')
+                    ->where('id', $event->member->id)
+                    ->increment('credit3', $credit);
             }
             //需要插入的日志
             $insert = [
