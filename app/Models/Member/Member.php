@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Hashids\Hashids;
 
 /**
  * Class Member.
@@ -122,6 +123,20 @@ class Member extends Model implements Transformable
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
+     * @return array
+     */
+    public function transform()
+    {
+        $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
+
+        $array = $this->toArray();
+        $array['hashid'] = $hashids->encode($array['id']);
+
+        return $array;
+
     }
 
     /**

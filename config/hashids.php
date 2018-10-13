@@ -41,7 +41,7 @@ return [
 
         'main' => [
             'salt' => 'debug-the-world',
-            'length' => 5,
+            'length' => 6,
         ],
 
         'alternative' => [
