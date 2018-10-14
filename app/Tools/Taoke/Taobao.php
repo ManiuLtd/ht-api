@@ -22,17 +22,24 @@ class Taobao implements TBKInterface
     /**
      * @var \Illuminate\Config\Repository|mixed
      */
-    protected $QTK_APP_KEY;
+    protected $QTK_API_KEY;
 
     /**
      * @var \Illuminate\Config\Repository|mixed
      */
-    protected $TKJD_APP_KEY;
+    protected $QTK_API_URL;
 
     /**
      * @var \Illuminate\Config\Repository|mixed
      */
-    protected $QTK_APP_URL;
+    protected $TKJD_API_KEY;
+
+
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
+    protected $TKJD_API_URL;
+
 
     /**
      * Taobao constructor.
@@ -41,9 +48,10 @@ class Taobao implements TBKInterface
     {
         $this->DTK_API_KEY = config ('taobao.DTK_API_KEY');
         $this->DTK_API_URL = config ('taobao.DTK_API_URL');
-        $this->QTK_APP_KEY = config ('taobao.QTK_APP_KEY');
-        $this->QTK_APP_URL = config ('taobao.QTK_APP_URL');
-        $this->TKJD_APP_KEY = config ('taobao.TKJD_APP_KEY');
+        $this->QTK_API_KEY = config ('taobao.QTK_API_KEY');
+        $this->QTK_API_URL = config ('taobao.QTK_API_URL');
+        $this->TKJD_API_KEY = config ('taobao.TKJD_API_KEY');
+        $this->TKJD_API_URL = config ('taobao.TKJD_API_URL');
     }
 
     /**
@@ -92,7 +100,7 @@ class Taobao implements TBKInterface
         //TODO 检查关键词是否包含淘口令，如果包含淘口令，使用产品地址搜索，调用下面的searchByTKL方法
 
         $params = [
-            'appkey' => $this->TKJD_APP_KEY,
+            'appkey' => $this->TKJD_API_KEY,
             'k' => $q,
             'page' => $page,
             'page_size' => $limit,
@@ -182,51 +190,6 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 淘口令解密
-     * @param $keywords
-     * @return array|bool|mixed|string
-     * @throws \Exception
-     */
-    protected function searchByTKL($keywords)
-    {
-        //验证淘口令
-        if (substr_count ($keywords, '￥') == 2 || substr_count ($keywords, '《') == 2 || substr_count ($keywords, '€') == 2) {
-            $req = new WirelessShareTpwdQueryRequest();
-
-            $req->setPasswordContent ($keywords);
-            $topclient = TopClient::connection ();
-            $response = $topclient->execute ($req);
-            //淘口令解密失败
-            if (!$response->suc) {
-                return false;
-            }
-            if (str_contains ($response->url, 'a.m.taobao.com/i')) {
-                $pos = strpos ($response->url, '?');
-                $str = substr ($response->url, 0, $pos);
-                $str = str_replace ('https://a.m.taobao.com/i', '', $str);
-                $str = str_replace ('.htm', '', $str);
-
-                return $str;
-            }
-            $pos = strpos ($response->url, '?');
-            $query_string = substr ($response->url, $pos + 1, strlen ($response->url));
-            $arr = \League\Uri\extract_query ($query_string);
-
-            if (isset($arr['activity_id'])) {
-                return false;
-            }
-
-            if (!isset($arr['id'])) {
-                return false;
-            }
-
-            return $arr['id'];
-        }
-
-        return false;
-    }
-
-    /**
      * 获取订单.
      * @param array $array
      * @return mixed
@@ -312,11 +275,11 @@ class Taobao implements TBKInterface
     public function hotSearch()
     {
         $params = [
-            'app_key' => $this->QTK_APP_KEY,
+            'app_key' => $this->QTK_API_KEY,
             'v' => '1.0',
             't' => 1,
         ];
-        $resp = Curl::to ($this->QTK_APP_URL . '/hot')
+        $resp = Curl::to ($this->QTK_API_URL . '/hot')
             ->withData ($params)
             ->get ();
         $resp = json_decode ($resp);
@@ -327,4 +290,51 @@ class Taobao implements TBKInterface
 
         return array_slice ($resp->data, 0, 20);
     }
+
+
+    /**
+     * 淘口令解密
+     * @param $keywords
+     * @return array|bool|mixed|string
+     * @throws \Exception
+     */
+    protected function searchByTKL($keywords)
+    {
+        //验证淘口令
+        if (substr_count ($keywords, '￥') == 2 || substr_count ($keywords, '《') == 2 || substr_count ($keywords, '€') == 2) {
+            $req = new WirelessShareTpwdQueryRequest();
+
+            $req->setPasswordContent ($keywords);
+            $topclient = TopClient::connection ();
+            $response = $topclient->execute ($req);
+            //淘口令解密失败
+            if (!$response->suc) {
+                return false;
+            }
+            if (str_contains ($response->url, 'a.m.taobao.com/i')) {
+                $pos = strpos ($response->url, '?');
+                $str = substr ($response->url, 0, $pos);
+                $str = str_replace ('https://a.m.taobao.com/i', '', $str);
+                $str = str_replace ('.htm', '', $str);
+
+                return $str;
+            }
+            $pos = strpos ($response->url, '?');
+            $query_string = substr ($response->url, $pos + 1, strlen ($response->url));
+            $arr = \League\Uri\extract_query ($query_string);
+
+            if (isset($arr['activity_id'])) {
+                return false;
+            }
+
+            if (!isset($arr['id'])) {
+                return false;
+            }
+
+            return $arr['id'];
+        }
+
+        return false;
+    }
+
 }
