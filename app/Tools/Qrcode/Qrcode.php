@@ -73,7 +73,7 @@ class Qrcode
      * 生成二维码
      * @return mixed
      */
-    public function generate()
+    public function make()
     {
         $this->image->resize ($this->width, $this->height);
 

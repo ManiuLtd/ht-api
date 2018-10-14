@@ -39,7 +39,7 @@ Route::namespace ('Taoke')
         Route::get ('search/hot', 'SearchController@keywords');
 
         //详情分享二维码
-        Route::get ('qrcode/coupon', 'QrcodeController@coupon');
+        Route::get ('qrcode/share', 'QrcodeController@share');
         //邀请二维码
         Route::get ('qrcode/invite', 'QrcodeController@invite');
     });
