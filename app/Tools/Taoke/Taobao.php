@@ -10,160 +10,136 @@ use TopClient\request\WirelessShareTpwdQueryRequest;
 class Taobao implements TBKInterface
 {
     /**
-     * @var mixed
+     * @var \Illuminate\Config\Repository|mixed
      */
-    protected $apiKey;
+    protected $DTK_API_KEY;
 
     /**
-     * @var mixed
+     * @var \Illuminate\Config\Repository|mixed
      */
-    protected $apiUrl;
+    protected $DTK_API_URL;
+
     /**
-     * @var
+     * @var \Illuminate\Config\Repository|mixed
      */
-    protected $qtk_app_key;
+    protected $QTK_APP_KEY;
+
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
+    protected $TKJD_APP_KEY;
+
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
+    protected $QTK_APP_URL;
 
     /**
      * Taobao constructor.
      */
     public function __construct()
     {
-        $this->apiKey = data_get(config('coupon'), 'taobao.TB_API_KEY');
-        $this->apiUrl = data_get(config('coupon'), 'taobao.TB_API_URL');
-        $this->qtk_app_key = data_get(config('coupon'), 'qingtaoke.APP_KEY');
+        $this->DTK_API_KEY = config ('taobao.DTK_API_KEY');
+        $this->DTK_API_URL = config ('taobao.DTK_API_URL');
+        $this->QTK_APP_KEY = config ('taobao.QTK_APP_KEY');
+        $this->QTK_APP_URL = config ('taobao.QTK_APP_URL');
+        $this->TKJD_APP_KEY = config ('taobao.TKJD_APP_KEY');
     }
 
     /**
      * 获取优惠券地址
-     * @param array $array
-     * @return mixed
+     * @return mixed|void
      */
-    public function getCouponUrl(array $array)
+    public function getCouponUrl()
     {
         // TODO: Implement getCouponUrl() method.
     }
 
     /**
-     * 获取详情.
-     * @param array $array
      * @return mixed
+     * @throws \Exception
      */
-    public function getDetail(array $array)
+    public function getDetail()
     {
-        //  Implement getDetail() method.
-        $id = data_get($array, 'id');
-        if (! is_numeric($id)) {
-            return [
-                'code'=>4004,
-                'message' => '商品id类型错误！',
-            ];
+        $itemID = request ('item_id');
+        if (!is_numeric ($itemID)) {
+            throw  new \InvalidArgumentException('商品id类型错误');
         }
-        $topclient = TopClient::connection();
+
+        $topclient = TopClient::connection ();
         $req = new TbkItemInfoGetRequest();
-        $req->setFields('title,small_images,pict_url,zk_final_price,user_type,volume');
-        $req->setNumIids($id);
-        $resp = $topclient->execute($req);
+        $req->setFields ('title,small_images,pict_url,zk_final_price,user_type,volume');
+        $req->setNumIids ($itemID);
+        $resp = $topclient->execute ($req);
 
-        if (! isset($resp->results->n_tbk_item)) {
-            return [
-                'code' => 4004,
-                'message' => '淘宝客接口调用失败',
-            ];
+        if (!isset($resp->results->n_tbk_item)) {
+            throw new \Exception('淘宝客接口调用失败');
         }
-        $data = (array) $resp->results->n_tbk_item[0];
 
-        return [
-            'code' => 1001,
-            'message' => '商品详情获取成功',
-            'data' => $data,
-        ];
+        return $resp->results->n_tbk_item[0];
     }
 
     /**
-     * @param array $array
-     * @return mixed
+     * @return array|\Illuminate\Http\JsonResponse|mixed
+     * @throws \Exception
      */
-    public function search(array $array)
+    public function search()
     {
-        //Implement search() method.
-        $page = $array['page'];
-        $type = $array['type'];
-        $sort = $array['sort'];
-        $q = $array['q'];
-        $keywords = $array['keywords'];
-        if ($keywords) {
-            $data_q = $this->searchByTKL($keywords);
-            if ($data_q['code'] == 4001) {
-                return [
-                    'code' => 4001,
-                    'message' => $data_q['message'],
-                ];
-            }
-            $q = data_get($data_q, 'data.itemid');
-        }
+        $page = request ('page') ?? 1;
+        $limit = request ('limit') ?? 20;
+        $q = request ('q') ?? '';
+
+        //TODO 检查关键词是否包含淘口令，如果包含淘口令，使用产品地址搜索，调用下面的searchByTKL方法
 
         $params = [
-            'appkey' => 'a702d09d248becb575dc798b6e432d88',
+            'appkey' => $this->TKJD_APP_KEY,
             'k' => $q,
             'page' => $page,
+            'page_size' => $limit,
         ];
-        //sort 1最新 2低价 3高价 4销量 5佣金 6综合
-        switch ($sort) {
-            case 1:
-                $params['sort'] = 'coupon';
-                $params['sort_type'] = 'desc';
-                break;
-            case 2:
-                $params['sort'] = 'price';
-                $params['sort_type'] = 'asc';
-                break;
-            case 3:
-                $params['sort'] = 'price';
-                $params['sort_type'] = 'desc';
-                break;
-            case 4:
+
+        //排序字段
+        $params['sort'] = 'sales';
+        switch (request ('orderBy')) {
+            case 'sales':
                 $params['sort'] = 'sales';
-                $params['sort_type'] = 'desc';
                 break;
-            case 5:
+            case 'coupon':
+                $params['sort'] = 'coupon';
+                break;
+            case 'commission':
                 $params['sort'] = 'comm_rate';
-                $params['sort_type'] = 'desc';
                 break;
-            case 6:
-                break;
-            default:
+            default :
                 break;
         }
+        //排序方式
+        $params['sort_type'] = request ('sortedBy') == 'asc' ? 'asc' : 'desc';
         //获取接口内容
-        $response = Curl::to('http://api.tkjidi.com/checkWhole')
-            ->withData($params)
-            ->get();
-        $response = json_decode($response);
+        $response = Curl::to ('http://api.tkjidi.com/checkWhole')
+            ->withData ($params)
+            ->get ();
+
+        $response = json_decode ($response);
 
         //接口信息获取失败
         if ($response->status != 200) {
-            return [
-                'code' => 4001,
-                'message' => $response->msg,
-            ];
+            throw new \Exception('淘客基地接口请求失败');
+
         }
         //当前页面地址
-        $uri = request()->getUri();
+        $uri = request ()->getUri ();
         //验证是否填写page参数
-        if (! str_contains('page=', $uri)) {
-            $uri = $uri.'&page=1';
+        if (!str_contains ('page=', $uri)) {
+            $uri = $uri . '&page=1';
         }
 
         //页码信息
-        $totalPage = intval(floor($response->data->total / 20) + 1);
-        $prevPage = $page - 1;
-        $nextPage = $page + 1;
+        $totalPage = intval (floor ($response->data->total / $limit) + 1);
+
         //页码不对
         if ($page > $totalPage) {
-            return response()->json([
-                'code' => 4001,
-                'message' => '超出最大页码',
-            ]);
+            throw new \Exception('超出最大页码');
         }
 
         //重组字段
@@ -187,98 +163,67 @@ class Taobao implements TBKInterface
                 'introduce' => '',
                 'start_time' => $list->quan_starttime,
                 'end_time' => $list->quan_endtime,
-                'created_at' => '',
-                'updated_at' => '',
+                'created_at' => now ()->toDateString (),
+                'updated_at' => now ()->toDateString (),
             ];
-            array_push($data, $temp);
+            array_push ($data, $temp);
         }
 
         return [
             'data' => $data,
-            'links' => [
-                'first' => str_replace("page={$page}", 'page=1', $uri),
-                'last' => str_replace("page={$page}", "page={$totalPage}", $uri),
-                'prev' => $page == 1 ? null : str_replace("page={$page}", "page={$prevPage}", $uri),
-                'next' => str_replace("page={$page}", "page={$nextPage}", $uri),
-            ],
+            //分页信息只要这四个参数就够了
             'meta' => [
-                'current_page' => (int) $page,
-                'from' => 1,
+                'current_page' => (int)$page,
                 'last_page' => $totalPage,
-                'path' => request()->url(),
-                'per_page' => 20,
-                'to' => 20 * $page,
+                'per_page' => $limit,
                 'total' => $response->data->total,
             ],
-            'code' => 1001,
-            'message' => '优惠券获取成功',
         ];
     }
 
     /**
-     * 淘口令.
-     * @return array
+     * 淘口令解密
+     * @param $keywords
+     * @return array|bool|mixed|string
+     * @throws \Exception
      */
-    public function searchByTKL($keywords)
+    protected function searchByTKL($keywords)
     {
         //验证淘口令
-        if (substr_count($keywords, '￥') == 2 || substr_count($keywords, '《') == 2 || substr_count($keywords, '€') == 2) {
+        if (substr_count ($keywords, '￥') == 2 || substr_count ($keywords, '《') == 2 || substr_count ($keywords, '€') == 2) {
             $req = new WirelessShareTpwdQueryRequest();
 
-            $req->setPasswordContent($keywords);
-            $topclient = TopClient::connection();
-            $response = $topclient->execute($req);
+            $req->setPasswordContent ($keywords);
+            $topclient = TopClient::connection ();
+            $response = $topclient->execute ($req);
             //淘口令解密失败
-            if (! $response->suc) {
-                return [
-                    'code' => 4001,
-                    'message' => '淘口令解密失败',
-                ];
+            if (!$response->suc) {
+                return false;
             }
-            if (str_contains($response->url, 'a.m.taobao.com/i')) {
-                $pos = strpos($response->url, '?');
-                $str = substr($response->url, 0, $pos);
-                $str = str_replace('https://a.m.taobao.com/i', '', $str);
-                $str = str_replace('.htm', '', $str);
+            if (str_contains ($response->url, 'a.m.taobao.com/i')) {
+                $pos = strpos ($response->url, '?');
+                $str = substr ($response->url, 0, $pos);
+                $str = str_replace ('https://a.m.taobao.com/i', '', $str);
+                $str = str_replace ('.htm', '', $str);
 
-                return [
-                    'code' => 1001,
-                    'message' => '产品ID获取成功',
-                    'data' => [
-                        'itemid' => $str,
-                    ],
-                ];
+                return $str;
             }
-            $pos = strpos($response->url, '?');
-            $query_string = substr($response->url, $pos + 1, strlen($response->url));
-            $arr = \League\Uri\extract_query($query_string);
+            $pos = strpos ($response->url, '?');
+            $query_string = substr ($response->url, $pos + 1, strlen ($response->url));
+            $arr = \League\Uri\extract_query ($query_string);
 
             if (isset($arr['activity_id'])) {
-                return [
-                    'code' => 4001,
-                    'message' => '该淘口令为优惠券淘口令，不需要转换，打开手淘即可领券。',
-                ];
-            }
-            if (! isset($arr['id'])) {
-                return [
-                    'code' => 4001,
-                    'message' => '不支持该淘口令',
-                ];
+                return false;
             }
 
-            return [
-                'code' => 1001,
-                'message' => '产品ID获取成功',
-                'data' => [
-                    'itemid' => $arr['id'],
-                ],
-            ];
+            if (!isset($arr['id'])) {
+                return false;
+            }
+
+            return $arr['id'];
         }
 
-        return [
-            'code' => 4001,
-            'message' => '该字符串不包含淘口令',
-        ];
+        return false;
     }
 
     /**
@@ -302,30 +247,20 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 手动提交订单.
-     * @param array $array
-     * @return mixed
+     * 爬虫
+     * @param array $params
+     * @return array|mixed
+     * @throws \Exception
      */
-    public function submitOrder(array $array)
+    public function spider(array $params)
     {
-        // TODO: Implement submitOrder() method.
-    }
-
-    /**
-     * 爬虫.
-     * @param array $array
-     * @return mixed
-     */
-    public function spider(array $array = [])
-    {
-        // TODO: Implement spider() method.
-        $type = data_get($array, 'type', 'total');
-        $all = data_get($array, 'all', true);
-        $page = data_get($array, 'page', 1);
+        $type = $params['type'] ?? 'total';
+        $all = $params['all'] ?? true;
+        $page = $params['page'] ?? 1;
 
         $params = [
             'r' => 'Port/index',
-            'appkey' => $this->apiKey,
+            'appkey' => $this->DTK_API_KEY,
             'v' => '2',
             'page' => $page,
         ];
@@ -344,71 +279,52 @@ class Taobao implements TBKInterface
                 $params['type'] = 'total';
                 break;
         }
-        $response = Curl::to($this->apiUrl)
-            ->withData($params)
-            ->get();
-        $response = json_decode($response);
+        $response = Curl::to ($this->apiUrl)
+            ->withData ($params)
+            ->get ();
+        $response = json_decode ($response);
 
         //验证
-        if (! isset($response->data)) {
-            return [
-                'code' => 4001,
-                'message' => '接口内容获取失败',
-            ];
+        if (!isset($response->data)) {
+            throw new \Exception('大淘客接口内容获取失败');
         }
         $total = $response->data->total_num ?? 0;
         if ($total <= 0) {
-            return [
-                'code' => 4001,
-                'message' => '没有获取到产品',
-            ];
+            throw new \Exception('打通可爬虫没有获取到产品');
         }
-        $totalPage = (int) ceil($total / 50);
+        $totalPage = (int)ceil ($total / 50);
 
         //不爬取所有的
-        if ($all == 'false') {
+        if (!$all) {
             $totalPage = 3;
         }
-
         return [
-            'code' => 1001,
-            'message' => '优惠券获取成功',
-            'data' => [
-                'totalPage' => $totalPage,
-                'total' => $total,
-                'result' => $response->result,
-
-            ],
+            'data' => $response->result,
+            'totalPage' => $totalPage,
+            'total' => $total,
         ];
     }
 
-    /**.
-     * @param array $array
+    /**
      * @return array|mixed
+     * @throws \Exception
      */
-    public function hotSearch(array $array = [])
+    public function hotSearch()
     {
         $params = [
-            'app_key' => $this->qtk_app_key,
+            'app_key' => $this->QTK_APP_KEY,
             'v' => '1.0',
             't' => 1,
         ];
-        $resp = Curl::to('http://openapi.qingtaoke.com/hot')
-            ->withData($params)
-            ->get();
-        $resp = json_decode($resp);
+        $resp = Curl::to ($this->QTK_APP_URL . '/hot')
+            ->withData ($params)
+            ->get ();
+        $resp = json_decode ($resp);
 
         if ($resp->er_code != 10000) {
-            return [
-                'code' => 4001,
-                'message' => $resp->er_msg,
-            ];
+            throw new \Exception($resp->er_msg);
         }
 
-        return [
-            'code' => 1001,
-            'message' => '获取成功',
-            'data' => array_slice($resp->data, 0, 20),
-        ];
+        return array_slice ($resp->data, 0, 20);
     }
 }

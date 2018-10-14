@@ -5,57 +5,46 @@ namespace App\Tools\Taoke;
 interface TBKInterface
 {
     /**
-     * 获取优惠券地址
-     * @param array $array
+     * 领券地址
      * @return mixed
      */
-    public function getCouponUrl(array $array);
+    public function getCouponUrl();
 
     /**
-     * 获取详情.
-     * @param array $array
+     * 优惠券详情
      * @return mixed
      */
-    public function getDetail(array $array);
+    public function getDetail();
 
     /**
-     * @param array $array
+     * 搜索
      * @return mixed
      */
-    public function search(array $array);
+    public function search();
 
     /**
-     * 获取订单.
-     * @param array $array
+     * 获取订单
      * @return mixed
      */
-    public function getOrders(array $array = []);
+    public function getOrders();
 
     /**
-     * 自动绑定订单.
-     * @param array $array
+     * 自动绑定订单
      * @return mixed
      */
-    public function autoBindOrder(array $array = []);
+    public function autoBindOrder();
+
 
     /**
-     * 手动提交订单.
-     * @param array $array
+     * 爬虫
+     * @param array $params
      * @return mixed
      */
-    public function submitOrder(array $array);
+    public function spider(array $params);
 
     /**
-     * 爬虫.
-     * @param array $array
+     * 获取热搜词
      * @return mixed
      */
-    public function spider(array $array = []);
-
-    /**
-     * 热搜词.
-     * @param array $array
-     * @return mixed
-     */
-    public function hotSearch(array $array = []);
+    public function hotSearch();
 }

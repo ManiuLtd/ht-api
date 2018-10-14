@@ -25,7 +25,7 @@ class QrcodeController extends Controller
         $qrcode->width = 564;
         $qrcode->height = 971;
         $qrcode->savePath = 'images/aaa.jpg';
-        
+
         $str1 = str_limit ($data['title'], 50, '');
         $str2 = str_replace ($str1, '', '【限时亏本】10支新款软毛牙刷成人牙刷情侣牙刷竹炭儿童牙刷套装');
 
