@@ -3,7 +3,6 @@
 namespace App\Validators\Member;
 
 use Prettus\Validator\LaravelValidator;
-use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class WithdrawValidator.
@@ -33,6 +32,6 @@ class WithdrawValidator extends LaravelValidator
         'bankcard.required' => '银行卡号不能为空',
         'alipay.required' => '支付宝不能为空',
         'amount.numeric' => '提现金额不合法',
-        'amount.required' => '提现金额不能为空'
+        'amount.required' => '提现金额不能为空',
     ];
 }

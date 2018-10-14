@@ -3,9 +3,9 @@
 namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\Coupon;
+use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\CouponValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
 /**
@@ -13,7 +13,6 @@ use App\Repositories\Interfaces\Taoke\CouponRepository;
  */
 class CouponRepositoryEloquent extends BaseRepository implements CouponRepository
 {
-
     /**
      * @var array
      */
@@ -21,7 +20,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         'type',
         'title' => 'like',
         'introduce' => 'like',
-        'item_id'
+        'item_id',
     ];
 
     /**
@@ -43,6 +42,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     {
         return CouponValidator::class;
     }
+
     /**
      * Boot up the repository, pushing criteria.
      */
@@ -51,13 +51,11 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-
-
     public function searchGoods()
     {
         $sort = request('sort');
         $q = request('q');
-        if (!$q) {
+        if (! $q) {
             return [
                 'code' => 4001,
                 'message' => '关键词必能为空',
@@ -96,13 +94,13 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         $coupon = db('tbk_coupons')->where([
             'type' => 2,
             'status' => 1,
-        ])->orderBy($order,$orderAsc)->where('title','like',"%$q")->paginate(20);
+        ])->orderBy($order, $orderAsc)->where('title', 'like', "%$q")->paginate(20);
+
         return [
             'code' => 1001,
             'message' => '获取成功',
             'data' => $coupon,
         ];
-
     }
 
     /**
@@ -112,7 +110,4 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
-
-
-
 }

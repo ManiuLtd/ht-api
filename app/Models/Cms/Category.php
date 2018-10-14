@@ -31,14 +31,12 @@ class Category extends Model implements Transformable
      */
     protected $dates = ['deleted_at'];
 
-
-
     /**
      * 字段映射.
      * @return array
      */
     public function transform()
     {
-        return $this->toArray ();
+        return $this->toArray();
     }
 }

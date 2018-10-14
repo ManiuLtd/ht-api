@@ -45,8 +45,8 @@ class PinDuoDuo implements TBKInterface
     {
         //  Implement getDetail() method.
 
-        $id = data_get($array,'id');
-        if (!is_numeric($id)) {
+        $id = data_get($array, 'id');
+        if (! is_numeric($id)) {
             return [
                 'code'=>4004,
                 'message' => '商品id类型错误！',
@@ -81,10 +81,8 @@ class PinDuoDuo implements TBKInterface
         return [
             'code' => 1001,
             'message' => '获取成功',
-            'data' => data_get($result,'goods_detail_response.goods_details.0',[]),
+            'data' => data_get($result, 'goods_detail_response.goods_details.0', []),
         ];
-
-
     }
 
     /**
@@ -108,7 +106,7 @@ class PinDuoDuo implements TBKInterface
 
         //sort 1最新 2低价 3高价 4销量 5佣金 6综合
         $sort_type = 0;
-        switch ($sort){
+        switch ($sort) {
             case 1:
                 $sort_type = 12;
                 break;
@@ -157,7 +155,7 @@ class PinDuoDuo implements TBKInterface
 
         if (isset($result->goods_search_response)) {
             $data = [];
-            foreach ($result->goods_search_response->goods_list as $item){
+            foreach ($result->goods_search_response->goods_list as $item) {
                 $temp['title'] = $item->goods_name;
                 $temp['cat'] = $item->category_id;
                 $temp['pic_url'] = $item->goods_image_url;
@@ -183,31 +181,32 @@ class PinDuoDuo implements TBKInterface
             //当前页面地址
             $uri = request()->getUri();
             //验证是否填写page参数
-            if (!str_contains('page=', $uri)) {
-                $uri = $uri . "&page=1";
+            if (! str_contains('page=', $uri)) {
+                $uri = $uri.'&page=1';
             }
 
             //页码信息
-            $totalPage = intval(floor($result->goods_search_response->total_count / 20) + 1);;
+            $totalPage = intval(floor($result->goods_search_response->total_count / 20) + 1);
             $prevPage = $page - 1;
             $nextPage = $page + 1;
             //页码不对
             if ($page > $totalPage) {
                 return response()->json([
                     'code' => 4001,
-                    'message' => '超出最大页码'
+                    'message' => '超出最大页码',
                 ]);
             }
+
             return [
                 'data' => $data,
                 'links' => [
-                    'first' => str_replace("page={$page}", "page=1", $uri),
+                    'first' => str_replace("page={$page}", 'page=1', $uri),
                     'last' => str_replace("page={$page}", "page={$totalPage}", $uri),
                     'prev' => $page == 1 ? null : str_replace("page={$page}", "page={$prevPage}", $uri),
                     'next' => str_replace("page={$page}", "page={$nextPage}", $uri),
                 ],
                 'meta' => [
-                    'current_page' => (int)$page,
+                    'current_page' => (int) $page,
                     'from' => 1,
                     'last_page' => $totalPage,
                     'path' => request()->url(),
@@ -216,7 +215,7 @@ class PinDuoDuo implements TBKInterface
                     'total' => $result->goods_search_response->total_count,
                 ],
                 'code' => 1001,
-                'message' => '优惠券获取成功'
+                'message' => '优惠券获取成功',
             ];
         }
     }
@@ -310,6 +309,5 @@ class PinDuoDuo implements TBKInterface
      */
     public function hotSearch(array $array = [])
     {
-
     }
 }

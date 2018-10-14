@@ -22,6 +22,7 @@ class NotificationRepositoryEloquent extends BaseRepository implements Notificat
         'type',
         'created_at',
     ];
+
     /**
      * Specify Model class name.
      *

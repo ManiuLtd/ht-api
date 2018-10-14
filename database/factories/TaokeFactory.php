@@ -72,8 +72,8 @@ $factory->define(App\Models\Taoke\Favourite::class, function (Faker $faker) {
         'member_id' => rand(1, 50),
         'title' => $faker->title,
         'pic_url' => $faker->imageUrl(100, 100),
-        'item_id' => rand(1,20),
-        'volume' => rand(1,1000),
+        'item_id' => rand(1, 20),
+        'volume' => rand(1, 1000),
         'price' => $faker->numberBetween(2, 500),
         'coupon_price' => $faker->numberBetween(2, 500),
         'final_price' => $faker->numberBetween(2, 500),
@@ -81,14 +81,13 @@ $factory->define(App\Models\Taoke\Favourite::class, function (Faker $faker) {
     ];
 });
 
-
 $factory->define(App\Models\Taoke\History::class, function (Faker $faker) {
     return [
         'member_id' => rand(1, 50),
         'title' => $faker->title,
         'pic_url' => $faker->imageUrl(100, 100),
-        'item_id' => rand(1,20),
-        'volume' => rand(1,1000),
+        'item_id' => rand(1, 20),
+        'volume' => rand(1, 1000),
         'price' => $faker->numberBetween(2, 500),
         'coupon_price' => $faker->numberBetween(2, 500),
         'final_price' => $faker->numberBetween(2, 500),
@@ -101,8 +100,8 @@ $factory->define(App\Models\Taoke\Category::class, function (Faker $faker) {
         'user_id' => 1,
         'name' => $faker->title,
         'logo' => $faker->imageUrl(100, 100),
-        'sort' => rand(1,20),
+        'sort' => rand(1, 20),
         'type' => array_rand([1, 2, 3]),
-        'status' => rand(1,2),
+        'status' => rand(1, 2),
     ];
 });

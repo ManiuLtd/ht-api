@@ -106,7 +106,6 @@ if (! function_exists('getUserId')) {
     }
 }
 
-
 if (! function_exists('getMemberId')) {
 
     /**

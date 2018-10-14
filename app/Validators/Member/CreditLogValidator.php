@@ -17,7 +17,7 @@ class CreditLogValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'type' =>'required|in:1,2,3'
+            'type' =>'required|in:1,2,3',
         ],
 
         ValidatorInterface::RULE_UPDATE => [],

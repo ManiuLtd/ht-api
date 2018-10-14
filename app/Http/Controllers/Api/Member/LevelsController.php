@@ -38,8 +38,8 @@ class LevelsController extends Controller
      */
     public function index()
     {
-        $levels = $this->repository->paginate (request ('limit', 10));
+        $levels = $this->repository->paginate(request('limit', 10));
 
-        return json (1001, '列表获取成功', $levels);
+        return json(1001, '列表获取成功', $levels);
     }
 }

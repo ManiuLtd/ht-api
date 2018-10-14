@@ -3,7 +3,6 @@
 namespace App\Models\Taoke;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -24,7 +23,6 @@ class History extends Model implements Transformable
      */
     protected $guarded = [];
 
-
     /**
      * The "booting" method of the model.
      */
@@ -35,6 +33,5 @@ class History extends Model implements Transformable
         self::creating(function ($model) {
             $model->member_id = getMemberId();
         });
-
     }
 }

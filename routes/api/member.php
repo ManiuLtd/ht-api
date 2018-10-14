@@ -7,7 +7,7 @@
  * Time: 22:25
  */
 Route::namespace('Member')
-    ->prefix ('member')
+    ->prefix('member')
     ->group(function () {
 
         //会员信息
@@ -26,8 +26,7 @@ Route::namespace('Member')
         Route::get('credit-log', 'CreditLogsController@index');
 
         //发起提现
-        Route::resource ('withdraw', 'WithdrawsController', [
-            'only' => ['index', 'store']
+        Route::resource('withdraw', 'WithdrawsController', [
+            'only' => ['index', 'store'],
         ]);
     });
-

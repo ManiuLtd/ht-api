@@ -2,14 +2,11 @@
 
 namespace App\Repositories\Member;
 
-use App\Models\Member\Level;
 use App\Models\Member\Member;
 use App\Criteria\RequestCriteria;
-use App\Tools\Taoke\Commission;
 use App\Validators\Member\MemberValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\MemberRepository;
-
 
 /**
  * Class MemberRepositoryEloquent.
@@ -65,20 +62,19 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
-
     public function getMemberChart()
     {
         //TODO 后端可根据日志获取会员近一周、半月、一月的增长记录
     }
 
     /**
-     * 获取三级粉丝
+     * 获取三级粉丝.
      * @param int $level
      * @return mixed
      */
     public function getFrineds($level = 1)
     {
-        $inviterId = request ('inviter_id') ? request ('inviter_id') : getMemberId ();
+        $inviterId = request('inviter_id') ? request('inviter_id') : getMemberId();
         //一级粉丝
         if ($level == 1) {
             return Member::where('inviter_id', $inviterId)

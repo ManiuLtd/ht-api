@@ -173,7 +173,6 @@ return [
          */
         App\Providers\TBKServiceProvider::class,
 
-
     ],
 
     /*clear

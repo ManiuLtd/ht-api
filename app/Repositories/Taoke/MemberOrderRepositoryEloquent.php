@@ -3,18 +3,16 @@
 namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\MemberOrder;
-use App\Repositories\Interfaces\Taoke\MemberOrderRepository;
 use App\Validators\Taoke\MemberOrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Repositories\Interfaces\Taoke\MemberOrderRepository;
 
 /**
- * Class MemberOrderRepositoryEloquent
- * @package App\Repositories\Taoke
+ * Class MemberOrderRepositoryEloquent.
  */
 class MemberOrderRepositoryEloquent extends BaseRepository implements MemberOrderRepository
 {
-
     /**
      * Specify Model class name.
      *

@@ -1,18 +1,15 @@
 <?php
 
-
 namespace App\Http\Controllers\Api\Cms;
 
-
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\Cms\ArticleRepository;
 use App\Criteria\ArticleCategoryCriteria;
+use App\Repositories\Interfaces\Cms\ArticleRepository;
 
 /**
- * Class ArticlesController
- * @package App\Http\Controllers\Api\Cms
+ * Class ArticlesController.
  */
-class ArticlesController extends  Controller
+class ArticlesController extends Controller
 {
     /**
      * @var ArticleRepository
@@ -29,7 +26,7 @@ class ArticlesController extends  Controller
     }
 
     /**
-     *  文章列表 根据分类id调用
+     *  文章列表 根据分类id调用.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
@@ -42,7 +39,7 @@ class ArticlesController extends  Controller
 
             return json(1001, '列表获取成功', $article);
         } catch (\Exception $e) {
-            return json(5001,$e->getMessage());
+            return json(5001, $e->getMessage());
         }
     }
 }

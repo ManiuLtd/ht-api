@@ -37,5 +37,4 @@ class Level extends Model implements Transformable
      * @var array
      */
     protected $dates = ['deleted_at'];
-
 }
