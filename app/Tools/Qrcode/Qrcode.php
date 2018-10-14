@@ -81,7 +81,7 @@ class Qrcode
         if (count ($this->imageEnumArray) > 0) {
             foreach ($this->imageEnumArray as $imageEnum) {
                 if ($imageEnum instanceof ImageEnum) {
-                    throw new \InvalidArgumentException('参数必须为ImageEnum实例');
+                    throw new \InvalidArgumentException('数组元素必须为App\Tools\Qrcode\ImageEnum实例');
                 }
                 $insertImage = Image::make ($imageEnum->image)->resize ($imageEnum->width, $imageEnum->height);
                 $this->image->insert ($insertImage, $imageEnum->position, $imageEnum->x, $imageEnum->y);
@@ -91,7 +91,7 @@ class Qrcode
         if (count ($this->textEnumArray) > 0) {
             foreach ($this->textEnumArray as $textEnum) {
                 if ($textEnum instanceof TextEnum) {
-                    throw new \InvalidArgumentException('参数必须为TextEnum实例');
+                    throw new \InvalidArgumentException('数组元素为App\Tools\Qrcode\TextEnum实例');
                 }
                 $this->image->text ($textEnum->text, $textEnum->x, $textEnum->y, function ($font) use ($textEnum) {
                     $font->file (public_path ('fonts/msyh.ttf'));
