@@ -35,11 +35,11 @@ interface TBKInterface
     public function autoBindOrder();
 
     /**
-     * 爬虫.
+     * 爬虫
      * @param array $params
      * @return mixed
      */
-    public function spider(array $params);
+    public function spider(array $params = []);
 
     /**
      * 获取热搜词.

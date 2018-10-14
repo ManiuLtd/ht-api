@@ -213,12 +213,12 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 爬虫.
+     * 爬虫
      * @param array $params
      * @return array|mixed
      * @throws \Exception
      */
-    public function spider(array $params)
+    public function spider(array $params = [])
     {
         $type = $params['type'] ?? 'total';
         $all = $params['all'] ?? true;
