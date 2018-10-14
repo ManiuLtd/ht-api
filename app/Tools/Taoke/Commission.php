@@ -1,13 +1,13 @@
 <?php
 
-
 namespace App\Tools\Taoke;
 
 use App\Models\Member\Member;
-use function GuzzleHttp\Promise\queue;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
- * TODO NEED REVIEW
+ * 计算佣金和订单
  * Class Commission
  * @package App\Tools\Taoke
  */
@@ -15,59 +15,77 @@ class Commission
 {
 
     /**
-     * @param $memberId
-     * @param $commission
-     * @param $type
+     * @param int $memberId
+     * @param float $commission
+     * @param string $type
      * @return float|int
      */
-    public function getComminnsionByMember($memberId, $commission, $type)
+    public function getComminnsionByMember(int $memberId, float $commission, string $type)
     {
-
-        $memberModel = Member::with ('commissionLevel')->find ($memberId);
-
-        //用户不存在
-        if (!$memberModel) {
-            return 0;
-        }
+        //检查会员
+        $memberModel = $this->checkMember ($memberId);
 
         //判断type类型
-        if (!in_array ($type, ['group_rate1', 'group_rate2', 'commission_rate1', 'commission_rate2'])) {
+        $this->checkType ($type);
+
+        //会员没绑定等级
+        if ($memberModel->level_id == null) {
             return 0;
         }
 
-        //没有分销等级
-        if ($memberModel->level2 == null) {
-            return 0;
-        }
-        //用户不是组长 不能结算组长返佣
-        if ($memberModel->commissionLevel->type != 2 && ($type == 'group_rate1') || $type == 'group_rate2') {
+        //判断当前Type的返佣比例
+        if ($memberModel->level->$type < 0) {
             return 0;
         }
 
-        return $commission * $memberModel->commissionLevel->$type / 100;
+        return $commission * $memberModel->level->$type / 100;
     }
 
 
     /**
-     * @param $memberId
-     * @param $orderStatus
-     * @param $type
+     * @param int $memberId
+     * @param array $orderStatus
+     * @param string $type
      * @param bool $isCalculateTotalCommission
-     * @param null $dateType
-     * @return float|int
+     * @param string|null $dateType
+     * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
-    public function getOrdersOrCommissionByDate($memberId,array $orderStatus, $type, $isCalculateTotalCommission = false, $dateType = null)
+    public function getOrdersOrCommissionByDate(int $memberId, array $orderStatus, string $type, bool $isCalculateTotalCommission = false, string $dateType = null)
     {
-        $memberModel = Member::with ('commissionLevel')->find ($memberId);
+        //检查会员
+        $memberModel = $this->checkMember ($memberId);
 
-        //用户不存在
-        if (!$memberModel) {
-            return 0;
-        }
+        //判断type类型
+        $this->checkType ($type);
+
         //订单
-        $query = db ('tbk_orders')->whereIn('status', $orderStatus);
+        $query = db ('tbk_orders')->whereIn ('status', $orderStatus);
 
         //根据用户返佣层级筛选
+        $query = $this->getQueryByType ($memberId, $type, $query, $memberModel);
+
+        //根据日期筛选
+        $query = $this->getQueryByDateType ($query, $dateType);
+
+       //是否只算出总佣金数
+        if ($isCalculateTotalCommission) {
+            return $this->getComminnsionByMember ($memberId, $query->sum ('commission_amount'), $type);
+        }
+
+        return $query;
+    }
+
+
+    /**
+     * 根据返佣层级筛选
+     * @param int $memberId
+     * @param string $type
+     * @param $query
+     * @param $memberModel
+     * @return mixed
+     */
+    protected function getQueryByType(int $memberId, string $type, $query, $memberModel)
+    {
         switch ($type) {
             case 'commission_rate1':
                 $query = $query->where ('member_id', $memberId);
@@ -80,38 +98,25 @@ class Commission
                 });
                 break;
             case 'group_rate1':
-                //用户不是组长 不能结算组长返佣
-                if ($memberModel->commissionLevel->type != 2 && ($type == 'group_rate1') || $type == 'group_rate2') {
-                    return 0;
-                }
                 $query = $query->where ('group_id', $memberModel->group_id);
                 break;
             case 'group_rate2':
-                //用户不是组长 不能结算组长返佣
-                if ($memberModel->commissionLevel->type != 2 && ($type == 'group_rate1') || $type == 'group_rate2') {
-                    return 0;
-                }
                 $query = $query->where ('group_id', $memberModel->oldgroup_id);
                 break;
             default:
                 break;
         }
-
-        $query = $this->getQuery($query,$dateType);
-
-        if($isCalculateTotalCommission){
-            return $this->getComminnsionByMember ($memberId, $query->sum ('commission_amount'), $type);
-        }
-
         return $query;
     }
 
+
     /**
+     * 根据日期筛选
      * @param $query
      * @param $dateType
      * @return mixed
      */
-    public function getQuery($query, $dateType)
+    protected function getQueryByDateType($query, $dateType)
     {
         //根据日期筛选
         switch ($dateType) {
@@ -137,6 +142,32 @@ class Commission
                 break;
         }
         return $query;
+    }
+
+
+
+    /**
+     * 检查Type是否符合格式
+     * @param string $type
+     */
+    protected function checkType(string $type): void
+    {
+        if (!in_array ($type, ['group_rate1', 'group_rate2', 'commission_rate1', 'commission_rate2'])) {
+            throw new InvalidParameterException('Type参数错误，仅支持：group_rate1，group_rate2，commission_rate1，commission_rate2');
+        }
+    }
+
+    /**
+     * @param int $memberId
+     * @return Member|Member[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
+     */
+    protected function checkMember(int $memberId)
+    {
+        $memberModel = Member::with ('level')->find ($memberId);
+        if (!$memberModel) {
+            throw new ModelNotFoundException('会员不存在');
+        }
+        return $memberModel;
     }
 
 
