@@ -34,24 +34,22 @@ class Taobao implements TBKInterface
      */
     protected $TKJD_API_KEY;
 
-
     /**
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $TKJD_API_URL;
-
 
     /**
      * Taobao constructor.
      */
     public function __construct()
     {
-        $this->DTK_API_KEY = config ('taobao.DTK_API_KEY');
-        $this->DTK_API_URL = config ('taobao.DTK_API_URL');
-        $this->QTK_API_KEY = config ('taobao.QTK_API_KEY');
-        $this->QTK_API_URL = config ('taobao.QTK_API_URL');
-        $this->TKJD_API_KEY = config ('taobao.TKJD_API_KEY');
-        $this->TKJD_API_URL = config ('taobao.TKJD_API_URL');
+        $this->DTK_API_KEY = config('taobao.DTK_API_KEY');
+        $this->DTK_API_URL = config('taobao.DTK_API_URL');
+        $this->QTK_API_KEY = config('taobao.QTK_API_KEY');
+        $this->QTK_API_URL = config('taobao.QTK_API_URL');
+        $this->TKJD_API_KEY = config('taobao.TKJD_API_KEY');
+        $this->TKJD_API_URL = config('taobao.TKJD_API_URL');
     }
 
     /**
@@ -69,18 +67,18 @@ class Taobao implements TBKInterface
      */
     public function getDetail()
     {
-        $itemID = request ('item_id');
-        if (!is_numeric ($itemID)) {
+        $itemID = request('item_id');
+        if (! is_numeric($itemID)) {
             throw  new \InvalidArgumentException('商品id类型错误');
         }
 
-        $topclient = TopClient::connection ();
+        $topclient = TopClient::connection();
         $req = new TbkItemInfoGetRequest();
-        $req->setFields ('title,small_images,pict_url,zk_final_price,user_type,volume');
-        $req->setNumIids ($itemID);
-        $resp = $topclient->execute ($req);
+        $req->setFields('title,small_images,pict_url,zk_final_price,user_type,volume');
+        $req->setNumIids($itemID);
+        $resp = $topclient->execute($req);
 
-        if (!isset($resp->results->n_tbk_item)) {
+        if (! isset($resp->results->n_tbk_item)) {
             throw new \Exception('淘宝客接口调用失败');
         }
 
@@ -93,9 +91,9 @@ class Taobao implements TBKInterface
      */
     public function search()
     {
-        $page = request ('page') ?? 1;
-        $limit = request ('limit') ?? 20;
-        $q = request ('q') ?? '';
+        $page = request('page') ?? 1;
+        $limit = request('limit') ?? 20;
+        $q = request('q') ?? '';
 
         //TODO 检查关键词是否包含淘口令，如果包含淘口令，使用产品地址搜索，调用下面的searchByTKL方法
 
@@ -108,7 +106,7 @@ class Taobao implements TBKInterface
 
         //排序字段
         $params['sort'] = 'sales';
-        switch (request ('orderBy')) {
+        switch (request('orderBy')) {
             case 'sales':
                 $params['sort'] = 'sales';
                 break;
@@ -118,32 +116,31 @@ class Taobao implements TBKInterface
             case 'commission':
                 $params['sort'] = 'comm_rate';
                 break;
-            default :
+            default:
                 break;
         }
         //排序方式
-        $params['sort_type'] = request ('sortedBy') == 'asc' ? 'asc' : 'desc';
+        $params['sort_type'] = request('sortedBy') == 'asc' ? 'asc' : 'desc';
         //获取接口内容
-        $response = Curl::to ('http://api.tkjidi.com/checkWhole')
-            ->withData ($params)
-            ->get ();
+        $response = Curl::to('http://api.tkjidi.com/checkWhole')
+            ->withData($params)
+            ->get();
 
-        $response = json_decode ($response);
+        $response = json_decode($response);
 
         //接口信息获取失败
         if ($response->status != 200) {
             throw new \Exception('淘客基地接口请求失败');
-
         }
         //当前页面地址
-        $uri = request ()->getUri ();
+        $uri = request()->getUri();
         //验证是否填写page参数
-        if (!str_contains ('page=', $uri)) {
-            $uri = $uri . '&page=1';
+        if (! str_contains('page=', $uri)) {
+            $uri = $uri.'&page=1';
         }
 
         //页码信息
-        $totalPage = intval (floor ($response->data->total / $limit) + 1);
+        $totalPage = intval(floor($response->data->total / $limit) + 1);
 
         //页码不对
         if ($page > $totalPage) {
@@ -171,17 +168,17 @@ class Taobao implements TBKInterface
                 'introduce' => '',
                 'start_time' => $list->quan_starttime,
                 'end_time' => $list->quan_endtime,
-                'created_at' => now ()->toDateString (),
-                'updated_at' => now ()->toDateString (),
+                'created_at' => now()->toDateString(),
+                'updated_at' => now()->toDateString(),
             ];
-            array_push ($data, $temp);
+            array_push($data, $temp);
         }
 
         return [
             'data' => $data,
             //分页信息只要这四个参数就够了
             'meta' => [
-                'current_page' => (int)$page,
+                'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
                 'total' => $response->data->total,
@@ -210,7 +207,7 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 爬虫
+     * 爬虫.
      * @param array $params
      * @return array|mixed
      * @throws \Exception
@@ -242,25 +239,26 @@ class Taobao implements TBKInterface
                 $params['type'] = 'total';
                 break;
         }
-        $response = Curl::to ($this->apiUrl)
-            ->withData ($params)
-            ->get ();
-        $response = json_decode ($response);
+        $response = Curl::to($this->apiUrl)
+            ->withData($params)
+            ->get();
+        $response = json_decode($response);
 
         //验证
-        if (!isset($response->data)) {
+        if (! isset($response->data)) {
             throw new \Exception('大淘客接口内容获取失败');
         }
         $total = $response->data->total_num ?? 0;
         if ($total <= 0) {
             throw new \Exception('打通可爬虫没有获取到产品');
         }
-        $totalPage = (int)ceil ($total / 50);
+        $totalPage = (int) ceil($total / 50);
 
         //不爬取所有的
-        if (!$all) {
+        if (! $all) {
             $totalPage = 3;
         }
+
         return [
             'data' => $response->result,
             'totalPage' => $totalPage,
@@ -279,21 +277,20 @@ class Taobao implements TBKInterface
             'v' => '1.0',
             't' => 1,
         ];
-        $resp = Curl::to ($this->QTK_API_URL . '/hot')
-            ->withData ($params)
-            ->get ();
-        $resp = json_decode ($resp);
+        $resp = Curl::to($this->QTK_API_URL.'/hot')
+            ->withData($params)
+            ->get();
+        $resp = json_decode($resp);
 
         if ($resp->er_code != 10000) {
             throw new \Exception($resp->er_msg);
         }
 
-        return array_slice ($resp->data, 0, 20);
+        return array_slice($resp->data, 0, 20);
     }
 
-
     /**
-     * 淘口令解密
+     * 淘口令解密.
      * @param $keywords
      * @return array|bool|mixed|string
      * @throws \Exception
@@ -301,33 +298,33 @@ class Taobao implements TBKInterface
     protected function searchByTKL($keywords)
     {
         //验证淘口令
-        if (substr_count ($keywords, '￥') == 2 || substr_count ($keywords, '《') == 2 || substr_count ($keywords, '€') == 2) {
+        if (substr_count($keywords, '￥') == 2 || substr_count($keywords, '《') == 2 || substr_count($keywords, '€') == 2) {
             $req = new WirelessShareTpwdQueryRequest();
 
-            $req->setPasswordContent ($keywords);
-            $topclient = TopClient::connection ();
-            $response = $topclient->execute ($req);
+            $req->setPasswordContent($keywords);
+            $topclient = TopClient::connection();
+            $response = $topclient->execute($req);
             //淘口令解密失败
-            if (!$response->suc) {
+            if (! $response->suc) {
                 return false;
             }
-            if (str_contains ($response->url, 'a.m.taobao.com/i')) {
-                $pos = strpos ($response->url, '?');
-                $str = substr ($response->url, 0, $pos);
-                $str = str_replace ('https://a.m.taobao.com/i', '', $str);
-                $str = str_replace ('.htm', '', $str);
+            if (str_contains($response->url, 'a.m.taobao.com/i')) {
+                $pos = strpos($response->url, '?');
+                $str = substr($response->url, 0, $pos);
+                $str = str_replace('https://a.m.taobao.com/i', '', $str);
+                $str = str_replace('.htm', '', $str);
 
                 return $str;
             }
-            $pos = strpos ($response->url, '?');
-            $query_string = substr ($response->url, $pos + 1, strlen ($response->url));
-            $arr = \League\Uri\extract_query ($query_string);
+            $pos = strpos($response->url, '?');
+            $query_string = substr($response->url, $pos + 1, strlen($response->url));
+            $arr = \League\Uri\extract_query($query_string);
 
             if (isset($arr['activity_id'])) {
                 return false;
             }
 
-            if (!isset($arr['id'])) {
+            if (! isset($arr['id'])) {
                 return false;
             }
 
@@ -336,5 +333,4 @@ class Taobao implements TBKInterface
 
         return false;
     }
-
 }

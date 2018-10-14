@@ -3,12 +3,10 @@
 namespace App\Tools\Qrcode;
 
 /**
- * Class ImageEnum
- * @package App\Tools\Qrcode
+ * Class ImageEnum.
  */
 class ImageEnum
 {
-
     /**
      * @var string
      */
@@ -39,7 +37,6 @@ class ImageEnum
      */
     public $y;
 
-
     /**
      * ImageEnum constructor.
      * @param string $image
@@ -58,5 +55,4 @@ class ImageEnum
         $this->x = $x;
         $this->y = $y;
     }
-
 }
