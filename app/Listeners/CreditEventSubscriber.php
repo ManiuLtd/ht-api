@@ -15,7 +15,7 @@ class CreditEventSubscriber
      */
     public function onCreditIncrement(CreditIncrement $event)
     {
-        $this->updateCredit ($event, true);
+        $this->updateCredit($event, true);
     }
 
     /**
@@ -24,7 +24,7 @@ class CreditEventSubscriber
      */
     public function onCreditDecrement(CreditDecrement $event)
     {
-        $this->updateCredit ($event, false);
+        $this->updateCredit($event, false);
     }
 
     /**
@@ -33,12 +33,12 @@ class CreditEventSubscriber
      */
     public function subscribe($events)
     {
-        $events->listen (
+        $events->listen(
             'App\Events\CreditIncrement',
             'App\Listeners\CreditEventSubscriber@onCreditIncrement'
         );
 
-        $events->listen (
+        $events->listen(
             'App\Events\CreditDecrement',
             'App\Listeners\CreditEventSubscriber@onCreditDecrement'
         );
@@ -53,16 +53,16 @@ class CreditEventSubscriber
     protected function updateCredit($event, bool $isIncrement): void
     {
         //如果积分数组不符合规范
-        if (!is_numeric ($event->credit) || !in_array ($event->type, ['credit1', 'credit2', 'credit3'])) {
+        if (! is_numeric($event->credit) || ! in_array($event->type, ['credit1', 'credit2', 'credit3'])) {
             throw  new InvalidArgumentException('修改基本所需要传入的参数格式错误');
         }
 
         //修改积分并添加操作日志
-        DB::transaction (function () use ($event, $isIncrement) {
-            if (!$isIncrement) {
-                $event->member->decrement ($event->column, $event->credit);
+        DB::transaction(function () use ($event, $isIncrement) {
+            if (! $isIncrement) {
+                $event->member->decrement($event->column, $event->credit);
             } else {
-                $event->member->increment ($event->column, $event->credit);
+                $event->member->increment($event->column, $event->credit);
             }
             //需要插入的日志
             $insert = [
@@ -72,11 +72,11 @@ class CreditEventSubscriber
                 'credit' => $event->credit,
                 'column' => $event->column,
                 'remark' => $event->extra->remark,
-                'created_at' => now ()->toDateTimeString (),
-                'updated_at' => now ()->toDateTimeString (),
+                'created_at' => now()->toDateTimeString(),
+                'updated_at' => now()->toDateTimeString(),
             ];
 
-            db ('member_credit_logs')->insert ($insert);
+            db('member_credit_logs')->insert($insert);
         });
     }
 }

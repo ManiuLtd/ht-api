@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Backend\System;
 
+use App\Events\SendNotification;
 use App\Http\Controllers\Controller;
 use App\Validators\System\NotificationValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\System\NotificationCreateRequest;
 use App\Repositories\Interfaces\System\NotificationRepository;
-use App\Events\SendNotification;
 
 /**
  * Class NotificationsController.

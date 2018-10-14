@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Api\System;
 
 use App\Http\Controllers\Controller;
 use App\Validators\System\SettingValidator;
-use App\Http\Requests\System\SettingUpdateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\System\SettingRepository;
 
 /**
@@ -39,15 +36,13 @@ class SettingsController extends Controller
     }
 
     /**
-     * 获取设置信息
+     * 获取设置信息.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $setting = $this->repository->firstOrNew ();
+        $setting = $this->repository->firstOrNew();
 
-        return json ('1001', '设置信息', $setting);
-
+        return json('1001', '设置信息', $setting);
     }
-
 }

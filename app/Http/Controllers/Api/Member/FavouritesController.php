@@ -34,7 +34,6 @@ class FavouritesController extends Controller
     }
 
     /**
-     *
      * 添加收藏.
      * @return \Illuminate\Http\JsonResponse
      */

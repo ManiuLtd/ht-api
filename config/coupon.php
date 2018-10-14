@@ -18,7 +18,6 @@ return [
         'JDMEDIA_SECRETKEY' => '27ed5eb361184677b14e3075a01e1d88',
         'JDMEDIA_WEB_ID' => '29047',
 
-
         'access_token' => '177e6693-511f-4678-9161-5d9e9a8bfebd',
         'refresh_token' => '0d6ffc80-19e0-488d-8198-b20de719b9f5',
     ],

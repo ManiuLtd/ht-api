@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CouponValidator;
 use App\Http\Requests\Taoke\CouponCreateRequest;
 use App\Http\Requests\Taoke\CouponUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
-use Prettus\Validator\Contracts\ValidatorInterface;
-
 
 /**
  * Class CouponsController.
@@ -78,7 +77,6 @@ class CouponsController extends Controller
 
         return json(1001, '获取成功', $coupon);
     }
-
 
     /**
      * @param CouponUpdateRequest $request

@@ -3,7 +3,6 @@
 namespace App\Tools\Taoke;
 
 use Ixudra\Curl\Facades\Curl;
-
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
 use TopClient\request\WirelessShareTpwdQueryRequest;
@@ -52,8 +51,8 @@ class Taobao implements TBKInterface
     public function getDetail(array $array)
     {
         //  Implement getDetail() method.
-        $id = data_get($array,'id');
-        if (!is_numeric($id)) {
+        $id = data_get($array, 'id');
+        if (! is_numeric($id)) {
             return [
                 'code'=>4004,
                 'message' => '商品id类型错误！',
@@ -65,22 +64,19 @@ class Taobao implements TBKInterface
         $req->setNumIids($id);
         $resp = $topclient->execute($req);
 
-        if (!isset($resp->results->n_tbk_item)) {
-
+        if (! isset($resp->results->n_tbk_item)) {
             return [
                 'code' => 4004,
-                'message' => '淘宝客接口调用失败'
+                'message' => '淘宝客接口调用失败',
             ];
         }
-        $data = (array)$resp->results->n_tbk_item[0];
+        $data = (array) $resp->results->n_tbk_item[0];
 
         return [
             'code' => 1001,
             'message' => '商品详情获取成功',
-            'data' => $data
+            'data' => $data,
         ];
-
-
     }
 
     /**
@@ -100,16 +96,16 @@ class Taobao implements TBKInterface
             if ($data_q['code'] == 4001) {
                 return [
                     'code' => 4001,
-                    'message' => $data_q['message']
+                    'message' => $data_q['message'],
                 ];
             }
-            $q = data_get($data_q,'data.itemid');
+            $q = data_get($data_q, 'data.itemid');
         }
 
         $params = [
             'appkey' => 'a702d09d248becb575dc798b6e432d88',
             'k' => $q,
-            'page' => $page
+            'page' => $page,
         ];
         //sort 1最新 2低价 3高价 4销量 5佣金 6综合
         switch ($sort) {
@@ -148,14 +144,14 @@ class Taobao implements TBKInterface
         if ($response->status != 200) {
             return [
                 'code' => 4001,
-                'message' => $response->msg
+                'message' => $response->msg,
             ];
         }
         //当前页面地址
         $uri = request()->getUri();
         //验证是否填写page参数
-        if (!str_contains('page=', $uri)) {
-            $uri = $uri . "&page=1";
+        if (! str_contains('page=', $uri)) {
+            $uri = $uri.'&page=1';
         }
 
         //页码信息
@@ -166,7 +162,7 @@ class Taobao implements TBKInterface
         if ($page > $totalPage) {
             return response()->json([
                 'code' => 4001,
-                'message' => '超出最大页码'
+                'message' => '超出最大页码',
             ]);
         }
 
@@ -196,16 +192,17 @@ class Taobao implements TBKInterface
             ];
             array_push($data, $temp);
         }
+
         return [
             'data' => $data,
             'links' => [
-                'first' => str_replace("page={$page}", "page=1", $uri),
+                'first' => str_replace("page={$page}", 'page=1', $uri),
                 'last' => str_replace("page={$page}", "page={$totalPage}", $uri),
                 'prev' => $page == 1 ? null : str_replace("page={$page}", "page={$prevPage}", $uri),
                 'next' => str_replace("page={$page}", "page={$nextPage}", $uri),
             ],
             'meta' => [
-                'current_page' => (int)$page,
+                'current_page' => (int) $page,
                 'from' => 1,
                 'last_page' => $totalPage,
                 'path' => request()->url(),
@@ -214,13 +211,12 @@ class Taobao implements TBKInterface
                 'total' => $response->data->total,
             ],
             'code' => 1001,
-            'message' => '优惠券获取成功'
+            'message' => '优惠券获取成功',
         ];
-
     }
 
     /**
-     * 淘口令
+     * 淘口令.
      * @return array
      */
     public function searchByTKL($keywords)
@@ -233,25 +229,24 @@ class Taobao implements TBKInterface
             $topclient = TopClient::connection();
             $response = $topclient->execute($req);
             //淘口令解密失败
-            if (!$response->suc) {
-
+            if (! $response->suc) {
                 return [
                     'code' => 4001,
-                    'message' => '淘口令解密失败'
+                    'message' => '淘口令解密失败',
                 ];
             }
             if (str_contains($response->url, 'a.m.taobao.com/i')) {
                 $pos = strpos($response->url, '?');
                 $str = substr($response->url, 0, $pos);
-                $str = str_replace("https://a.m.taobao.com/i", '', $str);
-                $str = str_replace(".htm", '', $str);
+                $str = str_replace('https://a.m.taobao.com/i', '', $str);
+                $str = str_replace('.htm', '', $str);
 
                 return [
                     'code' => 1001,
                     'message' => '产品ID获取成功',
                     'data' => [
-                        'itemid' => $str
-                    ]
+                        'itemid' => $str,
+                    ],
                 ];
             }
             $pos = strpos($response->url, '?');
@@ -261,13 +256,13 @@ class Taobao implements TBKInterface
             if (isset($arr['activity_id'])) {
                 return [
                     'code' => 4001,
-                    'message' => '该淘口令为优惠券淘口令，不需要转换，打开手淘即可领券。'
+                    'message' => '该淘口令为优惠券淘口令，不需要转换，打开手淘即可领券。',
                 ];
             }
-            if (!isset($arr['id'])) {
+            if (! isset($arr['id'])) {
                 return [
                     'code' => 4001,
-                    'message' => '不支持该淘口令'
+                    'message' => '不支持该淘口令',
                 ];
             }
 
@@ -275,13 +270,14 @@ class Taobao implements TBKInterface
                 'code' => 1001,
                 'message' => '产品ID获取成功',
                 'data' => [
-                    'itemid' => $arr['id']
-                ]
+                    'itemid' => $arr['id'],
+                ],
             ];
         }
+
         return [
             'code' => 4001,
-            'message' => '该字符串不包含淘口令'
+            'message' => '该字符串不包含淘口令',
         ];
     }
 
@@ -408,12 +404,11 @@ class Taobao implements TBKInterface
                 'message' => $resp->er_msg,
             ];
         }
+
         return [
             'code' => 1001,
             'message' => '获取成功',
-            'data' => array_slice($resp->data,0,20)
+            'data' => array_slice($resp->data, 0, 20),
         ];
-
-
     }
 }

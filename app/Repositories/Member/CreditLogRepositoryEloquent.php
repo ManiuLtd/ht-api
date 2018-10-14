@@ -4,7 +4,6 @@ namespace App\Repositories\Member;
 
 use App\Models\Member\CreditLog;
 use App\Criteria\RequestCriteria;
-use App\Tools\Taoke\Commission;
 use App\Validators\Member\CreditLogValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\CreditLogRepository;
@@ -59,5 +58,4 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
-
 }

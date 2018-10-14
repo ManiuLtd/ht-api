@@ -11,14 +11,14 @@ Route::namespace('Taoke')
         Route::resource('favourite', 'FavouritesController');
 
         //订单报表
-        Route::get('chart/order','ChartsController@order');
+        Route::get('chart/order', 'ChartsController@order');
 
         //提现报表
         Route::get('chart/withdraw', 'ChartsController@withdraw');
 
         //浏览记录
-        Route::resource('history', 'HistoriesController',[
-            'only' => ['index','store','destory']
+        Route::resource('history', 'HistoriesController', [
+            'only' => ['index', 'store', 'destory'],
         ]);
 
         //分类
@@ -28,15 +28,13 @@ Route::namespace('Taoke')
         Route::get('quan', 'QuansController@index');
 
         //优惠卷
-        Route::resource('coupon', 'CouponsController',[
-            'only' => ['index','show']
+        Route::resource('coupon', 'CouponsController', [
+            'only' => ['index', 'show'],
         ]);
         //优惠卷分享
-        Route::get('share','ShareController@index');
-
+        Route::get('share', 'ShareController@index');
 
         //搜索
-        Route::get('search','SearchController@index');
-        Route::get('search/hot','SearchController@keywords');
-
+        Route::get('search', 'SearchController@index');
+        Route::get('search/hot', 'SearchController@keywords');
     });

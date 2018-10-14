@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
+use App\Criteria\MemberCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\FavouriteValidator;
-use App\Repositories\Interfaces\Taoke\FavouriteRepository;
-use App\Criteria\MemberCriteria;
 use App\Http\Requests\Taoke\FavouriteCreateRequest;
-use App\Http\Requests\Taoke\FavouriteUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\Interfaces\Taoke\FavouriteRepository;
 
 /**
  * Class FavouritesController.
@@ -45,13 +43,14 @@ class FavouritesController extends Controller
     public function index()
     {
         $favourites = $this->repository
-            ->pushCriteria (new MemberCriteria())
+            ->pushCriteria(new MemberCriteria())
             ->paginate(request('limit', 10));
+
         return json(1001, '列表获取成功', $favourites);
     }
 
     /**
-     * 添加收藏
+     * 添加收藏.
      * @param FavouriteCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -69,7 +68,7 @@ class FavouritesController extends Controller
     }
 
     /**
-     * 取消收藏
+     * 取消收藏.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

@@ -30,9 +30,8 @@ class CreditIncrement
      */
     public $credit;
 
-
     /**
-     * 额外参数
+     * 额外参数.
      * @var array
      */
     public $extra;

@@ -23,10 +23,10 @@ class Feedback extends Model implements Transformable
     /**
      * @var array
      */
-    protected $fillable= [
+    protected $fillable = [
         'title',
         'content',
-        'images'
+        'images',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Feedback extends Model implements Transformable
     }
 
     /**
-     * 所属会员
+     * 所属会员.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function member()

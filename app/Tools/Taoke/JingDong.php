@@ -4,8 +4,6 @@ namespace App\Tools\Taoke;
 
 use Carbon\Carbon;
 use Ixudra\Curl\Facades\Curl;
-use NiuGengYun\JosClient\Facades\JosClient;
-
 
 class JingDong implements TBKInterface
 {
@@ -34,6 +32,7 @@ class JingDong implements TBKInterface
      * @var
      */
     protected $jdm_app_secret;
+
     /**
      * JingDong constructor.
      */
@@ -42,9 +41,9 @@ class JingDong implements TBKInterface
         $this->appid = data_get(config('coupon'), 'jingdong.JD_APPID');
         $this->appkey = data_get(config('coupon'), 'jingdong.JD_APPKEY');
         $this->applisturl = data_get(config('coupon'), 'jingdong.JD_LIST_APPURL');
-        $this->access_token = data_get(config('coupon'),'jingdong.access_token');
-        $this->jdm_app_key = data_get(config('coupon'),'jingdong.JDM_APP_KEY');
-        $this->jdm_app_secret = data_get(config('coupon'),'jingdong.JDM_APP_SECRET');
+        $this->access_token = data_get(config('coupon'), 'jingdong.access_token');
+        $this->jdm_app_key = data_get(config('coupon'), 'jingdong.JDM_APP_KEY');
+        $this->jdm_app_secret = data_get(config('coupon'), 'jingdong.JDM_APP_SECRET');
     }
 
     /**
@@ -65,8 +64,8 @@ class JingDong implements TBKInterface
     public function getDetail(array $array)
     {
         // Implement getDetail() method.
-        $id = data_get($array,'id');
-        if (!is_numeric($id)) {
+        $id = data_get($array, 'id');
+        if (! is_numeric($id)) {
             return [
                 'code'=>4004,
                 'message' => '商品id类型错误！',
@@ -87,12 +86,12 @@ class JingDong implements TBKInterface
                 'message' => '接口调用失败！',
             ];
         }
+
         return [
             'code' => 1001,
             'message' => '获取成功',
             'data' => $response->result,
         ];
-
     }
 
     /**
@@ -146,7 +145,7 @@ class JingDong implements TBKInterface
 //            default:
 //                break;
 //        }
-        $signparams  = array_merge($params,$urlparams);
+        $signparams = array_merge($params, $urlparams);
         ksort($signparams);
         $sign = http_build_query($signparams);
         $sign = strtoupper(md5($this->jdm_app_secret.$sign.$this->jdm_app_secret));
@@ -157,16 +156,14 @@ class JingDong implements TBKInterface
             ->get();
         dd($response);
 
-
-
         if ($response->return != 0) {
             return [
                 'code' => 4001,
                 'message' => $response->result,
             ];
         }
-        $data =[];
-        foreach ($response->result->data as $datum){
+        $data = [];
+        foreach ($response->result->data as $datum) {
             $temp['title'] = $datum->goods_name;
             $temp['cat'] = '';
             $temp['pic_url'] = $datum->goods_img;
@@ -188,12 +185,11 @@ class JingDong implements TBKInterface
             $temp = [];
         }
 
-
         //当前页面地址
         $uri = request()->getUri();
         //验证是否填写page参数
-        if (!str_contains('page=', $uri)) {
-            $uri = $uri . "&page=1";
+        if (! str_contains('page=', $uri)) {
+            $uri = $uri.'&page=1';
         }
 
         //页码信息
@@ -204,20 +200,20 @@ class JingDong implements TBKInterface
         if ($page > $totalPage) {
             return response()->json([
                 'code' => 4001,
-                'message' => '超出最大页码'
+                'message' => '超出最大页码',
             ]);
         }
 
         return [
             'data' => $data,
             'links' => [
-                'first' => str_replace("page={$page}", "page=1", $uri),
+                'first' => str_replace("page={$page}", 'page=1', $uri),
                 'last' => str_replace("page={$page}", "page={$totalPage}", $uri),
                 'prev' => $page == 1 ? null : str_replace("page={$page}", "page={$prevPage}", $uri),
                 'next' => str_replace("page={$page}", "page={$nextPage}", $uri),
             ],
             'meta' => [
-                'current_page' => (int)$page,
+                'current_page' => (int) $page,
                 'from' => 1,
                 'last_page' => $totalPage,
                 'path' => request()->url(),
@@ -226,9 +222,8 @@ class JingDong implements TBKInterface
                 'total' => count($data),
             ],
             'code' => 1001,
-            'message' => '优惠券获取成功'
+            'message' => '优惠券获取成功',
         ];
-
     }
 
     /**
@@ -306,6 +301,5 @@ class JingDong implements TBKInterface
      */
     public function hotSearch(array $array = [])
     {
-        
     }
 }

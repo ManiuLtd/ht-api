@@ -47,10 +47,9 @@ class Group extends Model implements Transformable
     ];
 
     /**
-     * @var array 
+     * @var array
      */
     protected $dates = ['deleted_at'];
-
 
     /**
      * 后端用户.
@@ -58,7 +57,7 @@ class Group extends Model implements Transformable
      */
     public function user()
     {
-        return $this->belongsTo (User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -67,6 +66,6 @@ class Group extends Model implements Transformable
      */
     public function member()
     {
-        return $this->belongsTo ('App\Models\Member\Member', 'member_id');
+        return $this->belongsTo('App\Models\Member\Member', 'member_id');
     }
 }
