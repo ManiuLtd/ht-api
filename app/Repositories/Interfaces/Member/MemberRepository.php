@@ -16,10 +16,12 @@ interface MemberRepository extends RepositoryInterface
      */
     public function getFrineds($level = 1);
 
+
     /**
-     * 团队报表
+     * 会员报表
      * @return mixed
      */
-    public function getTeamCharts();
+    public function getMemberChart ();
+
 
 }

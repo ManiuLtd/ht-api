@@ -69,47 +69,42 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 
 
     /**
-     * 订单数据报表
-     * @return array|mixed
+     * TODO 后端可显示近一周、一月订单和佣金状态
+     * 订单数据报表  可根据时间返回当前用户的佣金数或者订单数
+     * @param bool $isCommission  计算佣金或者订单数
+     * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
-    public function getOrderCharts()
+    public function getOrderChart(bool $isCommission = true)
     {
         $member = getMember ();
         $commission = new Commission();
-        $date_type = request ('date_type', 'month');
+        $dateType = request ('date_type', 'month');
 
-        //自推佣金
-        $moneyData = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', true, $date_type);
+        //计算佣金
+        if ($isCommission) {
+            //自推佣金
+            $commission1 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', $isCommission, $dateType);
+            //下级佣金
+            $commission2 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', $isCommission, $dateType);
+            //组长佣金
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', $isCommission, $dateType);
+            //补贴佣金
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate2', $isCommission, $dateType);
 
-        //团队订佣金
-        //下级佣金
-        $subordinateData = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', true, $date_type);
-        //组长提成
-        $leader = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', true, $date_type);
-        $old_leader = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate2', true, $date_type);
-        $money = 0;
+            return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
 
-        $amount = $moneyData + $subordinateData + $leader + $old_leader + $money;
-
-
-        // 是否是组长
-
-        $group = $member->group;
-        if ($member->id == $group->member_id ?? 0) {
-            $orderNum = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', false)->count ();
-        } else {
-            $selfOrderNum = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', false);
-            $subordinateOrder = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', false);
-
-            $orderNum = $selfOrderNum->count () + $subordinateOrder->count ();
         }
-        return [
-            'Independence' => $moneyData,
-            'team' => [
-                'money' => $amount,
-                'orderNum' => $orderNum
-            ],
-        ];
+        //计算订单数
+        $group = $member->group;
+        //如果用户是组长 直接返回小组订单数
+        if ($member->id == $group->member_id ?? null) {
+            return  $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', false)->count ();
+        } else {
+            $commissionOrder1 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', false);
+            $commissionOrder2 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', false);
+
+            return $commissionOrder1->count () + $commissionOrder2->count ();
+        }
     }
 
     /**

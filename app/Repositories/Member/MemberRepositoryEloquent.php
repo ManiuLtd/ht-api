@@ -65,33 +65,10 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
-    /**
-     * 团队报表
-     * @return array|mixed
-     */
-    public function getTeamCharts()
-    {
-        $dateType = request('date_type','month');
 
-        $member = getMember();
-        $commission = new Commission();
-        // 直属
-        $query = db('members')->where('inviter_id', $member->id);
-        $query = $commission->getQuery($query,$dateType);
-        $directly = $query->count();
-        //直属成员下级
-        $query2 = db('members')->whereIn('inviter_id',function ($query3) use ($member) {
-            $query3->select('id')
-                ->from('members')
-                ->where('inviter_id', $member->id);
-        });
-        $query2 = $commission->getQuery($query2,$dateType);
-        $subordinate = $query2->count();
-        return [
-            'totalNum' => $directly + $subordinate,
-            'directly' => $directly,
-            'subordinate' => $subordinate,
-        ];
+    public function getMemberChart()
+    {
+        //TODO 后端可根据日志获取会员近一周、半月、一月的增长记录
     }
 
     /**

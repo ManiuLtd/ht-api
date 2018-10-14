@@ -84,7 +84,7 @@ class Commission
      * @param $memberModel
      * @return mixed
      */
-    protected function getQueryByType(int $memberId, string $type, $query, $memberModel)
+    public function getQueryByType(int $memberId, string $type, $query, $memberModel)
     {
         switch ($type) {
             case 'commission_rate1':
@@ -116,7 +116,7 @@ class Commission
      * @param $dateType
      * @return mixed
      */
-    protected function getQueryByDateType($query, $dateType)
+    public function getQueryByDateType($query, $dateType)
     {
         //根据日期筛选
         switch ($dateType) {

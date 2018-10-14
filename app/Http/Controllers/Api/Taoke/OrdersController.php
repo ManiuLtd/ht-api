@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Criteria\DatePickerCriteria;
 use App\Criteria\MemberCriteria;
+use App\Criteria\OrderTypeCriteria;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Taoke\MemberOrderCreateRequest;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
@@ -37,8 +38,7 @@ class OrdersController extends Controller
     }
 
     /**
-     * TODO 新建一个查询条件，可查看团队订单和订单：https://dev.tencent.com/u/cnsecer/p/tbkapp/git/blob/master/app/Repositories/OrderRepository.php
-     *
+     * TODO 完成查询条件OrderTypeCriteria，可查看团队订单和订单：https://dev.tencent.com/u/cnsecer/p/tbkapp/git/blob/master/app/Repositories/OrderRepository.php
      * 订单列表
      * @return \Illuminate\Http\JsonResponse
      */
@@ -48,6 +48,7 @@ class OrdersController extends Controller
             $orders = $this->repository
                 ->with ('member')
                 ->pushCriteria (new DatePickerCriteria())
+                ->pushCriteria (new OrderTypeCriteria())
                 ->pushCriteria (new MemberCriteria())
                 ->paginate (request ('limit', 10));
 

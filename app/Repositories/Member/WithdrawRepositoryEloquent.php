@@ -110,56 +110,45 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         }
     }
 
+
     /**
-     * TODO NEED REVIEW
-     * 提现计算
-     * @return array
+     * 提现记录
+     * @return array|mixed
      */
-    public function getWithdrawData()
+    public function getWithdrawChart()
     {
-        $id = getMemberId ();
+        $type = request ('type', 1);
+        $member = getMember ();
+        $commission = new Commission();
 
-        $member = db ('members')->find ($id);
-        //本月预估收益
-        //自推收益
-        $self_commission = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate1',true,'month');
+        //待结算
+        if ($type == 1) {
 
-        //下级收益
-        $subordinate = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate2',true,'month');
-        //组长收益
-        $leader = $this->commission->getOrdersOrCommissionByDate($id,[1],'group_rate1',true,'month');
-        //当前用户是其他组的旧组长
+            //自推收益
+            $commission1 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', true);
+            //下级收益
+            $commission2 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', true);
+            //组长收益
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', true);
+            //补贴收益
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate2', true);
 
-        $old_leader = $this->commission->getOrdersOrCommissionByDate($id,[1],'group_rate2',true,'month');
-        $month_commission = $self_commission + $subordinate + $leader + $old_leader;
-
-
-        //今天收益
-        //自推收益
-        $day_self_commission = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate1',true,'today');
-        //下级收益
-        $day_subordinate = $this->commission->getOrdersOrCommissionByDate($id,[1],'commission_rate2',true,'today') ;
-        //组长收益
-        $day_leader = $this->commission->getOrdersOrCommissionByDate ($id,[1],'group_rate1',true,'today');
-        //当前用户是其他组的旧组长
-
-        $day_old_leader = $this->commission->getOrdersOrCommissionByDate($id,[1],'group_rate2',true,'today');
-        $day_commission = $day_self_commission + $day_subordinate + $day_leader + $day_old_leader;
-        //上月结算
-        $year = now ()->month == 1 ? now ()->addMonth (-1)->year : now ()->year;
-        $settlement = db ('member_credit_logs')->where ([
-            'type' => 2,
-            'credit_type' => 1,
-        ])->whereYear ('created_at', $year)
-            ->whereMonth ('created_at', now ()->subMonth (1)->month)
-            ->sum ('credit');
-
-        return [
-            'month_commission' => $month_commission,//本月预估
-            'day_commission' => $day_commission,//今日收益
-            'settlement' => $settlement,//上月结算
-            'money' => $member->credit1 ?? 0,//可提现
-        ];
-
+            return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
+        }
+        //累计结算
+        if ($type == 2) {
+            return db ('member_credit_logs')->where ([
+                'column' => 'credit1',
+                'type' => 11,
+            ])->sum ('credit');
+        }
+        // 累计提现
+        if ($type == 3) {
+            return db ('member_credit_logs')->where ([
+                'column' => 'credit1',
+                'type' => 12,
+            ])->sum ('credit');
+        }
     }
+
 }
