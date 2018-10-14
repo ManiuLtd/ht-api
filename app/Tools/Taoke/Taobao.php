@@ -10,31 +10,37 @@ use TopClient\request\WirelessShareTpwdQueryRequest;
 class Taobao implements TBKInterface
 {
     /**
+     * 大淘客API KEY
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $DTK_API_KEY;
 
     /**
+     * 大淘客接口地址
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $DTK_API_URL;
 
     /**
+     * 轻淘客API KEY
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $QTK_API_KEY;
 
     /**
+     * 轻淘客接口地址
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $QTK_API_URL;
 
     /**
+     * 淘客基地API KEY
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $TKJD_API_KEY;
 
     /**
+     * 淘客接地接口地址
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $TKJD_API_URL;
