@@ -4,10 +4,8 @@ namespace App\Tools\Qrcode;
 
 use MyCLabs\Enum\Enum;
 
-
 class TextEnum extends Enum
 {
-
     /**
      * @var string
      */
@@ -47,7 +45,7 @@ class TextEnum extends Enum
      * @param string $color
      * @param string $valign
      */
-    public function __construct(string $text, float $x, float $y, string $size, string $color = "#444", string $valign = "left")
+    public function __construct(string $text, float $x, float $y, string $size, string $color = '#444', string $valign = 'left')
     {
         $this->text = $text;
         $this->x = $x;

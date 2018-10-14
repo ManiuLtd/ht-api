@@ -34,7 +34,7 @@ class Taobao extends Command
     public function __construct(TBKInterface $tbk)
     {
         $this->tbk = $tbk;
-        parent::__construct ();
+        parent::__construct();
     }
 
     /**
@@ -45,11 +45,11 @@ class Taobao extends Command
     public function handle()
     {
         //数据类型
-        $type = $this->option ('type');
+        $type = $this->option('type');
         //是否爬取所有
-        $all = $this->option ('all');
+        $all = $this->option('all');
 
-        $this->info ('正在爬取大淘客优惠券');
+        $this->info('正在爬取大淘客优惠券');
         //开始爬取
         try {
             $params = [
@@ -57,27 +57,27 @@ class Taobao extends Command
                 'all' => $all,
             ];
 
-            $result = $this->tbk->spider ($params);
+            $result = $this->tbk->spider($params);
             $total = $result['total'] ?? 0;
             $totalPage = $result['totalPage'] ?? 0;
 
-            $this->info ("优惠券总数:{$total}");
-            $this->info ("总页码:{$totalPage}");
-            $bar = $this->output->createProgressBar ($totalPage);
+            $this->info("优惠券总数:{$total}");
+            $this->info("总页码:{$totalPage}");
+            $bar = $this->output->createProgressBar($totalPage);
 
             for ($page = 1; $page <= $totalPage; $page++) {
                 $params['page'] = $page;
-                $response = $this->tbk->spider ($params);
+                $response = $this->tbk->spider($params);
                 $result = $response['data'];
 
                 if ($result) {
-                    SaveGoods::dispatch ($result, 'taobao', $type, $all);
+                    SaveGoods::dispatch($result, 'taobao', $type, $all);
                 }
-                $bar->advance ();
-                $this->info (" >>>已采集完第{$page}页");
+                $bar->advance();
+                $this->info(" >>>已采集完第{$page}页");
             }
         } catch (\Exception $e) {
-            $this->warn ($e->getMessage ());
+            $this->warn($e->getMessage());
         }
     }
 }
