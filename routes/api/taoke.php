@@ -34,15 +34,12 @@ Route::namespace('Taoke')
         ]);
 
         //搜索
-<<<<<<< HEAD
+
         Route::get('search','SearchController@index');
         Route::get('search/hot','SearchController@keywords');
 
-        //生成邀请海报
-        Route::get('inviter','QrcodeController@inviter');
 
-    });
-=======
+
         Route::get('search', 'SearchController@index');
         Route::get('search/hot', 'SearchController@keywords');
 
@@ -51,4 +48,4 @@ Route::namespace('Taoke')
         //邀请二维码
         Route::get('qrcode/invite', 'QrcodeController@invite');
     });
->>>>>>> 72b05efd33ce20b16a68b62a40bf64f96b2148f6
+
