@@ -4,7 +4,7 @@ namespace App\Tools\Qrcode;
 
 use MyCLabs\Enum\Enum;
 
-class TextEnum extends Enum
+class TextEnum
 {
     /**
      * @var string
