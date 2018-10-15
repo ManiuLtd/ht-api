@@ -46,4 +46,7 @@ Route::namespace('Taoke')
         Route::get('search','SearchController@index');
         Route::get('search/hot','SearchController@keywords');
 
+        //生成邀请海报
+        Route::get('inviter','QrcodeController@inviter');
+
     });
