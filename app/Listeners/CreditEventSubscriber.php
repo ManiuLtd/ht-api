@@ -53,7 +53,7 @@ class CreditEventSubscriber
     protected function updateCredit($event, bool $isIncrement): void
     {
         //如果积分数组不符合规范
-        if (! is_numeric($event->credit) || ! in_array($event->type, [1, 2, 3])) {
+        if (! is_numeric($event->credit) || ! in_array($event->type, [1, 2])) {
             throw  new InvalidArgumentException('修改基本所需要传入的参数格式错误');
         }
 
