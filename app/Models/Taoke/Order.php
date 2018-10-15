@@ -25,7 +25,6 @@ class Order extends Model implements Transformable
      */
     protected $guarded = [];
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

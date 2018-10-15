@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: niugengyun
  * Date: 2018/10/7
- * Time: 16:18
+ * Time: 16:18.
  */
 
 namespace App\Http\Controllers\Api\Taoke;
-
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CategoryValidator;
@@ -50,4 +49,5 @@ class CategoriesController extends Controller
         $categories = $this->repository->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $categories);
-    }}
+    }
+}

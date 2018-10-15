@@ -11,7 +11,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 class ArticleCategoryCriteria implements CriteriaInterface
 {
     /**
-     * 根据分类id筛选，
+     * 根据分类id筛选，.
      * @param $model
      * @param RepositoryInterface $repository
      * @return mixed
@@ -19,9 +19,9 @@ class ArticleCategoryCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $cateID = request('category_id');
-        
+
         if ($cateID) {
-            return $model->where('category_id',$cateID);
+            return $model->where('category_id', $cateID);
         }
 
         return $model;

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: niugengyun
  * Date: 2018/10/7
- * Time: 16:18
+ * Time: 16:18.
  */
 
 namespace App\Http\Controllers\Api\Taoke;
-
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\QuanValidator;
@@ -51,5 +50,4 @@ class QuansController extends Controller
 
         return json(1001, '获取成功', $quans);
     }
-
 }

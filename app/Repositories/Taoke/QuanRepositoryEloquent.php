@@ -9,8 +9,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\QuanRepository;
 
 /**
- * Class QuanRepositoryEloquent
- * @package App\Repositories\Taoke
+ * Class QuanRepositoryEloquent.
  */
 class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
 {
@@ -20,7 +19,7 @@ class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
     protected $fieldSearchable = [
         'type',
     ];
-    
+
     /**
      * Specify Model class name.
      *

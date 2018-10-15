@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class MemberOrder
- * @package App\Models\Taoke
+ * Class MemberOrder.
  */
 class MemberOrder extends Model implements Transformable
 {
@@ -25,7 +24,6 @@ class MemberOrder extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -16,7 +16,7 @@ class Banner extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = "banners";
+    protected $table = 'banners';
 
     /**
      * The attributes that are mass assignable.
@@ -36,5 +36,4 @@ class Banner extends Model implements Transformable
     protected $hidden = [
         'user_id',
     ];
-
 }

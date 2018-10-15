@@ -7,13 +7,11 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class OrderTypeCriteria.
- *
- * @package namespace App\Criteria;
  */
 class OrderTypeCriteria implements CriteriaInterface
 {
     /**
-     * Apply criteria in query repository
+     * Apply criteria in query repository.
      *
      * @param string              $model
      * @param RepositoryInterface $repository

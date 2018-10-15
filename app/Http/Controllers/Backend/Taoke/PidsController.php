@@ -66,7 +66,6 @@ class PidsController extends Controller
         }
     }
 
-
     /**
      * 编辑推广位.
      * @param PidUpdateRequest $request

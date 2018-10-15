@@ -1,31 +1,25 @@
 <?php
-/*
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/9/19
- * Time: 22:25
- */
+
 Route::namespace('Taoke')
     ->prefix('taoke')
     ->group(function () {
-        //订单
+        //订单列表
         Route::get('order', 'OrdersController@index');
+        //提交订单
         Route::post('order/submit', 'OrdersController@submit');
 
         //收藏
         Route::resource('favourite', 'FavouritesController');
 
-
         //订单报表
-        Route::get('orderchart','ChartsController@order');
-        //团队报表
-        Route::get('teamchart', 'ChartsController@team');
+        Route::get('chart/order', 'ChartsController@order');
+
         //提现报表
-        Route::get('withdraw', 'ChartsController@withdraw');
+        Route::get('chart/withdraw', 'ChartsController@withdraw');
 
         //浏览记录
-        Route::resource('history', 'HistoriesController',[
-            'only' => ['index','store','destory']
+        Route::resource('history', 'HistoriesController', [
+            'only' => ['index', 'store', 'destory'],
         ]);
 
         //分类
@@ -35,14 +29,12 @@ Route::namespace('Taoke')
         Route::get('quan', 'QuansController@index');
 
         //优惠卷
-        Route::resource('coupon', 'CouponsController',[
-            'only' => ['index','show']
+        Route::resource('coupon', 'CouponsController', [
+            'only' => ['index', 'show'],
         ]);
-        //优惠卷分享
-        Route::get('coupon-share','CouponsController@share');
-
 
         //搜索
+<<<<<<< HEAD
         Route::get('search','SearchController@index');
         Route::get('search/hot','SearchController@keywords');
 
@@ -50,3 +42,13 @@ Route::namespace('Taoke')
         Route::get('inviter','QrcodeController@inviter');
 
     });
+=======
+        Route::get('search', 'SearchController@index');
+        Route::get('search/hot', 'SearchController@keywords');
+
+        //详情分享二维码
+        Route::get('qrcode/share', 'QrcodeController@share');
+        //邀请二维码
+        Route::get('qrcode/invite', 'QrcodeController@invite');
+    });
+>>>>>>> 72b05efd33ce20b16a68b62a40bf64f96b2148f6

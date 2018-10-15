@@ -5,7 +5,6 @@ namespace App\Repositories\Image;
 use App\Models\Image\Banner;
 use App\Criteria\RequestCriteria;
 use App\Validators\Image\BannerValidator;
-use Illuminate\Http\Request;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Image\BannerRepository;
 

@@ -6,8 +6,7 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class MemberOrderValidator
- * @package App\Validators\Taoke
+ * Class MemberOrderValidator.
  */
 class MemberOrderValidator extends LaravelValidator
 {

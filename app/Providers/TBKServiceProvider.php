@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Api\Taoke\CouponsController;
-use App\Http\Controllers\Api\Taoke\SearchController;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
 use App\Console\Commands\Spider\JingDong;
 use App\Console\Commands\Spider\PinDuoDuo;
+use App\Http\Controllers\Api\Taoke\SearchController;
+use App\Http\Controllers\Api\Taoke\CouponsController;
 
 class TBKServiceProvider extends ServiceProvider
 {
@@ -42,7 +42,7 @@ class TBKServiceProvider extends ServiceProvider
             ->give(\App\Tools\Taoke\PinDuoDuo::class);
 
         //优惠券详情
-        switch (request ('type')){
+        switch (request('type')) {
             case '1':
                 $this->app->when(CouponsController::class)
                     ->needs(TBKInterface::class)
@@ -58,7 +58,7 @@ class TBKServiceProvider extends ServiceProvider
                     ->needs(TBKInterface::class)
                     ->give(\App\Tools\Taoke\PinDuoDuo::class);
                 break;
-            default :
+            default:
                 $this->app->when(CouponsController::class)
                     ->needs(TBKInterface::class)
                     ->give(\App\Tools\Taoke\Taobao::class);
@@ -66,7 +66,7 @@ class TBKServiceProvider extends ServiceProvider
         }
 
         //优惠券搜索
-        switch (request ('type')){
+        switch (request('type')) {
             case '1':
                 $this->app->when(SearchController::class)
                     ->needs(TBKInterface::class)
@@ -82,7 +82,7 @@ class TBKServiceProvider extends ServiceProvider
                     ->needs(TBKInterface::class)
                     ->give(\App\Tools\Taoke\PinDuoDuo::class);
                 break;
-            default :
+            default:
                 $this->app->when(SearchController::class)
                     ->needs(TBKInterface::class)
                     ->give(\App\Tools\Taoke\Taobao::class);
@@ -95,7 +95,6 @@ class TBKServiceProvider extends ServiceProvider
                 ->needs(TBKInterface::class)
                 ->give(\App\Tools\Taoke\Taobao::class);
         }
-
 
         //测试
 //        $this->app->when( ::class)
