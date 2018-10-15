@@ -9,5 +9,10 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface WithdrawRepository extends RepositoryInterface
 {
+    //
 
+    /**
+     * @return mixed
+     */
+    public function getWithdrawChart();
 }

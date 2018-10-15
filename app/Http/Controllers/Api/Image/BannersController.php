@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Api\Image;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Image\BannerRepository;
-use Illuminate\Http\Request;
 
 /**
  * 图片管理
- * Class BannersController
- * @package App\Http\Controllers\Api\Image
+ * Class BannersController.
  */
 class BannersController extends Controller
 {
-
     /**
      * @var BannerRepository
      */
@@ -34,10 +32,8 @@ class BannersController extends Controller
      */
     public function index(Request $request)
     {
+        $banners = $this->repository->paginate(request('limit', 10));
 
-        $banners = $this->repository->paginate (request ('limit', 10));
-
-        return json ('1001', '图片获取成功', $banners);
-
+        return json('1001', '图片获取成功', $banners);
     }
 }

@@ -12,7 +12,11 @@ interface OrderRepository extends RepositoryInterface
     /**
      * @return mixed
      */
-    public function getOrderCharts();
-    public function submitOrder();
+    public function getOrderChart();
 
+    /**
+     * 提交订单.
+     * @return mixed
+     */
+    public function submitOrder();
 }

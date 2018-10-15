@@ -13,7 +13,6 @@ use App\Repositories\Interfaces\Taoke\CategoryRepository;
  */
 class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
 {
-
     /**
      * @var array
      */
@@ -43,7 +42,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
 
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
     /**

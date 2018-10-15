@@ -3,8 +3,8 @@
 namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\Order;
-use App\Criteria\RequestCriteria;
 use App\Tools\Taoke\Commission;
+use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\OrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
@@ -14,7 +14,6 @@ use App\Repositories\Interfaces\Taoke\OrderRepository;
  */
 class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 {
-
     /**
      * @var array
      */
@@ -29,7 +28,6 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         'status',
         'created_at',
     ];
-
 
     /**
      * Specify Model class name.
@@ -56,7 +54,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function boot()
     {
-        $this->pushCriteria (app (RequestCriteria::class));
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
@@ -67,81 +65,75 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
-
     /**
-     * 订单数据报表
-     * @return array|mixed
+     * TODO 后端可显示近一周、一月订单和佣金状态
+     * 订单数据报表  可根据时间返回当前用户的佣金数或者订单数.
+     * @param bool $isCommission  计算佣金或者订单数
+     * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
-    public function getOrderCharts()
+    public function getOrderChart(bool $isCommission = true)
     {
-        $member = getMember ();
+        $member = getMember();
         $commission = new Commission();
-        $date_type = request ('date_type', 'month');
+        $dateType = request('date_type', 'month');
 
-        //自推佣金
-        $moneyData = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', true, $date_type);
+        //计算佣金
+        if ($isCommission) {
+            //自推佣金
+            $commission1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate1', $isCommission, $dateType);
+            //下级佣金
+            $commission2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate2', $isCommission, $dateType);
+            //组长佣金
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate1', $isCommission, $dateType);
+            //补贴佣金
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate2', $isCommission, $dateType);
 
-        //团队订佣金
-        //下级佣金
-        $subordinateData = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', true, $date_type);
-        //组长提成
-        $leader = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', true, $date_type);
-        $old_leader = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate2', true, $date_type);
-        $money = 0;
-
-        $amount = $moneyData + $subordinateData + $leader + $old_leader + $money;
-
-
-        // 是否是组长
-
-        $group = $member->group;
-        if ($member->id == $group->member_id ?? 0) {
-            $orderNum = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'group_rate1', false)->count ();
-        } else {
-            $selfOrderNum = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate1', false);
-            $subordinateOrder = $commission->getOrdersOrCommissionByDate ($member->id, [1], 'commission_rate2', false);
-
-            $orderNum = $selfOrderNum->count () + $subordinateOrder->count ();
+            return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
         }
-        return [
-            'Independence' => $moneyData,
-            'team' => [
-                'money' => $amount,
-                'orderNum' => $orderNum
-            ],
-        ];
+        //计算订单数
+        $group = $member->group;
+        //如果用户是组长 直接返回小组订单数
+        if ($member->id == $group->member_id ?? null) {
+            return  $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate1', false)->count();
+        } else {
+            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate1', false);
+            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate2', false);
+
+            return $commissionOrder1->count() + $commissionOrder2->count();
+        }
     }
 
     /**
-     * 提交订单
+     * 提交订单.
      * @return \Illuminate\Http\JsonResponse
      */
     public function submitOrder()
     {
-        $member = getMember ();
-        $ordernum = request ('ordernum');
-        if (is_numeric ($ordernum) && strlen ($ordernum) >= 16) {
-            $re = db ('tbk_member_orders')
-                ->where ('ordernum', $ordernum)
-                ->first ();
+        $member = getMember();
+        $ordernum = request('ordernum');
+        if (is_numeric($ordernum) && strlen($ordernum) >= 16) {
+            $re = db('tbk_member_orders')
+                ->where('ordernum', $ordernum)
+                ->first();
             if ($re) {
-                return json (4001, '订单号已提交');
+                return json(4001, '订单号已提交');
             }
-            $order = db ('tbk_orders')->where ([
-                'ordernum' => $ordernum
-            ])->first ();
+            $order = db('tbk_orders')->where([
+                'ordernum' => $ordernum,
+            ])->first();
             if ($order) {
-                db ('tbk_member_orders')->insert ([
+                db('tbk_member_orders')->insert([
                     'user_id' => $member->user_id,
                     'member_id' => $member->id,
                     'ordernum' => $ordernum,
-                    'created_at' => now ()->toDateTimeString (),
-                    'updated_at' => now ()->toDateTimeString (),
+                    'created_at' => now()->toDateTimeString(),
+                    'updated_at' => now()->toDateTimeString(),
                 ]);
-                return json (1001, '订单提交成功');
+
+                return json(1001, '订单提交成功');
             }
         }
-        return json (4001, '订单格式不对');
-    }
 
+        return json(4001, '订单格式不对');
+    }
 }

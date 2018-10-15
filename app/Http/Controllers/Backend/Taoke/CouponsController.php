@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CouponValidator;
 use App\Http\Requests\Taoke\CouponCreateRequest;
 use App\Http\Requests\Taoke\CouponUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
@@ -53,7 +54,7 @@ class CouponsController extends Controller
     public function store(CouponCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $coupon = $this->repository->create($request->all());
 
@@ -77,7 +78,6 @@ class CouponsController extends Controller
         return json(1001, '获取成功', $coupon);
     }
 
-
     /**
      * @param CouponUpdateRequest $request
      * @param $id
@@ -86,7 +86,7 @@ class CouponsController extends Controller
     public function update(CouponUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $category = $this->repository->update($request->all(), $id);
 

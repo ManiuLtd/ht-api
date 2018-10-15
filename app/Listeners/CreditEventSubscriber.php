@@ -53,40 +53,25 @@ class CreditEventSubscriber
     protected function updateCredit($event, bool $isIncrement): void
     {
         //如果积分数组不符合规范
-        if (! is_numeric($event->credit) || ! in_array($event->type, [1, 2])) {
+        if (! is_numeric($event->credit) || ! in_array($event->type, ['credit1', 'credit2', 'credit3'])) {
             throw  new InvalidArgumentException('修改基本所需要传入的参数格式错误');
         }
 
         //修改积分并添加操作日志
         DB::transaction(function () use ($event, $isIncrement) {
-            $column = $event->type == 1 ? 'credit1' : 'credit2';
             if (! $isIncrement) {
-                db('members')
-                    ->where('id', $event->member->id)
-                    ->decrement($column, $event->credit);
+                $event->member->decrement($event->column, $event->credit);
             } else {
-                db('members')
-                    ->where('id', $event->member->id)
-                    ->increment($column, $event->credit);
-                //判断增长的是积分还是余额
-                if($event->type == 1){
-                    $credit = $event->credit;
-                }else{
-                    $credit = $event->credit;
-                }
-                //成长值增加
-                db('members')
-                    ->where('id', $event->member->id)
-                    ->increment('credit3', $credit);
+                $event->member->increment($event->column, $event->credit);
             }
             //需要插入的日志
             $insert = [
                 'user_id' => $event->member->user_id,
                 'member_id' => $event->member->id,
-                'operater_id' => $event->operaterId ?? null,
+                'operater_id' => $event->extra->operaterId ?? null,
                 'credit' => $event->credit,
-                'type' => $event->type,
-                'remark' => $event->remark,
+                'column' => $event->column,
+                'remark' => $event->extra->remark,
                 'created_at' => now()->toDateTimeString(),
                 'updated_at' => now()->toDateTimeString(),
             ];

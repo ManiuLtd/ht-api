@@ -26,7 +26,7 @@ class CreateCmsCategoriesTable extends Migration
             $table->integer('sort')->nullable();
             $table->tinyInteger('type')->nullable();
             $table->nullableTimestamps();
-            $table->softDeletes ();
+            $table->softDeletes();
         });
     }
 

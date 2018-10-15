@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-
 use App\Tools\Taoke\TBKInterface;
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CouponValidator;
-
-;
-
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
 /**
@@ -38,32 +33,32 @@ class CouponsController extends Controller
     }
 
     /**
-     * 优惠卷列表
+     * 优惠卷列表.
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $coupons = $this->repository->paginate (request ('limit', '10'));
+        $coupons = $this->repository->paginate(request('limit', '10'));
 
-        return json ('1001', '优惠卷列表', $coupons);
+        return json('1001', '优惠卷列表', $coupons);
     }
 
     /**
-     * 详情
+     * 详情.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         try {
-            $detail = $this->tbk->getDetail (['id' => $id]);
+            $detail = $this->tbk->getDetail(['id' => $id]);
             if ($detail['code'] == 4004) {
-                return json (4001, $detail['message']);
+                return json(4001, $detail['message']);
             }
-            return json (1001, '获取成功', $detail['data']);
-        } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
-        }
 
+            return json(1001, '获取成功', $detail['data']);
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
     }
 }

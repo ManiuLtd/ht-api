@@ -44,13 +44,12 @@ $factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
         'user_id' => 1,
         'member_id' => rand(1, 50),
         'credit' => rand(100, 1000),
-        'type' => $faker->randomKey([1, 2]),
+        'column' => 'credit1',
         'remark' => $faker->name,
         'created_at' => now(),
         'updated_at' => now(),
     ];
 });
-
 
 $factory->define(App\Models\Member\History::class, function (Faker $faker) {
     return [
@@ -157,8 +156,8 @@ $factory->define(App\Models\Member\Level::class, function (Faker $faker) {
         'price' => rand(10, 99),
         'duration' => rand(10, 999),
         'description' => $faker->title,
-        'default' => rand(0,1),
-        'status' => rand(0,1),
+        'default' => rand(0, 1),
+        'status' => rand(0, 1),
     ];
 });
 

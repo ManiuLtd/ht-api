@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Coupon
- * @package App\Models\Taoke
+ * Class Coupon.
  */
 class Coupon extends Model implements Transformable
 {
@@ -18,7 +17,6 @@ class Coupon extends Model implements Transformable
      * @var string
      */
     protected $table = 'tbk_coupons';
-
 
     /**
      * The attributes that are mass assignable.
@@ -47,7 +45,6 @@ class Coupon extends Model implements Transformable
         'type',
         'status',
         'start_time',
-        'end_time'
+        'end_time',
     ];
-
 }

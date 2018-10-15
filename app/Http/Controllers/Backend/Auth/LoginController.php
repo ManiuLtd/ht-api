@@ -20,17 +20,18 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only (['email', 'password']);
+        $credentials = $request->only(['email', 'password']);
         try {
-            $token = Auth::guard ()->attempt ($credentials);
+            $token = Auth::guard()->attempt($credentials);
 
-            if (!$token) {
-                return json (4001, '用户登录失败');
+            if (! $token) {
+                return json(4001, '用户登录失败');
             }
         } catch (JWTException $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
-        return $this->respondWithToken ($token);
+
+        return $this->respondWithToken($token);
     }
 
     /**
@@ -43,9 +44,9 @@ class LoginController extends Controller
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth ()->factory ()->getTTL () * 60,
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ];
 
-        return json (1001, '登录成功', $data);
+        return json(1001, '登录成功', $data);
     }
 }

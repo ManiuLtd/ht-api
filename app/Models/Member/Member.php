@@ -2,12 +2,12 @@
 
 namespace App\Models\Member;
 
-use App\Listeners\CreditEventSubscriber;
+use Hashids\Hashids;
+use App\Events\CreditIncrement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-use Hashids\Hashids;
 
 /**
  * Class Member.
@@ -88,16 +88,14 @@ class Member extends Model implements Transformable
         return $this->belongsTo('App\Models\Member\Level')->withDefault(null);
     }
 
-
     /**
-     * 组
+     * 组.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function group()
     {
         return $this->belongsTo(Group::class, 'group_id')->withDefault(null);
     }
-
 
     /**
      * 用户收货地址
@@ -137,11 +135,10 @@ class Member extends Model implements Transformable
         $array['hashid'] = $hashids->encode($array['id']);
 
         return $array;
-
     }
 
     /**
-     * 增加字段数量
+     * 增加字段数量.
      * @param string $column
      * @param int $amount
      * @param array $extra
@@ -149,19 +146,11 @@ class Member extends Model implements Transformable
      */
     protected function increment($column, $amount = 1, array $extra = [])
     {
-        //调用事件  $extra['remark'] 事件备注  $extra['type'] 字段类型 $extra['operater_id'] 后端操作人ID user_id
-        if(in_array($column,['credit1','credit2'])){
-            $data['member'] = getMember();
-            $data['type'] = $extra['type'];
-            $data['credit'] = $amount;
-            $data['remark'] = $extra['remark'];
-            $data['operaterId'] = $extra['operater_id'];
-            event(new CreditEventSubscriber($data,true));
-            $level = $this->level->level;
-            //credit3增加的时候 ，验证升级条件  1.验证经验值 2.验证升级条件：绑定手机号
-            promotion($this->id,$this->credit3,$level);
-            return json(1001,'积分或金额添加成功');
+        if (in_array($column, ['credit1', 'credit2'])) {
+            event(new CreditIncrement($this, $column, $amount, $extra));
         }
+
+        return $this->incrementOrDecrement($column, $amount, $extra, 'increment');
     }
 
     /**
@@ -173,15 +162,10 @@ class Member extends Model implements Transformable
      */
     protected function decrement($column, $amount = 1, array $extra = [])
     {
-        // 调用事件  $extra['remark'] 事件备注  $extra['type'] 字段类型 $extra['operater_id'] 后端操作人ID user_id
-        if(in_array($column,['credit1','credit2'])){
-            $data['member'] = getMember();
-            $data['type'] = $extra['type'];
-            $data['credit'] = $amount;
-            $data['remark'] = $extra['remark'];
-            $data['operaterId'] = $extra['operater_id'];
-            event(new CreditEventSubscriber($data,false));
-            return json(1001,'false');
+        if (in_array($column, ['credit1', 'credit2'])) {
+            event(new CreditIncrement($this, $column, $amount, $extra));
         }
+
+        return $this->incrementOrDecrement($column, $amount, $extra, 'decrement');
     }
 }
