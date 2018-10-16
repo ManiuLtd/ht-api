@@ -227,7 +227,51 @@ class PinDuoDuo implements TBKInterface
      */
     public function getOrders(array $array = [])
     {
-        // TODO: Implement getOrders() method.
+        //  Implement getOrders() method.
+        $time = time();
+        $start_update_time = now()->subDays(30)->timestamp;
+        $page = data_get($array,'page',1);
+        $params = [
+            'client_id' => $this->client_id,
+            'start_update_time' => $start_update_time,
+            'end_update_time' => $time,
+            'timestamp' => $time,
+            'page' => $page,
+            'page_size' => '50',
+            'type' => 'pdd.ddk.order.list.increment.get',
+        ];
+
+        $str = 'client_id'.$this->client_id.'end_update_time'.$time.'page'.$page.'page_size50'.'start_update_time'.$start_update_time.'timestamp'.$time.'typepdd.ddk.order.list.increment.get';
+
+
+        $sign = strtoupper(md5($this->client_secret.$str.$this->client_secret));
+
+        $params['sign'] = $sign;
+        $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
+            ->withData($params)
+            ->post();
+        $data = json_decode($result);
+        if (isset($data->error_response)) {
+
+            return [
+                'code' => 5001,
+                'message' => $data->error_response,
+            ];
+        }
+
+        if (isset($data->order_list_get_response)) {
+
+            return [
+                'code' => 1001,
+                'message' => '获取成功',
+                'data' => $data->order_list_get_response,
+            ];
+        }
+        return [
+            'code' => 5001,
+            'message' => '未知错误',
+        ];
+
     }
 
     /**
@@ -304,6 +348,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
+     * @param array $array
      * @return array|mixed
      */
     public function hotSearch(array $array = [])

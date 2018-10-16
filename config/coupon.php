@@ -8,6 +8,11 @@ return [
         'QTK_API_URL' => env('QTK_API_URL', 'http://openapi.qingtaoke.com'), //轻淘客接口地址
         'TKJD_API_KEY' => env('TKJD_API_KEY', 'a702d09d248becb575dc798b6e432d88'), //淘客基地
         'TKJD_API_URL' => env('TKJD_API_URL', 'http://api.tkjidi.com'), //淘客基地接口地址
+
+        'HMTK_APP_KEY' => env('HMTK_APP_KEY', '193298714'), //黑马淘客AppKey
+        'HMTK_APP_SECRET' => env('HMTK_APP_SECRET', '33591f90704bcfc868871794c80ac185'), //黑马淘客appsecret
+
+
     ],
 
     'jingdong' => [

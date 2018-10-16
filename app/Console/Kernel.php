@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
         //淘宝  半小时执行
         $schedule->command('spider:tb ')->everyThirtyMinutes();
         //每5分钟更新
@@ -37,6 +38,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:jd')->everyThirtyMinutes();
 
         $schedule->command('spider:pdd')->everyThirtyMinutes();
+
+
+
+
     }
 
     /**

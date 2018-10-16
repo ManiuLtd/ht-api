@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\Spider\JingDongOrder;
+use App\Console\Commands\Spider\PinDuoDuoOrder;
+use App\Console\Commands\Spider\TaoBaoOrder;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
@@ -95,6 +98,16 @@ class TBKServiceProvider extends ServiceProvider
                 ->needs(TBKInterface::class)
                 ->give(\App\Tools\Taoke\Taobao::class);
         }
+        //订单
+        $this->app->when(TaoBaoOrder::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+        $this->app->when(JingDongOrder::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\JingDong::class);
+        $this->app->when(PinDuoDuoOrder::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\PinDuoDuo::class);
 
         //测试
 //        $this->app->when( ::class)
