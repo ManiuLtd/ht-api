@@ -32,7 +32,10 @@ class JingDong implements TBKInterface
      * @var
      */
     protected $jdm_app_secret;
-
+    /**
+     * @var mixed
+     */
+    protected $jdmedia_appkey;
     /**
      * JingDong constructor.
      */
@@ -44,6 +47,7 @@ class JingDong implements TBKInterface
         $this->access_token = data_get(config('coupon'), 'jingdong.access_token');
         $this->jdm_app_key = data_get(config('coupon'), 'jingdong.JDM_APP_KEY');
         $this->jdm_app_secret = data_get(config('coupon'), 'jingdong.JDM_APP_SECRET');
+        $this->jdmedia_appkey = data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY');
     }
 
     /**
@@ -235,7 +239,36 @@ class JingDong implements TBKInterface
      */
     public function getOrders(array $array = [])
     {
-        // TODO: Implement getOrders() method.
+        // Implement getOrders() method.
+        //  Implement search() method.
+        $page = data_get($array, 'page', 1);
+        $time = now()->toDateTimeString();
+        $params = [
+            'method' => 'jingdong.UnionService.queryOrderListWithKey',
+            'access_token' => $this->access_token,
+            'app_key' => $this->jdm_app_key,
+            'timestamp' => $time,
+            'v' => '2.0',
+        ];
+        $urlparams = [
+            'unionId' => 29047,
+            'key' => $this->jdmedia_appkey,
+            'time' => date('YmdH',time()),
+            'pageIndex' => $page,
+            'pageSize' => 500,
+        ];
+
+        $signparams = array_merge($params, $urlparams);
+        ksort($signparams);
+        $sign = http_build_query($signparams);
+        $sign = strtoupper(md5($this->jdm_app_secret.$sign.$this->jdm_app_secret));
+        $params['sign'] = $sign;
+        $params['360buy_param_json'] = json_encode($urlparams);
+        $response = Curl::to('https://api.jd.com/routerjson')
+            ->withData($params)
+            ->get();
+        $response = json_decode($response);
+        //TODO 数据测试
     }
 
     /**
@@ -297,6 +330,7 @@ class JingDong implements TBKInterface
     }
 
     /**
+     * @param array $array
      * @return array|mixed
      */
     public function hotSearch(array $array = [])
