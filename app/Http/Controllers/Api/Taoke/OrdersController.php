@@ -35,7 +35,7 @@ class OrdersController extends Controller
     }
 
     /**
-     * TODO 完成查询条件OrderTypeCriteria，可查看团队订单和订单：https://dev.tencent.com/u/cnsecer/p/tbkapp/git/blob/master/app/Repositories/OrderRepository.php
+     * 完成查询条件OrderTypeCriteria，可查看团队订单和订单：https://dev.tencent.com/u/cnsecer/p/tbkapp/git/blob/master/app/Repositories/OrderRepository.php
      * 订单列表.
      * @return \Illuminate\Http\JsonResponse
      */
