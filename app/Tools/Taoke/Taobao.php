@@ -62,7 +62,7 @@ class Taobao implements TBKInterface
      * 获取优惠券地址
      * @return mixed|void
      */
-    public function getCouponUrl()
+    public function getCouponUrl(array $array = [])
     {
         // TODO: Implement getCouponUrl() method.
     }
@@ -71,7 +71,7 @@ class Taobao implements TBKInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getDetail()
+    public function getDetail(array $array = [])
     {
         $itemID = request('item_id');
         if (! is_numeric($itemID)) {
@@ -95,7 +95,7 @@ class Taobao implements TBKInterface
      * @return array|\Illuminate\Http\JsonResponse|mixed
      * @throws \Exception
      */
-    public function search()
+    public function search(array $array = [])
     {
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
@@ -276,7 +276,7 @@ class Taobao implements TBKInterface
      * @return array|mixed
      * @throws \Exception
      */
-    public function hotSearch()
+    public function hotSearch(array $array = [])
     {
         $params = [
             'app_key' => $this->QTK_API_KEY,

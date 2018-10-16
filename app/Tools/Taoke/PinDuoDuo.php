@@ -31,7 +31,7 @@ class PinDuoDuo implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function getCouponUrl(array $array)
+    public function getCouponUrl(array $array = [])
     {
         // TODO: Implement getCouponUrl() method.
     }
@@ -41,7 +41,7 @@ class PinDuoDuo implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function getDetail(array $array)
+    public function getDetail(array $array = [])
     {
         //  Implement getDetail() method.
 
@@ -89,7 +89,7 @@ class PinDuoDuo implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function search(array $array)
+    public function search(array $array = [])
     {
         //  Implement search() method.
         $page = data_get($array, 'page', 1);
@@ -306,7 +306,7 @@ class PinDuoDuo implements TBKInterface
     /**
      * @return array|mixed
      */
-    public function hotSearch()
+    public function hotSearch(array $array = [])
     {
         return [];
     }

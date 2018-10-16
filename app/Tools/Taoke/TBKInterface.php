@@ -8,31 +8,31 @@ interface TBKInterface
      * 领券地址
      * @return mixed
      */
-    public function getCouponUrl();
+    public function getCouponUrl(array $array = []);
 
     /**
      * 优惠券详情.
      * @return mixed
      */
-    public function getDetail();
+    public function getDetail(array $array = []);
 
     /**
      * 搜索.
      * @return mixed
      */
-    public function search();
+    public function search(array $array = []);
 
     /**
      * 获取订单.
      * @return mixed
      */
-    public function getOrders();
+    public function getOrders(array $array = []);
 
     /**
      * 自动绑定订单.
      * @return mixed
      */
-    public function autoBindOrder();
+    public function autoBindOrder(array $array = []);
 
     /**
      * 爬虫
@@ -45,5 +45,5 @@ interface TBKInterface
      * 获取热搜词.
      * @return mixed
      */
-    public function hotSearch();
+    public function hotSearch(array $array = []);
 }
