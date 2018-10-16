@@ -26,7 +26,7 @@ Route::namespace('Member')
 
         //会员等级
         Route::resource('member/level', 'LevelsController', [
-        'except' => ['create', 'edit', 'show'],
+        'except' => ['create', 'edit'],
     ]);
 
         //提现记录
