@@ -46,6 +46,7 @@ $factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
         'credit' => rand(100, 1000),
         'column' => 'credit1',
         'remark' => $faker->name,
+        'type' => rand(11, 23),
         'created_at' => now(),
         'updated_at' => now(),
     ];
