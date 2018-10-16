@@ -25,9 +25,7 @@ Route::namespace('Member')
     ]);
 
         //会员等级
-        Route::resource('member/level', 'LevelsController', [
-        'except' => ['create', 'edit'],
-    ]);
+        Route::resource('member/level', 'LevelsController');
 
         //提现记录
         Route::resource('member/withdraw', 'WithdrawsController', [
