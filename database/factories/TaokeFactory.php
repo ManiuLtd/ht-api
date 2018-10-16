@@ -17,7 +17,9 @@ $factory->define(App\Models\Taoke\Pid::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'member_id' => rand(1, 50),
-        'pid' => $faker->uuid,
+        'taobao' => $faker->uuid,
+        'jingdong' => $faker->uuid,
+        'pinduoduo' => $faker->uuid,
         'type' => array_rand([1, 2]),
     ];
 });
@@ -100,6 +102,9 @@ $factory->define(App\Models\Taoke\Category::class, function (Faker $faker) {
         'user_id' => 1,
         'name' => $faker->title,
         'logo' => $faker->imageUrl(100, 100),
+        'dataoke' => $faker->uuid,
+        'jingtuitui' => $faker->uuid,
+        'pinduoduo' => $faker->uuid,
         'sort' => rand(1, 20),
         'type' => array_rand([1, 2, 3]),
         'status' => rand(1, 2),

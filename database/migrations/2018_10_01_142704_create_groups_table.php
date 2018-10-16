@@ -30,6 +30,7 @@ class CreateGroupsTable extends Migration
             $table->text('description')->nullable(); //小组描述
             $table->tinyInteger('status')->nullable()->default(1); //小组状态 1正常 0禁用
             $table->tinyInteger('default')->nullable()->default(0);  //是否为默认小组
+            $table->tinyInteger('type')->nullable()->default(1);  //1不可以自定义pid2可以
             $table->nullableTimestamps();
             $table->softDeletes();
 

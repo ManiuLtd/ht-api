@@ -25,7 +25,6 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
         'ali_openid2' => $faker->uuid,
         'nickname' => $faker->name,
         'phone' => $faker->phoneNumber,
-        'isagent' => $faker->randomKey([0, 1]),
         'credit1' => $faker->randomFloat(2, 0, 9999),
         'credit2' => $faker->randomFloat(2, 0, 9999),
         'credit3' => $faker->randomFloat(2, 0, 9999),
@@ -46,6 +45,7 @@ $factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
         'credit' => rand(100, 1000),
         'column' => 'credit1',
         'remark' => $faker->name,
+        'type'   => array_rand([11,12,13,14,15,21,22,23]),
         'created_at' => now(),
         'updated_at' => now(),
     ];
@@ -174,6 +174,7 @@ $factory->define(App\Models\Member\Group::class, function (Faker $faker) {
         'description' => $faker->title,
         'status' => rand(0, 1),
         'default' => rand(0, 1),
+        'type' => rand(1, 2),
         'created_at' => now(),
         'updated_at' => now(),
     ];
