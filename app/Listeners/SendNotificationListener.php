@@ -46,10 +46,10 @@ class SendNotificationListener
         if (! $isAllAudience) {
             $tag = Hashids::encode($messages['member_id']);
             $push->addTag($tag);
-            $insert['type'] = 2;
+            $insert['type'] = 1;
         } else {
             $push->addAllAudience();
-            $insert['type'] = 1;
+            $insert['type'] = 2;
         }
         //推送消息
         $push->setMessage($messages['message'], $messages['title']);
