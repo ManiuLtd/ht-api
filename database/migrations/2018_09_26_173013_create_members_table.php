@@ -33,7 +33,6 @@ class CreateMembersTable extends Migration
             $table->string('phone', 100)->nullable();
             $table->string('password', 191)->nullable();
             $table->string('headimgurl', 191)->nullable();
-            $table->tinyInteger('isagent')->nullable()->default(0);
             $table->decimal('credit1', 8, 2)->nullable()->default(0.00);
             $table->decimal('credit2', 8, 2)->nullable()->default(0.00);
             $table->decimal('credit3', 8, 2)->nullable()->default(0.00);

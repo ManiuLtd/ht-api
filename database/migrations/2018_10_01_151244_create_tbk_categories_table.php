@@ -22,6 +22,9 @@ class CreateTbkCategoriesTable extends Migration
             $table->integer('user_id')->nullable();
             $table->string('name', 191)->nullable();
             $table->string('logo', 191)->nullable();
+            $table->string('dataoke', 100)->nullable();
+            $table->string('jingtuitui', 100)->nullable();
+            $table->string('pinduoduo', 100)->nullable();
             $table->integer('sort')->nullable()->default(100);
             $table->tinyInteger('type')->nullable(); // 1淘宝 2京东 3拼多多
             $table->tinyInteger('status')->nullable()->default(1);
