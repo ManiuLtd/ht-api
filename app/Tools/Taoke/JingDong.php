@@ -51,7 +51,8 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function getCouponUrl(array $array = [])
+
+    public function getCouponUrl(array $array =[])
     {
         // TODO: Implement getCouponUrl() method.
     }
@@ -61,7 +62,8 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return array|mixed
      */
-    public function getDetail(array $array = [])
+
+    public function getDetail(array $array =[])
     {
         // Implement getDetail() method.
         $id = data_get($array, 'id');
@@ -251,7 +253,7 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function submitOrder(array $array)
+    public function submitOrder(array $array =[])
     {
         // TODO: Implement submitOrder() method.
     }
@@ -291,7 +293,6 @@ class JingDong implements TBKInterface
                 'totalPage' => $response->result->total_page,
                 'data' => $response->result->data,
             ],
-
         ];
     }
 

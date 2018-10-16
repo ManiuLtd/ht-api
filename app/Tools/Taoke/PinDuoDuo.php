@@ -245,7 +245,7 @@ class PinDuoDuo implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function submitOrder(array $array)
+    public function submitOrder(array $array = [])
     {
         // TODO: Implement submitOrder() method.
     }

@@ -82,6 +82,10 @@ class Qrcode
 //                if ($imageEnum instanceof ImageEnum) {
 //                    throw new \InvalidArgumentException('数组元素必须为App\Tools\Qrcode\ImageEnum实例');
 //                }
+<<<<<<< HEAD
+
+=======
+>>>>>>> e4d559e9c3f37a4d25308666c717d5e10c37e7cb
                 $insertImage = Image::make($imageEnum->image)->resize($imageEnum->width, $imageEnum->height);
                 $this->image->insert($insertImage, $imageEnum->position, $imageEnum->x, $imageEnum->y);
             }
