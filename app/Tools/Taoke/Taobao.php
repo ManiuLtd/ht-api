@@ -333,7 +333,6 @@ class Taobao implements TBKInterface
             if (! isset($arr['id'])) {
                 return false;
             }
-
             return $arr['id'];
         }
 

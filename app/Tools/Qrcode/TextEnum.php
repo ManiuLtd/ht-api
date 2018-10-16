@@ -2,8 +2,6 @@
 
 namespace App\Tools\Qrcode;
 
-use MyCLabs\Enum\Enum;
-
 class TextEnum
 {
     /**
