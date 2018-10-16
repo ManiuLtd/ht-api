@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/10/7
- * Time: 16:18.
- */
-
 namespace App\Http\Controllers\Api\Member;
 
 use App\Http\Controllers\Controller;

@@ -75,14 +75,17 @@ class Qrcode
     public function make()
     {
         $this->image->resize($this->width, $this->height);
-
+//        dd($this->imageEnumArray);
         //生成图片
         if (count($this->imageEnumArray) > 0) {
             foreach ($this->imageEnumArray as $imageEnum) {
 //                if ($imageEnum instanceof ImageEnum) {
 //                    throw new \InvalidArgumentException('数组元素必须为App\Tools\Qrcode\ImageEnum实例');
 //                }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e4d559e9c3f37a4d25308666c717d5e10c37e7cb
                 $insertImage = Image::make($imageEnum->image)->resize($imageEnum->width, $imageEnum->height);
                 $this->image->insert($insertImage, $imageEnum->position, $imageEnum->x, $imageEnum->y);
             }
