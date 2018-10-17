@@ -53,6 +53,10 @@ class Taobao implements TBKInterface
      */
     protected $HMTK_APP_SECRET;
     /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
+    protected $HDK_APIKEY;
+    /**
      * Taobao constructor.
      */
     public function __construct()
@@ -65,6 +69,7 @@ class Taobao implements TBKInterface
         $this->TKJD_API_URL = config('coupon.taobao.TKJD_API_URL');
         $this->HMTK_APP_KEY = config('coupon.taobao.HMTK_APP_KEY');
         $this->HMTK_APP_SECRET = config('coupon.taobao.HMTK_APP_SECRET');
+        $this->HDK_APIKEY = config('coupon.taobao.HDK_APIKEY');
     }
 
     /**
@@ -260,59 +265,59 @@ class Taobao implements TBKInterface
      * @return array|mixed
      * @throws \Exception
      */
-    public function spider(array $params = [])
-    {
-        $type = $params['type'] ?? 'total';
-        $all = $params['all'] ?? true;
-        $page = $params['page'] ?? 1;
-
-        $params = [
-            'r' => 'Port/index',
-            'appkey' => $this->DTK_API_KEY,
-            'v' => '2',
-            'page' => $page,
-        ];
-        //爬虫类型
-        switch ($type) {
-            case 'total':
-                $params['type'] = 'total';
-                break;
-            case 'paoliang':
-                $params['type'] = 'paoliang';
-                break;
-            case 'top100':
-                $params['type'] = 'top100';
-                break;
-            default:
-                $params['type'] = 'total';
-                break;
-        }
-        $response = Curl::to($this->DTK_API_URL)
-            ->withData($params)
-            ->get();
-        $response = json_decode($response);
-
-        //验证
-        if (! isset($response->data)) {
-            throw new \Exception('大淘客接口内容获取失败');
-        }
-        $total = $response->data->total_num ?? 0;
-        if ($total <= 0) {
-            throw new \Exception('打通可爬虫没有获取到产品');
-        }
-        $totalPage = (int) ceil($total / 50);
-
-        //不爬取所有的
-        if (! $all) {
-            $totalPage = 3;
-        }
-
-        return [
-            'data' => $response->result,
-            'totalPage' => $totalPage,
-            'total' => $total,
-        ];
-    }
+//    public function spider(array $params = [])
+//    {
+//        $type = $params['type'] ?? 'total';
+//        $all = $params['all'] ?? true;
+//        $page = $params['page'] ?? 1;
+//
+//        $params = [
+//            'r' => 'Port/index',
+//            'appkey' => $this->DTK_API_KEY,
+//            'v' => '2',
+//            'page' => $page,
+//        ];
+//        //爬虫类型
+//        switch ($type) {
+//            case 'total':
+//                $params['type'] = 'total';
+//                break;
+//            case 'paoliang':
+//                $params['type'] = 'paoliang';
+//                break;
+//            case 'top100':
+//                $params['type'] = 'top100';
+//                break;
+//            default:
+//                $params['type'] = 'total';
+//                break;
+//        }
+//        $response = Curl::to($this->DTK_API_URL)
+//            ->withData($params)
+//            ->get();
+//        $response = json_decode($response);
+//
+//        //验证
+//        if (! isset($response->data)) {
+//            throw new \Exception('大淘客接口内容获取失败');
+//        }
+//        $total = $response->data->total_num ?? 0;
+//        if ($total <= 0) {
+//            throw new \Exception('打通可爬虫没有获取到产品');
+//        }
+//        $totalPage = (int) ceil($total / 50);
+//
+//        //不爬取所有的
+//        if (! $all) {
+//            $totalPage = 3;
+//        }
+//
+//        return [
+//            'data' => $response->result,
+//            'totalPage' => $totalPage,
+//            'total' => $total,
+//        ];
+//    }
 
     /**
      * @param array $array
@@ -381,4 +386,72 @@ class Taobao implements TBKInterface
 
         return false;
     }
+
+
+    public function spider(array $array = [])
+    {
+        $type = $params['type'] ?? 3;
+        $all = $params['all'] ?? true;
+        $page = $params['page'] ?? 1;
+        if (!in_array($type,[1,2,3,4,5])) {
+            return [
+                'code' => 4001,
+                'message' => 'type不合法',
+            ];
+        }
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'nav' => $type,
+            'cid' => 0,
+            'back' => 100,
+            'min_id' => 9999999,
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/itemlist')
+            ->withData($params)
+            ->get();
+        $resp = json_decode($resp);
+
+    }
+
+
+    /**
+     *  好货专场
+     * @param array $array
+     * @return mixed
+     */
+    public function HaohuoZC(array $array = [])
+    {
+        return 1;
+    }
+
+    /**
+     * 精选单品
+     * @param array $array
+     * @return mixed
+     */
+    public function JingxuanDP(array $array = [])
+    {
+        return 2;
+    }
+
+    /**
+     * 精选专题
+     * @param array $array
+     * @return mixed
+     */
+    public function JingxuanZT(array $array = [])
+    {
+        return 3;
+    }
+
+    /**
+     * 快抢商品
+     * @param array $array
+     * @return mixed
+     */
+    public function KuaiqiangShop(array $array = [])
+    {
+        return 4;
+    }
+
 }

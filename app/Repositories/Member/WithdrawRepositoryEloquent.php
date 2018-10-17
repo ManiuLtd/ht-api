@@ -15,20 +15,6 @@ use App\Repositories\Interfaces\Member\WithdrawRepository;
 class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepository
 {
     /**
-     * @var Commission
-     */
-    protected $commission;
-
-    /**
-     * WithdrawRepositoryEloquent constructor.
-     * @param Commission $commission
-     */
-    public function __construct(Commission $commission)
-    {
-        $this->commission = $commission;
-    }
-
-    /**
      * @var array
      */
     protected $fieldSearchable = [

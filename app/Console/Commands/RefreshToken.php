@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Ixudra\Curl\Facades\Curl;
 
-class RefreashToken extends Command
+class RefreshToken extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'refreash-token';
+    protected $signature = 'refresh-token';
 
     /**
      * The console command description.

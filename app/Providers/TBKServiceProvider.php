@@ -2,9 +2,14 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\Spider\HaohuoZC;
 use App\Console\Commands\Spider\JingDongOrder;
+use App\Console\Commands\Spider\JingxuanDP;
+use App\Console\Commands\Spider\JingxuanZT;
+use App\Console\Commands\Spider\KuaiqiangShop;
 use App\Console\Commands\Spider\PinDuoDuoOrder;
 use App\Console\Commands\Spider\TaoBaoOrder;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
@@ -109,9 +114,27 @@ class TBKServiceProvider extends ServiceProvider
             ->needs(TBKInterface::class)
             ->give(\App\Tools\Taoke\PinDuoDuo::class);
 
+        //好货专场 spider
+        $this->app->when(HaohuoZC::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+        //精选单品 spider
+        $this->app->when(JingxuanDP::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+        //精选专题 spider
+        $this->app->when(JingxuanZT::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+        //快抢商品 spider
+        $this->app->when(KuaiqiangShop::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+
+
         //测试
-//        $this->app->when( ::class)
+//        $this->app->when(HomeController::class)
 //            ->needs(TBKInterface::class)
-//            ->give(\App\Tools\Taoke\PinDuoDuo::class);
+//            ->give(\App\Tools\Taoke\Taobao::class);
     }
 }

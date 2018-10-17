@@ -256,6 +256,7 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
+     * 好单库 1女装，2男装，3内衣，4美妆，5配饰，6鞋品，7箱包，8儿童，9母婴，10居家，11美食，12数码，13家电，14其他，15车品，16文体
      * 设置大淘客分类ID.
      * @param $cat
      * @return int
