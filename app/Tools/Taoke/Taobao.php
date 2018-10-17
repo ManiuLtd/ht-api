@@ -44,22 +44,32 @@ class Taobao implements TBKInterface
      * @var \Illuminate\Config\Repository|mixed
      */
     protected $TKJD_API_URL;
-
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
+    protected $HMTK_APP_KEY;
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
+    protected $HMTK_APP_SECRET;
     /**
      * Taobao constructor.
      */
     public function __construct()
     {
-        $this->DTK_API_KEY = config('taobao.DTK_API_KEY');
-        $this->DTK_API_URL = config('taobao.DTK_API_URL');
-        $this->QTK_API_KEY = config('taobao.QTK_API_KEY');
-        $this->QTK_API_URL = config('taobao.QTK_API_URL');
-        $this->TKJD_API_KEY = config('taobao.TKJD_API_KEY');
-        $this->TKJD_API_URL = config('taobao.TKJD_API_URL');
+        $this->DTK_API_KEY = config('coupon.taobao.DTK_API_KEY');
+        $this->DTK_API_URL = config('coupon.taobao.DTK_API_URL');
+        $this->QTK_API_KEY = config('coupon.taobao.QTK_API_KEY');
+        $this->QTK_API_URL = config('coupon.taobao.QTK_API_URL');
+        $this->TKJD_API_KEY = config('coupon.taobao.TKJD_API_KEY');
+        $this->TKJD_API_URL = config('coupon.taobao.TKJD_API_URL');
+        $this->HMTK_APP_KEY = config('coupon.taobao.HMTK_APP_KEY');
+        $this->HMTK_APP_SECRET = config('coupon.taobao.HMTK_APP_SECRET');
     }
 
     /**
      * 获取优惠券地址
+     * @param array $array
      * @return mixed|void
      */
     public function getCouponUrl(array $array = [])
@@ -68,6 +78,8 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * 获取详情.
+     * @param array $array
      * @return mixed
      * @throws \Exception
      */
@@ -92,7 +104,8 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * @return array|\Illuminate\Http\JsonResponse|mixed
+     * @param array $array
+     * @return array|mixed
      * @throws \Exception
      */
     public function search(array $array = [])
@@ -199,7 +212,36 @@ class Taobao implements TBKInterface
      */
     public function getOrders(array $array = [])
     {
-        // TODO: Implement getOrders() method.
+        //  Implement getOrders() method.
+        $params = [
+            'appkey' => $this->HMTK_APP_KEY,
+            'appsecret' => $this->HMTK_APP_SECRET,
+            'sid' => '1942',
+            'start_time' => now()->subMinutes(9)->toDateTimeString(),
+            'span' => 600,
+            'signurl' => 0,
+            'page_no' => data_get($array,'page',1),
+            'page_size' => 100,
+        ];
+
+        $resp = Curl::to('https://www.heimataoke.com/api-qdOrder')
+            ->withData($params)
+            ->get();
+        $resp = json_decode($resp);
+
+        if (!isset($resp->n_tbk_order)) {
+            return [
+                'code' => 5001,
+                'message' => '没有数据',
+            ];
+        }
+
+        return [
+            'code' => 1001,
+            'message' => '获取成功',
+            'data' => $resp->n_tbk_order,
+        ];
+
     }
 
     /**
@@ -245,7 +287,7 @@ class Taobao implements TBKInterface
                 $params['type'] = 'total';
                 break;
         }
-        $response = Curl::to($this->apiUrl)
+        $response = Curl::to($this->DTK_API_URL)
             ->withData($params)
             ->get();
         $response = json_decode($response);
@@ -273,6 +315,7 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * @param array $array
      * @return array|mixed
      * @throws \Exception
      */

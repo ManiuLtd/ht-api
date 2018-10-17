@@ -23,6 +23,7 @@ class CreateMembersTable extends Migration
             $table->integer('inviter_id')->nullable();
             $table->integer('group_id')->nullable();
             $table->integer('oldgroup_id')->nullable();
+            $table->integer('pid')->nullable();
             $table->string('wx_unionid', 191)->nullable();
             $table->string('wx_openid1', 191)->nullable();
             $table->string('wx_openid2', 191)->nullable();
@@ -33,7 +34,6 @@ class CreateMembersTable extends Migration
             $table->string('phone', 100)->nullable();
             $table->string('password', 191)->nullable();
             $table->string('headimgurl', 191)->nullable();
-            $table->tinyInteger('isagent')->nullable()->default(0);
             $table->decimal('credit1', 8, 2)->nullable()->default(0.00);
             $table->decimal('credit2', 8, 2)->nullable()->default(0.00);
             $table->decimal('credit3', 8, 2)->nullable()->default(0.00);

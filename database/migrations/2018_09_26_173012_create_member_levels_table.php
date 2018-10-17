@@ -35,7 +35,7 @@ class CreateMemberLevelsTable extends Migration
             $table->tinyInteger('status')->default(1)->comment('0禁用，1正常'); //0禁用，1正常
 
             $table->nullableTimestamps();
-
+            $table->softDeletes();
             $table->index('user_id');
         });
     }

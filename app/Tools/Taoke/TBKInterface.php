@@ -6,7 +6,9 @@ interface TBKInterface
 {
     /**
      * 领券地址
+     * @param array $array
      * @return mixed
+     *
      */
     public function getCouponUrl(array $array = []);
 
