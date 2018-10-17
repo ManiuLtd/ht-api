@@ -355,4 +355,44 @@ class PinDuoDuo implements TBKInterface
     {
         return [];
     }
+
+    /**
+     *  好货专场
+     * @param array $array
+     * @return mixed
+     */
+    public function HaohuoZC(array $array = [])
+    {
+        return [];
+    }
+
+    /**
+     * 精选单品
+     * @param array $array
+     * @return mixed
+     */
+    public function JingxuanDP(array $array = [])
+    {
+        return [];
+    }
+
+    /**
+     * 精选专题
+     * @param array $array
+     * @return mixed
+     */
+    public function JingxuanZT(array $array = [])
+    {
+        return [];
+    }
+
+    /**
+     * 快抢商品
+     * @param array $array
+     * @return mixed
+     */
+    public function KuaiqiangShop(array $array = [])
+    {
+        return [];
+    }
 }

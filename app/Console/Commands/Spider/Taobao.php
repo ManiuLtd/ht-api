@@ -13,7 +13,7 @@ class Taobao extends Command
      *
      * @var string
      */
-    protected $signature = 'spider:tb {--type=total} {--all=true}';
+    protected $signature = 'spider:tb {--type=3} {--all=true}';
 
     /**
      * The console command description.
