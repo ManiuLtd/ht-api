@@ -23,6 +23,7 @@ class CreateMembersTable extends Migration
             $table->integer('inviter_id')->nullable();
             $table->integer('group_id')->nullable();
             $table->integer('oldgroup_id')->nullable();
+            $table->integer('pid')->nullable();
             $table->string('wx_unionid', 191)->nullable();
             $table->string('wx_openid1', 191)->nullable();
             $table->string('wx_openid2', 191)->nullable();
