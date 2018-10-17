@@ -128,3 +128,25 @@ if (! function_exists('getMember')) {
         return \App\Models\Member\Member::find(1);
     }
 }
+
+if (! function_exists('checkSms')) {
+
+    /**
+     * 验证短信是否过期
+     * @param $phone
+     * @param $code
+     * @return bool
+     */
+    function checkSms($phone,$code)
+    {
+        $model = \App\Models\System\Sms::where([
+            'code' => $code,
+            'phone' => $phone,
+            ['created_at', '>=', \Illuminate\Support\Carbon::now()->addMinute(-1)]
+        ])->first();
+        if (!$model) {
+            return false;
+        }
+        return true;
+    }
+}

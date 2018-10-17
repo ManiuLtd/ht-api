@@ -17,6 +17,7 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'inviter_id' => null,
+        'pid' => null,
         'wx_unionid' => $faker->uuid,
         'wx_openid1' => $faker->uuid,
         'wx_openid2' => $faker->uuid,
