@@ -21,4 +21,10 @@ interface MemberRepository extends RepositoryInterface
      * @return mixed
      */
     public function getMemberChart();
+
+    /**
+     * 绑定手机号
+     * @return mixed
+     */
+    public function bindMobile();
 }
