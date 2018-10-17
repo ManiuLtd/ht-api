@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('email', 191)->nullable();
             $table->string('password', 191)->nullable();
             $table->tinyInteger('status')->nullable()->default(1);
+            $table->integer('sms')->nullable()->default(0);
             $table->rememberToken();
             $table->nullableTimestamps();
             $table->softDeletes();

@@ -27,4 +27,11 @@ interface MemberRepository extends RepositoryInterface
      * @return mixed
      */
     public function bindMobile();
+
+    /**
+     * 绑定邀请人
+     * @return mixed
+     */
+    public function bindInviter();
+
 }
