@@ -62,10 +62,10 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
-    public function getMemberChart()
-    {
-        //TODO 后端可根据日志获取会员近一周、半月、一月的增长记录
-    }
+//    public function getMemberChart()
+//    {
+//        //后端可根据日志获取会员近一周、半月、一月的增长记录
+//    }
 
     /**
      * 获取三级粉丝.

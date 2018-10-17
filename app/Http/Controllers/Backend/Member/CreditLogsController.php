@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Member;
 
 use App\Criteria\DatePickerCriteria;
+use App\Criteria\TimePickerCriteria;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Member\CreditLogRepository;
 
@@ -34,6 +35,7 @@ class CreditLogsController extends Controller
     {
         $memberCreditLogs = $this->repository
             ->pushCriteria(new DatePickerCriteria())
+            ->pushCriteria(new TimePickerCriteria())
             ->with(['member', 'user'])
             ->paginate(request('limit', 10));
 
