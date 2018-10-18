@@ -96,6 +96,15 @@ class Member extends Model implements Transformable
     }
 
     /**
+     * 原有组.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function oldGroup()
+    {
+        return $this->belongsTo(Group::class, 'oldgroup_id')->withDefault(null);
+    }
+
+    /**
      * 用户收货地址
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

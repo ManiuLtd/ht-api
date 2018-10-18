@@ -160,7 +160,7 @@ class SaveOrders implements ShouldQueue
             case 3:
                 return 1;
                 break;
-            case 4:m
+            case 4:
                 return 3;
                 break;
             case 5:
