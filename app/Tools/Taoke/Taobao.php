@@ -519,7 +519,7 @@ class Taobao implements TBKInterface
     public function KuaiqiangShop(array $array = [])
     {
         $type = $params['hour_type'] ?? 7;
-        $min_id = $params['min_id'] ?? 1;
+        $min_id = data_get($array,'min_id',1);
         $params = [
             'apikey' => $this->HDK_APIKEY,
             'hour_type' => $type,
@@ -553,7 +553,20 @@ class Taobao implements TBKInterface
      */
     public function TimingItems(array $array = [])
     {
-
+        //获取最近整点时间
+        $timestamp = date('H',time());//当前时间的整点
+        $min_id = data_get($array,'min_id',1);
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'start' => $timestamp,
+            'end' => $timestamp+1,
+            'min_id' => $min_id,
+            'back' => 100 //请在1,2,10,20,50,100,120,200,500,1000中选择一个数值返回
+        ];
+        $results = Curl::to('http://v2.api.haodanku.com/timing_items')
+            ->withData($params)
+            ->get();
+        return $results;
     }
 
     /**
@@ -563,6 +576,39 @@ class Taobao implements TBKInterface
      */
     public function UpdateItem(array $array = [])
     {
+        $sort = $params['sort'] ?? 1;
+        $back = $params['back'] ?? 500;
+        $min_id = $params['min_id'] ?? 1;
+        if (!in_array($back,[1,2,10,20,50,100,120,200,500,1000])) {
+            return [
+                'code' => 4002,
+                'message' => '每页条数不合法',
+            ];
+        }
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'sort' => $sort,
+            'back' => $back,
+            'min_id' => $min_id,
+        ];
+        $rest = Curl::to('http://v2.api.haodanku.com/update_item')
+            ->withData($params)
+            ->get();
+        $rest = json_decode($rest);
+        if ($rest->code != 1) {
+            return [
+                'code' => 4001,
+                'message' => $rest->msg
+            ];
+        }
+        return [
+            'code' => 1001,
+            'message' => $rest->msg,
+            'data' => [
+                'data' => $rest->data,
+                'min_id' => $rest->min_id,
+            ],
+        ];
 
     }
 
