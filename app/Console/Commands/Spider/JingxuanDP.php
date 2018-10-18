@@ -43,8 +43,8 @@ class JingxuanDP extends Command
      */
     public function handle()
     {
-
         $total = 50;
+        $this->info('正在爬取精选单品！');
         $bar = $this->output->createProgressBar($total);
         $min_id = 1;
         for ($i=1;$i <= $total; $i++) {

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\Spider\DownItems;
 use App\Console\Commands\Spider\HaohuoZC;
 use App\Console\Commands\Spider\JingDongOrder;
 use App\Console\Commands\Spider\JingxuanDP;
@@ -9,6 +10,8 @@ use App\Console\Commands\Spider\JingxuanZT;
 use App\Console\Commands\Spider\KuaiqiangShop;
 use App\Console\Commands\Spider\PinDuoDuoOrder;
 use App\Console\Commands\Spider\TaoBaoOrder;
+use App\Console\Commands\Spider\TimingItems;
+use App\Console\Commands\Spider\UpdateItem;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
@@ -130,7 +133,18 @@ class TBKServiceProvider extends ServiceProvider
         $this->app->when(KuaiqiangShop::class)
             ->needs(TBKInterface::class)
             ->give(\App\Tools\Taoke\Taobao::class);
-
+        //失效商品列表
+        $this->app->when(DownItems::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+        //定时拉取
+        $this->app->when(TimingItems::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+        // 商品更新
+        $this->app->when(UpdateItem::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
 
         //测试
 //        $this->app->when(HomeController::class)
