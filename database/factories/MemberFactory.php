@@ -19,7 +19,6 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
         'inviter_id' => null,
         'group_id' => rand(1,50),
         'oldgroup_id' => rand(1,50),
-        'pid' => null,
         'wx_unionid' => $faker->uuid,
         'wx_openid1' => $faker->uuid,
         'wx_openid2' => $faker->uuid,

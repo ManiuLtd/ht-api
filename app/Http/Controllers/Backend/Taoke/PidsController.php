@@ -43,7 +43,7 @@ class PidsController extends Controller
      */
     public function index()
     {
-        $pids = $this->repository->paginate(request('limit', 10));
+        $pids = $this->repository->with (['user','member'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $pids);
     }

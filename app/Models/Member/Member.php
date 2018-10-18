@@ -46,8 +46,6 @@ class Member extends Model implements Transformable
      */
     protected $hidden = [
         'user_id',
-        'inviter_id',
-        'level_id',
         'password',
     ];
 
@@ -95,6 +93,15 @@ class Member extends Model implements Transformable
     public function group()
     {
         return $this->belongsTo(Group::class, 'group_id')->withDefault(null);
+    }
+
+    /**
+     * 原有组.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function oldGroup()
+    {
+        return $this->belongsTo(Group::class, 'oldgroup_id')->withDefault(null);
     }
 
     /**
