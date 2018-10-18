@@ -39,7 +39,7 @@ class DownItem implements ShouldQueue
     public function handle()
     {
         foreach ($this->results as $result){
-            DB::table('tbk_coupons')->where('item_id',$result->itemid)->delete();
+            db('tbk_coupons')->where('item_id',$result->itemid)->delete();
         }
     }
 }

@@ -45,20 +45,6 @@ class DownItems extends Command
      */
     public function handle()
     {
-//        $end   = date('H');
-//        if ($end == 0){
-//            $end   = 23;
-//        }
-//        $start = $end - 1;
-//        $res = $this->TBK->DownItems([
-//            'start' => $start,
-//            'end' => $end
-//        ]);
-//        foreach ($res->data as $result){
-//            dd($result);
-//            db('tbk_coupons')->where('item_id',$result->itemid)->delete();
-//        }
-//        DownItem::dispatch($res->data);
         $total = 50;
         $this->info('正在删除失效优惠卷！');
         $bar = $this->output->createProgressBar($total);
