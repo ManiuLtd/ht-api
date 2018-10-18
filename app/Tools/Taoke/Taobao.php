@@ -424,7 +424,15 @@ class Taobao implements TBKInterface
      */
     public function HaohuoZC(array $array = [])
     {
-        return 1;
+        $min_id = data_get($array, 'min_id', 1);
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'min_id' => $min_id,
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/subject_hot')
+            ->withData($params)
+            ->get();
+        return $resp;
     }
 
     /**
