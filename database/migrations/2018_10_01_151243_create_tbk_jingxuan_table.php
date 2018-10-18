@@ -21,7 +21,7 @@ class CreateTbkJingxuantable extends Migration
             $table->increments('id');
 
             $table->string('title', 190)->nullable();  //宝贝标题
-            $table->string('pic_url', 190)->nullable();  //宝贝主图原始图像，可用于生成二维码图片
+            $table->text('pic_url')->nullable();  //宝贝主图原始图像，可用于生成二维码图片
 
             $table->text('content')->nullable();  //单品导购内容（表情未处理）
             $table->decimal('price',12,2)->nullable();  //在售价
