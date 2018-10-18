@@ -2,34 +2,31 @@
 
 namespace App\Console\Commands\Spider;
 
-use App\Jobs\SaveKuaiqiang;
-use App\Jobs\Spider\Kuaiqiang;
 use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
 
-class KuaiqiangShop extends Command
+class UpdateItem extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'spider-kuaiqing';
+    protected $signature = 'update-item';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '快抢商品';
-    /**
-     * @var
-     */
+    protected $description = '商品更新';
+
     protected $TBK;
 
     /**
-     * KuaiqiangShop constructor.
-     * @param TBKInterface $TBK
+     * Create a new command instance.
+     *
+     * @return void
      */
     public function __construct(TBKInterface $TBK)
     {
@@ -44,12 +41,12 @@ class KuaiqiangShop extends Command
      */
     public function handle()
     {
-        $total = 5;
+        $total = 50;
         $bar = $this->output->createProgressBar($total);
         $min_id = 1;
         for ($i=1;$i <= $total; $i++) {
 
-            $rest = $this->TBK->KuaiqiangShop(['min_id'=>$min_id]);
+            $rest = $this->TBK->UpdateItem(['min_id'=>$min_id]);
             if ($rest['code'] != 1001) {
                 $this->warn($rest['message']);
 
@@ -57,13 +54,13 @@ class KuaiqiangShop extends Command
             }
             // 队列
             $data = data_get($rest,'data.data');
-            Kuaiqiang::dispatch($data);
+            \App\Jobs\Spider\UpdateItem::dispatch($data);
+
             $min_id = data_get($rest,'data.min_id');
 
             $bar->advance();
             $this->info(">>>已采集完第{$total}页 ");
         }
         $bar->finish();
-
     }
 }
