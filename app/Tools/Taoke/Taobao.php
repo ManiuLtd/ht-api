@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
@@ -115,13 +116,15 @@ class Taobao implements TBKInterface
      */
     public function search(array $array = [])
     {
-        //TODO  修改
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = request('q') ?? '';
 
         //TODO 检查关键词是否包含淘口令，如果包含淘口令，使用产品地址搜索，调用下面的searchByTKL方法
+        $keywords = $this->searchByTKL($q);
+        if ($keywords != false){
 
+        }
         $params = [
             'appkey' => $this->TKJD_API_KEY,
             'k' => $q,
@@ -398,9 +401,10 @@ class Taobao implements TBKInterface
      */
     public function spider(array $array = [])
     {
-        $type = $params['type'] ?? 3;
-        $all = $params['all'] ?? true;
-        $page = $params['page'] ?? 1;
+        $type = $array['type'] ?? 3;
+
+        $min_id = $array['min_id'] ?? 1;
+
         if (!in_array($type,[1,2,3,4,5])) {
             return [
                 'code' => 4001,
@@ -412,12 +416,26 @@ class Taobao implements TBKInterface
             'nav' => $type,
             'cid' => 0,
             'back' => 100,
-            'min_id' => 9999999,
+            'min_id' => $min_id,
         ];
         $resp = Curl::to('http://v2.api.haodanku.com/itemlist')
             ->withData($params)
             ->get();
         $resp = json_decode($resp);
+        if ($resp->code != 1) {
+            return [
+                'code' => 4001,
+                'message' => $resp->msg,
+            ];
+        }
+        return [
+            'code' => 1001,
+            'message' => $resp->msg,
+            'data' => [
+                'min_id' => $resp->min_id,
+                'data' => $resp->data,
+            ],
+        ];
 
     }
 
@@ -488,7 +506,7 @@ class Taobao implements TBKInterface
             ->get();
         $res = json_decode($resp);
         if ($res->code == 0){
-            return json('5001','获取失败');
+            return json('4001','获取失败');
         }
         return $res;
     }
@@ -501,7 +519,7 @@ class Taobao implements TBKInterface
     public function KuaiqiangShop(array $array = [])
     {
         $type = $params['hour_type'] ?? 7;
-        $min_id = $params['min_id'] ?? 1;
+        $min_id = data_get($array,'min_id',1);
         $params = [
             'apikey' => $this->HDK_APIKEY,
             'hour_type' => $type,
@@ -535,7 +553,20 @@ class Taobao implements TBKInterface
      */
     public function TimingItems(array $array = [])
     {
-
+        //获取最近整点时间
+        $timestamp = date('H',time());//当前时间的整点
+        $min_id = data_get($array,'min_id',1);
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'start' => $timestamp,
+            'end' => $timestamp+1,
+            'min_id' => $min_id,
+            'back' => 100 //请在1,2,10,20,50,100,120,200,500,1000中选择一个数值返回
+        ];
+        $results = Curl::to('http://v2.api.haodanku.com/timing_items')
+            ->withData($params)
+            ->get();
+        return $results;
     }
 
     /**
@@ -545,6 +576,39 @@ class Taobao implements TBKInterface
      */
     public function UpdateItem(array $array = [])
     {
+        $sort = $params['sort'] ?? 1;
+        $back = $params['back'] ?? 500;
+        $min_id = $params['min_id'] ?? 1;
+        if (!in_array($back,[1,2,10,20,50,100,120,200,500,1000])) {
+            return [
+                'code' => 4002,
+                'message' => '每页条数不合法',
+            ];
+        }
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'sort' => $sort,
+            'back' => $back,
+            'min_id' => $min_id,
+        ];
+        $rest = Curl::to('http://v2.api.haodanku.com/update_item')
+            ->withData($params)
+            ->get();
+        $rest = json_decode($rest);
+        if ($rest->code != 1) {
+            return [
+                'code' => 4001,
+                'message' => $rest->msg
+            ];
+        }
+        return [
+            'code' => 1001,
+            'message' => $rest->msg,
+            'data' => [
+                'data' => $rest->data,
+                'min_id' => $rest->min_id,
+            ],
+        ];
 
     }
 
@@ -555,7 +619,21 @@ class Taobao implements TBKInterface
      */
     public function DownItems(array $array = [])
     {
-
+        $start = data_get($array,'start');
+        $end = data_get($array,'end');
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'start'  => $start,
+            'end'    => $end
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/get_down_items')
+            ->withData($params)
+            ->get();
+        $res = json_decode($resp);
+        if ($res->code == 0){
+            return json('4001','获取失败');
+        }
+        return json('1001','获取成功',$res);
     }
 
 

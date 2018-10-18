@@ -44,7 +44,7 @@ class KuaiqiangShop extends Command
      */
     public function handle()
     {
-        $total = 50;
+        $total = 5;
         $bar = $this->output->createProgressBar($total);
         $min_id = 1;
         for ($i=1;$i <= $total; $i++) {
