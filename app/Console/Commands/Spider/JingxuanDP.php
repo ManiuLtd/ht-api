@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
 
 class JingxuanDP extends Command
@@ -21,12 +22,17 @@ class JingxuanDP extends Command
     protected $description = '精选单品';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * @var
      */
-    public function __construct()
+    protected $TBK;
+
+    /**
+     * JingxuanDP constructor.
+     * @param TBKInterface $TBK
+     */
+    public function __construct(TBKInterface $TBK)
     {
+        $this->TBK = $TBK;
         parent::__construct();
     }
 
@@ -37,6 +43,27 @@ class JingxuanDP extends Command
      */
     public function handle()
     {
-        //
+
+        $total = 50;
+        $bar = $this->output->createProgressBar($total);
+        $min_id = 1;
+        for ($i=1;$i <= $total; $i++) {
+
+            $rest = $this->TBK->JingxuanDP(['min_id'=>$min_id]);
+            if ($rest['code'] != 1001) {
+                $this->warn($rest['message']);
+
+                return ;
+            }
+            // 队列
+            $data = data_get($rest,'data.data');
+            \App\Jobs\Spider\JingxuanDp::dispatch($data);
+
+            $min_id = data_get($rest,'data.min_id');
+
+            $bar->advance();
+            $this->info(">>>已采集完第{$total}页 ");
+        }
+        $bar->finish();
     }
 }

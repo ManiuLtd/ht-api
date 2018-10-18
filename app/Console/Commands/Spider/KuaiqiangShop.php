@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveKuaiqiang;
+use App\Jobs\Spider\Kuaiqiang;
 use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
 
@@ -43,22 +44,24 @@ class KuaiqiangShop extends Command
      */
     public function handle()
     {
-        $total = 50 ;
-        $min_id = 1;
+        $total = 50;
         $bar = $this->output->createProgressBar($total);
-        for($i = 1;$i <= $total; $i ++)
-        {
-            $this->info($min_id);
-            $kuaiqiang = $this->TBK->KuaiqiangShop(['min_id'=>$min_id]);
-            if($kuaiqiang->code != 1)
-            {
-                $this->warn($kuaiqiang->msg);
-                return;
+        $min_id = 1;
+        for ($i=1;$i <= $total; $i++) {
+
+            $rest = $this->TBK->KuaiqiangShop(['min_id'=>$min_id]);
+            if ($rest['code'] != 1001) {
+                $this->warn($rest['message']);
+
+                return ;
             }
-            $min_id = $kuaiqiang->min_id;
+            // 队列
+            $data = data_get($rest,'data.data');
+            Kuaiqiang::dispatch($data);
+            $min_id = data_get($rest,'data.min_id');
+
             $bar->advance();
-            SaveKuaiqiang::dispatch($kuaiqiang->data);
-            $this->info(">>>已采集完第{$total}页");
+            $this->info(">>>已采集完第{$total}页 ");
         }
         $bar->finish();
 

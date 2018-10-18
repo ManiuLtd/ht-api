@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Spider;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class SaveKuaiqiang implements ShouldQueue
+class Kuaiqiang implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $kuaiqiang;
@@ -49,11 +49,11 @@ class SaveKuaiqiang implements ShouldQueue
             $data['commission_rate'] = $val->tkrates;
 //            $data['coupon_start_time'] = $val->couponstarttime;
 //            $data['coupon_end_time'] = $val->couponendtime;
-            $data['start_time'] = $val->start_time;
+            $data['start_time'] =date('Y-m-d H:i:s',$val->start_time);
 //            $data['end_time'] = $val->end_time;
             $data['type'] = $val->grab_type;
             $data['created_at'] = now();
-            db('tbk_kuaiqiang')->insert($data);
+            db('tbk_kuaiqiang')->updateOrInsert(['itemid'=>$data['itemid']],$data);
         }
     }
 }
