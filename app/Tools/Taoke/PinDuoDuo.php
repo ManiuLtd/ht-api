@@ -395,4 +395,35 @@ class PinDuoDuo implements TBKInterface
     {
         return [];
     }
+    /**
+     * 定时拉取
+     * @param array $array
+     * @return mixed
+     */
+    public function TimingItems(array $array = [])
+    {
+        return [];
+    }
+
+    /**
+     * 商品更新
+     * @param array $array
+     * @return mixed
+     */
+    public function UpdateItem(array $array = [])
+    {
+        return [];
+    }
+
+    /**
+     * 失效商品列表
+     * @param array $array
+     * @return mixed
+     */
+    public function DownItems(array $array = [])
+    {
+        return [];
+    }
+
+
 }
