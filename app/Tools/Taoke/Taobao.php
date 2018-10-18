@@ -451,7 +451,18 @@ class Taobao implements TBKInterface
      */
     public function KuaiqiangShop(array $array = [])
     {
-        return 4;
+        $type = $params['hour_type'] ?? 7;
+        $min_id = $params['min_id'] ?? 1;
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'hour_type' => $type,
+            'min_id' => $min_id,
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/fastbuy')
+            ->withData($params)
+            ->get();
+        $resp = json_decode($resp);
+        return $resp;
     }
 
 }
