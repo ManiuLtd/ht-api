@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Jobs\Haohuo;
 use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
 
@@ -42,6 +43,23 @@ class HaohuoZC extends Command
      */
     public function handle()
     {
-        $this->TBK->HaohuoZC();
+        $this->info('正在爬取好货专场');
+        $totalPage = 2;
+        $bar = $this->output->createProgressBar($totalPage);
+        $min_id = 1;
+        for ($i=1;$i<$totalPage;$i++){
+            $this->info($min_id);
+            $result = $this->TBK->HaohuoZC(['min_id'=>$min_id]);
+            $result = json_decode($result);
+            if($result->code != 1){
+                return;
+            }
+            // 队列
+            Haohuo::dispatch($result->data);
+            $min_id = $result->min_id;
+            $bar->advance();
+            $this->info(">>>已采集完第{$i}页 ");
+        }
+        $bar->finish();
     }
 }

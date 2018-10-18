@@ -38,6 +38,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:jd')->everyThirtyMinutes();
 
         $schedule->command('spider:pdd')->everyThirtyMinutes();
+        //好货专场
+        $schedule->command('spider-haohuo')->hourlyAt(30);
 
 
 
