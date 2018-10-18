@@ -116,13 +116,15 @@ class Taobao implements TBKInterface
      */
     public function search(array $array = [])
     {
-        //TODO  修改
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = request('q') ?? '';
 
         //TODO 检查关键词是否包含淘口令，如果包含淘口令，使用产品地址搜索，调用下面的searchByTKL方法
+        $keywords = $this->searchByTKL($q);
+        if ($keywords != false){
 
+        }
         $params = [
             'appkey' => $this->TKJD_API_KEY,
             'k' => $q,
@@ -504,7 +506,7 @@ class Taobao implements TBKInterface
             ->get();
         $res = json_decode($resp);
         if ($res->code == 0){
-            return json('5001','获取失败');
+            return json('4001','获取失败');
         }
         return $res;
     }
@@ -617,7 +619,21 @@ class Taobao implements TBKInterface
      */
     public function DownItems(array $array = [])
     {
-
+        $start = data_get($array,'start');
+        $end = data_get($array,'end');
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'start'  => $start,
+            'end'    => $end
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/get_down_items')
+            ->withData($params)
+            ->get();
+        $res = json_decode($resp);
+        if ($res->code == 0){
+            return json('4001','获取失败');
+        }
+        return json('1001','获取成功',$res);
     }
 
 
