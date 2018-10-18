@@ -52,29 +52,37 @@ class Taobao extends Command
         $this->info('正在爬取大淘客优惠券');
         //开始爬取
         try {
-            $params = [
-                'type' => $type,
-                'all' => $all,
-            ];
 
-            $result = $this->tbk->spider($params);
-            $total = $result['total'] ?? 0;
-            $totalPage = $result['totalPage'] ?? 0;
+            $totalPage = 9999999;
+            if ($all == 'false') {
+                $totalPage = 3;
+            }
 
+            $total = $totalPage * 100;
             $this->info("优惠券总数:{$total}");
             $this->info("总页码:{$totalPage}");
             $bar = $this->output->createProgressBar($totalPage);
 
-            for ($page = 1; $page <= $totalPage; $page++) {
-                $params['page'] = $page;
-                $response = $this->tbk->spider($params);
-                $result = $response['data'];
+            $min_id = 1;
+            for ($i = 1; $i <= $totalPage; $i++) {
 
-                if ($result) {
-                    SaveGoods::dispatch($result, 'taobao', $type, $all);
+                $response = $this->tbk->spider([
+                    'type' => $type,
+                    'min_id' => $min_id,
+                ]);
+                if ($response['code'] != 1001) {
+                    $this->warn($response['message']);
+                    return ;
                 }
+                $result = $response['data'];
+                if ($result) {
+
+                    SaveGoods::dispatch($result['data'], 'taobao', $type, $all);
+                }
+                $min_id = $result['min_id'];
                 $bar->advance();
-                $this->info(" >>>已采集完第{$page}页");
+                $this->info(" >>>已采集完第{$i}页");
+                
             }
         } catch (\Exception $e) {
             $this->warn($e->getMessage());

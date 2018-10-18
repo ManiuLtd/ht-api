@@ -44,7 +44,7 @@ class HaohuoZC extends Command
     public function handle()
     {
         $this->info('正在爬取好货专场');
-        $totalPage = 2;
+        $totalPage = 999999;
         $bar = $this->output->createProgressBar($totalPage);
         $min_id = 1;
         for ($i=1;$i<$totalPage;$i++){
