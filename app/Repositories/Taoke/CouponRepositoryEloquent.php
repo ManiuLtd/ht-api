@@ -51,6 +51,9 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    /**
+     * @return array
+     */
     public function searchGoods()
     {
         $sort = request('sort');

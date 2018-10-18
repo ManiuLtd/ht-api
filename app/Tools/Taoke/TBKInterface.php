@@ -13,7 +13,8 @@ interface TBKInterface
     public function getCouponUrl(array $array = []);
 
     /**
-     * 优惠券详情.
+     * 超级搜索
+     * @param array $array
      * @return mixed
      */
     public function getDetail(array $array = []);
@@ -76,6 +77,29 @@ interface TBKInterface
      * @return mixed
      */
     public function KuaiqiangShop(array $array = []);
+
+    /**
+     * 定时拉取
+     * @param array $array
+     * @return mixed
+     */
+    public function TimingItems(array $array = []);
+
+    /**
+     * 商品更新
+     * @param array $array
+     * @return mixed
+     */
+    public function UpdateItem(array $array = []);
+
+    /**
+     * 失效商品列表
+     * @param array $array
+     * @return mixed
+     */
+    public function DownItems(array $array = []);
+
+
 
 
 }

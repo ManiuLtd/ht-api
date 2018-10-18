@@ -115,6 +115,7 @@ class Taobao implements TBKInterface
      */
     public function search(array $array = [])
     {
+        //TODO  修改
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = request('q') ?? '';
@@ -326,11 +327,13 @@ class Taobao implements TBKInterface
      */
     public function hotSearch(array $array = [])
     {
+        //TODO 修改
         $params = [
             'app_key' => $this->QTK_API_KEY,
             'v' => '1.0',
             't' => 1,
         ];
+
         $resp = Curl::to($this->QTK_API_URL.'/hot')
             ->withData($params)
             ->get();
@@ -521,5 +524,38 @@ class Taobao implements TBKInterface
             ],
         ];
     }
+
+
+    /**
+     * 定时拉取
+     * @param array $array
+     * @return mixed
+     */
+    public function TimingItems(array $array = [])
+    {
+
+    }
+
+    /**
+     * 商品更新
+     * @param array $array
+     * @return mixed
+     */
+    public function UpdateItem(array $array = [])
+    {
+
+    }
+
+    /**
+     * 失效商品列表
+     * @param array $array
+     * @return mixed
+     */
+    public function DownItems(array $array = [])
+    {
+
+    }
+
+
 
 }
