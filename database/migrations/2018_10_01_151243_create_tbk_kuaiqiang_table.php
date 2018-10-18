@@ -19,7 +19,7 @@ class CreateTbkKuaiqiangTable extends Migration
     {
         Schema::create('tbk_kuaiqiang', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('itemid')->nullable();  //宝贝ID
+            $table->string('itemid',190)->nullable();  //宝贝ID
             $table->string('title', 190)->nullable();  //宝贝标题
             $table->string('short_title', 190)->nullable();  //宝贝短标题
             $table->string('introduce', 190)->nullable();  //宝贝推荐语
