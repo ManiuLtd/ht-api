@@ -467,7 +467,17 @@ class Taobao implements TBKInterface
      */
     public function JingxuanZT(array $array = [])
     {
-        return 3;
+        $params = [
+            'apikey' => $this->HDK_APIKEY
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/get_subject')
+            ->withData($params)
+            ->get();
+        $res = json_decode($resp);
+        if ($res->code == 0){
+            return json('5001','获取失败');
+        }
+        return $res;
     }
 
     /**

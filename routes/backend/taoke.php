@@ -21,4 +21,6 @@ Route::namespace('Taoke')
 
         //优惠卷
         Route::resource('coupon', 'CouponsController');
+        //专题
+        Route::resource('zhuanti', 'ZhuanTisController');
     });
