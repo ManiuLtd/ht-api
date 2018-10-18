@@ -387,7 +387,10 @@ class Taobao implements TBKInterface
         return false;
     }
 
-
+    /**
+     * @param array $array
+     * @return array|mixed
+     */
     public function spider(array $array = [])
     {
         $type = $params['type'] ?? 3;
@@ -439,7 +442,30 @@ class Taobao implements TBKInterface
      */
     public function JingxuanDP(array $array = [])
     {
-        return 2;
+        $min_id = data_get($array,'min_id',1);
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'min_id' => $min_id,
+        ];
+        $rest = Curl::to('http://v2.api.haodanku.com/selected_item')
+            ->withData($params)
+            ->get();
+        $rest = json_decode($rest);
+        if ($rest->code != 1) {
+            return [
+                'code' => 4001,
+                'message' => $rest->msg
+            ];
+        }
+        return [
+            'code' => 1001,
+
+            'message' => $rest->msg,
+            'data' => [
+                'data' => $rest->data,
+                'min_id' => $rest->min_id,
+            ],
+        ];
     }
 
     /**
@@ -449,7 +475,17 @@ class Taobao implements TBKInterface
      */
     public function JingxuanZT(array $array = [])
     {
-        return 3;
+        $params = [
+            'apikey' => $this->HDK_APIKEY
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/get_subject')
+            ->withData($params)
+            ->get();
+        $res = json_decode($resp);
+        if ($res->code == 0){
+            return json('5001','获取失败');
+        }
+        return $res;
     }
 
     /**
