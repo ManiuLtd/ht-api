@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Spider;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,11 +33,13 @@ class UpdateItem implements ShouldQueue
         foreach ($this->results as $val)
         {
             $data = [];
-            $data['sales'] = $val->itemsale;
-            $data['sales'] = $val->itemsale;
-            $data['today_sale'] = $val->todaysale;
-            $data['updated_at'] = now();
-            db('tbk_kuaiqiang')->where('itemid',$val->itemid)->update($data);
+            $data['volume'] = $val->itemsale;
+            $data['price'] = $val->itemprice;
+            $data['final_price'] = $val->itemendprice;
+            $data['commission_rate'] = $val->tkrates;
+            $data['end_time'] = date('Y-m-d H:i:s',$val->couponendtime);
+            $data['updated_at'] = Carbon::now()->toDateTimeString();
+            db('tbk_coupons')->where('item_id',$val->itemid)->update($data);
         }
     }
 }
