@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use Carbon\Carbon;
 use Ixudra\Curl\Facades\Curl;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
@@ -535,7 +536,20 @@ class Taobao implements TBKInterface
      */
     public function TimingItems(array $array = [])
     {
-
+        //获取最近整点时间
+        $timestamp = date('H',time());//当前时间的整点
+        $min_id = data_get($array,'min_id',1);
+        $params = [
+            'apikey' => $this->HDK_APIKEY,
+            'start' => $timestamp,
+            'end' => $timestamp+1,
+            'min_id' => $min_id,
+            'back' => 2 //请在1,2,10,20,50,100,120,200,500,1000中选择一个数值返回
+        ];
+        $results = Curl::to('http://v2.api.haodanku.com/timing_items')
+            ->withData($params)
+            ->get();
+        return $results;
     }
 
     /**
