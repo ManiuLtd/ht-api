@@ -21,7 +21,7 @@ class TaokeSeeder extends Seeder
         factory(App\Models\Taoke\Category::class, 10)->create();
         factory(App\Models\Taoke\History::class, 30)->create();
         factory(App\Models\Taoke\Favourite::class, 30)->create();
-        factory(App\Models\Taoke\Pid::class, 5)->create();
+        factory(App\Models\Taoke\Pid::class, 100)->create();
         factory(App\Models\Taoke\Order::class, 100)->create();
         factory(App\Models\Taoke\Quan::class, 100)->create();
     }

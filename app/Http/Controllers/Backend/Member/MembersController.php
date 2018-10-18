@@ -44,11 +44,11 @@ class MembersController extends Controller
     public function index()
     {
         $members = $this->repository
-            ->pushCriteria(new DatePickerCriteria())
-            ->with(['level', 'inviter'])
-            ->paginate(request('limit', 10));
+            ->pushCriteria (new DatePickerCriteria())
+            ->with (['level', 'group', 'oldGroup', 'inviter'])
+            ->paginate (request ('limit', 10));
 
-        return json(1001, '列表获取成功', $members);
+        return json (1001, '列表获取成功', $members);
     }
 
     /**
@@ -58,9 +58,9 @@ class MembersController extends Controller
      */
     public function show($id)
     {
-        $member = $this->repository->with(['level', 'inviter'])->find($id);
+        $member = $this->repository->with (['level', 'group', 'oldGroup', 'inviter'])->find ($id);
 
-        return json(1001, '详情获取成功', $member);
+        return json (1001, '详情获取成功', $member);
     }
 
     /**
@@ -72,13 +72,13 @@ class MembersController extends Controller
     public function update(MemberUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $member = $this->repository->update($request->all(), $id);
+            $member = $this->repository->update ($request->all (), $id);
 
-            return json(1001, '更新成功', $member);
+            return json (1001, '更新成功', $member);
         } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag());
+            return json (5001, $e->getMessageBag ());
         }
     }
 
@@ -89,8 +89,8 @@ class MembersController extends Controller
      */
     public function destroy($id)
     {
-        $this->repository->delete($id);
+        $this->repository->delete ($id);
 
-        return json(1001, '删除成功');
+        return json (1001, '删除成功');
     }
 }

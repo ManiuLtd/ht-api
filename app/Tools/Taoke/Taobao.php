@@ -328,23 +328,25 @@ class Taobao implements TBKInterface
      */
     public function hotSearch(array $array = [])
     {
-        //TODO 修改
         $params = [
-            'app_key' => $this->QTK_API_KEY,
-            'v' => '1.0',
-            't' => 1,
+            'apikey' => $this->HDK_APIKEY,
+            'hot' => 1,
         ];
 
-        $resp = Curl::to($this->QTK_API_URL.'/hot')
+        $resp = Curl::to('http://v2.api.haodanku.com/hot_key')
             ->withData($params)
             ->get();
         $resp = json_decode($resp);
 
-        if ($resp->er_code != 10000) {
-            throw new \Exception($resp->er_msg);
+        if ($resp->code != 1) {
+            throw new \Exception($resp->msg);
         }
-
-        return array_slice($resp->data, 0, 20);
+        return [
+            'code'=>1001,
+            'message'=>$resp->msg,
+            'data'=>$resp->data
+        ];
+//        return array_slice($resp->data, 0, 20);
     }
 
     /**
