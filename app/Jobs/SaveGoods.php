@@ -32,6 +32,7 @@ class SaveGoods implements ShouldQueue
     protected $spider;
     /**
      * 优惠券类型.
+     * 1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区
      * @var
      */
     protected $tag;
@@ -43,11 +44,13 @@ class SaveGoods implements ShouldQueue
     protected $all;
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * SaveGoods constructor.
+     * @param $results
+     * @param $spider
+     * @param int $tag
+     * @param bool $all
      */
-    public function __construct($results, $spider, $tag = 'total', $all = true)
+    public function __construct($results, $spider, $tag = 3, $all = true)
     {
         $this->results = $results;
         $this->spider = $spider;
@@ -86,27 +89,31 @@ class SaveGoods implements ShouldQueue
         $coupon = new Coupon();
         $inserts = [];
         foreach ($results as $result) {
-            $data['title'] = $result->Title;
+            $data['title'] = $result->itemtitle;
 //            $data['short_title'] = $result->D_title;
-            $data['cat'] = $this->setDTKCat($result->Cid);
-            $data['shop_type'] = $result->IsTmall ? 2 : 1;
-            $data['pic_url'] = $this->setPicURL($result->Pic);
-            $data['item_id'] = $result->GoodsID;
-            $data['item_url'] = $result->Jihua_link;
-            $data['volume'] = $result->Sales_num;
-            $data['price'] = $result->Org_Price;
-            $data['final_price'] = $result->Price;
-            $data['coupon_price'] = $result->Quan_price;
-            $data['activity_id'] = $result->Quan_id;
-            $data['commission_rate'] = $this->getCommissionRate($result);
-            $data['introduce'] = trim($result->Introduce);
-            $data['total_num'] = $result->Quan_surplus + $result->Quan_receive;
-            $data['receive_num'] = $result->Quan_receive;
-            $data['tag'] = $tag;
+            $data['cat'] = $result->fqcat;
+            $data['shop_type'] = $result->shoptype == 'B' ? 2 : 1;
+            $data['pic_url'] = $result->itempic;
+            $data['item_id'] = $result->itemid;
+
+            $data['volume'] = $result->itemsale;
+            $data['price'] = $result->itemprice;
+            $data['final_price'] = $result->itemendprice;
+            $data['coupon_price'] = $result->couponmoney;
+
+            $data['commission_rate'] = $result->tkrates;
+            $data['introduce'] = trim($result->guide_article);
+            $data['total_num'] = $result->couponnum;
+            $data['receive_num'] = $result->couponreceive2;
+            $data['tag'] = $tag;//1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区
             $data['type'] = 1;
             $data['status'] = 0;
-            $data['start_time'] = Carbon::now()->toDateTimeString();
-            $data['end_time'] = $result->Quan_time;
+            $data['videoid'] = $result->videoid;
+            $data['activity_type'] = $this->GetactivityType($result->activity_type);
+            $data['start_time'] = date('Y-m-d H:i:s',$result->couponstarttime);
+            $data['end_time'] = date('Y-m-d H:i:s',$result->couponendtime);
+            $data['starttime'] = $result->start_time ? date('Y-m-d H:i:s',$result->start_time) : '';
+            $data['endtime'] = $result->end_time ? date('Y-m-d H:i:s',$result->end_time) : '';
 
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
@@ -125,6 +132,7 @@ class SaveGoods implements ShouldQueue
             DB::table('tbk_coupons')->insert($inserts);
         }
     }
+
 
     /**
      * 京推推.
@@ -211,6 +219,31 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
+     * 活动类型：
+     * @param $activity_type
+     * @return int
+     *
+     */
+    protected function GetactivityType($activity_type)
+    {
+        switch ($activity_type)
+        {
+            case '普通活动':
+                return 1;
+                break;
+            case '聚划算':
+                return 2;
+                break;
+            case '淘抢购':
+                return 3;
+                break;
+            default:
+                return 1;
+                break;
+
+        }
+    }
+    /**
      * 获取佣金比例.
      * @param $result
      * @return int
@@ -263,30 +296,7 @@ class SaveGoods implements ShouldQueue
      */
     private function setDTKCat($cat)
     {
-        switch ($cat) {
-            case 1:  //女装
-                return 9;
-            case 9: //男装
-                return 11;
-            case 10: //内衣
-                return 10;
-            case 2: //母婴
-                return 2;
-            case 3: //化妆品
-                return 3;
-            case 4: //居家
-                return 4;
-            case 5: //鞋包配饰
-                return 1;
-            case 6: //美食
-                return 6;
-            case 7: //文体车品
-                return 7;
-            case 8: //数码家电
-                return 8;
-            default:
-                return 12;
-        }
+
     }
 
     /**

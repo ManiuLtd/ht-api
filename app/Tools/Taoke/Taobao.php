@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
@@ -396,9 +397,10 @@ class Taobao implements TBKInterface
      */
     public function spider(array $array = [])
     {
-        $type = $params['type'] ?? 3;
-        $all = $params['all'] ?? true;
-        $page = $params['page'] ?? 1;
+        $type = $array['type'] ?? 3;
+
+        $min_id = $array['min_id'] ?? 1;
+
         if (!in_array($type,[1,2,3,4,5])) {
             return [
                 'code' => 4001,
@@ -410,12 +412,26 @@ class Taobao implements TBKInterface
             'nav' => $type,
             'cid' => 0,
             'back' => 100,
-            'min_id' => 9999999,
+            'min_id' => $min_id,
         ];
         $resp = Curl::to('http://v2.api.haodanku.com/itemlist')
             ->withData($params)
             ->get();
         $resp = json_decode($resp);
+        if ($resp->code != 1) {
+            return [
+                'code' => 4001,
+                'message' => $resp->msg,
+            ];
+        }
+        return [
+            'code' => 1001,
+            'message' => $resp->msg,
+            'data' => [
+                'min_id' => $resp->min_id,
+                'data' => $resp->data,
+            ],
+        ];
 
     }
 
