@@ -370,7 +370,7 @@ class PinDuoDuo implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function JingxuanDP(array $array = [])
+    public function danpin(array $array = [])
     {
         return [];
     }
@@ -420,6 +420,15 @@ class PinDuoDuo implements TBKInterface
      * @return mixed
      */
     public function DownItems(array $array = [])
+    {
+        return [];
+    }
+
+    /**
+     * @param array $array
+     * @return array|mixed
+     */
+    public function taokouling(array $array = [])
     {
         return [];
     }

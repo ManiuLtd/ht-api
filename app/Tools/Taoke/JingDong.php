@@ -317,7 +317,7 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function JingxuanDP(array $array = [])
+    public function danpin(array $array = [])
     {
         return [];
     }
@@ -371,7 +371,14 @@ class JingDong implements TBKInterface
     {
         return [];
     }
-
+    /**
+     * @param array $array
+     * @return array|mixed
+     */
+    public function taokouling(array $array = [])
+    {
+        return [];
+    }
 
 
 }

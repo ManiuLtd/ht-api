@@ -13,7 +13,7 @@ class Taobao extends Command
      *
      * @var string
      */
-    protected $signature = 'spider:tb {--type=3} {--all=true}';
+    protected $signature = 'spider:tb {name? : The name of the spider} {--type=3} {--all=true}';
 
     /**
      * The console command description.
@@ -43,6 +43,43 @@ class Taobao extends Command
      * @return mixed
      */
     public function handle()
+    {
+
+        $name = $this->argument('name');
+        switch ($name)
+        {
+            case 'haohuo':
+                $this->haohuo();
+                break;
+            case 'danpin':
+                $this->danpin();
+                break;
+            case 'zhuanti':
+                $this->zhuanti();
+                break;
+            case 'kuaiqiang':
+                $this->kuaiqiang();
+                break;
+            case 'timingItems':
+                $this->timingItems();
+                break;
+            case 'updateCoupon':
+                $this->updateCoupon();
+                break;
+            case 'deleteCoupon':
+                $this->deleteCoupon();
+                break;
+            default:
+                $this->all();
+                break;
+        }
+
+
+
+    }
+
+
+    protected function all()
     {
         //数据类型
         $type = $this->option('type');
@@ -82,16 +119,11 @@ class Taobao extends Command
                 $min_id = $result['min_id'];
                 $bar->advance();
                 $this->info(" >>>已采集完第{$i}页");
-                
+
             }
         } catch (\Exception $e) {
             $this->warn($e->getMessage());
         }
-    }
-
-    protected function all()
-    {
-        //TODO 爬取所有，代码从tools搬过来
     }
 
     protected function haohuo()
@@ -99,9 +131,31 @@ class Taobao extends Command
        //TODO 好货专场，代码从tools搬过来
     }
 
+
     protected function danpin()
     {
-        //TODO 精选单品，代码从tools搬过来
+        // 精选单品
+        $total = 50;
+        $this->info('正在爬取精选单品！');
+        $bar = $this->output->createProgressBar($total);
+        $min_id = 1;
+        for ($i=1;$i <= $total; $i++) {
+
+            $rest = $this->tbk->danpin(['min_id'=>$min_id]);
+            if ($rest['code'] != 1001) {
+                $this->warn($rest['message']);
+                return ;
+            }
+            // 队列
+            $data = data_get($rest,'data.data');
+            \App\Jobs\Spider\JingxuanDp::dispatch($data);
+
+            $min_id = data_get($rest,'data.min_id');
+
+            $bar->advance();
+            $this->info(">>>已采集完第{$total}页 ");
+        }
+        $bar->finish();
     }
 
     protected function zhuanti()

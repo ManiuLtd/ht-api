@@ -391,7 +391,7 @@ class Taobao implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function JingxuanDP(array $array = [])
+    public function danpin(array $array = [])
     {
         $min_id = data_get($array,'min_id',1);
         $params = [
@@ -564,7 +564,7 @@ class Taobao implements TBKInterface
     }
 
 
-    public function taokouling()
+    public function taokouling(array $array = [])
     {
         //TODO 根据pid item 图片地址生成淘口令，如果我不是会员，则用无上级的pid，如果上级也不是超级会员，就用组长的pid
 
