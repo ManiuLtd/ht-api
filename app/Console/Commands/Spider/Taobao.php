@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
 use App\Jobs\Spider\DownItem;
 use App\Jobs\Spider\Kuaiqiang;
@@ -131,7 +132,25 @@ class Taobao extends Command
 
     protected function haohuo()
     {
-       //TODO 好货专场，代码从tools搬过来
+        // 好货专场
+        $this->info('正在爬取好货专场');
+        $totalPage = 999999;
+        $bar = $this->output->createProgressBar($totalPage);
+        $min_id = 1;
+        for ($i=1;$i<$totalPage;$i++){
+            $this->info($min_id);
+            $result = $this->tbk->haohuo(['min_id'=>$min_id]);
+            $result = json_decode($result);
+            if($result->code != 1){
+                return;
+            }
+            // 队列
+            Haohuo::dispatch($result->data);
+            $min_id = $result->min_id;
+            $bar->advance();
+            $this->info(">>>已采集完第{$i}页 ");
+        }
+        $bar->finish();
     }
 
 
@@ -212,7 +231,24 @@ class Taobao extends Command
 
     protected function timingItems()
     {
-        //TODO 定时拉取，代码从tools搬过来
+        //定时拉取
+        $totalPage = 50;
+        $bar = $this->output->createProgressBar($totalPage);
+        $min_id = 1;
+        for ($i=1;$i<$totalPage;$i++){
+            $this->info($min_id);
+            $results = $this->tbk->timingItems(['min_id'=>$min_id]);
+            $results = json_decode($results);
+            if($results->code != 1){
+                return;
+            }
+            // 队列
+            SaveGoods::dispatch($results->data,'timingItems');
+            $min_id = $results->min_id;
+            $bar->advance();
+            $this->info(">>>已采集完第{$i}页 ");
+        }
+        $bar->finish();
     }
 
     protected function updateCoupon()

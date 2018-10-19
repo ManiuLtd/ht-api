@@ -373,7 +373,7 @@ class Taobao implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function HaohuoZC(array $array = [])
+    public function haohuo(array $array = [])
     {
         $min_id = data_get($array, 'min_id', 1);
         $params = [
@@ -478,7 +478,7 @@ class Taobao implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function TimingItems(array $array = [])
+    public function timingItems(array $array = [])
     {
         //获取最近整点时间
         $timestamp = date('H',time());//当前时间的整点

@@ -33,8 +33,7 @@ class CreateTbkKuaiqiangTable extends Migration
             $table->decimal('coupon_price', 12, 2)->nullable();  //优惠券金额
             $table->string('video_id', 190)->nullable();  //商品视频ID（id大于0的为有视频单，视频拼接地址
             $table->string('video_url', 190)->nullable();  //	实拍视频地址
-
-            $table->tinyInteger('activity_type')->nullable();  //活动类型：普通活动 聚划算 淘抢购
+            $table->tinyInteger('activity_type' )->nullable();  //活动类型：普通活动 聚划算 淘抢购
             $table->decimal('commission_rate', 12, 2)->nullable();  //佣金比例
             $table->timestamp('coupon_start_time')->nullable();  //优惠券开始时间
             $table->timestamp('coupon_end_time')->nullable();  //优惠券结束时间

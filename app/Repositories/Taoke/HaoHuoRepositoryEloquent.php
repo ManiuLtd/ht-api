@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\Haohuo;
-use App\Repositories\Interfaces\Taoke\HaohuoRepository;
-use App\Validators\Taoke\HaohuoValidator;
+use App\Models\Taoke\HaoHuo;
+use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
+use App\Validators\Taoke\HaoHuoValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 
@@ -12,7 +12,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
  * Class HaohuoRepositoryEloquent
  * @package App\Repositories\Taoke
  */
-class HaohuoRepositoryEloquent extends BaseRepository implements HaohuoRepository
+class HaoHuoRepositoryEloquent extends BaseRepository implements HaoHuoRepository
 {
     /**
      * @var array
@@ -28,7 +28,7 @@ class HaohuoRepositoryEloquent extends BaseRepository implements HaohuoRepositor
      */
     public function model()
     {
-        return Haohuo::class;
+        return HaoHuo::class;
     }
 
     /**
@@ -38,7 +38,7 @@ class HaohuoRepositoryEloquent extends BaseRepository implements HaohuoRepositor
      */
     public function validator()
     {
-        return HaohuoValidator::class;
+        return HaoHuoValidator::class;
     }
 
     /**
