@@ -13,6 +13,8 @@ use App\Console\Commands\Spider\TaoBaoOrder;
 use App\Console\Commands\Spider\TimingItems;
 use App\Console\Commands\Spider\UpdateItem;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Repositories\Interfaces\Taoke\CouponRepository;
+use App\Repositories\Taoke\CouponRepositoryEloquent;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
@@ -82,6 +84,7 @@ class TBKServiceProvider extends ServiceProvider
                 $this->app->when(SearchController::class)
                     ->needs(TBKInterface::class)
                     ->give(\App\Tools\Taoke\Taobao::class);
+
                 break;
             case '2':
                 $this->app->when(SearchController::class)

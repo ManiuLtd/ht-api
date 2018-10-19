@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
-use TopClient\request\WirelessShareTpwdQueryRequest;
+
 
 class Taobao implements TBKInterface
 {
@@ -111,65 +111,32 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * @param array $array
      * @return array|mixed
      * @throws \Exception
      */
-    public function search()
+    public function search(array $array=[])
     {
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
-        $q = request('q') ?? '';
-        //todo 判断关键词是否包含淘口令 如果包含 解密淘口令，并使用itemid搜索，不用调用本地搜索  可以直接调用全网搜索
-        $keywords = $this->searchByTKL($q);
-        if ($keywords == false){
-            $params = [
-                'apikey' => $this->HDK_APIKEY,
-                'keyword' => $q,
-                'back' => 10,
-                'min_id' => 1,
-                'tb_p' => 1,
-            ];
-            $response = Curl::to('http://v2.api.haodanku.com/supersearch')
-                ->withData($params)
-                ->get();
+        $q = $array['q'] ?? request('q');
 
-            $response = json_decode($response);
 
-            return $response;
-        }
         $params = [
-            'appkey' => $this->TKJD_API_KEY,
-            'k' => $q,
-            'page' => $page,
-            'page_size' => $limit,
+            'apikey' => $this->HDK_APIKEY,
+            'keyword' => $q,
+            'back' => $limit,
+            'min_id' => 1,
+            'tb_p' => 1,
         ];
-
-        //排序字段
-        $params['sort'] = 'sales';
-        switch (request('orderBy')) {
-            case 'sales':
-                $params['sort'] = 'sales';
-                break;
-            case 'coupon':
-                $params['sort'] = 'coupon';
-                break;
-            case 'commission':
-                $params['sort'] = 'comm_rate';
-                break;
-            default:
-                break;
-        }
-        //排序方式
-        $params['sort_type'] = request('sortedBy') == 'asc' ? 'asc' : 'desc';
-        //获取接口内容
-        $response = Curl::to('http://api.tkjidi.com/checkWhole')
+        $response = Curl::to('http://v2.api.haodanku.com/supersearch')
             ->withData($params)
             ->get();
 
         $response = json_decode($response);
 
         //接口信息获取失败
-        if ($response->status != 200) {
+        if ($response->code != 1) {
             throw new \Exception('淘客基地接口请求失败');
         }
         //当前页面地址
@@ -180,7 +147,7 @@ class Taobao implements TBKInterface
         }
 
         //页码信息
-        $totalPage = intval(floor($response->data->total / $limit) + 1);
+        $totalPage = intval(floor($response->total / $limit) + 1);
 
         //页码不对
         if ($page > $totalPage) {
@@ -189,27 +156,26 @@ class Taobao implements TBKInterface
 
         //重组字段
         $data = [];
-        foreach ($response->data->data as $list) {
+
+        foreach ($response->data as $list) {
             $temp = [
-                'title' => $list->goods_name,
-                'pic_url' => $list->pic,
+                'title' => $list->itemtitle,
+                'pic_url' => $list->itempic,
                 'cat' => '',
-                'shop_type' => $list->tmall ? 2 : 1,
-                'item_id' => $list->goods_id,
-                'item_url' => $list->goods_url,
-                'volume' => $list->sales,
-                'price' => $list->price,
-                'final_price' => $list->price_after_coupons,
-                'coupon_price' => $list->price_coupons,
+                'shop_type' => $list->shoptype == 'B' ? 2 : 1,
+                'item_id' => $list->itemid,
+                'volume' => $list->itemsale,
+                'price' => $list->itemprice,
+                'final_price' => $list->itemendprice,
+                'coupon_price' => $list->couponmoney,
                 'coupon_link' => '',
                 'activity_id' => '',
-                'commission_rate' => $list->rate,
+                'commission_rate' => $list->tkrates,
                 'type' => 1,
                 'introduce' => '',
-                'start_time' => $list->quan_starttime,
-                'end_time' => $list->quan_endtime,
-                'created_at' => now()->toDateString(),
-                'updated_at' => now()->toDateString(),
+                'start_time' => $list->couponstarttime ? date('Y-m-d H:i:s',$list->couponstarttime) : '',
+                'end_time' => $list->couponendtime ? date('Y-m-d H:i:s',$list->couponendtime) : '',
+
             ];
             array_push($data, $temp);
         }
@@ -221,7 +187,7 @@ class Taobao implements TBKInterface
                 'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
-                'total' => $response->data->total,
+                'total' => $response->total,
             ],
         ];
     }
@@ -279,49 +245,6 @@ class Taobao implements TBKInterface
         return $resp->data;
     }
 
-    /**
-     * 淘口令解密.
-     * @param $keywords
-     * @return array|bool|mixed|string
-     * @throws \Exception
-     */
-    protected function searchByTKL($keywords)
-    {
-        //验证淘口令
-        if (substr_count($keywords, '￥') == 2 || substr_count($keywords, '《') == 2 || substr_count($keywords, '€') == 2) {
-            $req = new WirelessShareTpwdQueryRequest();
-
-            $req->setPasswordContent($keywords);
-            $topclient = TopClient::connection();
-            $response = $topclient->execute($req);
-            //淘口令解密失败
-            if (! $response->suc) {
-                return false;
-            }
-            if (str_contains($response->url, 'a.m.taobao.com/i')) {
-                $pos = strpos($response->url, '?');
-                $str = substr($response->url, 0, $pos);
-                $str = str_replace('https://a.m.taobao.com/i', '', $str);
-                $str = str_replace('.htm', '', $str);
-
-                return $str;
-            }
-            $pos = strpos($response->url, '?');
-            $query_string = substr($response->url, $pos + 1, strlen($response->url));
-            $arr = \League\Uri\extract_query($query_string);
-
-            if (isset($arr['activity_id'])) {
-                return false;
-            }
-
-            if (! isset($arr['id'])) {
-                return false;
-            }
-            return $arr['id'];
-        }
-
-        return false;
-    }
 
     /**
      * @param array $array

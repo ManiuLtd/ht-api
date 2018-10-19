@@ -10,10 +10,10 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Tools\Taoke\TBKInterface;
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CouponValidator;
+use App\Validators\Taoke\SearchValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
  * 搜索
@@ -37,10 +37,10 @@ class SearchController extends Controller
     /**
      * SearchController constructor.
      * @param TBKInterface $TBK
-     * @param CouponValidator $validator
+     * @param SearchValidator $validator
      * @param CouponRepository $couponRepository
      */
-    public function __construct(TBKInterface $TBK, CouponValidator $validator, CouponRepository $couponRepository)
+    public function __construct(TBKInterface $TBK, SearchValidator $validator, CouponRepository $couponRepository)
     {
         $this->TBK = $TBK;
         $this->validator = $validator;
@@ -54,31 +54,20 @@ class SearchController extends Controller
     public function index()
     {
 
-
-        try {
-            //TODO 添加SearchValidator
+//        try {
+            //SearchValidator
             $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $array = [
-                'type' => request('type'),
-                'sort' => request('sort'),
-                'page' => request('page', 1),
-                'q' => request('q'),
-                'keywords' => request('keywords'),
-            ];
-            if (request('type') == 2) {  //确认是否有全网搜搜
-                $rest = $this->couponRepository->searchGoods();
-            } else {
-                $rest = $this->TBK->search($array);
+            $rest = $this->couponRepository->searchGoods();
+            if (!is_array($rest)) {
+                $rest = $this->TBK->search(['q'=>$rest]);
             }
-
-            unset($rest->code);
-            unset($rest->message);
-
             return json(1001, '获取成功', $rest);
-        } catch (\Exception $e) {
-            return json(4001, $e->getMessage());
-        }
+//        } catch (ValidatorException $e) {
+//            return json(5001, $e->getMessageBag()->first());
+//        }catch (\Exception $exception){
+//            return json(5001, $exception->getMessage());
+//        }
     }
 
     /**
@@ -87,14 +76,16 @@ class SearchController extends Controller
     public function keywords()
     {
         try {
-            //TODO 添加SearchValidator
+            //添加SearchValidator
             $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $resp = $this->TBK->hotSearch();
 
-            return json(1001, $resp['message'], $resp['data']);
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json(1001, '获取成功', $resp);
+        } catch (ValidatorException $e) {
+            return json(5001, $e->getMessageBag()->first());
+        }catch (\Exception $exception){
+            return json(5001, $exception->getMessage());
         }
     }
 }
