@@ -28,11 +28,8 @@ class JingxuanDpValidator extends LaravelValidator
             'coupon_price' => 'required',
             'commission_rate' => 'required',
             'shares' => 'required',
-            'show_content' => 'required',
-            'copy_content' => 'required',
-            'show_comment' => 'required',
-            'copy_comment' => 'required',
-
+            'comment1' => 'required',
+            'comment2' => 'required',
 
         ],
         ValidatorInterface::RULE_UPDATE => [],
@@ -48,10 +45,7 @@ class JingxuanDpValidator extends LaravelValidator
         'coupon_price.required' => '优惠券金额不能为空',
         'commission_rate.required' => '佣金比例不能为空',
         'shares.required' => '该商品被分享次数不能为空',
-        'show_content.required' => '导购文案展示内容不能为空',
-        'copy_content.required' => '导购文案复制内容不能为空',
-        'show_comment.required' => '朋友圈评论展示内容不能为空',
-        'copy_comment.required' => '朋友圈评论复制内容不能为空',
-
+        'comment1.required' => '导购文案复制内容不能为空',
+        'comment2.required' => '朋友圈评论复制内容不能为空',
     ];
 }

@@ -15,12 +15,15 @@ class HaoHuo extends Model implements Transformable
     use TransformableTrait;
 
     /**
+     * 根据itemid获取商品
      * @return array
      */
     public function transform()
     {
         $array = $this->toArray();
-        $array['data'] = json_decode($array['data']);
+        $itemids = json_decode($array['data']);
+        $coupon = Coupon::whereIn('item_id',$itemids)->get();
+        $array['data'] = $coupon->toArray();
         return $array;
     }
 

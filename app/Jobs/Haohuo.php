@@ -33,7 +33,6 @@ class Haohuo implements ShouldQueue
     {
         $data = $this->result;
         foreach ($data as $v){
-//            $insert['title'] = $v->name;
             $insert['content'] = $v->content;
             $insert['introduce'] = $v->show_text;
             $insert['app_hot_image'] = $v->app_hot_image;
@@ -41,7 +40,13 @@ class Haohuo implements ShouldQueue
             $insert['text'] = $v->copy_text;
             $insert['start_time'] = date('Y-m-d H:i:s',$v->activity_start_time);
             $insert['end_time'] = date('Y-m-d H:i:s',$v->activity_end_time);
-            $insert['data'] = json_encode($v->item_data);
+            $itemids = [];
+            foreach ($v->item_data as $val){
+                if($val->product_id != 0){
+                    $itemids[] = $val->itemid;
+                }
+            }
+            $insert['data'] = json_encode($itemids);
             $insert['created_at'] = Carbon::now()->toDateTimeString();
             $insert['updated_at'] = Carbon::now()->toDateTimeString();
             db('tbk_haohuo')->updateOrInsert(
