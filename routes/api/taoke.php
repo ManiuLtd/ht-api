@@ -48,5 +48,8 @@ Route::namespace('Taoke')
 
         //专题列表
         Route::get('zhuanti','ZhuanTiController@index');
+
+        //快抢商品
+        Route::get('kuaiqiang','KuaiqiangController@index');
     });
 

@@ -4,6 +4,7 @@ namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
 use App\Jobs\Spider\DownItem;
+use App\Jobs\Spider\Kuaiqiang;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
@@ -187,7 +188,26 @@ class Taobao extends Command
 
     protected function kuaiqiang()
     {
-        //TODO 精选专题，代码从tools搬过来
+        $total = 5;
+        $bar = $this->output->createProgressBar($total);
+        $min_id = 1;
+        for ($i=1;$i <= $total; $i++) {
+
+            $rest = $this->tbk->KuaiqiangShop(['min_id'=>$min_id]);
+            if ($rest['code'] != 1001) {
+                $this->warn($rest['message']);
+
+                return ;
+            }
+            // 队列
+            $data = data_get($rest,'data.data');
+            Kuaiqiang::dispatch($data);
+            $min_id = data_get($rest,'data.min_id');
+
+            $bar->advance();
+            $this->info(">>>已采集完第{$total}页 ");
+        }
+        $bar->finish();
     }
 
     protected function timingItems()
@@ -197,7 +217,27 @@ class Taobao extends Command
 
     protected function updateCoupon()
     {
-        //TODO 商品更新，代码从tools搬过来
+        $total = 50;
+        $bar = $this->output->createProgressBar($total);
+        $min_id = 1;
+        for ($i=1;$i <= $total; $i++) {
+
+            $rest = $this->tbk->updateCoupon(['min_id'=>$min_id]);
+            if ($rest['code'] != 1001) {
+                $this->warn($rest['message']);
+
+                return ;
+            }
+            // 队列
+            $data = data_get($rest,'data.data');
+            \App\Jobs\Spider\UpdateItem::dispatch($data);
+
+            $min_id = data_get($rest,'data.min_id');
+
+            $bar->advance();
+            $this->info(">>>已采集完第{$total}页 ");
+        }
+        $bar->finish();
     }
 
     protected function deleteCoupon()

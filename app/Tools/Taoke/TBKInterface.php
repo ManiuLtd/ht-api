@@ -70,4 +70,18 @@ interface TBKInterface
      */
     public function danpin(array $array = []);
 
+    /**
+     * 快抢商品
+     * @param array $array
+     * @return mixed
+     */
+    public function KuaiqiangShop(array $array = []);
+
+    /**
+     * 快抢商品
+     * @param array $array
+     * @return mixed
+     */
+    public function updateCoupon(array $array = []);
+
 }
