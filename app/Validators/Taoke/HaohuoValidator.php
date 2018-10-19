@@ -28,12 +28,12 @@ class HaohuoValidator extends LaravelValidator
         ],
         ValidatorInterface::RULE_UPDATE => [
             'title' => 'required',
-            'content' => 'required',
-            'introduce' => 'required',
-            'app_hot_image' => 'required|url',
-            'shares' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
+//            'content' => 'required',
+//            'introduce' => 'required',
+//            'app_hot_image' => 'required|url',
+//            'shares' => 'required',
+//            'start_time' => 'required',
+//            'end_time' => 'required',
         ],
     ];
 }

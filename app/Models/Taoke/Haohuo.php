@@ -19,7 +19,9 @@ class Haohuo extends Model implements Transformable
      */
     public function transform()
     {
-        return $this->toArray();
+        $array = $this->toArray();
+        $array['data'] = json_decode($array['data']);
+        return $array;
     }
 
     /**
