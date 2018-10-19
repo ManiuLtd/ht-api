@@ -14,27 +14,27 @@ class Category extends Model implements Transformable
 {
     use TransformableTrait, SoftDeletes;
 
-    public function transform()
-    {
-        return [
-            'id' => (int) $this->id,
-            'name' => $this->name,
-            'sort' => $this->sort,
-            'type' => $this->type,
-            'status' => $this->status,
-            'created_at' => $this->created_at->toDateTimeString(),
-
-        ];
-    }
-
+    /**
+     * @var string
+     */
     protected $table = 'tbk_categories';
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = [
+        'name',
+        'logo',
+        'taobao',
+        'jingdong',
+        'pinduoduo',
+        'sort',
+        'type',
+        'status',
+    ];
 
+    /**
+     * @var array
+     */
     protected $dates = ['deleted_at'];
 }
