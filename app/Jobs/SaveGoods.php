@@ -114,8 +114,6 @@ class SaveGoods implements ShouldQueue
             $data['activity_type'] = $this->GetactivityType($result->activity_type);
             $data['start_time'] = date('Y-m-d H:i:s',$result->couponstarttime);
             $data['end_time'] = date('Y-m-d H:i:s',$result->couponendtime);
-            $data['starttime'] = $result->start_time ? date('Y-m-d H:i:s',$result->start_time) : '';
-            $data['endtime'] = $result->end_time ? date('Y-m-d H:i:s',$result->end_time) : '';
 
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
