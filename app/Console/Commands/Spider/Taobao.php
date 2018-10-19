@@ -267,7 +267,6 @@ class Taobao extends Command
             // 队列
             $data = data_get($rest,'data.data');
             \App\Jobs\Spider\UpdateItem::dispatch($data);
-
             $min_id = data_get($rest,'data.min_id');
 
             $bar->advance();
