@@ -10,7 +10,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * Class Haohuo
  * @package App\Models\Taoke
  */
-class Haohuo extends Model implements Transformable
+class HaoHuo extends Model implements Transformable
 {
     use TransformableTrait;
 
@@ -35,4 +35,18 @@ class Haohuo extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * data是itemid的集合
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model){
+            $model->data = json_encode(request('itemid'));
+        });
+        self::updating(function ($model){
+            $model->data = json_encode(request('itemid'));
+        });
+    }
 }

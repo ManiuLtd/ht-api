@@ -38,6 +38,7 @@ class Haohuo implements ShouldQueue
             $insert['introduce'] = $v->show_text;
             $insert['app_hot_image'] = $v->app_hot_image;
             $insert['shares'] = $v->share_times;
+            $insert['text'] = $v->copy_text;
             $insert['start_time'] = date('Y-m-d H:i:s',$v->activity_start_time);
             $insert['end_time'] = date('Y-m-d H:i:s',$v->activity_end_time);
             $insert['data'] = json_encode($v->item_data);

@@ -3,35 +3,35 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\HaohuoValidator;
-use App\Http\Requests\Taoke\HaohuoCreateRequest;
-use App\Http\Requests\Taoke\HaohuoUpdateRequest;
+use App\Validators\Taoke\HaoHuoValidator;
+use App\Http\Requests\Taoke\HaoHuoCreateRequest;
+use App\Http\Requests\Taoke\HaoHuoUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Repositories\Interfaces\Taoke\HaohuoRepository;
+use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
 
 /**
  * Class HaohuoController
  * @package App\Http\Controllers\Backend\Taoke
  */
-class HaohuoController extends Controller
+class HaoHuoController extends Controller
 {
     /**
-     * @var HaohuoRepository
+     * @var HaoHuoRepository
      */
     protected $repository;
 
     /**
-     * @var HaohuoValidator
+     * @var HaoHuoValidator
      */
     protected $validator;
 
     /**
      * HaohuoController constructor.
-     * @param HaohuoRepository $repository
-     * @param HaohuoValidator $validator
+     * @param HaoHuoRepository $repository
+     * @param HaoHuoValidator $validator
      */
-    public function __construct(HaohuoRepository $repository, HaohuoValidator $validator)
+    public function __construct(HaoHuoRepository $repository, HaoHuoValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -48,10 +48,10 @@ class HaohuoController extends Controller
     }
 
     /**
-     * @param HaohuoCreateRequest $request
+     * @param HaoHuoCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(HaohuoCreateRequest $request)
+    public function store(HaoHuoCreateRequest $request)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
@@ -79,11 +79,11 @@ class HaohuoController extends Controller
     }
 
     /**
-     * @param HaohuoUpdateRequest $request
+     * @param HaoHuoUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(HaohuoUpdateRequest $request, $id)
+    public function update(HaoHuoUpdateRequest $request, $id)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);

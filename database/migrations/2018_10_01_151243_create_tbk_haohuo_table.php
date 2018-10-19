@@ -22,9 +22,8 @@ class CreateTbkHaohuoTable extends Migration
             $table->string('title', 190)->nullable();  //标题
             $table->string('content', 190)->nullable();  //专场导购内容
             $table->string('introduce', 190)->nullable();  //导购文案展示内容，含表情
-
             $table->string('app_hot_image', 190)->nullable();  //
-
+            $table->string('text', 190)->nullable();  //导购文案复制内容，含表情
             $table->integer('shares')->nullable();  //分享次数
             $table->timestamp('start_time')->nullable();  //专场开始时间戳
             $table->timestamp('end_time')->nullable();  //专场结束时间戳
