@@ -8,11 +8,11 @@ use App\Tools\Taoke\TBKInterface;
 
 class HomeController extends Controller
 {
-    protected $TBK;
-    public function __construct(TBKInterface $TBK)
-    {
-        $this->TBK = $TBK;
-    }
+//    protected $TBK;
+//    public function __construct(TBKInterface $TBK)
+//    {
+//        $this->TBK = $TBK;
+//    }
 
     /**
      * tbk_darenshuo
@@ -25,11 +25,11 @@ class HomeController extends Controller
      * 京东 20294254021
      * 拼多多 74872615.
      */
-    public function index()
-    {
-//        $data = $this->TBK->spider();
-        dd(urlencode(urlencode('https://detail.tmall.com/item.htm?id=569630842486')));
-    }
+//    public function index()
+//    {
+//       $data = $this->TBK->spider();
+//        dd(urlencode(urlencode('https://detail.tmall.com/item.htm?id=569630842486')));
+//    }
     
     
     

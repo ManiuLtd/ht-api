@@ -24,6 +24,12 @@ Route::namespace('Taoke')
         //专题
         Route::resource('zhuanti', 'ZhuanTisController');
 
+        //精选单品
+        Route::resource('jinxuandp', 'JingxuanDpsController',[
+            'except'=> ['create','edit']
+        ]);
+
         //快抢商品
         Route::resource('kuaiqiang', 'KuaiqiangController');
+
     });
