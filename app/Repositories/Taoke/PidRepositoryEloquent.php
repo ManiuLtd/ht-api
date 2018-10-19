@@ -18,7 +18,10 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'type',
+        'status',
+        'taobao' => 'like',
+        'jingdong' => 'like',
+        'pinduoduo' => 'like',
     ];
 
     /**
@@ -65,17 +68,13 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
     {
         $pids = preg_split('/\s+/', $attributes['taobao']);
         if (count($pids) > 0) {
-            foreach ($pids as $p) {
+            foreach ($pids as $pid) {
                 //禁止重复
-                $pid = db('tbk_pids')->where('taobao', $p)->first();
-                if (! $pid) {
+                $isExist = db('tbk_pids')->where('taobao', $pid)->first();
+                if (! $isExist) {
                     db('tbk_pids')->insert([
-                        'taobao'     => $p,
                         'user_id'    => getUserId(),
-                        'member_id'  => $attributes['member_id'],
-                        'jingdong'   => $attributes['jingdong'],
-                        'pinduoduo'  => $attributes['pinduoduo'],
-                        'type'       => $attributes['type'],
+                        'taobao'     => trim ($pid),
                         'created_at' => Carbon::now()->toDateTimeString(),
                         'updated_at' => Carbon::now()->toDateTimeString(),
                     ]);
@@ -84,10 +83,5 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
             return true;
         }
         return false;
-    }
-
-    public function update(array $attributes,$id)
-    {
-
     }
 }

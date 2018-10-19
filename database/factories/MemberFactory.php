@@ -157,7 +157,7 @@ $factory->define(App\Models\Member\Level::class, function (Faker $faker) {
         'credit' => rand(10, 99),
         'price' => rand(10, 99),
         'duration' => rand(10, 999),
-        'description' => $faker->title,
+        'description' => $faker->text(80),
         'default' => rand(0, 1),
         'status' => rand(0, 1),
     ];

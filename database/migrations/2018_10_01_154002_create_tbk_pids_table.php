@@ -24,7 +24,7 @@ class CreateTbkPidsTable extends Migration
             $table->string('taobao', 100)->nullable();
             $table->string('jingdong', 100)->nullable();
             $table->string('pinduoduo', 100)->nullable();
-            $table->tinyInteger('type')->nullable()->default(1); // 1淘宝 2京东 3拼多多
+            $table->tinyInteger('status')->nullable()->default(0);
             $table->nullableTimestamps();
 
         });
