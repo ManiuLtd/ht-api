@@ -24,13 +24,6 @@ class ZhuanTiValidator extends LaravelValidator
             'start_time' => 'required',
             'end_time'   => 'required',
         ],
-        ValidatorInterface::RULE_UPDATE => [
-            'title'      => 'required',
-            'thumb'      => 'required|url',
-            'banner'     => 'required|url',
-            'content'    => 'required',
-            'start_time' => 'required',
-            'end_time'   => 'required',
-        ],
+        ValidatorInterface::RULE_UPDATE => [],
     ];
 }

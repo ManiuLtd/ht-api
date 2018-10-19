@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Validators\Taoke\ZhuanTiValidator;
 use App\Http\Requests\Taoke\ZhuanTiCreateRequest;
 use App\Http\Requests\Taoke\ZhuanTiUpdateRequest;
+use Illuminate\Support\Facades\Validator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\ZhuanTiRepository;
 
@@ -55,7 +57,7 @@ class ZhuanTisController extends Controller
     public function store(ZhuanTiCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $category = $this->repository->create($request->all());
 
@@ -87,7 +89,7 @@ class ZhuanTisController extends Controller
     public function update(ZhuanTiUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $category = $this->repository->update($request->all(), $id);
 
