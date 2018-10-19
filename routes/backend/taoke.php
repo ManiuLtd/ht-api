@@ -23,4 +23,6 @@ Route::namespace('Taoke')
         Route::resource('coupon', 'CouponsController');
         //专题
         Route::resource('zhuanti', 'ZhuanTisController');
+        //好货
+        Route::resource('haohuo', 'HaohuosController');
     });

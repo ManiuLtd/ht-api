@@ -242,12 +242,12 @@ class SaveGoods implements ShouldQueue
             $data['introduce'] = $result->itemdesc;
             $data['total_num'] = $result->couponnum;
             $data['receive_num'] = $result->couponreceive2;//当天领取数量
-            $data['type'] = 1;//?
+            $data['type'] = 1;
             $data['status'] = 0;
             $data['videoid'] = $result->videoid;
             $data['activity_type'] = $this->GetactivityType($result->activity_type);
-            $data['start_time'] = Carbon::createFromTimestamp(intval($result->couponstarttime / 1000))->toDateTimeString();
-            $data['end_time'] = Carbon::createFromTimestamp(intval($result->couponendtime / 1000))->toDateTimeString();
+            $data['start_time'] = $result->couponstarttime ? date('Y-m-d H:i:s',$result->couponstarttime) : '';
+            $data['end_time'] = $result->couponendtime ? date('Y-m-d H:i:s',$result->couponendtime) : '';
             $data['starttime'] = $result->start_time ? date('Y-m-d H:i:s',$result->start_time) : '';
             $data['endtime'] = $result->end_time ? date('Y-m-d H:i:s',$result->end_time) : '';
             $data['created_at'] = Carbon::now()->toDateTimeString();
