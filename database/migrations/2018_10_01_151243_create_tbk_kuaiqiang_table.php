@@ -42,6 +42,7 @@ class CreateTbkKuaiqiangTable extends Migration
             $table->timestamp('end_time')->nullable();  //快抢结束时间
             $table->tinyInteger('type')->nullable();  //	快抢开抢状态：1快抢即将开始；2快抢商品已抢光；3快抢商品正在快抢中
             $table->nullableTimestamps();
+            $table->softDeletes();
 
         });
     }
