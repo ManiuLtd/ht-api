@@ -6,9 +6,9 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class KuaiqiangValidator.
+ * Class KuaiQiangValidator.
  */
-class KuaiqiangValidator extends LaravelValidator
+class KuaiQiangValidator extends LaravelValidator
 {
     /**
      * Validation Rules.

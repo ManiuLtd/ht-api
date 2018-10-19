@@ -23,7 +23,7 @@ class DownItem implements ShouldQueue
 
 
     /**
-     * JingxuanDp constructor.
+     * JingXuan constructor.
      * @param $results
      */
     public function __construct($results)

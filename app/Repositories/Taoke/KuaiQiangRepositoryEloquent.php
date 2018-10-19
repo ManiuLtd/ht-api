@@ -2,22 +2,21 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\Quan;
-use App\Validators\Taoke\QuanValidator;
+use App\Models\Taoke\Kuaiqiang;
+use App\Validators\Taoke\KuaiQiangValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Taoke\QuanRepository;
+use App\Repositories\Interfaces\Taoke\KuaiQiangRepository;
 
 /**
- * Class QuanRepositoryEloquent.
+ * Class KuaiQiangRepositoryEloquent.
  */
-class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
+class KuaiQiangRepositoryEloquent extends BaseRepository implements KuaiQiangRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'type',
     ];
 
     /**
@@ -27,7 +26,7 @@ class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
      */
     public function model()
     {
-        return Quan::class;
+        return Kuaiqiang::class;
     }
 
     /**
@@ -37,12 +36,9 @@ class QuanRepositoryEloquent extends BaseRepository implements QuanRepository
      */
     public function validator()
     {
-        return QuanValidator::class;
+        return KuaiQiangValidator::class;
     }
 
-    /**
-     * @return string
-     */
     public function presenter()
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';

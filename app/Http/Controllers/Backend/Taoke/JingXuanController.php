@@ -4,23 +4,23 @@ namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Models\Taoke\JingxuanDp;
+use App\Models\Taoke\JingXuan;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\Taoke\JingxuanDpCreateRequest;
-use App\Http\Requests\Taoke\JingxuanDpUpdateRequest;
-use App\Repositories\Interfaces\Taoke\JingxuanDpRepository;
+use App\Http\Requests\Taoke\JingXuanCreateRequest;
+use App\Http\Requests\Taoke\JingXuanUpdateRequest;
+use App\Repositories\Interfaces\Taoke\JingXuanRepository;
 use App\Validators\Taoke\JingxuanDpValidator;
 
 /**
- * Class JingxuanDpsController.
+ * Class JingXuanController.
  *
  * @package namespace App\Http\Controllers\Taoke;
  */
-class JingxuanDpsController extends Controller
+class JingXuanController extends Controller
 {
     /**
-     * @var JingxuanDpRepository
+     * @var JingXuanRepository
      */
     protected $repository;
 
@@ -30,12 +30,12 @@ class JingxuanDpsController extends Controller
     protected $validator;
 
     /**
-     * JingxuanDpsController constructor.
+     * JingXuanController constructor.
      *
-     * @param JingxuanDpRepository $repository
+     * @param JingXuanRepository $repository
      * @param JingxuanDpValidator $validator
      */
-    public function __construct(JingxuanDpRepository $repository, JingxuanDpValidator $validator)
+    public function __construct(JingXuanRepository $repository, JingxuanDpValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -48,26 +48,25 @@ class JingxuanDpsController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $jingxuanDps = $this->repository->paginate(15);
+        $jingxuanDps = $this->repository->paginate(request ('limit',10));
+
         return json(1001,'获取成功',$jingxuanDps);
     }
 
     /**
-     * @param JingxuanDpCreateRequest $request
+     * @param JingXuanCreateRequest $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function store(JingxuanDpCreateRequest $request)
+    public function store(JingXuanCreateRequest $request)
     {
 
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $data = $request->except('token');
-            $data['pic_url'] = json_encode($data['pic_url']);
-            $jingxuanDp = $this->repository->create($data);
-            return json(1001,'创建成功',$jingxuanDp);
-        } catch (ValidatorException $e) {
-            return json(4001,$e->getMessageBag()->first());
+
+            $jingxuan = $this->repository->create($request->all ());
+            return json(1001,'创建成功',$jingxuan);
+        } catch (\Exception $e) {
+            return json(5001,$e->getMessage ());
         }
 
     }
@@ -86,20 +85,18 @@ class JingxuanDpsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param JingxuanDpUpdateRequest $request
+     * @param JingXuanUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(JingxuanDpUpdateRequest $request, $id)
+    public function update(JingXuanUpdateRequest $request, $id)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $data = $request->except('token');
-            $data['pic_url'] = json_encode($data['pic_url']);
-            $jingxuanDp = $this->repository->update($data,$id);
-            return json(1001,'修改成功',$jingxuanDp);
-        } catch (ValidatorException $e) {
-            return json(4001,$e->getMessageBag()->first());
+            $jingxuan = $this->repository->update($request->all (),$id);
+            return json(1001,'修改成功',$jingxuan);
+        } catch (\Exception $e) {
+            return json(5001,$e->getMessage ());
         }
     }
 

@@ -12,9 +12,9 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\ZhuanTiRepository;
 
 /**
- * Class ZhuanTisController.
+ * Class ZhuanTiController.
  */
-class ZhuanTisController extends Controller
+class ZhuanTiController extends Controller
 {
     /**
      * @var ZhuanTiRepository
@@ -27,7 +27,7 @@ class ZhuanTisController extends Controller
     protected $validator;
 
     /**
-     * ZhuanTisController constructor.
+     * ZhuanTiController constructor.
      *
      * @param ZhuanTiRepository $repository
      * @param ZhuanTiValidator $validator
@@ -62,8 +62,8 @@ class ZhuanTisController extends Controller
             $category = $this->repository->create($request->all());
 
             return json(1001, '添加成功', $category);
-        } catch (ValidatorException $e) {
-            return json(4001, $e->getMessageBag()->first());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessageBag()->first());
         }
     }
 
@@ -94,8 +94,8 @@ class ZhuanTisController extends Controller
             $category = $this->repository->update($request->all(), $id);
 
             return json(1001, '修改成功', $category);
-        } catch (ValidatorException $e) {
-            return json(4001, $e->getMessageBag()->first());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessageBag()->first());
         }
     }
 

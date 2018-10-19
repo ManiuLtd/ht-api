@@ -53,13 +53,12 @@ class SearchController extends Controller
      */
     public function index()
     {
-        try {
-            $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-        } catch (ValidatorException $exception) {
-            return json(4001, $exception->getMessageBag()->first());
-        }
+
 
         try {
+            //TODO 添加SearchValidator
+            $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
             $array = [
                 'type' => request('type'),
                 'sort' => request('sort'),
@@ -67,14 +66,12 @@ class SearchController extends Controller
                 'q' => request('q'),
                 'keywords' => request('keywords'),
             ];
-            if (request('type') == 2) {
+            if (request('type') == 2) {  //确认是否有全网搜搜
                 $rest = $this->couponRepository->searchGoods();
             } else {
                 $rest = $this->TBK->search($array);
             }
-            if ($rest->code == 4001) {
-                return json(4001, $rest->message);
-            }
+
             unset($rest->code);
             unset($rest->message);
 
@@ -84,17 +81,16 @@ class SearchController extends Controller
         }
     }
 
-    // 搜索列表热搜词
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function keywords()
     {
-        if (request('hot') != 1) {
-            return json(4001, 'hot非法');
-        }
         try {
+            //TODO 添加SearchValidator
+            $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
             $resp = $this->TBK->hotSearch();
-            if ($resp['code'] == 4001) {
-                return json(4001, $resp['message']);
-            }
 
             return json(1001, $resp['message'], $resp['data']);
         } catch (\Exception $e) {

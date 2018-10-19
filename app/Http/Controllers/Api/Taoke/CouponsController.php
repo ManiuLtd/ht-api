@@ -52,9 +52,6 @@ class CouponsController extends Controller
     {
         try {
             $detail = $this->tbk->getDetail(['id' => $id]);
-            if ($detail['code'] == 4004) {
-                return json(4001, $detail['message']);
-            }
 
             return json(1001, '获取成功', $detail['data']);
         } catch (\Exception $e) {

@@ -4,16 +4,16 @@ namespace App\Repositories\Taoke;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Taoke\JingxuanDpRepository;
-use App\Models\Taoke\JingxuanDp;
+use App\Repositories\Interfaces\Taoke\JingXuanRepository;
+use App\Models\Taoke\JingXuan;
 use App\Validators\Taoke\JingxuanDpValidator;
 
 /**
- * Class JingxuanDpRepositoryEloquent.
+ * Class JingXuanRepositoryEloquent.
  *
  * @package namespace App\Repositories\Taoke;
  */
-class JingxuanDpRepositoryEloquent extends BaseRepository implements JingxuanDpRepository
+class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +22,7 @@ class JingxuanDpRepositoryEloquent extends BaseRepository implements JingxuanDpR
      */
     public function model()
     {
-        return JingxuanDp::class;
+        return JingXuan::class;
     }
 
     /**

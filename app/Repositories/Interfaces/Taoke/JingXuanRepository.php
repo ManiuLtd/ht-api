@@ -5,11 +5,11 @@ namespace App\Repositories\Interfaces\Taoke;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface JingxuanDpRepository.
+ * Interface JingXuanRepository.
  *
  * @package namespace App\Repositories\Interfaces\Taoke;
  */
-interface JingxuanDpRepository extends RepositoryInterface
+interface JingXuanRepository extends RepositoryInterface
 {
     //
 }

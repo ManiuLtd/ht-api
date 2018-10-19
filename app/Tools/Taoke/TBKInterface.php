@@ -48,7 +48,7 @@ interface TBKInterface
      * 获取热搜词.
      * @return mixed
      */
-    public function hotSearch(array $array = []);
+    public function hotSearch();
 
     /**
      *  好货专场

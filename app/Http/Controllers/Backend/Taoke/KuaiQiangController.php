@@ -3,35 +3,35 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\KuaiqiangValidator;
-use App\Http\Requests\Taoke\KuaiqiangCreateRequest;
-use App\Http\Requests\Taoke\KuaiqiangUpdateRequest;
+use App\Validators\Taoke\KuaiQiangValidator;
+use App\Http\Requests\Taoke\KuaiQiangCreateRequest;
+use App\Http\Requests\Taoke\KuaiQiangUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Repositories\Interfaces\Taoke\KuaiqiangRepository;
+use App\Repositories\Interfaces\Taoke\KuaiQiangRepository;
 
 /**
- * Class KuaiqiangController.
+ * Class KuaiQiangController.
  */
-class KuaiqiangController extends Controller
+class KuaiQiangController extends Controller
 {
     /**
-     * @var KuaiqiangRepository
+     * @var KuaiQiangRepository
      */
     protected $repository;
 
     /**
-     * @var KuaiqiangValidator
+     * @var KuaiQiangValidator
      */
     protected $validator;
 
     /**
-     * KuaiqiangController constructor.
+     * KuaiQiangController constructor.
      *
-     * @param KuaiqiangRepository $repository
-     * @param KuaiqiangValidator $validator
+     * @param KuaiQiangRepository $repository
+     * @param KuaiQiangValidator $validator
      */
-    public function __construct(KuaiqiangRepository $repository, KuaiqiangValidator $validator)
+    public function __construct(KuaiQiangRepository $repository, KuaiQiangValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -52,11 +52,11 @@ class KuaiqiangController extends Controller
     /**
      * 添加优惠券.
      *
-     * @param KuaiqiangCreateRequest $request
+     * @param KuaiQiangCreateRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(KuaiqiangCreateRequest $request)
+    public function store(KuaiQiangCreateRequest $request)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
@@ -86,12 +86,12 @@ class KuaiqiangController extends Controller
     /**
      * 编辑优惠券.
      *
-     * @param KuaiqiangUpdateRequest $request
+     * @param KuaiQiangUpdateRequest $request
      * @param                         $id
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(KuaiqiangUpdateRequest $request, $id)
+    public function update(KuaiQiangUpdateRequest $request, $id)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);

@@ -348,10 +348,9 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * @param array $array
      * @return array|mixed
      */
-    public function hotSearch(array $array = [])
+    public function hotSearch()
     {
         return [];
     }

@@ -336,15 +336,13 @@ class Taobao implements TBKInterface
 //    }
 
     /**
-     * @param array $array
-     * @return array|mixed
+     * @return mixed
      * @throws \Exception
      */
-    public function hotSearch(array $array = [])
+    public function hotSearch()
     {
         $params = [
             'apikey' => $this->HDK_APIKEY,
-            'hot' => 1,
         ];
 
         $resp = Curl::to('http://v2.api.haodanku.com/hot_key')
@@ -355,12 +353,7 @@ class Taobao implements TBKInterface
         if ($resp->code != 1) {
             throw new \Exception($resp->msg);
         }
-        return [
-            'code'=>1001,
-            'message'=>$resp->msg,
-            'data'=>$resp->data
-        ];
-//        return array_slice($resp->data, 0, 20);
+        return $resp->data;
     }
 
     /**

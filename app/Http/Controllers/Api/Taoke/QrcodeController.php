@@ -76,9 +76,9 @@ class QrcodeController extends Controller
 
         return json('1001', '二维码生成分享成功', $res);
     }
+
     /**
      * 邀请海报
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
 

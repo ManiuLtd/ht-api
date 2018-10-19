@@ -25,8 +25,6 @@ Route::namespace('Taoke')
         //分类
         Route::get('category', 'CategoriesController@index');
 
-        //圈子
-        Route::get('quan', 'QuansController@index');
 
         //优惠卷
         Route::resource('coupon', 'CouponsController', [

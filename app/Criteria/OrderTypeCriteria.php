@@ -11,12 +11,10 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 class OrderTypeCriteria implements CriteriaInterface
 {
     /**
-     * Apply criteria in query repository.
-     *
-     * @param string $model
+     * @param $model
      * @param RepositoryInterface $repository
-     *
      * @return mixed
+     * @throws \Exception
      */
     public function apply($model, RepositoryInterface $repository)
     {
@@ -24,7 +22,7 @@ class OrderTypeCriteria implements CriteriaInterface
         $type = request ('type') ?? 1;
         //判断类型是否正确
         if (!in_array ($type, [1, 2, 3, 4])) {
-            return json (4001, '订单类型错误');
+            throw new \Exception('订单类型错误');
         }
         $member = getMember ();
         //直推订单
@@ -45,7 +43,7 @@ class OrderTypeCriteria implements CriteriaInterface
         if ($type == 3) {
             $group = db ('groups')->find ($member->group_id);
             if ($group->member_id != $member->id) {
-                return json ('4001', '该用户无团队订单');
+                throw new \Exception('该用户无团队订单');
             }
 
             return $model->where ('group_id', $member->group_id);
@@ -54,7 +52,7 @@ class OrderTypeCriteria implements CriteriaInterface
         if ($type == 4) {
             $group = db ('groups')->find ($member->group_id);
             if ($group->member_id != $member->id) {
-                return json ('4001', '该用户无补贴订单');
+                throw new \Exception('该用户无补贴订单');
             }
 
             return $model->where ('oldgroup_id', $member->group_id);

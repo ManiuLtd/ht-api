@@ -5,9 +5,9 @@ namespace App\Repositories\Interfaces\Taoke;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface QuanRepository.
+ * Interface CouponRepository.
  */
-interface QuanRepository extends RepositoryInterface
+interface KuaiQiangRepository extends RepositoryInterface
 {
-    //
+
 }

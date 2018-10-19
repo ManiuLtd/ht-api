@@ -11,10 +11,10 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\HaohuoRepository;
 
 /**
- * Class HaohuosController
+ * Class HaohuoController
  * @package App\Http\Controllers\Backend\Taoke
  */
-class HaohuosController extends Controller
+class HaohuoController extends Controller
 {
     /**
      * @var HaohuoRepository
@@ -27,7 +27,7 @@ class HaohuosController extends Controller
     protected $validator;
 
     /**
-     * HaohuosController constructor.
+     * HaohuoController constructor.
      * @param HaohuoRepository $repository
      * @param HaohuoValidator $validator
      */
@@ -42,9 +42,9 @@ class HaohuosController extends Controller
      */
     public function index()
     {
-        $haohuos = $this->repository->paginate(request('limit', 10));
+        $haohuo = $this->repository->paginate(request('limit', 10));
 
-        return json(1001, '获取成功', $haohuos);
+        return json(1001, '获取成功', $haohuo);
     }
 
     /**
