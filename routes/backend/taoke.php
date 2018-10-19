@@ -23,4 +23,9 @@ Route::namespace('Taoke')
         Route::resource('coupon', 'CouponsController');
         //专题
         Route::resource('zhuanti', 'ZhuanTisController');
+
+        //精选单品
+        Route::resource('jinxuandp', 'JingxuanDpsController',[
+            'except'=> ['create','edit']
+        ]);
     });
