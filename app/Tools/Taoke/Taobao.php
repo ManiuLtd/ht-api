@@ -498,7 +498,7 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 
+     *
      * @return mixed
      */
     public function updateCoupon(array $params)
@@ -564,5 +564,10 @@ class Taobao implements TBKInterface
     }
 
 
+    public function taokouling()
+    {
+        //TODO 根据pid item 图片地址生成淘口令，如果我不是会员，则用无上级的pid，如果上级也不是超级会员，就用组长的pid
+
+    }
 
 }
