@@ -96,6 +96,7 @@ class Taobao implements TBKInterface
             throw  new \InvalidArgumentException('商品id类型错误');
         }
 
+        //TODO 通过转链接口获取券额
         $topclient = TopClient::connection();
         $req = new TbkItemInfoGetRequest();
         $req->setFields('title,small_images,pict_url,zk_final_price,user_type,volume');
@@ -110,16 +111,15 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * @param array $array
      * @return array|mixed
      * @throws \Exception
      */
-    public function search(array $array = [])
+    public function search()
     {
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = request('q') ?? '';
-
+        //todo 判断关键词是否包含淘口令 如果包含 解密淘口令，并使用itemid搜索，不用调用本地搜索  可以直接调用全网搜索
         $keywords = $this->searchByTKL($q);
         if ($keywords == false){
             $params = [
@@ -227,9 +227,9 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 获取订单.
      * @param array $array
      * @return mixed
+     * @throws \Exception
      */
     public function getOrders(array $array = [])
     {
@@ -237,7 +237,7 @@ class Taobao implements TBKInterface
         $params = [
             'appkey' => $this->HMTK_APP_KEY,
             'appsecret' => $this->HMTK_APP_SECRET,
-            'sid' => '1942',
+            'sid' => '1942',  //TODO  淘宝  京东 拼多多 授权 并保存授权信息
             'start_time' => now()->subMinutes(9)->toDateTimeString(),
             'span' => 600,
             'signurl' => 0,
@@ -251,89 +251,12 @@ class Taobao implements TBKInterface
         $resp = json_decode($resp);
 
         if (!isset($resp->n_tbk_order)) {
-            return [
-                'code' => 5001,
-                'message' => '没有数据',
-            ];
+            throw  new \Exception('没有数据');
         }
 
-        return [
-            'code' => 1001,
-            'message' => '获取成功',
-            'data' => $resp->n_tbk_order,
-        ];
+        return $resp->n_tbk_order;
 
     }
-
-    /**
-     * 自动绑定订单.
-     * @param array $array
-     * @return mixed
-     */
-    public function autoBindOrder(array $array = [])
-    {
-        // TODO: Implement autoBindOrder() method.
-    }
-
-    /**
-     * 爬虫
-     * @param array $params
-     * @return array|mixed
-     * @throws \Exception
-     */
-//    public function spider(array $params = [])
-//    {
-//        $type = $params['type'] ?? 'total';
-//        $all = $params['all'] ?? true;
-//        $page = $params['page'] ?? 1;
-//
-//        $params = [
-//            'r' => 'Port/index',
-//            'appkey' => $this->DTK_API_KEY,
-//            'v' => '2',
-//            'page' => $page,
-//        ];
-//        //爬虫类型
-//        switch ($type) {
-//            case 'total':
-//                $params['type'] = 'total';
-//                break;
-//            case 'paoliang':
-//                $params['type'] = 'paoliang';
-//                break;
-//            case 'top100':
-//                $params['type'] = 'top100';
-//                break;
-//            default:
-//                $params['type'] = 'total';
-//                break;
-//        }
-//        $response = Curl::to($this->DTK_API_URL)
-//            ->withData($params)
-//            ->get();
-//        $response = json_decode($response);
-//
-//        //验证
-//        if (! isset($response->data)) {
-//            throw new \Exception('大淘客接口内容获取失败');
-//        }
-//        $total = $response->data->total_num ?? 0;
-//        if ($total <= 0) {
-//            throw new \Exception('打通可爬虫没有获取到产品');
-//        }
-//        $totalPage = (int) ceil($total / 50);
-//
-//        //不爬取所有的
-//        if (! $all) {
-//            $totalPage = 3;
-//        }
-//
-//        return [
-//            'data' => $response->result,
-//            'totalPage' => $totalPage,
-//            'total' => $total,
-//        ];
-//    }
 
     /**
      * @return mixed

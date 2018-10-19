@@ -88,4 +88,44 @@ class Taobao extends Command
             $this->warn($e->getMessage());
         }
     }
+
+    protected function all()
+    {
+        //TODO 爬取所有，代码从tools搬过来
+    }
+
+    protected function haohuo()
+    {
+       //TODO 好货专场，代码从tools搬过来
+    }
+
+    protected function danpin()
+    {
+        //TODO 精选单品，代码从tools搬过来
+    }
+
+    protected function zhuanti()
+    {
+        //TODO 精选专题，代码从tools搬过来
+    }
+
+    protected function kuaiqiang()
+    {
+        //TODO 精选专题，代码从tools搬过来
+    }
+
+    protected function timingItems()
+    {
+        //TODO 定时拉取，代码从tools搬过来
+    }
+
+    protected function updateCoupon()
+    {
+        //TODO 商品更新，代码从tools搬过来
+    }
+
+    protected function deleteCoupon()
+    {
+        //TODO 失效商品，代码从tools搬过来
+    }
 }

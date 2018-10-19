@@ -62,20 +62,17 @@ class JingDong implements TBKInterface
     }
 
     /**
-     * 获取详情.
-     * @param array $array
      * @return array|mixed
+     * @throws \Exception
      */
 
-    public function getDetail(array $array =[])
+    public function getDetail()
     {
-        // Implement getDetail() method.
-        $id = data_get($array, 'id');
+        // TODO 改为咱们自己的
+
+        $id = request ('itemid');
         if (! is_numeric($id)) {
-            return [
-                'code' => 4004,
-                'message' => '商品id类型错误！',
-            ];
+            throw new \Exception('商品id类型错误');
         }
         $params = [
             'appid' => $this->appid,
@@ -87,29 +84,23 @@ class JingDong implements TBKInterface
             ->post();
         $response = json_decode($response);
         if ($response->return != 0) {
-            return [
-                'code' => 4004,
-                'message' => '接口调用失败！',
-            ];
+            throw new \Exception('接口调用失败');
+
         }
 
-        return [
-            'code' => 1001,
-            'message' => '获取成功',
-            'data' => $response->result,
-        ];
+        return $response->result;
     }
 
     /**
      * @param array $array
      * @return mixed
      */
-    public function search(array $array = [])
+    public function search()
     {
         //  Implement search() method.
-        $page = data_get($array, 'page', 1);
-        $q = $array['q'];
-        $sort = $array['sort'];
+        $page = request ('page', 1);
+        $q = request ('q');
+        $sort = request('sort');
         $time = now()->toDateTimeString();
         $params = [
             'method' => 'jingdong.union.search.queryCouponGoods',
@@ -124,33 +115,7 @@ class JingDong implements TBKInterface
             'pageIndex' => $page,
 
         ];
-        //sort 1最新 2低价 3高价 4销量 5佣金 6综合
-//        switch ($sort) {
-//            case 1:
-//                $urlparams['sort_name'] = 'inOrderComm30Days';
-//                $urlparams['sort'] = 'desc';
-//                break;
-//            case 2:
-//                $urlparams['sort'] = 'pcPrice';
-//                $urlparams['sort_type'] = 'asc';
-//                break;
-//            case 3:
-//                $urlparams['sort'] = 'pcPrice';
-//                $urlparams['sort_type'] = 'desc';
-//                break;
-//            case 4:
-//                $urlparams['sort'] = 'inOrderCount30Days';
-//                $urlparams['sort_type'] = 'desc';
-//                break;
-//            case 5:
-//                $urlparams['sort'] = 'pcCommission';
-//                $urlparams['sort_type'] = 'desc';
-//                break;
-//            case 6:
-//                break;
-//            default:
-//                break;
-//        }
+
         $signparams = array_merge($params, $urlparams);
         ksort($signparams);
         $sign = http_build_query($signparams);
