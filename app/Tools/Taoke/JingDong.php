@@ -364,10 +364,10 @@ class JingDong implements TBKInterface
 
     /**
      * 失效商品列表
-     * @param array $array
-     * @return mixed
+     * @param array $params
+     * @return array
      */
-    public function DownItems(array $array = [])
+    public function deleteCoupon(array $params)
     {
         return [];
     }

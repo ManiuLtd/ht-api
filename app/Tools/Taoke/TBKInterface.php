@@ -42,6 +42,10 @@ interface TBKInterface
      */
     public function hotSearch();
 
+    /**
+     * @return mixed
+     */
+    public function deleteCoupon(array $params);
 
 
 

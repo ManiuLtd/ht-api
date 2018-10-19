@@ -45,24 +45,16 @@ class DownItems extends Command
      */
     public function handle()
     {
-        $total = 50;
-        $this->info('正在删除失效优惠卷！');
-        $bar = $this->output->createProgressBar($total);
         $end   = date('H');
         if ($end == 0){
             $end   = 23;
         }
         $start = $end - 1;
-        for ($i=1;$i <= $total; $i++) {
-            $rest = $this->TBK->DownItems([
-                'start' => $start,
-                'end' => $end
-            ]);
-            // 队列
-            DownItem::dispatch(data_get($rest,'data.data'));
-            $bar->advance();
-            $this->info(">>>已采集完第{$total}页 ");
-        }
-        $bar->finish();
+        $rest = $this->TBK->deleteCoupon([
+            'start' => $start,
+            'end'   => $end
+        ]);
+        // 队列
+        DownItem::dispatch(data_get($rest,'data.data'));
     }
 }
