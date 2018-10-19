@@ -43,10 +43,31 @@ interface TBKInterface
     public function hotSearch();
 
     /**
+     * 失效商品
      * @return mixed
      */
     public function deleteCoupon(array $params);
 
+    /**
+     * 精选专题
+     * @return mixed
+     */
+    public function zhuanti();
 
+
+     /**
+     * 生成淘口令
+     * @param array $array
+     * @return mixed
+     */
+    public function taokouling(array $array = []);
+
+
+    /**
+     * 精选单品
+     * @param array $array
+     * @return mixed
+     */
+    public function danpin(array $array = []);
 
 }

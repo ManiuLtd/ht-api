@@ -391,7 +391,7 @@ class Taobao implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function JingxuanDP(array $array = [])
+    public function danpin(array $array = [])
     {
         $min_id = data_get($array,'min_id',1);
         $params = [
@@ -421,10 +421,9 @@ class Taobao implements TBKInterface
 
     /**
      * 精选专题
-     * @param array $array
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|mixed
      */
-    public function JingxuanZT(array $array = [])
+    public function zhuanti()
     {
         $params = [
             'apikey' => $this->HDK_APIKEY
@@ -560,11 +559,11 @@ class Taobao implements TBKInterface
         if ($res->code == 0){
             return json('4001','获取失败');
         }
-        return json('1001','获取成功',$res);
+        return $res;
     }
 
 
-    public function taokouling()
+    public function taokouling(array $array = [])
     {
         //TODO 根据pid item 图片地址生成淘口令，如果我不是会员，则用无上级的pid，如果上级也不是超级会员，就用组长的pid
 
