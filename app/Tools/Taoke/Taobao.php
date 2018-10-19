@@ -498,11 +498,10 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 商品更新
-     * @param array $array
+     * 
      * @return mixed
      */
-    public function UpdateItem(array $array = [])
+    public function updateCoupon(array $params)
     {
         $sort = $params['sort'] ?? 1;
         $back = $params['back'] ?? 500;
