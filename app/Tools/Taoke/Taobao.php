@@ -421,10 +421,9 @@ class Taobao implements TBKInterface
 
     /**
      * 精选专题
-     * @param array $array
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|mixed
      */
-    public function JingxuanZT(array $array = [])
+    public function zhuanti()
     {
         $params = [
             'apikey' => $this->HDK_APIKEY
@@ -540,14 +539,14 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 失效商品列表
-     * @param array $array
-     * @return mixed
+     * 失效商品
+     * @param array $params
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function DownItems(array $array = [])
+    public function deleteCoupon(array $params)
     {
-        $start = data_get($array,'start');
-        $end = data_get($array,'end');
+        $start = $params['start'];
+        $end   = $params['end'];
         $params = [
             'apikey' => $this->HDK_APIKEY,
             'start'  => $start,
@@ -560,7 +559,7 @@ class Taobao implements TBKInterface
         if ($res->code == 0){
             return json('4001','获取失败');
         }
-        return json('1001','获取成功',$res);
+        return $res;
     }
 
 
