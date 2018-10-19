@@ -4,6 +4,8 @@ namespace App\Console\Commands\Spider;
 
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
+use App\Jobs\Spider\DownItem;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
 
@@ -179,7 +181,27 @@ class Taobao extends Command
 
     protected function zhuanti()
     {
-        //TODO 精选专题，代码从tools搬过来
+        //精选专题
+        $res = $this->tbk->zhuanti();
+        try {
+            foreach ($res->data as $re){
+                $insert = [
+                    'title'      => $re->name,
+                    'thumb'      => $re->app_image,
+                    'banner'     => $re->image,
+                    'content'    => $re->content,
+                    'start_time' => date('Y-m-d H:i:s',$re->activity_start_time),
+                    'end_time'   => date('Y-m-d H:i:s',$re->activity_end_time),
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                ];
+                db('tbk_zhuanti')->updateOrInsert([
+                    'title' => $re->name
+                ],$insert);
+            }
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
+        }
     }
 
     protected function kuaiqiang()
@@ -216,6 +238,17 @@ class Taobao extends Command
 
     protected function deleteCoupon()
     {
-        //TODO 失效商品，代码从tools搬过来
+        //失效商品
+        $end   = date('H');
+        if ($end == 0){
+            $end   = 23;
+        }
+        $start = $end - 1;
+        $rest = $this->tbk->deleteCoupon([
+            'start' => $start,
+            'end'   => $end
+        ]);
+        // 队列
+        DownItem::dispatch($rest->data);
     }
 }

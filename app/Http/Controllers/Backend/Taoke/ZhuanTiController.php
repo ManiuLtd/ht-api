@@ -63,7 +63,7 @@ class ZhuanTiController extends Controller
 
             return json(1001, '添加成功', $category);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessageBag()->first());
+            return json(5001, $e->getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ class ZhuanTiController extends Controller
 
             return json(1001, '修改成功', $category);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessageBag()->first());
+            return json(5001, $e->getMessage());
         }
     }
 

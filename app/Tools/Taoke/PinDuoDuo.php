@@ -377,10 +377,9 @@ class PinDuoDuo implements TBKInterface
 
     /**
      * 精选专题
-     * @param array $array
-     * @return mixed
+     * @return array|mixed
      */
-    public function JingxuanZT(array $array = [])
+    public function zhuanti()
     {
         return [];
     }
@@ -416,10 +415,10 @@ class PinDuoDuo implements TBKInterface
 
     /**
      * 失效商品列表
-     * @param array $array
-     * @return mixed
+     * @param array $params
+     * @return array
      */
-    public function DownItems(array $array = [])
+    public function deleteCoupon(array $params)
     {
         return [];
     }
