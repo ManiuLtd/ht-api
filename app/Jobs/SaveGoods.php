@@ -74,6 +74,7 @@ class SaveGoods implements ShouldQueue
                 break;
             case 'pinduoduo':
                 $this->savePDDGoods($this->results);
+                break;
             case 'timingItems':
                 $this->saveTimeGoods($this->results);
             default:

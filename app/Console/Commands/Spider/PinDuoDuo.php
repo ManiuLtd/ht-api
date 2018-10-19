@@ -46,7 +46,7 @@ class PinDuoDuo extends Command
     {
         // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
 
-        $this->info('正在爬取大淘客优惠券');
+        $this->info('正在爬取拼多多优惠券');
         $result = $this->tbk->spider();
 
         if ($result['code'] == 4004) {

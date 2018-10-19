@@ -36,6 +36,13 @@ class JingxuanDpRepositoryEloquent extends BaseRepository implements JingxuanDpR
         return JingxuanDpValidator::class;
     }
 
+    /**
+     * @return string
+     */
+    public function presenter()
+    {
+        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+    }
 
     /**
      * Boot up the repository, pushing criteria
