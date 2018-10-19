@@ -8,7 +8,7 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 /**
  * Class CouponValidator.
  */
-class CouponValidator extends LaravelValidator
+class SearchValidator extends LaravelValidator
 {
     /**
      * Validation Rules.
@@ -17,7 +17,12 @@ class CouponValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [],
-        ValidatorInterface::RULE_UPDATE => [],
+        ValidatorInterface::RULE_UPDATE => [
+            'type'=>'required|in:1,2,3',
+        ],
     ];
-    protected $messages = [];
+    protected $messages = [
+        'type.required' => 'type不能为空',
+        'type.in' => 'type值非法',
+    ];
 }

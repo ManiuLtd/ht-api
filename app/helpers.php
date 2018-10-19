@@ -105,6 +105,16 @@ if (! function_exists('getUserId')) {
         return 1;
     }
 }
+if (! function_exists('getUser')) {
+
+    /**
+     * @return int|mixed
+     */
+    function getUser()
+    {
+        return \App\Models\User\User::find(1);
+    }
+}
 
 if (! function_exists('getMemberId')) {
 

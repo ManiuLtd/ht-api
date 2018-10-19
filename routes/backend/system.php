@@ -17,4 +17,10 @@ Route::namespace('System')
         Route::resource('sms', 'SmsController', [
             'only' => ['index'],
         ]);
+
+        //授权相关
+        Route::get('auth','AuthorizationsController@index');
+
+        Route::get('callback','AuthorizationsController@callback');
+
     });
