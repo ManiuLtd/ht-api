@@ -45,5 +45,12 @@ Route::namespace('Taoke')
         Route::get('qrcode/share', 'QrcodeController@share');
         //邀请二维码
         Route::get('qrcode/invite', 'QrcodeController@invite');
+
+        //专题列表
+        Route::get('zhuanti','ZhuanTiController@index');
+        //好货
+        Route::resource('haohuo', 'HaoHuoController', [
+            'only' => ['index'],
+        ]);
     });
 

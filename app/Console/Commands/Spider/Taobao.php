@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
+use App\Jobs\Spider\DownItem;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
 
@@ -128,7 +131,25 @@ class Taobao extends Command
 
     protected function haohuo()
     {
-       //TODO 好货专场，代码从tools搬过来
+        // 好货专场
+        $this->info('正在爬取好货专场');
+        $totalPage = 999999;
+        $bar = $this->output->createProgressBar($totalPage);
+        $min_id = 1;
+        for ($i=1;$i<$totalPage;$i++){
+            $this->info($min_id);
+            $result = $this->tbk->haohuo(['min_id'=>$min_id]);
+            $result = json_decode($result);
+            if($result->code != 1){
+                return;
+            }
+            // 队列
+            Haohuo::dispatch($result->data);
+            $min_id = $result->min_id;
+            $bar->advance();
+            $this->info(">>>已采集完第{$i}页 ");
+        }
+        $bar->finish();
     }
 
 
@@ -160,7 +181,27 @@ class Taobao extends Command
 
     protected function zhuanti()
     {
-        //TODO 精选专题，代码从tools搬过来
+        //精选专题
+        $res = $this->tbk->zhuanti();
+        try {
+            foreach ($res->data as $re){
+                $insert = [
+                    'title'      => $re->name,
+                    'thumb'      => $re->app_image,
+                    'banner'     => $re->image,
+                    'content'    => $re->content,
+                    'start_time' => date('Y-m-d H:i:s',$re->activity_start_time),
+                    'end_time'   => date('Y-m-d H:i:s',$re->activity_end_time),
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                ];
+                db('tbk_zhuanti')->updateOrInsert([
+                    'title' => $re->name
+                ],$insert);
+            }
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
+        }
     }
 
     protected function kuaiqiang()
@@ -170,7 +211,24 @@ class Taobao extends Command
 
     protected function timingItems()
     {
-        //TODO 定时拉取，代码从tools搬过来
+        //定时拉取
+        $totalPage = 50;
+        $bar = $this->output->createProgressBar($totalPage);
+        $min_id = 1;
+        for ($i=1;$i<$totalPage;$i++){
+            $this->info($min_id);
+            $results = $this->tbk->timingItems(['min_id'=>$min_id]);
+            $results = json_decode($results);
+            if($results->code != 1){
+                return;
+            }
+            // 队列
+            SaveGoods::dispatch($results->data,'timingItems');
+            $min_id = $results->min_id;
+            $bar->advance();
+            $this->info(">>>已采集完第{$i}页 ");
+        }
+        $bar->finish();
     }
 
     protected function updateCoupon()
@@ -180,6 +238,17 @@ class Taobao extends Command
 
     protected function deleteCoupon()
     {
-        //TODO 失效商品，代码从tools搬过来
+        //失效商品
+        $end   = date('H');
+        if ($end == 0){
+            $end   = 23;
+        }
+        $start = $end - 1;
+        $rest = $this->tbk->deleteCoupon([
+            'start' => $start,
+            'end'   => $end
+        ]);
+        // 队列
+        DownItem::dispatch($rest->data);
     }
 }
