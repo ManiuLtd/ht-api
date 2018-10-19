@@ -23,7 +23,7 @@ Route::namespace('Taoke')
         //专题
         Route::resource('zhuanti', 'ZhuanTiController');
         //好货
-        Route::resource('haohuo', 'HaohuoController',[
+        Route::resource('haohuo', 'HaoHuoController',[
             'except'=> ['create','edit']
         ]);
 

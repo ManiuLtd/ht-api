@@ -48,5 +48,9 @@ Route::namespace('Taoke')
 
         //专题列表
         Route::get('zhuanti','ZhuanTiController@index');
+        //好货
+        Route::resource('haohuo', 'HaoHuoController', [
+            'only' => ['index'],
+        ]);
     });
 

@@ -9,7 +9,7 @@ use Prettus\Validator\Contracts\ValidatorInterface;
  * Class HaohuoValidator
  * @package App\Validators\Taoke
  */
-class HaohuoValidator extends LaravelValidator
+class HaoHuoValidator extends LaravelValidator
 {
     /**
      * Validation Rules.
@@ -21,19 +21,21 @@ class HaohuoValidator extends LaravelValidator
             'title' => 'required',
             'content' => 'required',
             'introduce' => 'required',
-            'app_hot_image' => 'required|url',
+//            'app_hot_image' => 'required|url',
             'shares' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
+            'text' => 'required',
         ],
         ValidatorInterface::RULE_UPDATE => [
             'title' => 'required',
             'content' => 'required',
             'introduce' => 'required',
-            'app_hot_image' => 'required|url',
+//            'app_hot_image' => 'required|url',
             'shares' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
+            'text' => 'required',
         ],
     ];
 }
