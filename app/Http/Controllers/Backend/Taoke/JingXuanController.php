@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Models\Taoke\JingXuan;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Taoke\JingXuanCreateRequest;
 use App\Http\Requests\Taoke\JingXuanUpdateRequest;
 use App\Repositories\Interfaces\Taoke\JingXuanRepository;

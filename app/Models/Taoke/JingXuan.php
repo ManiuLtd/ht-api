@@ -37,8 +37,18 @@ class JingXuan extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'itemid',
+        'title',
+        'pic_url',
+        'content',
+        'price',
+        'final_price',
+        'coupon_price',
+        'commission_rate',
+        'shares',
+        'comment1',
+        'comment2',
 
-        //TODO 写入所有可插入的字段
     ];
 
 }

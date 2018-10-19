@@ -42,7 +42,18 @@ interface TBKInterface
      */
     public function hotSearch();
 
+    /**
+     * 生成淘口令
+     * @param array $array
+     * @return mixed
+     */
+    public function taokouling(array $array = []);
 
-
+    /**
+     * 精选单品
+     * @param array $array
+     * @return mixed
+     */
+    public function danpin(array $array = []);
 
 }
