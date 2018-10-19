@@ -25,8 +25,8 @@ class CreateTbkZhuantiTable extends Migration
             $table->string('banner', 190)->nullable();  //专题banner（正方形图）
 
             $table->text('content')->nullable();  //专题的介绍文案题
-            $table->timestamp('start_time')->nullable();  //专题活动开始时间戳
-            $table->timestamp('end_time')->nullable();  //专题活动结束时间戳
+            $table->timestamp('start_time')->nullable();  //专题活动开始时间
+            $table->timestamp('end_time')->nullable();  //专题活动结束时间
 
 
 

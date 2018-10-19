@@ -74,6 +74,9 @@ class SaveGoods implements ShouldQueue
                 break;
             case 'pinduoduo':
                 $this->savePDDGoods($this->results);
+                break;
+            case 'timingItems':
+                $this->saveTimeGoods($this->results);
             default:
                 break;
         }
@@ -219,6 +222,45 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
+     * 定时拉取
+     * @param $results
+     */
+    protected function saveTimeGoods($results)
+    {
+        $coupon = new Coupon();
+        $inserts = [];
+        foreach ($results as $result) {
+            $data['title'] = $result->itemtitle;
+            $data['cat'] = $this->setDTKCat($result->fqcat);
+            $data['shop_type'] = $result->shoptype == 'B' ? 2 : 1;
+            $data['pic_url'] = $result->itempic;
+            $data['item_id'] = $result->itemid;
+            $data['volume'] = $result->itemsale;
+            $data['price'] = $result->itemprice;
+            $data['final_price'] = $result->itemprice - $result->couponmoney;
+            $data['coupon_price'] = $result->couponmoney;
+            $data['commission_rate'] = $result->tkrates;
+            $data['introduce'] = $result->itemdesc;
+            $data['total_num'] = $result->couponnum;
+            $data['receive_num'] = $result->couponreceive2;//当天领取数量
+            $data['type'] = 1;//?
+            $data['status'] = 0;
+            $data['videoid'] = $result->videoid;
+            $data['activity_type'] = $this->GetactivityType($result->activity_type);
+            $data['start_time'] = Carbon::createFromTimestamp(intval($result->couponstarttime / 1000))->toDateTimeString();
+            $data['end_time'] = Carbon::createFromTimestamp(intval($result->couponendtime / 1000))->toDateTimeString();
+            $data['starttime'] = $result->start_time ? date('Y-m-d H:i:s',$result->start_time) : '';
+            $data['endtime'] = $result->end_time ? date('Y-m-d H:i:s',$result->end_time) : '';
+            $data['created_at'] = Carbon::now()->toDateTimeString();
+            $data['updated_at'] = Carbon::now()->toDateTimeString();
+            $inserts[] = $data;
+            $coupon::updateOrCreate(
+                ['item_id' => $data['item_id']],
+                $data
+            );
+        }
+    }
+    /**
      * 活动类型：
      * @param $activity_type
      * @return int
@@ -296,7 +338,40 @@ class SaveGoods implements ShouldQueue
      */
     private function setDTKCat($cat)
     {
-
+        switch ($cat){
+            case 1:  //女装
+                return 15;
+            case 2: //男装
+                return 16;
+            case 3: //内衣
+                return 17;
+            case 4: //美妆
+                return 19;
+            case 5: //配饰
+                return 17;
+            case 6: //鞋品
+                return 22;
+            case 7: //箱包
+                return 22;
+            case 8: //儿童
+                return 19;
+            case 9: //母婴
+                return 18;
+            case 10: //居家
+                return 21;
+            case 11: //美食
+                return 25;
+            case 12: //数码
+                return 25;
+            case 13: //家电
+                return 25;
+            case 15: //车品
+                return 24;
+            case 16: //文体
+                return 24;
+            default:
+                return 26;
+        }
     }
 
     /**

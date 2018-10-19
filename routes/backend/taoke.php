@@ -28,4 +28,8 @@ Route::namespace('Taoke')
         Route::resource('jinxuandp', 'JingxuanDpsController',[
             'except'=> ['create','edit']
         ]);
+
+        //快抢商品
+        Route::resource('kuaiqiang', 'KuaiqiangController');
+
     });

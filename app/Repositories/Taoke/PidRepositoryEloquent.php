@@ -5,6 +5,7 @@ namespace App\Repositories\Taoke;
 use App\Models\Taoke\Pid;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\PidValidator;
+use Carbon\Carbon;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\PidRepository;
 
@@ -62,21 +63,26 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
      */
     public function create(array $attributes)
     {
-        $pids = preg_split('/\s+/', $attributes['pid']);
+        $pids = preg_split('/\s+/', $attributes['taobao']);
         if (count($pids) > 0) {
             foreach ($pids as $p) {
                 //禁止重复
-                $pid = db('tbk_pids')->where('pid', $p)->first();
+                $pid = db('tbk_pids')->where('taobao', $p)->first();
                 if (! $pid) {
                     db('tbk_pids')->insert([
-                        'pid' => $p,
+                        'taobao'     => $p,
+                        'user_id'    => getUserId(),
+                        'member_id'  => $attributes['member_id'],
+                        'jingdong'   => $attributes['jingdong'],
+                        'pinduoduo'  => $attributes['pinduoduo'],
+                        'type'       => $attributes['type'],
+                        'created_at' => Carbon::now()->toDateTimeString(),
+                        'updated_at' => Carbon::now()->toDateTimeString(),
                     ]);
                 }
             }
-
             return true;
         }
-
         return false;
     }
 }
