@@ -119,7 +119,7 @@ class Taobao implements TBKInterface
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = request('q') ?? '';
-        
+
         $keywords = $this->searchByTKL($q);
         if ($keywords == false){
             $params = [
