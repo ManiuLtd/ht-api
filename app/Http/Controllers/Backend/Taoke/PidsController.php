@@ -43,7 +43,7 @@ class PidsController extends Controller
      */
     public function index()
     {
-        $pids = $this->repository->with (['user','member'])->paginate(request('limit', 10));
+        $pids = $this->repository->with(['user','member'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $pids);
     }
@@ -77,9 +77,9 @@ class PidsController extends Controller
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $pids = $this->repository->update($request->all(), $id);
+            $this->repository->update($request->all(), $id);
 
-            return json(1001, '更新成功', $pids);
+            return json(1001, '更新成功', $this->repository->with(['user','member'])->find($id));
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
         }

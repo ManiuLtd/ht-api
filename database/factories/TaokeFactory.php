@@ -20,7 +20,7 @@ $factory->define(App\Models\Taoke\Pid::class, function (Faker $faker) {
         'taobao' => $faker->uuid,
         'jingdong' => $faker->uuid,
         'pinduoduo' => $faker->uuid,
-        'type' => array_rand([1, 2]),
+        'status' => rand(0,1),
     ];
 });
 
@@ -38,8 +38,8 @@ $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
         'commission_rate' => rand(10, 999),
         'commission_amount' => $faker->numberBetween(2, 100),
         'pid' => $faker->uuid,
-        'status' => array_rand([1, 2, 3, 4, 5]),
-        'type' => array_rand([1, 2, 3]),
+        'status' => rand(1,5),
+        'type' => rand(1,3),
         'complete_at' => now(),
     ];
 });

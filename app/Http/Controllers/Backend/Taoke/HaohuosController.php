@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Validators\Taoke\HaohuoValidator;
 use App\Http\Requests\Taoke\HaohuoCreateRequest;
 use App\Http\Requests\Taoke\HaohuoUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\HaohuoRepository;
 
@@ -53,7 +54,7 @@ class HaohuosController extends Controller
     public function store(HaohuoCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $haohuo = $this->repository->create($request->all());
 
@@ -85,7 +86,7 @@ class HaohuosController extends Controller
     public function update(HaohuoUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $haohuo = $this->repository->update($request->all(), $id);
 

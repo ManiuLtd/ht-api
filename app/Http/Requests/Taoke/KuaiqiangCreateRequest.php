@@ -4,7 +4,7 @@ namespace App\Http\Requests\Taoke;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class JingxuanDpUpdateRequest extends FormRequest
+class KuaiqiangCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

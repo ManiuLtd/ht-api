@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Taoke;
+namespace App\Http\Controllers\Backend\Taoke;
 
-use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Models\Taoke\JingxuanDp;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\JingxuanDpCreateRequest;
-use App\Http\Requests\JingxuanDpUpdateRequest;
+use App\Http\Requests\Taoke\JingxuanDpCreateRequest;
+use App\Http\Requests\Taoke\JingxuanDpUpdateRequest;
 use App\Repositories\Interfaces\Taoke\JingxuanDpRepository;
 use App\Validators\Taoke\JingxuanDpValidator;
 
@@ -49,133 +49,57 @@ class JingxuanDpsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $jingxuanDps = $this->repository->all();
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $jingxuanDps,
-            ]);
-        }
-
-        return view('jingxuanDps.index', compact('jingxuanDps'));
+        $jingxuanDps = $this->repository->paginate(15);
+        return json(1001,'获取成功',$jingxuanDps);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  JingxuanDpCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @param JingxuanDpCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function store(JingxuanDpCreateRequest $request)
     {
+
         try {
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $jingxuanDp = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'JingxuanDp created.',
-                'data'    => $jingxuanDp->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
+            $data = $request->except('token');
+            $data['pic_url'] = json_encode($data['pic_url']);
+            $jingxuanDp = $this->repository->create($data);
+            return json(1001,'创建成功',$jingxuanDp);
         } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return json(4001,$e->getMessageBag()->first());
         }
+
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        $jingxuanDp = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $jingxuanDp,
-            ]);
-        }
-
-        return view('jingxuanDps.show', compact('jingxuanDp'));
+        $data = $this->repository->find($id);
+        return json(1001,'获取成功',$data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $jingxuanDp = $this->repository->find($id);
-
-        return view('jingxuanDps.edit', compact('jingxuanDp'));
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  JingxuanDpUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @param JingxuanDpUpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(JingxuanDpUpdateRequest $request, $id)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $jingxuanDp = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'JingxuanDp updated.',
-                'data'    => $jingxuanDp->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $data = $request->except('token');
+            $data['pic_url'] = json_encode($data['pic_url']);
+            $jingxuanDp = $this->repository->update($data,$id);
+            return json(1001,'修改成功',$jingxuanDp);
         } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return json(4001,$e->getMessageBag()->first());
         }
     }
 
@@ -189,16 +113,8 @@ class JingxuanDpsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
+        $this->repository->delete($id);
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'JingxuanDp deleted.',
-                'deleted' => $deleted,
-            ]);
-        }
-
-        return redirect()->back()->with('message', 'JingxuanDp deleted.');
+       return json(1001,'删除成功');
     }
 }

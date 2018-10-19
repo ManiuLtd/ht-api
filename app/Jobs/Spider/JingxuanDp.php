@@ -40,6 +40,7 @@ class JingxuanDp implements ShouldQueue
     {
         foreach ($this->results as $result){
             $item = [
+                'itemid' => $result->itemid,
                 'title' => $result->title,
                 'pic_url' => json_encode($result->itempic),
                 'content' => $result->content,
@@ -53,6 +54,9 @@ class JingxuanDp implements ShouldQueue
                 'show_comment' => $result->show_comment,
                 'copy_comment' => $result->copy_comment,
                 'show_at' => date('Y-m-d H:i:s',$result->show_time),
+                'created_at' => now()->toDateTimeString(),
+                'updated_at' => now()->toDateTimeString(),
+
             ];
 
             DB::table('tbk_jingxuan')->updateOrInsert([

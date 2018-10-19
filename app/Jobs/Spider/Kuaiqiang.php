@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Spider;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -52,7 +53,7 @@ class Kuaiqiang implements ShouldQueue
             $data['start_time'] =date('Y-m-d H:i:s',$val->start_time);
 //            $data['end_time'] = $val->end_time;
             $data['type'] = $val->grab_type;
-            $data['created_at'] = now();
+            $data['created_at'] = Carbon::now()->toDateTimeString();
             db('tbk_kuaiqiang')->updateOrInsert(['itemid'=>$data['itemid']],$data);
         }
     }

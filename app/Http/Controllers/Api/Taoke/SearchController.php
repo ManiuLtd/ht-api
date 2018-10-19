@@ -72,11 +72,11 @@ class SearchController extends Controller
             } else {
                 $rest = $this->TBK->search($array);
             }
-            if ($rest['code'] == 4001) {
-                return json(4001, $rest['message']);
+            if ($rest->code == 4001) {
+                return json(4001, $rest->message);
             }
-            unset($rest['code']);
-            unset($rest['message']);
+            unset($rest->code);
+            unset($rest->message);
 
             return json(1001, '获取成功', $rest);
         } catch (\Exception $e) {

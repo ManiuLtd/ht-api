@@ -44,8 +44,6 @@ class CreateTbkCouponsTable extends Migration
             $table->tinyInteger('status')->nullable(); // 1 显示 0不显示(爬取存到数据库的为0)
             $table->timestamp('start_time')->nullable(); //优惠开始时间
             $table->timestamp('end_time')->nullable(); //优惠结束时间
-            $table->timestamp('starttime')->nullable(); //活动开始时间
-            $table->timestamp('endtime')->nullable(); //活动结束时间
             $table->nullableTimestamps();
 
             $table->index('item_id');
