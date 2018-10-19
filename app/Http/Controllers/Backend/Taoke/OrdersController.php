@@ -39,7 +39,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = $this->repository->with('memeber')->paginate(request('limit', 10));
+        $orders = $this->repository->with('member')->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $orders);
     }
@@ -51,7 +51,7 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $orders = $this->repository->with('memeber')->find($id);
+        $orders = $this->repository->with('member')->find($id);
 
         return json(1001, '详情获取成功', $orders);
     }
