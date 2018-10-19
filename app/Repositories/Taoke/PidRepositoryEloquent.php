@@ -85,9 +85,4 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
         }
         return false;
     }
-
-    public function update(array $attributes,$id)
-    {
-
-    }
 }

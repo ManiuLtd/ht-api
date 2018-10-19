@@ -120,10 +120,22 @@ class Taobao implements TBKInterface
         $limit = request('limit') ?? 20;
         $q = request('q') ?? '';
 
-        //TODO 检查关键词是否包含淘口令，如果包含淘口令，使用产品地址搜索，调用下面的searchByTKL方法
         $keywords = $this->searchByTKL($q);
-        if ($keywords != false){
+        if ($keywords == false){
+            $params = [
+                'apikey' => $this->HDK_APIKEY,
+                'keyword' => $q,
+                'back' => 10,
+                'min_id' => 1,
+                'tb_p' => 1,
+            ];
+            $response = Curl::to('http://v2.api.haodanku.com/supersearch')
+                ->withData($params)
+                ->get();
 
+            $response = json_decode($response);
+
+            return $response;
         }
         $params = [
             'appkey' => $this->TKJD_API_KEY,
