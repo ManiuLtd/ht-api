@@ -28,7 +28,9 @@ class Oauth extends Model implements Transformable
         'auth_time',
         'expire_time',
         'type',
-        'user_id'
+        'user_id',
+        'token',
+        'refresh_token',
     ];
 
 }

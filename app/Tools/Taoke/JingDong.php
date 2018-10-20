@@ -62,11 +62,12 @@ class JingDong implements TBKInterface
     }
 
     /**
-     * @return array|mixed
+     * @param array $array
+     * @return mixed
      * @throws \Exception
      */
 
-    public function getDetail()
+    public function getDetail(array $array=[])
     {
         // TODO 改为咱们自己的
 

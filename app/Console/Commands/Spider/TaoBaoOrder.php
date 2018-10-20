@@ -6,6 +6,7 @@ use App\Jobs\SaveGoods;
 use App\Jobs\SaveOrders;
 use App\Tools\Taoke\TBKInterface;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class TaoBaoOrder extends Command
 {
@@ -45,21 +46,35 @@ class TaoBaoOrder extends Command
      */
     public function handle()
     {
+        try {
+            $sids = DB::table('tbk_oauth')->where('type', 1)->get();
+            $sid_arr = $sids->toArray();
+            $bar = $this->output->createProgressBar(10 * count($sid_arr));
+            foreach ($sids as $sid) {
+
 //        $this->info("总页码:{10}");
-        $bar = $this->output->createProgressBar(10);
-        //循环所有页码查出数据
-        for ($page=1;$page<=10;$page++){
-            $resp = $this->TBK->getOrders(['page'=>10]);
-            //写入队列
-            if ($resp['code'] != 1001) {
-                $this->warn($resp['message']);
-                return;
+
+                //循环所有页码查出数据
+                for ($page = 1; $page <= 10; $page++) {
+                    $resp = $this->TBK->getOrders([
+                        'page' => 10,
+                        'sid' => $sid->sid,
+                    ]);
+                    //写入队列
+                    if ($resp['code'] != 1001) {
+                        $this->warn($resp['message']);
+                        return;
+                    }
+                    SaveOrders::dispatch($resp['data'], 'taobao');
+                    $bar->advance();
+                    $this->info(">>>已采集完第{$page}页 ");
+                }
+
             }
-            SaveOrders::dispatch($resp['data'],'taobao');
-            $bar->advance();
-            $this->info(">>>已采集完第{$page}页 ");
+            $bar->finish();
+        }catch (\Exception $e) {
+            $this->warn($e->getMessage());
         }
-        $bar->finish();
 
     }
 }

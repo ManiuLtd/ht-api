@@ -22,5 +22,6 @@ Route::namespace('System')
         Route::get('auth','AuthorizationsController@index');
 
         Route::get('callback','AuthorizationsController@callback');
+//        Route::get('authcode','AuthorizationsController@code');
 
     });

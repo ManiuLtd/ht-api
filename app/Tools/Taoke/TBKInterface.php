@@ -13,9 +13,10 @@ interface TBKInterface
 
     /**
      * 超级搜索
+     * @param array $array
      * @return mixed
      */
-    public function getDetail();
+    public function getDetail(array $array = []);
 
     /**
      * 搜索.
@@ -24,10 +25,11 @@ interface TBKInterface
     public function search();
 
     /**
-     * 获取订单.
+     * 获取订单
+     * @param array $array
      * @return mixed
      */
-    public function getOrders();
+    public function getOrders(array $array=[]);
 
     /**
      * 爬虫
