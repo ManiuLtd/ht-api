@@ -25,9 +25,9 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         'status',
         'inviter_id',
         'member_id',
-        'alipay',
-        'realname',
-        'phone',
+        'alipay' => 'like',
+        'realname' => 'like',
+        'phone' => 'like',
     ];
 
     /**

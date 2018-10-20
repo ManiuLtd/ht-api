@@ -18,6 +18,8 @@ class CategoriesRepositoryEloquent extends BaseRepository implements CategoriesR
      */
     protected $fieldSearchable = [
         'type',
+        'status',
+        'name' => 'like',
     ];
 
     /**

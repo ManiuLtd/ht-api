@@ -21,6 +21,7 @@ $factory->define(App\Models\Cms\Category::class, function (Faker $faker) {
         'logo' => $faker->imageUrl(100, 100),
         'sort' => rand(0, 1000),
         'type' => rand(1, 2),
+        'status' => rand(0, 1),
     ];
 });
 
