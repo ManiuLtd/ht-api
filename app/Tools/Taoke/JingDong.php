@@ -356,7 +356,7 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function UpdateItem(array $array = [])
+    public function updateCoupon(array $array = [])
     {
         return [];
     }
