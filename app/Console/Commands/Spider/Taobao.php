@@ -218,6 +218,7 @@ class Taobao extends Command
 
                 return ;
             }
+            
             // 队列
             $data = data_get($rest,'data.data');
             Kuaiqiang::dispatch($data);
