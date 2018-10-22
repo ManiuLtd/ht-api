@@ -101,7 +101,7 @@ $factory->define(App\Models\Member\Recharge::class, function (Faker $faker) {
         'money' => rand(10, 999),
         'real_money' => rand(10, 999),
         'giving_money' => rand(10, 999),
-        'status' => rand(0, 2),
+        'status' => rand(0, 1),
         'type' => rand(1, 3),
         'pay_time' => now(),
         'created_at' => now(),
