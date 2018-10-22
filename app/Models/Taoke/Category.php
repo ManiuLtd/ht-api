@@ -22,7 +22,7 @@ class Category extends Model implements Transformable
     /**
      * @var array
      */
-    protected $guarded = [
+    protected $fillable = [
         'name',
         'logo',
         'taobao',

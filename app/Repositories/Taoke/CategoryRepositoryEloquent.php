@@ -18,6 +18,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      */
     protected $fieldSearchable = [
         'type',
+        'name' => 'like'
     ];
 
     /**
