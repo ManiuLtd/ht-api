@@ -293,16 +293,14 @@ class PinDuoDuo implements TBKInterface
      * 爬虫
      * @param array $params
      * @return array|mixed
+     * @throws \Exception
      */
     public function spider(array $params)
     {
         //  Implement spider() method.
         $page = $params['page'] ?? 1;
         if ($page > 600) {
-            return [
-                'code' => 4004,
-                'message' => '爬取完成',
-            ];
+            throw new \Exception('爬取完成');
         }
         $time = time();
         $params = [
@@ -325,10 +323,7 @@ class PinDuoDuo implements TBKInterface
         $result = json_decode($result);
 
         if (isset($result->error_response)) {
-            return [
-                'code' => 4004,
-                'message' => $result->error_response->error_msg,
-            ];
+            throw new \Exception($result->error_response->error_msg);
         }
 
         if (isset($result->goods_search_response)) {
