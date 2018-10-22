@@ -261,9 +261,11 @@ class Taobao extends Command
         $bar->finish ();
     }
 
+    /**
+     * 失效商品
+     */
     protected function deleteCoupon()
     {
-        //失效商品
         $end = date ('H');
         if ($end == 0) {
             $end = 23;

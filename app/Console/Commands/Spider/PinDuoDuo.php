@@ -5,6 +5,7 @@ namespace App\Console\Commands\Spider;
 use App\Jobs\SaveGoods;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
+use App\Jobs\SaveOrders;
 
 class PinDuoDuo extends Command
 {
@@ -13,7 +14,7 @@ class PinDuoDuo extends Command
      *
      * @var string
      */
-    protected $signature = 'spider:pdd';
+    protected $signature = 'spider:pdd {name? : The name of the spider} {--all=true}';
 
     /**
      * The console command description.
@@ -44,10 +45,26 @@ class PinDuoDuo extends Command
      */
     public function handle()
     {
+        $name = $this->argument ('name');
+        switch ($name) {
+            case 'order':
+                $this->order();
+                break;
+            default:
+                $this->all();
+                break;
+        }
+
+    }
+
+    public function all()
+    {
         // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
 
         $this->info('正在爬取拼多多优惠券');
-        $result = $this->tbk->spider();
+        $result = $this->tbk->spider([
+            'page' => 1
+        ]);
 
         if ($result['code'] == 4004) {
             $this->warn($result['message']);
@@ -78,5 +95,33 @@ class PinDuoDuo extends Command
             $bar->advance();
             $this->info(" >>>已采集完第{$page}页");
         }
+    }
+
+    public function order()
+    {
+        try {
+            $resp = $this->tbk->getOrders();
+
+            $total_count = data_get($resp, 'data.total_count', 1);
+            $totalPage = (int) ceil($total_count / 50);
+            $this->info("总页码:{$totalPage}");
+            $bar = $this->output->createProgressBar($totalPage);
+
+            for ($page = 1; $page <= $totalPage; $page++) {
+                $response = $this->tbk->getOrders(['page'=>$page]);
+
+                $data = data_get($response, 'data.order_list', null);
+
+                if ($data) {
+                    SaveOrders::dispatch($data, 'pinduoduo');
+                }
+                $bar->advance();
+                $this->info(">>>已采集完第{$page}页 ");
+            }
+            $bar->finish();
+        }catch(\Exception $e){
+            return json('5001',$e->getMessage());
+        }
+
     }
 }
