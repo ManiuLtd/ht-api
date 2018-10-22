@@ -371,15 +371,14 @@ class Taobao implements TBKInterface
             throw  new \Exception($rest->msg);
         }
         return [
-
             'data' => $rest->data,
             'min_id' => $rest->min_id,
-
         ];
     }
 
 
     /**
+     * 定时拉取
      * @param array $params
      * @return mixed
      * @throws \Exception
@@ -403,7 +402,10 @@ class Taobao implements TBKInterface
         if ($results->code != 1) {
             throw  new \Exception($results->msg);
         }
-        return $results;
+        return [
+            'data' => $results->data,
+            'min_id' => $results->min_id,
+        ];
     }
 
     /**
@@ -435,12 +437,9 @@ class Taobao implements TBKInterface
 
         }
         return [
-
             'data' => $rest->data,
             'min_id' => $rest->min_id,
-
         ];
-
     }
 
     /**
@@ -466,7 +465,10 @@ class Taobao implements TBKInterface
             throw new \Exception($res->msg);
 
         }
-        return $res;
+        return [
+            'data' => $res->data,
+            'min_id' => $res->min_id,
+        ];
     }
 
     /**
