@@ -33,14 +33,14 @@ class CreateMembersTable extends Migration
             $table->string('phone', 100)->nullable();
             $table->string('password', 191)->nullable();
             $table->string('headimgurl', 191)->nullable();
-            $table->decimal('credit1', 8, 2)->nullable()->default(0.00);
-            $table->decimal('credit2', 8, 2)->nullable()->default(0.00);
-            $table->decimal('credit3', 8, 2)->nullable()->default(0.00);
+            $table->decimal('credit1', 8, 2)->nullable()->default(0.00);//金额
+            $table->decimal('credit2', 8, 2)->nullable()->default(0.00);//积分
+            $table->decimal('credit3', 8, 2)->nullable()->default(0.00);//经验值
             $table->integer('level_id')->nullable();
             $table->string('realname', 191)->nullable();
             $table->string('alipay', 191)->nullable();
             $table->tinyInteger('status')->nullable()->default(1);
-            $table->timestamp('agent_time')->nullable();
+            $table->timestamp('expired_time')->nullable();//等级到期时间
             $table->nullableTimestamps();
             $table->softDeletes();
 
