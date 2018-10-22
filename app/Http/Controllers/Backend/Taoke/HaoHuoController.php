@@ -7,7 +7,6 @@ use App\Validators\Taoke\HaoHuoValidator;
 use App\Http\Requests\Taoke\HaoHuoCreateRequest;
 use App\Http\Requests\Taoke\HaoHuoUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
 
 /**

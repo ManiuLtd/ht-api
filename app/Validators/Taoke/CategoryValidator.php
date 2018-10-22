@@ -16,16 +16,18 @@ class CategoryValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        'name' => 'required',
-        'type' => 'required',
-        'status' => 'required',
 
-//        ValidatorInterface::RULE_CREATE => [],
-//        ValidatorInterface::RULE_UPDATE => [],
+        ValidatorInterface::RULE_CREATE => [
+            'name' => 'required',
+            'status' => 'required',
+        ],
+        ValidatorInterface::RULE_UPDATE => [
+            'name' => 'required',
+            'status' => 'required',
+        ],
     ];
     protected $messages = [
         'name.required' => '分类名不能为空',
-        'type.required' => '类型不能为空',
         'status.required' => '状态不能为空',
     ];
 }

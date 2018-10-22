@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CategoryValidator;
 use App\Http\Requests\Taoke\CategoryCreateRequest;
 use App\Http\Requests\Taoke\CategoryUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CategoryRepository;
 
@@ -55,7 +56,7 @@ class CategoriesController extends Controller
     public function store(CategoryCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $category = $this->repository->create($request->all());
 
@@ -87,7 +88,7 @@ class CategoriesController extends Controller
     public function update(CategoryUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail();
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $category = $this->repository->update($request->all(), $id);
 
