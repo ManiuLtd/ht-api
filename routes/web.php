@@ -3,7 +3,7 @@
 Route::middleware('web')->namespace('Frontend')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     //测试
-    Route::get('test', 'HomeController@test')->name('test');
+//    Route::get('test', 'HomeController@test')->name('test');
 
 });
 
