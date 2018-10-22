@@ -8,49 +8,6 @@ use Ixudra\Curl\Facades\Curl;
 class JingDong implements TBKInterface
 {
     /**
-     * @var
-     */
-    protected $appid;
-    /**
-     * @var
-     */
-    protected $appkey;
-    /**
-     * @var
-     */
-    protected $applisturl;
-    /**
-     * @var
-     */
-    protected $access_token;
-    /**
-     * @var mixed
-     */
-    protected $jdm_app_key;
-
-    /**
-     * @var
-     */
-    protected $jdm_app_secret;
-    /**
-     * @var mixed
-     */
-    protected $jdmedia_appkey;
-    /**
-     * JingDong constructor.
-     */
-    public function __construct()
-    {
-        $this->appid = data_get(config('coupon'), 'jingdong.JD_APPID');
-        $this->appkey = data_get(config('coupon'), 'jingdong.JD_APPKEY');
-        $this->applisturl = data_get(config('coupon'), 'jingdong.JD_LIST_APPURL');
-        $this->access_token = data_get(config('coupon'), 'jingdong.access_token');
-        $this->jdm_app_key = data_get(config('coupon'), 'jingdong.JDM_APP_KEY');
-        $this->jdm_app_secret = data_get(config('coupon'), 'jingdong.JDM_APP_SECRET');
-        $this->jdmedia_appkey = data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY');
-    }
-
-    /**
      * 获取优惠券地址
      * @param array $array
      * @return mixed
@@ -76,8 +33,8 @@ class JingDong implements TBKInterface
             throw new \Exception('商品id类型错误');
         }
         $params = [
-            'appid' => $this->appid,
-            'appkey' => $this->appkey,
+            'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
+            'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
             'gid' => $id,
         ];
         $response = Curl::to('http://japi.jingtuitui.com/api/get_goods_info')
@@ -93,8 +50,7 @@ class JingDong implements TBKInterface
     }
 
     /**
-     * @param array $array
-     * @return mixed
+     * @return array|\Illuminate\Http\JsonResponse|mixed
      */
     public function search()
     {
@@ -105,8 +61,8 @@ class JingDong implements TBKInterface
         $time = now()->toDateTimeString();
         $params = [
             'method' => 'jingdong.union.search.queryCouponGoods',
-            'access_token' => $this->access_token,
-            'app_key' => $this->jdm_app_key,
+            'access_token' => data_get(config('coupon'), 'jingdong.access_token'),
+            'app_key' => data_get(config('coupon'), 'jingdong.JDM_APP_KEY'),
             'timestamp' => $time,
             'v' => '2.0',
         ];
@@ -120,7 +76,7 @@ class JingDong implements TBKInterface
         $signparams = array_merge($params, $urlparams);
         ksort($signparams);
         $sign = http_build_query($signparams);
-        $sign = strtoupper(md5($this->jdm_app_secret.$sign.$this->jdm_app_secret));
+        $sign = strtoupper(md5(data_get(config('coupon'), 'jingdong.JDM_APP_SECRET').$sign.data_get(config('coupon'), 'jingdong.JDM_APP_SECRET')));
         $params['sign'] = $sign;
         $params['360buy_param_json'] = json_encode($urlparams);
         $response = Curl::to('https://api.jd.com/routerjson')
@@ -203,22 +159,22 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function getOrders(array $array = [])
+    public function getOrders(array $array=[])
     {
         // Implement getOrders() method.
         //  Implement search() method.
-        $page = data_get($array, 'page', 1);
+        $page = $array['page'] ?? 1;
         $time = now()->toDateTimeString();
         $params = [
             'method' => 'jingdong.UnionService.queryOrderListWithKey',
-            'access_token' => $this->access_token,
-            'app_key' => $this->jdm_app_key,
+            'access_token' => data_get(config('coupon'), 'jingdong.access_token'),
+            'app_key' => data_get(config('coupon'), 'jingdong.JDM_APP_KEY'),
             'timestamp' => $time,
             'v' => '2.0',
         ];
         $urlparams = [
             'unionId' => 29047,
-            'key' => $this->jdmedia_appkey,
+            'key' => data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY'),
             'time' => date('YmdH',time()),
             'pageIndex' => $page,
             'pageSize' => 500,
@@ -227,7 +183,7 @@ class JingDong implements TBKInterface
         $signparams = array_merge($params, $urlparams);
         ksort($signparams);
         $sign = http_build_query($signparams);
-        $sign = strtoupper(md5($this->jdm_app_secret.$sign.$this->jdm_app_secret));
+        $sign = strtoupper(md5(data_get(config('coupon'), 'jingdong.JDM_APP_SECRET').$sign.data_get(config('coupon'), 'jingdong.JDM_APP_SECRET')));
         $params['sign'] = $sign;
         $params['360buy_param_json'] = json_encode($urlparams);
         $response = Curl::to('https://api.jd.com/routerjson')
@@ -258,40 +214,34 @@ class JingDong implements TBKInterface
     }
 
     /**
-     * 爬虫.
-     * @param array $array
+     * 爬虫
+     * @param array $params
      * @return array|mixed
+     * @throws \Exception
      */
-    public function spider(array $array = [])
+    public function spider(array $params)
     {
         // TODO: Implement spider() method.
 
-        $page = data_get($array, 'page', 1);
+        $page = $params['page'] ?? 1;
 
         $params = [
-            'appid' => $this->appid,
-            'appkey' => $this->appkey,
+            'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
+            'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
             'num' => 100,
             'page' => $page,
         ];
-        $response = Curl::to($this->applisturl)
+        $response = Curl::to(data_get(config('coupon'), 'jingdong.JD_LIST_APPURL'))
             ->withData($params)
             ->post();
         $response = json_decode($response);
         if ($response->return != 0) {
-            return [
-                'code' => 4001,
-                'message' => $response->result,
-            ];
+            throw new \Exception($response->result);
         }
 
         return [
-            'code' => 1001,
-            'message' => '优惠券获取成功',
-            'data' => [
-                'totalPage' => $response->result->total_page,
-                'data' => $response->result->data,
-            ],
+            'totalPage' => $response->result->total_page,
+            'data' => $response->result->data,
         ];
     }
 

@@ -57,46 +57,47 @@ class PinDuoDuo extends Command
 
     }
 
+    /**
+     * 获取全网优惠卷
+     */
     public function all()
     {
-        // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
+        try{
+            // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
 
-        $this->info('正在爬取拼多多优惠券');
-        $result = $this->tbk->spider([
-            'page' => 1
-        ]);
+            $this->info('正在爬取拼多多优惠券');
+            $result = $this->tbk->spider([
+                'page' => 1
+            ]);
 
-        if ($result['code'] == 4004) {
-            $this->warn($result['message']);
+            $total = data_get($result, 'data.total_count', 0);
+            $totalPage = (int) ceil($total / 100) > 600 ? 600 : (int) ceil($total / 100);
 
-            return;
+            $this->info("优惠券总数:{$total}");
+            $bar = $this->output->createProgressBar($totalPage);
+
+            for ($page = 1; $page <= $totalPage; $page++) {
+                $response = $this->tbk->spider(['page'=>$page]);
+
+                $goods_list = data_get($response, 'data.goods_list', 0);
+
+                if ($goods_list) {
+                    SaveGoods::dispatch($goods_list, 'pinduoduo');
+                }
+
+                $bar->advance();
+                $this->info(" >>>已采集完第{$page}页");
+            }
+        }catch (\Exception $e){
+            $this->warn ($e->getMessage ());
         }
 
-        $total = data_get($result, 'data.total_count', 0);
-        $totalPage = (int) ceil($total / 100) > 600 ? 600 : (int) ceil($total / 100);
 
-        $this->info("优惠券总数:{$total}");
-        $bar = $this->output->createProgressBar($totalPage);
-
-        for ($page = 1; $page <= $totalPage; $page++) {
-            $response = $this->tbk->spider(['page'=>$page]);
-
-            if ($response['code'] == 4004) {
-                $this->warn($response['message']);
-
-                return;
-            }
-            $goods_list = data_get($response, 'data.goods_list', 0);
-
-            if ($goods_list) {
-                SaveGoods::dispatch($goods_list, 'pinduoduo');
-            }
-
-            $bar->advance();
-            $this->info(" >>>已采集完第{$page}页");
-        }
     }
 
+    /**
+     * 拼多多订单
+     */
     public function order()
     {
         try {
@@ -120,7 +121,7 @@ class PinDuoDuo extends Command
             }
             $bar->finish();
         }catch(\Exception $e){
-            return json('5001',$e->getMessage());
+            $this->warn ($e->getMessage ());
         }
 
     }
