@@ -13,70 +13,6 @@ use TopClient\request\TbkTpwdCreateRequest;
 class Taobao implements TBKInterface
 {
     /**
-     * 大淘客API KEY
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $DTK_API_KEY;
-
-    /**
-     * 大淘客接口地址
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $DTK_API_URL;
-
-    /**
-     * 轻淘客API KEY
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $QTK_API_KEY;
-
-    /**
-     * 轻淘客接口地址
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $QTK_API_URL;
-
-    /**
-     * 淘客基地API KEY
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $TKJD_API_KEY;
-
-    /**
-     * 淘客接地接口地址
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $TKJD_API_URL;
-    /**
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $HMTK_APP_KEY;
-    /**
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $HMTK_APP_SECRET;
-    /**
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $HDK_APIKEY;
-
-    /**
-     * Taobao constructor.
-     */
-    public function __construct()
-    {
-        $this->DTK_API_KEY = config ('coupon.taobao.DTK_API_KEY');
-        $this->DTK_API_URL = config ('coupon.taobao.DTK_API_URL');
-        $this->QTK_API_KEY = config ('coupon.taobao.QTK_API_KEY');
-        $this->QTK_API_URL = config ('coupon.taobao.QTK_API_URL');
-        $this->TKJD_API_KEY = config ('coupon.taobao.TKJD_API_KEY');
-        $this->TKJD_API_URL = config ('coupon.taobao.TKJD_API_URL');
-        $this->HMTK_APP_KEY = config ('coupon.taobao.HMTK_APP_KEY');
-        $this->HMTK_APP_SECRET = config ('coupon.taobao.HMTK_APP_SECRET');
-        $this->HDK_APIKEY = config ('coupon.taobao.HDK_APIKEY');
-    }
-
-    /**
      * 获取优惠券地址
      * @param array $array
      * @return mixed
@@ -91,8 +27,8 @@ class Taobao implements TBKInterface
 
         //  Implement getCouponUrl() method.
         $params = [
-            'appkey' => $this->HMTK_APP_KEY,
-            'appsecret' => $this->HMTK_APP_SECRET,
+            'appkey' => config ('coupon.taobao.HMTK_APP_KEY'),
+            'appsecret' => config ('coupon.taobao.HMTK_APP_SECRET'),
             'sid' => $oauth->sid,
             'pid' => $pids->taobao,
             'num_iid' => $array['item_id'],
@@ -165,6 +101,7 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * 搜索
      * @param array $array
      * @return array|mixed
      * @throws \Exception
@@ -177,7 +114,7 @@ class Taobao implements TBKInterface
 
 
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'keyword' => $q,
             'back' => $limit,
             'min_id' => 1,
@@ -247,6 +184,7 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * 获取订单
      * @param array $array
      * @return mixed
      * @throws \Exception
@@ -255,8 +193,8 @@ class Taobao implements TBKInterface
     {
         //  Implement getOrders() method.
         $params = [
-            'appkey' => $this->HMTK_APP_KEY,
-            'appsecret' => $this->HMTK_APP_SECRET,
+            'appkey' => config ('coupon.taobao.HMTK_APP_KEY'),
+            'appsecret' => config ('coupon.taobao.HMTK_APP_SECRET'),
             'sid' => data_get ($array, 'sid', 1942),  //淘宝  京东 拼多多 授权 并保存授权信息
             'start_time' => now ()->subMinutes (9)->toDateTimeString (),
             'span' => 600,
@@ -279,13 +217,14 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * 热搜
      * @return mixed
      * @throws \Exception
      */
     public function hotSearch()
     {
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
         ];
 
         $resp = Curl::to ('http://v2.api.haodanku.com/hot_key')
@@ -301,6 +240,7 @@ class Taobao implements TBKInterface
 
 
     /**
+     * 获取全网优惠卷
      * @param array $array
      * @return array|mixed
      * @throws \Exception
@@ -318,7 +258,7 @@ class Taobao implements TBKInterface
             ];
         }
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'nav' => $type,
             'cid' => 0,
             'back' => 100,
@@ -349,7 +289,7 @@ class Taobao implements TBKInterface
     {
         $min_id = $params['min_id'] ?? 1;
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'min_id' => $min_id,
         ];
         $resp = Curl::to ('http://v2.api.haodanku.com/subject_hot')
@@ -372,7 +312,7 @@ class Taobao implements TBKInterface
     {
         $min_id = $params['min_id'] ?? 1;
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'min_id' => $min_id,
         ];
         $resp = Curl::to ('http://v2.api.haodanku.com/selected_item')
@@ -396,7 +336,7 @@ class Taobao implements TBKInterface
     public function zhuanti()
     {
         $params = [
-            'apikey' => $this->HDK_APIKEY
+            'apikey' => config ('coupon.taobao.HDK_APIKEY')
         ];
         $resp = Curl::to ('http://v2.api.haodanku.com/get_subject')
             ->withData ($params)
@@ -419,7 +359,7 @@ class Taobao implements TBKInterface
         $type = $params['hour_type'] ?? 7;
         $min_id = $params['min_id'] ?? 1;
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'hour_type' => $type,
             'min_id' => $min_id,
         ];
@@ -450,7 +390,7 @@ class Taobao implements TBKInterface
         $timestamp = date ('H', time ());//当前时间的整点
         $min_id = $params['min_id'] ?? 1;
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'start' => $timestamp,
             'end' => $timestamp + 1,
             'min_id' => $min_id,
@@ -481,7 +421,7 @@ class Taobao implements TBKInterface
             throw new \Exception('每页条数不合法');
         }
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'sort' => $sort,
             'back' => $back,
             'min_id' => $min_id,
@@ -514,7 +454,7 @@ class Taobao implements TBKInterface
         $start = $params['start'];
         $end = $params['end'];
         $params = [
-            'apikey' => $this->HDK_APIKEY,
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
             'start' => $start,
             'end' => $end
         ];
@@ -552,7 +492,5 @@ class Taobao implements TBKInterface
         }
         $taokouling = $resp->data->model;
         return $taokouling;
-
     }
-
 }
