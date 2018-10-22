@@ -40,13 +40,17 @@ class Haohuo implements ShouldQueue
             $insert['text'] = $v->copy_text;
             $insert['start_time'] = date('Y-m-d H:i:s',$v->activity_start_time);
             $insert['end_time'] = date('Y-m-d H:i:s',$v->activity_end_time);
-            $itemids = [];
+            $items = [];
             foreach ($v->item_data as $val){
                 if($val->product_id != 0){
-                    $itemids[] = $val->itemid;
+                    $items['itemid'] = $val->itemid;
+                    $items['itemtitle'] = $val->itemtitle;
+                    $items['itemprice'] = $val->itemprice;//在售价
+                    $items['itemendprice'] = $val->itemendprice;//券后价
+                    $items['itempic'] = $val->itempic;//宝贝主图原始图像
                 }
             }
-            $insert['itemid'] = json_encode($itemids);
+            $insert['items'] = json_encode($items);
             $insert['created_at'] = Carbon::now()->toDateTimeString();
             $insert['updated_at'] = Carbon::now()->toDateTimeString();
             db('tbk_haohuo')->updateOrInsert(

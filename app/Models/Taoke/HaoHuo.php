@@ -21,9 +21,7 @@ class HaoHuo extends Model implements Transformable
     public function transform()
     {
         $array = $this->toArray();
-        $itemids = json_decode($array['itemid']);
-        $coupon = Coupon::whereIn('item_id',$itemids)->get();
-        $array['itemid'] = $coupon->toArray();
+        $array['items'] = json_decode($array['items']);
         return $array;
     }
 
