@@ -50,7 +50,7 @@ Route::namespace('Taoke')
         Route::get('zhuanti','ZhuanTiController@index');
 
         //快抢商品
-        Route::get('kuaiqiang','KuaiqiangController@index');
+        Route::get('kuaiqiang','KuaiQiangController@index');
 
 
         //好货

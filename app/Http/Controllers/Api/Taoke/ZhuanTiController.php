@@ -35,14 +35,13 @@ class ZhuanTiController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 专题
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $categories = $this->repository->paginate(request('limit', 10));
+        $zhuanti = $this->repository->paginate(request('limit', 10));
 
-        return json(1001, '获取成功', $categories);
+        return json(1001, '获取成功', $zhuanti);
     }
 }

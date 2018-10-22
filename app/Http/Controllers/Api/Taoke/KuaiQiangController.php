@@ -15,7 +15,7 @@ use App\Repositories\Interfaces\Taoke\KuaiQiangRepository;
 /**
  * Class CategoriesController.
  */
-class KuaiqiangController extends Controller
+class KuaiQiangController extends Controller
 {
     /**
      * @var KuaiqiangRepository
@@ -40,9 +40,8 @@ class KuaiqiangController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 抢购
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {

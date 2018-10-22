@@ -35,14 +35,14 @@ class HaoHuoController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * 好货
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $categories = $this->repository->paginate(request('limit', 10));
+        $haohuo = $this->repository->paginate(request('limit', 10));
 
-        return json(1001, '获取成功', $categories);
+        return json(1001, '获取成功', $haohuo);
     }
 }

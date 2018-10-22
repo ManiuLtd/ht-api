@@ -23,7 +23,7 @@ class CreateTbkCategoriesTable extends Migration
             $table->string('name', 191)->nullable();
             $table->string('logo', 191)->nullable();
             $table->string('taobao', 100)->nullable();
-            $table->string('cjingdong', 100)->nullable();
+            $table->string('jingdong', 100)->nullable();
             $table->string('pinduoduo', 100)->nullable();
             $table->integer('sort')->nullable()->default(100);
             $table->tinyInteger('status')->nullable()->default(1);
