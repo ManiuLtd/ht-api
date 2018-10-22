@@ -46,7 +46,7 @@ class Haohuo implements ShouldQueue
                     $itemids[] = $val->itemid;
                 }
             }
-            $insert['data'] = json_encode($itemids);
+            $insert['itemid'] = json_encode($itemids);
             $insert['created_at'] = Carbon::now()->toDateTimeString();
             $insert['updated_at'] = Carbon::now()->toDateTimeString();
             db('tbk_haohuo')->updateOrInsert(

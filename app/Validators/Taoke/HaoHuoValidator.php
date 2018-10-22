@@ -29,6 +29,7 @@ class HaoHuoValidator extends LaravelValidator
         ],
         ValidatorInterface::RULE_UPDATE => [
             'title' => 'required',
+            'itemid' => 'required',
             'content' => 'required',
             'introduce' => 'required',
 //            'app_hot_image' => 'required|url',

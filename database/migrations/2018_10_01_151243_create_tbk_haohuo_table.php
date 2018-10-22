@@ -27,7 +27,7 @@ class CreateTbkHaohuoTable extends Migration
             $table->integer('shares')->nullable();  //分享次数
             $table->timestamp('start_time')->nullable();  //专场开始时间戳
             $table->timestamp('end_time')->nullable();  //专场结束时间戳
-            $table->text('data')->nullable();  //9个商品数据 json
+            $table->text('itemid')->nullable();  //9个商品数据 json
 
             $table->nullableTimestamps();
 

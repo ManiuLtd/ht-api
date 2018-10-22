@@ -61,8 +61,8 @@ class CategoriesController extends Controller
             $category = $this->repository->create($request->all());
 
             return json(1001, '添加成功', $category);
-        } catch (ValidatorException $e) {
-            return json(4001, $e->getMessageBag()->first());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
         }
     }
 
@@ -93,8 +93,8 @@ class CategoriesController extends Controller
             $category = $this->repository->update($request->all(), $id);
 
             return json(1001, '修改成功', $category);
-        } catch (ValidatorException $e) {
-            return json(4001, $e->getMessageBag()->first());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
         }
     }
 

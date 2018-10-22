@@ -21,9 +21,9 @@ class HaoHuo extends Model implements Transformable
     public function transform()
     {
         $array = $this->toArray();
-        $itemids = json_decode($array['data']);
+        $itemids = json_decode($array['itemid']);
         $coupon = Coupon::whereIn('item_id',$itemids)->get();
-        $array['data'] = $coupon->toArray();
+        $array['itemid'] = $coupon->toArray();
         return $array;
     }
 
@@ -46,10 +46,10 @@ class HaoHuo extends Model implements Transformable
     {
         parent::boot();
         self::creating(function ($model){
-            $model->data = json_encode(request('itemid'));
+            $model->itemid = json_encode(request('itemid'));
         });
         self::updating(function ($model){
-            $model->data = json_encode(request('itemid'));
+            $model->itemid = json_encode(request('itemid'));
         });
     }
 }
