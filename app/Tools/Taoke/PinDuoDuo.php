@@ -8,25 +8,6 @@ use Ixudra\Curl\Facades\Curl;
 class PinDuoDuo implements TBKInterface
 {
     /**
-     * @var mixed
-     */
-    protected $client_id;
-    /**
-     * @var mixed
-     */
-    protected $client_secret;
-
-    /**
-     * Duoduoke constructor.
-     */
-    public function __construct()
-    {
-        $config = config('coupon');
-        $this->client_id = data_get($config, 'pinduoduo.PDD_CLIENT_ID');
-        $this->client_secret = data_get($config, 'pinduoduo.PDD_CLIENT_SECRET');
-    }
-
-    /**
      * 获取优惠券地址
      * @param array $array
      * @return mixed
@@ -54,15 +35,15 @@ class PinDuoDuo implements TBKInterface
         }
         $time = time();
         $params = [
-            'client_id' => $this->client_id,
+            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'goods_id_list' => "[$id]",
             'timestamp' => $time,
             'type' => 'pdd.ddk.goods.detail',
 
         ];
 
-        $str = 'client_id'.$this->client_id.'goods_id_list['.$id.']timestamp'.$time.'typepdd.ddk.goods.detail';
-        $sign = strtoupper(md5($this->client_secret.$str.$this->client_secret));
+        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'goods_id_list['.$id.']timestamp'.$time.'typepdd.ddk.goods.detail';
+        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
 
@@ -127,7 +108,7 @@ class PinDuoDuo implements TBKInterface
                 break;
         }
         $params = [
-            'client_id' => $this->client_id,
+            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'keyword' => $q,
             'page' => $page,
             'page_size' => 100,
@@ -136,9 +117,9 @@ class PinDuoDuo implements TBKInterface
             'type' => 'pdd.ddk.goods.search',
 
         ];
-        $str = 'client_id'.$this->client_id.'keyword'.$q.'page'.$page.'page_size100'.'sort_type'.$sort_type.'timestamp'.$time.'typepdd.ddk.goods.search';
+        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'keyword'.$q.'page'.$page.'page_size100'.'sort_type'.$sort_type.'timestamp'.$time.'typepdd.ddk.goods.search';
 
-        $sign = strtoupper(md5($this->client_secret.$str.$this->client_secret));
+        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
         $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
@@ -233,7 +214,7 @@ class PinDuoDuo implements TBKInterface
         $start_update_time = now()->subDays(30)->timestamp;
         $page = data_get($array,'page',1);
         $params = [
-            'client_id' => $this->client_id,
+            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'start_update_time' => $start_update_time,
             'end_update_time' => $time,
             'timestamp' => $time,
@@ -242,10 +223,10 @@ class PinDuoDuo implements TBKInterface
             'type' => 'pdd.ddk.order.list.increment.get',
         ];
 
-        $str = 'client_id'.$this->client_id.'end_update_time'.$time.'page'.$page.'page_size50'.'start_update_time'.$start_update_time.'timestamp'.$time.'typepdd.ddk.order.list.increment.get';
+        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'end_update_time'.$time.'page'.$page.'page_size50'.'start_update_time'.$start_update_time.'timestamp'.$time.'typepdd.ddk.order.list.increment.get';
 
 
-        $sign = strtoupper(md5($this->client_secret.$str.$this->client_secret));
+        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
         $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
@@ -304,7 +285,7 @@ class PinDuoDuo implements TBKInterface
         }
         $time = time();
         $params = [
-            'client_id' => $this->client_id,
+            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'page' => $page,
             'page_size' => 100,
             'sort_type' => 6,
@@ -313,8 +294,8 @@ class PinDuoDuo implements TBKInterface
             'with_coupon' => 'true',
         ];
 
-        $str = 'client_id'.$this->client_id.'page'.$page.'page_size100'.'sort_type6'.'timestamp'.$time.'typepdd.ddk.goods.search'.'with_coupontrue';
-        $sign = strtoupper(md5($this->client_secret.$str.$this->client_secret));
+        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'page'.$page.'page_size100'.'sort_type6'.'timestamp'.$time.'typepdd.ddk.goods.search'.'with_coupontrue';
+        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
         $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
