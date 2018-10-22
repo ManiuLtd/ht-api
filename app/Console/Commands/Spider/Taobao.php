@@ -244,7 +244,7 @@ class Taobao extends Command
             for ($i = 1; $i < $totalPage; $i++) {
                 $this->info ($min_id);
                 $results = $this->tbk->timingItems (['min_id' => $min_id]);
-                if($results->min_id != $min_id){
+                if($results['min_id'] != $min_id){
                     //队列
                     SaveGoods::dispatch ($results['data'], 'timingItems');
                     $min_id = $results['min_id'];
@@ -270,12 +270,12 @@ class Taobao extends Command
             for ($i = 1; $i <= $total; $i++) {
 
                 $res = $this->tbk->updateCoupon (['min_id' => $min_id]);
-                if($min_id != $res->min_id){
+                if($min_id != $res['min_id']){
                     // 队列
-                    \App\Jobs\Spider\UpdateItem::dispatch ($res->data);
-                    $min_id = $res->min_id;
+                    \App\Jobs\Spider\UpdateItem::dispatch ($res['data']);
+                    $min_id = $res['min_id'];
                     $bar->advance ();
-                    $this->info (">>>已采集完第{$total}页 ");
+                    $this->info (">>>已采集完第{$min_id}页 ");
                 }
             }
             $bar->finish ();
@@ -300,7 +300,7 @@ class Taobao extends Command
                 'end' => $end
             ]);
             // 队列
-            DownItem::dispatch ($rest->data);
+            DownItem::dispatch ($rest);
         }catch (\Exception $e) {
             $this->warn($e->getMessage());
         }
