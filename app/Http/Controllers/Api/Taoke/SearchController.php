@@ -54,7 +54,7 @@ class SearchController extends Controller
     public function index()
     {
 
-//        try {
+        try {
             //SearchValidator
             $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
@@ -63,11 +63,11 @@ class SearchController extends Controller
                 $rest = $this->TBK->search(['q'=>$rest]);
             }
             return json(1001, '获取成功', $rest);
-//        } catch (ValidatorException $e) {
-//            return json(5001, $e->getMessageBag()->first());
-//        }catch (\Exception $exception){
-//            return json(5001, $exception->getMessage());
-//        }
+        } catch (ValidatorException $e) {
+            return json(5001, $e->getMessageBag()->first());
+        }catch (\Exception $exception){
+            return json(5001, $exception->getMessage());
+        }
     }
 
     /**
