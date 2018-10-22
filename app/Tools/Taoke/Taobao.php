@@ -492,7 +492,5 @@ class Taobao implements TBKInterface
         }
         $taokouling = $resp->data->model;
         return $taokouling;
-
     }
-
 }

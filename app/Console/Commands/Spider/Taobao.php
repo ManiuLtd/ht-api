@@ -4,6 +4,7 @@ namespace App\Console\Commands\Spider;
 
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
+use App\Jobs\SaveOrders;
 use App\Jobs\Spider\DownItem;
 use App\Jobs\Spider\Kuaiqiang;
 use Carbon\Carbon;
@@ -69,6 +70,9 @@ class Taobao extends Command
             case 'deleteCoupon':
                 $this->deleteCoupon ();
                 break;
+            case 'order':
+                $this->getOrders ();
+                break;
             default:
                 $this->all ();
                 break;
@@ -126,47 +130,53 @@ class Taobao extends Command
     protected function haohuo()
     {
         // 好货专场
-        $this->info ('正在爬取好货专场');
-        $totalPage = 1000;
-        $bar = $this->output->createProgressBar ($totalPage);
-        $min_id = 1;
-        for ($i = 1; $i < $totalPage; $i++) {
-            $this->info ($min_id);
-            $result = $this->tbk->haohuo (['min_id' => $min_id]);
-
-            // 队列
-            Haohuo::dispatch ($result->data);
-            $min_id = $result->min_id;
-            $bar->advance ();
-            $this->info (">>>已采集完第{$i}页 ");
+        try{
+            $this->info ('正在爬取好货专场');
+            $totalPage = 1000;
+            $bar = $this->output->createProgressBar ($totalPage);
+            $min_id = 1;
+            for ($i = 1; $i < $totalPage; $i++) {
+                $this->info ($min_id);
+                $result = $this->tbk->haohuo (['min_id' => $min_id]);
+                // 队列
+                if($result->min_id != $min_id){
+                    Haohuo::dispatch ($result->data);
+                    $min_id = $result->min_id;
+                    $this->info ($min_id);
+                    $bar->advance ();
+                    $this->info (">>>已采集完第{$i}页 ");
+                }
+            }
+            $bar->finish ();
+        }catch (\Exception $e){
+            $this->warn ($e->getMessage ());
         }
-        $bar->finish ();
     }
-
-
     /**
      * 精选单品
      */
     protected function danpin()
     {
-        // 精选单品
-        $total = 50;
-        $this->info ('正在爬取精选单品！');
-        $bar = $this->output->createProgressBar ($total);
-        $min_id = 1;
-        for ($i = 1; $i <= $total; $i++) {
+        try{
+            $total = 50;
+            $this->info ('正在爬取精选单品！');
+            $bar = $this->output->createProgressBar ($total);
+            $min_id = 1;
+            for ($i = 1; $i <= $total; $i++) {
 
-            $resp = $this->tbk->danpin (['min_id' => $min_id]);
-
-            // 队列
-            \App\Jobs\Spider\JingxuanDp::dispatch ($resp['data']);
-
-            $min_id = $resp['min_id'];
-
-            $bar->advance ();
-            $this->info (">>>已采集完第{$total}页 ");
+                $resp = $this->tbk->danpin (['min_id' => $min_id]);
+                if($min_id != $resp['min_id']){
+                    // 队列
+                    \App\Jobs\Spider\JingxuanDp::dispatch ($resp['data']);
+                    $min_id = $resp['min_id'];
+                    $bar->advance ();
+                    $this->info (">>>已采集完第{$total}页 ");
+                }
+            }
+            $bar->finish ();
+        }catch (\Exception $e){
+            $this->warn ($e->getMessage ());
         }
-        $bar->finish ();
     }
 
     /**
@@ -201,22 +211,25 @@ class Taobao extends Command
      */
     protected function kuaiQiang()
     {
-        $total = 5;
-        $bar = $this->output->createProgressBar ($total);
-        $min_id = 1;
-        for ($i = 1; $i <= $total; $i++) {
+        try{
+            $total = 5;
+            $bar = $this->output->createProgressBar ($total);
+            $min_id = 1;
+            for ($i = 1; $i <= $total; $i++) {
 
-            $res = $this->tbk->kuaiQiang (['min_id' => $min_id]);
-
-
-            // 队列
-            Kuaiqiang::dispatch ($res['data']);
-            $min_id = $res['min_id'];
-
-            $bar->advance ();
-            $this->info (">>>已采集完第{$total}页 ");
+                $res = $this->tbk->kuaiQiang (['min_id' => $min_id]);
+                if($min_id != $res['min_id']){
+                    // 队列
+                    Kuaiqiang::dispatch ($res['data']);
+                    $min_id = $res['min_id'];
+                    $bar->advance ();
+                    $this->info (">>>已采集完第{$total}页 ");
+                }
+            }
+            $bar->finish ();
+        }catch (\Exception $e){
+            $this->warn ($e->getMessage ());
         }
-        $bar->finish ();
     }
 
     /**
@@ -224,19 +237,25 @@ class Taobao extends Command
      */
     protected function timingItems()
     {
-        //定时拉取
-        $totalPage = 50;
-        $bar = $this->output->createProgressBar ($totalPage);
-        $min_id = 1;
-        for ($i = 1; $i < $totalPage; $i++) {
-            $this->info ($min_id);
-            $results = $this->tbk->timingItems (['min_id' => $min_id]);
-            SaveGoods::dispatch ($results['data'], 'timingItems');
-            $min_id = $results['min_id'];
-            $bar->advance ();
-            $this->info (">>>已采集完第{$i}页 ");
+        try{
+            $totalPage = 50;
+            $bar = $this->output->createProgressBar ($totalPage);
+            $min_id = 1;
+            for ($i = 1; $i < $totalPage; $i++) {
+                $this->info ($min_id);
+                $results = $this->tbk->timingItems (['min_id' => $min_id]);
+                if($results->min_id != $min_id){
+                    //队列
+                    SaveGoods::dispatch ($results['data'], 'timingItems');
+                    $min_id = $results['min_id'];
+                    $bar->advance ();
+                    $this->info (">>>已采集完第{$i}页 ");
+                }
+            }
+            $bar->finish ();
+        }catch (\Exception $e){
+            $this->warn($e->getMessage());
         }
-        $bar->finish ();
     }
 
     /**
@@ -244,21 +263,25 @@ class Taobao extends Command
      */
     protected function updateCoupon()
     {
-        $total = 50;
-        $bar = $this->output->createProgressBar ($total);
-        $min_id = 1;
-        for ($i = 1; $i <= $total; $i++) {
+        try{
+            $total = 50;
+            $bar = $this->output->createProgressBar ($total);
+            $min_id = 1;
+            for ($i = 1; $i <= $total; $i++) {
 
-            $res = $this->tbk->updateCoupon (['min_id' => $min_id]);
-
-            // 队列
-
-            \App\Jobs\Spider\UpdateItem::dispatch ($res->data);
-            $min_id = $res->min_id;
-            $bar->advance ();
-            $this->info (">>>已采集完第{$total}页 ");
+                $res = $this->tbk->updateCoupon (['min_id' => $min_id]);
+                if($min_id != $res->min_id){
+                    // 队列
+                    \App\Jobs\Spider\UpdateItem::dispatch ($res->data);
+                    $min_id = $res->min_id;
+                    $bar->advance ();
+                    $this->info (">>>已采集完第{$total}页 ");
+                }
+            }
+            $bar->finish ();
+        }catch (\Exception $e){
+            $this->warn($e->getMessage());
         }
-        $bar->finish ();
     }
 
     /**
@@ -266,16 +289,49 @@ class Taobao extends Command
      */
     protected function deleteCoupon()
     {
-        $end = date ('H');
-        if ($end == 0) {
-            $end = 23;
+        try{
+            $end = date ('H');
+            if ($end == 0) {
+                $end = 23;
+            }
+            $start = $end - 1;
+            $rest = $this->tbk->deleteCoupon ([
+                'start' => $start,
+                'end' => $end
+            ]);
+            // 队列
+            DownItem::dispatch ($rest->data);
+        }catch (\Exception $e) {
+            $this->warn($e->getMessage());
         }
-        $start = $end - 1;
-        $rest = $this->tbk->deleteCoupon ([
-            'start' => $start,
-            'end' => $end
-        ]);
-        // 队列
-        DownItem::dispatch ($rest->data);
+    }
+
+    /**
+     * 获取订单
+     */
+    protected function getOrders()
+    {
+        try {
+            $sids = db('tbk_oauth')->where('type', 1)->get();
+            $sid_arr = $sids->toArray();
+            $bar = $this->output->createProgressBar(10 * count($sid_arr));
+            foreach ($sids as $sid) {
+//        $this->info("总页码:{10}");
+                //循环所有页码查出数据
+                for ($page = 1; $page <= 10; $page++) {
+                    $resp = $this->tbk->getOrders([
+                        'page' => 10,
+                        'sid' => $sid->sid,
+                    ]);
+                    //写入队列
+                    SaveOrders::dispatch($resp['data'], 'taobao');
+                    $bar->advance();
+                    $this->info(">>>已采集完第{$page}页 ");
+                }
+            }
+            $bar->finish();
+        }catch (\Exception $e) {
+            $this->warn($e->getMessage());
+        }
     }
 }
