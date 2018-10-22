@@ -221,9 +221,10 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 获取订单.
+     * 获取订单
      * @param array $array
-     * @return mixed
+     * @return array|mixed
+     * @throws \Exception
      */
     public function getOrders(array $array = [])
     {
@@ -252,11 +253,7 @@ class PinDuoDuo implements TBKInterface
             ->post();
         $data = json_decode($result);
         if (isset($data->error_response)) {
-
-            return [
-                'code' => 5001,
-                'message' => $data->error_response,
-            ];
+            throw new \Exception($data->error_response);
         }
 
         if (isset($data->order_list_get_response)) {
@@ -267,10 +264,8 @@ class PinDuoDuo implements TBKInterface
                 'data' => $data->order_list_get_response,
             ];
         }
-        return [
-            'code' => 5001,
-            'message' => '未知错误',
-        ];
+        throw new \Exception('未知错误');
+
 
     }
 
@@ -295,14 +290,14 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 爬虫.
-     * @param array $array
-     * @return mixed
+     * 爬虫
+     * @param array $params
+     * @return array|mixed
      */
-    public function spider(array $array = [])
+    public function spider(array $params)
     {
         //  Implement spider() method.
-        $page = data_get($array, 'page', 1);
+        $page = $params['page'] ?? 1;
         if ($page > 600) {
             return [
                 'code' => 4004,
