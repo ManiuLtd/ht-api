@@ -460,15 +460,13 @@ class Taobao implements TBKInterface
         $resp = Curl::to ('http://v2.api.haodanku.com/get_down_items')
             ->withData ($params)
             ->get ();
-        $res = json_decode ($resp);
-        if ($res->code != 1) {
-            throw new \Exception($res->msg);
+        $resp = json_decode ($resp);
+
+        if ($resp->code != 1) {
+            throw new \Exception($resp->msg);
 
         }
-        return [
-            'data' => $res->data,
-            'min_id' => $res->min_id,
-        ];
+        return $resp->data;
     }
 
     /**
