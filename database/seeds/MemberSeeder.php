@@ -20,12 +20,12 @@ class MemberSeeder extends Seeder
         DB::table('groups')->truncate();
 
         factory(App\Models\Member\Level::class, 5)->create();
-//        factory(App\Models\Member\CommissionLevel::class, 10)->create();
-        factory(App\Models\Member\Favourite::class, 10)->create();
+        factory(App\Models\Member\Withdraw::class, 100)->create();
+        factory(App\Models\Member\Favourite::class, 100)->create();
         factory(App\Models\Member\Address::class, 5)->create();
         factory(App\Models\Member\CreditLog::class, 100)->create();
         factory(App\Models\Member\Recharge::class, 100)->create();
-        factory(App\Models\Member\Member::class, 50)->create();
+        factory(App\Models\Member\Member::class, 100)->create();
         factory(App\Models\Member\History::class, 100)->create();
         factory(App\Models\Member\Group::class, 50)->create();
     }
