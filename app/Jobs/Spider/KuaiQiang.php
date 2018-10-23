@@ -44,14 +44,9 @@ class KuaiQiang implements ShouldQueue
             $data['pic_url'] = $val->itempic;
             $data['shop_type'] = $val->shoptype;
             $data['coupon_price'] = $val->couponmoney;
-//            $data['video_id'] = $val->videoid;
             $data['video_url'] = $val->material_info->main_video_url;
-//            $data['activity_type'] = $val->activity_type;
             $data['commission_rate'] = $val->tkrates;
-//            $data['coupon_start_time'] = $val->couponstarttime;
-//            $data['coupon_end_time'] = $val->couponendtime;
             $data['start_time'] = date('Y-m-d H:i:s', $val->start_time);
-//            $data['end_time'] = $val->end_time;
             $data['type'] = $val->grab_type;
             $data['created_at'] = Carbon::now()->toDateTimeString();
             db('tbk_kuaiqiang')->updateOrInsert(['itemid'=>$data['itemid']], $data);
