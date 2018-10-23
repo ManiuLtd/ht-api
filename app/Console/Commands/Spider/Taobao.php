@@ -6,7 +6,7 @@ use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
 use App\Jobs\SaveOrders;
 use App\Jobs\Spider\DownItem;
-use App\Jobs\Spider\Kuaiqiang;
+use App\Jobs\Spider\KuaiQiang;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
@@ -167,7 +167,7 @@ class Taobao extends Command
                 $resp = $this->tbk->danpin (['min_id' => $min_id]);
                 if($min_id != $resp['min_id']){
                     // 队列
-                    \App\Jobs\Spider\JingxuanDp::dispatch ($resp['data']);
+                    \App\Jobs\Spider\JingXuan::dispatch ($resp['data']);
                     $min_id = $resp['min_id'];
                     $bar->advance ();
                     $this->info (">>>已采集完第{$total}页 ");
@@ -220,7 +220,7 @@ class Taobao extends Command
                 $res = $this->tbk->kuaiQiang (['min_id' => $min_id]);
                 if($min_id != $res['min_id']){
                     // 队列
-                    Kuaiqiang::dispatch ($res['data']);
+                    KuaiQiang::dispatch ($res['data']);
                     $min_id = $res['min_id'];
                     $bar->advance ();
                     $this->info (">>>已采集完第{$total}页 ");
