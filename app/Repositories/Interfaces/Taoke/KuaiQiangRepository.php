@@ -9,5 +9,4 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface KuaiQiangRepository extends RepositoryInterface
 {
-
 }

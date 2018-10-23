@@ -7,7 +7,6 @@ use App\Validators\Taoke\CategoryValidator;
 use App\Http\Requests\Taoke\CategoryCreateRequest;
 use App\Http\Requests\Taoke\CategoryUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CategoryRepository;
 
 /**

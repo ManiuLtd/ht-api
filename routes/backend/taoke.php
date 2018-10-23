@@ -6,8 +6,6 @@ Route::namespace('Taoke')
         //产品分类
         Route::resource('category', 'CategoriesController');
 
-
-
         //推广位
         Route::resource('pid', 'PidsController', [
             'except' => 'show',
@@ -23,13 +21,13 @@ Route::namespace('Taoke')
         //专题
         Route::resource('zhuanti', 'ZhuanTiController');
         //好货
-        Route::resource('haohuo', 'HaoHuoController',[
-            'except'=> ['create','edit']
+        Route::resource('haohuo', 'HaoHuoController', [
+            'except'=> ['create', 'edit'],
         ]);
 
         //精选单品
-        Route::resource('jinxuandp', 'JingXuanController',[
-            'except'=> ['create','edit']
+        Route::resource('jinxuandp', 'JingXuanController', [
+            'except'=> ['create', 'edit'],
         ]);
 
         //快抢商品

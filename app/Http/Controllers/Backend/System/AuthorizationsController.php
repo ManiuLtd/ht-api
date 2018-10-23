@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Backend\System;
 
+use Ixudra\Curl\Facades\Curl;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\OauthRepository;
-use App\Validators\System\FeedbackValidator;
-use App\Repositories\Interfaces\System\FeedbackRepository;
-use Ixudra\Curl\Facades\Curl;
 
 /**
  * Class FeedbacksController.
@@ -42,7 +40,8 @@ class AuthorizationsController extends Controller
         //多多客
         $ddkbackurl = env('APP_URL').'/api/admin/system/callback';
         $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=3';
-        return json(1001,'获取成功',[
+
+        return json(1001, '获取成功', [
             'tb_url' => $tburi,
             'jd_url' => $jduri,
             'ddkuri' => $ddkuri,
@@ -86,15 +85,13 @@ class AuthorizationsController extends Controller
             }
 
             $this->repository->updateOrCreate($where, $create);
-        }catch (\Exception $e){
-            return json(5001,$e->getMessage());
-
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
         }
-
     }
 
     /**
-     * 京东授权
+     * 京东授权.
      * @return array
      * @throws \Exception
      */
@@ -110,9 +107,10 @@ class AuthorizationsController extends Controller
             ])
             ->post();
         $resp = json_decode($resp);
-        if (!$resp) {
+        if (! $resp) {
             throw new \Exception('请重新授权');
         }
+
         return [
             'token' => $resp->access_token,
             'refresh_token' => $resp->refresh_token,
@@ -129,7 +127,6 @@ class AuthorizationsController extends Controller
      */
     protected function getDDKToekn()
     {
-
         $resp = Curl::to('http://open-api.pinduoduo.com/oauth/token')
             ->withHeader('Content-Type: application/json')
             ->withData(json_encode([
@@ -140,9 +137,10 @@ class AuthorizationsController extends Controller
             ]))
             ->post();
         $resp = json_decode($resp);
-        if (!$resp) {
+        if (! $resp) {
             throw new \Exception('请重新授权');
         }
+
         return [
             'token' => $resp->access_token,
             'refresh_token' => $resp->refresh_token,

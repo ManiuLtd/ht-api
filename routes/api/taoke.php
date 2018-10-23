@@ -25,7 +25,6 @@ Route::namespace('Taoke')
         //分类
         Route::get('category', 'CategoriesController@index');
 
-
         //优惠卷
         Route::resource('coupon', 'CouponsController', [
             'only' => ['index', 'show'],
@@ -33,10 +32,8 @@ Route::namespace('Taoke')
 
         //搜索
 
-        Route::get('search','SearchController@index');
-        Route::get('search/hot','SearchController@keywords');
-
-
+        Route::get('search', 'SearchController@index');
+        Route::get('search/hot', 'SearchController@keywords');
 
         Route::get('search', 'SearchController@index');
         Route::get('search/hot', 'SearchController@keywords');
@@ -47,15 +44,13 @@ Route::namespace('Taoke')
         Route::get('qrcode/invite', 'QrcodeController@invite');
 
         //专题列表
-        Route::get('zhuanti','ZhuanTiController@index');
+        Route::get('zhuanti', 'ZhuanTiController@index');
 
         //快抢商品
-        Route::get('kuaiqiang','KuaiQiangController@index');
-
+        Route::get('kuaiqiang', 'KuaiQiangController@index');
 
         //好货
         Route::resource('haohuo', 'HaoHuoController', [
             'only' => ['index'],
         ]);
     });
-

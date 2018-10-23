@@ -23,15 +23,14 @@ interface MemberRepository extends RepositoryInterface
     public function getMemberChart();
 
     /**
-     * 绑定手机号
+     * 绑定手机号.
      * @return mixed
      */
     public function bindMobile();
 
     /**
-     * 绑定邀请人
+     * 绑定邀请人.
      * @return mixed
      */
     public function bindInviter();
-
 }

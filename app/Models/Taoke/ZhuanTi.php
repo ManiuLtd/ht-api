@@ -3,7 +3,6 @@
 namespace App\Models\Taoke;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -27,6 +26,4 @@ class ZhuanTi extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
-
-
 }

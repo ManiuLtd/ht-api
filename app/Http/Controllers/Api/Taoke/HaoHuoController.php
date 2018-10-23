@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
@@ -8,8 +7,7 @@ use App\Validators\Taoke\HaoHuoValidator;
 use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
 
 /**
- * Class HaoHuoController
- * @package App\Http\Controllers\Api\Taoke
+ * Class HaoHuoController.
  */
 class HaoHuoController extends Controller
 {
@@ -35,7 +33,7 @@ class HaoHuoController extends Controller
     }
 
     /**
-     * 好货
+     * 好货.
      *
      * @return \Illuminate\Http\Response
      */

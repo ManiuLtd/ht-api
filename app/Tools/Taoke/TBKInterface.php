@@ -7,12 +7,11 @@ interface TBKInterface
     /**
      * 领券地址
      * @return mixed
-     *
      */
     public function getCouponUrl();
 
     /**
-     * 超级搜索
+     * 超级搜索.
      * @param array $array
      * @return mixed
      */
@@ -25,14 +24,14 @@ interface TBKInterface
     public function search();
 
     /**
-     * 获取订单
+     * 获取订单.
      * @param array $array
      * @return mixed
      */
-    public function getOrders(array $array=[]);
+    public function getOrders(array $array = []);
 
     /**
-     * 爬虫
+     * 爬虫.
      * @param array $params
      * @return mixed
      */
@@ -43,7 +42,4 @@ interface TBKInterface
      * @return mixed
      */
     public function hotSearch();
-
-
-
 }

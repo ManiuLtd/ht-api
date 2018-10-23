@@ -5,8 +5,7 @@ namespace App\Repositories\Interfaces\Taoke;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface HaohuoRepository
- * @package App\Repositories\Interfaces\Taoke
+ * Interface HaohuoRepository.
  */
 interface HaoHuoRepository extends RepositoryInterface
 {

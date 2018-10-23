@@ -12,10 +12,7 @@ return [
         'HMTK_APP_KEY' => env('HMTK_APP_KEY', '193298714'), //黑马淘客AppKey
         'HMTK_APP_SECRET' => env('HMTK_APP_SECRET', '33591f90704bcfc868871794c80ac185'), //黑马淘客appsecret
 
-
-
         'HDK_APIKEY' => env('HDK_APIKEY', 'poerjewnsjfhsd'), //好单库apikey
-
 
     ],
 

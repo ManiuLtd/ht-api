@@ -3,10 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\MemberUpgrade;
-use App\Models\Member\Group;
-use App\Models\User\User;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -30,12 +26,12 @@ class MemberUpgradeEvent
     {
         $member = $event->member;
         $level = db('member_levels')
-            ->where('level','>',$member->level->level)
-            ->where('status',1)
-            ->orderBy('level','asc')
+            ->where('level', '>', $member->level->level)
+            ->where('status', 1)
+            ->orderBy('level', 'asc')
             ->first();
 
-        if (!$level) {
+        if (! $level) {
             //等级已最高
             return;
         }
@@ -44,7 +40,7 @@ class MemberUpgradeEvent
             //积分不够不能升级
             return;
         }
-        DB::transaction(function () use ($member,$level){
+        DB::transaction(function () use ($member,$level) {
             //可以升级
             $member = db('members')->find($member->id);
             $member->update([
@@ -57,8 +53,8 @@ class MemberUpgradeEvent
                 return;
             }
             //会员未绑定手机号
-            if($member->phone == null){
-                return ;
+            if ($member->phone == null) {
+                return;
             }
             $user = db('users')->insert([
                 'name' => $member->phone,
@@ -78,6 +74,5 @@ class MemberUpgradeEvent
                 'oldgroup_id' => $member->group_id != null ? $member->group_id : null,
             ]);
         });
-        return;
     }
 }

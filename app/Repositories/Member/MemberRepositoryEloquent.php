@@ -2,15 +2,14 @@
 
 namespace App\Repositories\Member;
 
+use Hashids\Hashids;
+use App\Models\User\User;
 use App\Models\Member\Member;
 use App\Criteria\RequestCriteria;
-use App\Models\User\User;
-use App\Validators\Member\MemberValidator;
-use Hashids\Hashids;
 use Illuminate\Support\Facades\Validator;
+use App\Validators\Member\MemberValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Member\MemberRepository;
-use function Sodium\increment;
 
 /**
  * Class MemberRepositoryEloquent.
@@ -110,7 +109,7 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
     }
 
     /**
-     * 绑定手机号
+     * 绑定手机号.
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function bindMobile()
@@ -126,12 +125,12 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         $validator = Validator::make(request()->all(), $rules, $messages);
         //字段验证失败
         if ($validator->fails()) {
-            return json(4001,$validator->errors()->first());
+            return json(4001, $validator->errors()->first());
         }
 
         //验证手机号
-        if (!preg_match("/^1[3456789]{1}\d{9}$/", $phone)) {
-            return json(4001,'手机号格式不正确');
+        if (! preg_match("/^1[3456789]{1}\d{9}$/", $phone)) {
+            return json(4001, '手机号格式不正确');
         }
 
         //验证手机号是否被占用
@@ -139,37 +138,38 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
             ['id', '<>', $member->id],
             'phone' => $phone,
         ])->first()) {
-            return json(4001,'手机号已被其他用户绑定');
+            return json(4001, '手机号已被其他用户绑定');
         }
 
         //验证短信是否过期
-        if (!checkSms($phone,request('code'))) {
-            return json(4001,'验证码不存在或者已过期');
+        if (! checkSms($phone, request('code'))) {
+            return json(4001, '验证码不存在或者已过期');
         }
 
         //验证手机号是否存在
         try {
             //查询用户
             $memberModel = db('members')->find($member->id);
-            if (!$memberModel) {
-                return json(4001,'用户不存在');
+            if (! $memberModel) {
+                return json(4001, '用户不存在');
             }
             $memberModel->update([
 //                'tag' => Hashids::encode($memberModel->id),
                 'phone' => $phone,
-                'password' => bcrypt(request('password'))
+                'password' => bcrypt(request('password')),
             ]);
             //增加积分
             $data = new Member();
-            $data->increment('credit2',20,['remark'=>131313,'operaterId'=>1]);
-            return json(1001,'手机号绑定成功');
+            $data->increment('credit2', 20, ['remark'=>131313, 'operaterId'=>1]);
+
+            return json(1001, '手机号绑定成功');
         } catch (Exception $e) {
-            return json(5001,$e->getMessage());
+            return json(5001, $e->getMessage());
         }
     }
 
     /**
-     * 绑定邀请人
+     * 绑定邀请人.
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function bindInviter()
@@ -179,37 +179,37 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
         $number = request('number');
 
         $decodeID = Hashids::decode($number);
-        if (!isset($decodeID[0])) {
-            return json(4001,'邀请码不存在');
+        if (! isset($decodeID[0])) {
+            return json(4001, '邀请码不存在');
         }
         $inviterId = $decodeID[0];
 
         //禁止绑定已被绑定过的用户
         if ($member->inviter_id != null) {
-            return json(4001,'用户已被绑定');
+            return json(4001, '用户已被绑定');
         }
 
         //验证邀请码是否存在
         $inviterModel = db('members')->find($inviterId);
 
-        if (!$inviterModel) {
-            return json(4001,'邀请码不存在');
+        if (! $inviterModel) {
+            return json(4001, '邀请码不存在');
         }
 
         if ($inviterModel->id == $member->id) {
-            return json(4001,'禁止绑定自己');
+            return json(4001, '禁止绑定自己');
         }
-        if (!$inviterModel->user_id) {
-            return json(4001,'邀请人还没归属客户');
+        if (! $inviterModel->user_id) {
+            return json(4001, '邀请人还没归属客户');
         }
-        if (!$inviterModel->group_id) {
-            return json(4001,'邀请人还没归属组');
+        if (! $inviterModel->group_id) {
+            return json(4001, '邀请人还没归属组');
         }
 
         $userModel = User::find($inviterModel->user_id);
 
         if ($userModel->sms < 0) {
-            return json(4001,'短信余额不足');
+            return json(4001, '短信余额不足');
         }
 
         //绑定上级 并结算短信
@@ -234,13 +234,13 @@ class MemberRepositoryEloquent extends BaseRepository implements MemberRepositor
                     ->where('phone', $member->phone)
                     ->whereNull('user_id')
                     ->update([
-                        'user_id' => $inviterModel->user_id
+                        'user_id' => $inviterModel->user_id,
                     ]);
             }
-            return json(1001,'邀请码绑定成功');
-        } catch (Exception $e) {
-            return json(5001,'邀请码绑定失败'.$e->getMessage());
-        }
 
+            return json(1001, '邀请码绑定成功');
+        } catch (Exception $e) {
+            return json(5001, '邀请码绑定失败'.$e->getMessage());
+        }
     }
 }

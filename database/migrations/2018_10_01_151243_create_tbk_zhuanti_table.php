@@ -28,9 +28,6 @@ class CreateTbkZhuantiTable extends Migration
             $table->timestamp('start_time')->nullable();  //专题活动开始时间
             $table->timestamp('end_time')->nullable();  //专题活动结束时间
 
-
-
-
             $table->nullableTimestamps();
         });
     }

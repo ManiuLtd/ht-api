@@ -3,14 +3,13 @@
 namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\HaoHuo;
-use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
 use App\Validators\Taoke\HaoHuoValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
 
 /**
- * Class HaohuoRepositoryEloquent
- * @package App\Repositories\Taoke
+ * Class HaohuoRepositoryEloquent.
  */
 class HaoHuoRepositoryEloquent extends BaseRepository implements HaoHuoRepository
 {

@@ -29,7 +29,6 @@ class CreateTbkOauthTable extends Migration
             $table->timestamp('expire_time')->nullable();
             $table->tinyInteger('type')->nullable()->default(1);
             $table->nullableTimestamps();
-
         });
     }
 

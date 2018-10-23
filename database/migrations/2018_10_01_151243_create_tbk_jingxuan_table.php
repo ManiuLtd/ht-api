@@ -19,15 +19,15 @@ class CreateTbkJingxuantable extends Migration
     {
         Schema::create('tbk_jingxuan', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('itemid',190)->nullable();
+            $table->string('itemid', 190)->nullable();
             $table->string('title', 190)->nullable();  //宝贝标题
             $table->text('pic_url')->nullable();  //宝贝主图原始图像
 
             $table->text('content')->nullable();  //单品导购内容（表情未处理）
-            $table->decimal('price',12,2)->nullable();  //在售价
-            $table->decimal('final_price',12,2)->nullable();  //宝贝券后价
-            $table->decimal('coupon_price',12,2)->nullable();  //优惠券金额
-            $table->decimal('commission_rate',12,2)->nullable();  //	佣金比例
+            $table->decimal('price', 12, 2)->nullable();  //在售价
+            $table->decimal('final_price', 12, 2)->nullable();  //宝贝券后价
+            $table->decimal('coupon_price', 12, 2)->nullable();  //优惠券金额
+            $table->decimal('commission_rate', 12, 2)->nullable();  //	佣金比例
             $table->integer('shares')->nullable();  //该商品被分享次数
             $table->text('comment1')->nullable();  //导购文案复制内容，含表情  copy_comment  前端返回时淘口令要转换为自己的
             $table->text('comment2')->nullable();  //朋友圈评论复制内容，含表情，多条评论用“|”做区分  copy_content

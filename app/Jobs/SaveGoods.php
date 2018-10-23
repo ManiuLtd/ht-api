@@ -32,7 +32,7 @@ class SaveGoods implements ShouldQueue
     protected $spider;
     /**
      * 优惠券类型.
-     * 1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区
+     * 1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区.
      * @var
      */
     protected $tag;
@@ -108,13 +108,13 @@ class SaveGoods implements ShouldQueue
             $data['introduce'] = trim($result->guide_article);
             $data['total_num'] = $result->couponnum;
             $data['receive_num'] = $result->couponreceive2;
-            $data['tag'] = $tag;//1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区
+            $data['tag'] = $tag; //1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区
             $data['type'] = 1;
             $data['status'] = 0;
             $data['videoid'] = $result->videoid;
             $data['activity_type'] = $this->GetactivityType($result->activity_type);
-            $data['start_time'] = date('Y-m-d H:i:s',$result->couponstarttime);
-            $data['end_time'] = date('Y-m-d H:i:s',$result->couponendtime);
+            $data['start_time'] = date('Y-m-d H:i:s', $result->couponstarttime);
+            $data['end_time'] = date('Y-m-d H:i:s', $result->couponendtime);
 
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
@@ -133,7 +133,6 @@ class SaveGoods implements ShouldQueue
             DB::table('tbk_coupons')->insert($inserts);
         }
     }
-
 
     /**
      * 京推推.
@@ -220,7 +219,7 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
-     * 定时拉取
+     * 定时拉取.
      * @param $results
      */
     protected function saveTimeGoods($results)
@@ -240,15 +239,15 @@ class SaveGoods implements ShouldQueue
             $data['commission_rate'] = $result->tkrates;
             $data['introduce'] = $result->itemdesc;
             $data['total_num'] = $result->couponnum;
-            $data['receive_num'] = $result->couponreceive2;//当天领取数量
+            $data['receive_num'] = $result->couponreceive2; //当天领取数量
             $data['type'] = 1;
             $data['status'] = 0;
             $data['videoid'] = $result->videoid;
             $data['activity_type'] = $this->GetactivityType($result->activity_type);
-            $data['start_time'] = $result->couponstarttime ? date('Y-m-d H:i:s',$result->couponstarttime) : '';
-            $data['end_time'] = $result->couponendtime ? date('Y-m-d H:i:s',$result->couponendtime) : '';
-            $data['starttime'] = $result->start_time ? date('Y-m-d H:i:s',$result->start_time) : '';
-            $data['endtime'] = $result->end_time ? date('Y-m-d H:i:s',$result->end_time) : '';
+            $data['start_time'] = $result->couponstarttime ? date('Y-m-d H:i:s', $result->couponstarttime) : '';
+            $data['end_time'] = $result->couponendtime ? date('Y-m-d H:i:s', $result->couponendtime) : '';
+            $data['starttime'] = $result->start_time ? date('Y-m-d H:i:s', $result->start_time) : '';
+            $data['endtime'] = $result->end_time ? date('Y-m-d H:i:s', $result->end_time) : '';
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $inserts[] = $data;
@@ -258,16 +257,15 @@ class SaveGoods implements ShouldQueue
             );
         }
     }
+
     /**
-     * 活动类型：
+     * 活动类型：.
      * @param $activity_type
      * @return int
-     *
      */
     protected function GetactivityType($activity_type)
     {
-        switch ($activity_type)
-        {
+        switch ($activity_type) {
             case '普通活动':
                 return 1;
                 break;
@@ -283,6 +281,7 @@ class SaveGoods implements ShouldQueue
 
         }
     }
+
     /**
      * 获取佣金比例.
      * @param $result
@@ -336,7 +335,7 @@ class SaveGoods implements ShouldQueue
      */
     private function setDTKCat($cat)
     {
-        switch ($cat){
+        switch ($cat) {
             case 1:  //女装
                 return 15;
             case 2: //男装

@@ -19,12 +19,12 @@ class CreateTbkKuaiqiangTable extends Migration
     {
         Schema::create('tbk_kuaiqiang', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('itemid',190)->nullable();  //宝贝ID
+            $table->string('itemid', 190)->nullable();  //宝贝ID
             $table->string('title', 190)->nullable();  //宝贝标题
             $table->string('short_title', 190)->nullable();  //宝贝短标题
             $table->string('introduce', 190)->nullable();  //宝贝推荐语
             $table->decimal('final_price', 12, 2)->nullable();  //宝贝券后价
-            $table->decimal('price', 12,2)->nullable();  //	在售价
+            $table->decimal('price', 12, 2)->nullable();  //	在售价
             $table->integer('sales')->nullable();  //	宝贝月销量
             $table->integer('today_sale')->nullable();  //	当天销量
             $table->string('pic_url', 190)->nullable();  //	宝贝主图原始图像
@@ -33,7 +33,7 @@ class CreateTbkKuaiqiangTable extends Migration
             $table->decimal('coupon_price', 12, 2)->nullable();  //优惠券金额
             $table->string('video_id', 190)->nullable();  //商品视频ID（id大于0的为有视频单，视频拼接地址
             $table->string('video_url', 190)->nullable();  //	实拍视频地址
-            $table->tinyInteger('activity_type' )->nullable();  //活动类型：普通活动 聚划算 淘抢购
+            $table->tinyInteger('activity_type')->nullable();  //活动类型：普通活动 聚划算 淘抢购
             $table->decimal('commission_rate', 12, 2)->nullable();  //佣金比例
             $table->timestamp('coupon_start_time')->nullable();  //优惠券开始时间
             $table->timestamp('coupon_end_time')->nullable();  //优惠券结束时间
@@ -42,7 +42,6 @@ class CreateTbkKuaiqiangTable extends Migration
             $table->tinyInteger('type')->nullable();  //	快抢开抢状态：1快抢即将开始；2快抢商品已抢光；3快抢商品正在快抢中
             $table->nullableTimestamps();
             $table->softDeletes();
-
         });
     }
 

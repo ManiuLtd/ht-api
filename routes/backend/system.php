@@ -19,9 +19,8 @@ Route::namespace('System')
         ]);
 
         //授权相关
-        Route::get('auth','AuthorizationsController@index');
+        Route::get('auth', 'AuthorizationsController@index');
 
-        Route::get('callback','AuthorizationsController@callback');
+        Route::get('callback', 'AuthorizationsController@callback');
 //        Route::get('authcode','AuthorizationsController@code');
-
     });

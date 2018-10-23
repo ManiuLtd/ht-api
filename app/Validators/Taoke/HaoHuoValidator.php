@@ -6,8 +6,7 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class HaohuoValidator
- * @package App\Validators\Taoke
+ * Class HaohuoValidator.
  */
 class HaoHuoValidator extends LaravelValidator
 {
