@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Member\Group;
+use App\Models\User\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -22,6 +26,13 @@ class HomeController extends Controller
     public function index()
     {
         return view ('home');
+    }
+
+
+    public function test()
+    {
+
+
     }
 
 
