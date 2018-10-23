@@ -29,8 +29,11 @@ class MemberUpgradeEvent
     public function handle(MemberUpgrade $event)
     {
         $member = $event->member;
-        $member_level = $member->level;
-        $level = db('member_levels')->where('level','>',$member_level->level)->where('status',1)->orderBy('level','asc')->first();
+        $level = db('member_levels')
+            ->where('level','>',$member->level->level)
+            ->where('status',1)
+            ->orderBy('level','asc')
+            ->first();
 
         if (!$level) {
             //等级已最高
@@ -43,7 +46,8 @@ class MemberUpgradeEvent
         }
         DB::transaction(function () use ($member,$level){
             //可以升级
-            db('members')->where('id',$member->id)->update([
+            $member = db('members')->find($member->id);
+            $member->update([
                 'level_id' => $level->id,
             ]);
 
@@ -52,22 +56,26 @@ class MemberUpgradeEvent
                 //不是组
                 return;
             }
-            $user = User::create([
-                'name' => $member->nickname,
-                'email' => $member->phone,
+            //会员未绑定手机号
+            if($member->phone == null){
+                return ;
+            }
+            $user = db('users')->insert([
+                'name' => $member->phone,
                 'password' => $member->password ?? Hash::make('123456'),
                 'status' => 1,
             ]);
 
             //创建group
-            $group = Group::create([
+            $group = db('groups')->insert([
                 'member_id' => $member->id,
-                'user_id' => $user->id,
+                'user_id' => 1, //只有一个app
                 'status' => 1,
             ]);
-            db('members')->where('id',$member->id)->update([
+            $member->update([
                 'user_id' => $user->id,
                 'group_id' => $group->id,
+                'oldgroup_id' => $member->group_id != null ? $member->group_id : null,
             ]);
         });
         return;
