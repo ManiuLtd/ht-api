@@ -202,7 +202,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 获取订单
+     * 获取订单.
      * @param array $array
      * @return array|mixed
      * @throws \Exception
@@ -212,7 +212,7 @@ class PinDuoDuo implements TBKInterface
         //  Implement getOrders() method.
         $time = time();
         $start_update_time = now()->subDays(30)->timestamp;
-        $page = data_get($array,'page',1);
+        $page = data_get($array, 'page', 1);
         $params = [
             'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'start_update_time' => $start_update_time,
@@ -224,7 +224,6 @@ class PinDuoDuo implements TBKInterface
         ];
 
         $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'end_update_time'.$time.'page'.$page.'page_size50'.'start_update_time'.$start_update_time.'timestamp'.$time.'typepdd.ddk.order.list.increment.get';
-
 
         $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
@@ -238,7 +237,6 @@ class PinDuoDuo implements TBKInterface
         }
 
         if (isset($data->order_list_get_response)) {
-
             return [
                 'code' => 1001,
                 'message' => '获取成功',
@@ -246,8 +244,6 @@ class PinDuoDuo implements TBKInterface
             ];
         }
         throw new \Exception('未知错误');
-
-
     }
 
     /**
@@ -271,7 +267,7 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * 爬虫
+     * 爬虫.
      * @param array $params
      * @return array|mixed
      * @throws \Exception
@@ -325,6 +321,4 @@ class PinDuoDuo implements TBKInterface
     {
         return [];
     }
-
-
 }

@@ -17,8 +17,8 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'inviter_id' => null,
-        'group_id' => rand(1,50),
-        'oldgroup_id' => rand(1,50),
+        'group_id' => rand(1, 50),
+        'oldgroup_id' => rand(1, 50),
         'wx_unionid' => $faker->uuid,
         'wx_openid1' => $faker->uuid,
         'wx_openid2' => $faker->uuid,
@@ -47,7 +47,7 @@ $factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
         'credit' => rand(100, 1000),
         'column' => 'credit1',
         'remark' => $faker->name,
-        'type'   => array_rand([11,12,13,14,15,21,22,23]),
+        'type'   => array_rand([11, 12, 13, 14, 15, 21, 22, 23]),
         'created_at' => now(),
         'updated_at' => now(),
     ];

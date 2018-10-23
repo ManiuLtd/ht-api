@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\Member;
 
 use App\Http\Controllers\Controller;

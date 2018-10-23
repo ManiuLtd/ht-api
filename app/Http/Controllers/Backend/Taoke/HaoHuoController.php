@@ -10,8 +10,7 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
 
 /**
- * Class HaohuoController
- * @package App\Http\Controllers\Backend\Taoke
+ * Class HaohuoController.
  */
 class HaoHuoController extends Controller
 {

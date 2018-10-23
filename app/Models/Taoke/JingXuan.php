@@ -2,15 +2,12 @@
 
 namespace App\Models\Taoke;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class JingXuan.
- *
- * @package namespace App\Models\Taoke;
  */
 class JingXuan extends Model implements Transformable
 {
@@ -20,14 +17,14 @@ class JingXuan extends Model implements Transformable
 
     protected static function boot()
     {
-        parent::boot ();
+        parent::boot();
 
-        self::creating (function ($model) {
-            $model->pic_url = json_encode (request ('pic_url'));
+        self::creating(function ($model) {
+            $model->pic_url = json_encode(request('pic_url'));
         });
 
-        self::updating (function ($model) {
-            $model->pic_url = json_encode (request ('pic_url'));
+        self::updating(function ($model) {
+            $model->pic_url = json_encode(request('pic_url'));
         });
     }
 
@@ -50,5 +47,4 @@ class JingXuan extends Model implements Transformable
         'comment2',
 
     ];
-
 }

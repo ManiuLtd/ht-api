@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Validators\Taoke\ZhuanTiValidator;
 use App\Http\Requests\Taoke\ZhuanTiCreateRequest;
 use App\Http\Requests\Taoke\ZhuanTiUpdateRequest;
-use Illuminate\Support\Facades\Validator;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\ZhuanTiRepository;
 
 /**

@@ -4,12 +4,10 @@ namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\Coupon;
 use App\Criteria\RequestCriteria;
-use App\Tools\Taoke\TBKInterface;
-use App\Validators\Taoke\CouponValidator;
-use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Taoke\CouponRepository;
-use TopClient\request\WirelessShareTpwdQueryRequest;
 use Orzcc\TopClient\Facades\TopClient;
+use Prettus\Repository\Eloquent\BaseRepository;
+use TopClient\request\WirelessShareTpwdQueryRequest;
+use App\Repositories\Interfaces\Taoke\CouponRepository;
 
 /**
  * Class CouponRepositoryEloquent.
@@ -35,8 +33,6 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     {
         return Coupon::class;
     }
-
-
 
     /**
      * Boot up the repository, pushing criteria.
@@ -66,7 +62,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
 
         if ($rest) {
             $coupon = $this->model->where([
-                'item_id' => $rest
+                'item_id' => $rest,
             ])->get()->toArray();
 
             if ($coupon) {
@@ -75,6 +71,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
 
             return $rest;
         }
+
         return $q;
 
 //        //sort 1最新 2低价 3高价 4销量 5佣金 6综合
@@ -165,10 +162,10 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
             if (! isset($arr['id'])) {
                 return false;
             }
+
             return $arr['id'];
         }
 
         return false;
     }
-
 }

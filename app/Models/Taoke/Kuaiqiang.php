@@ -55,5 +55,4 @@ class Kuaiqiang extends Model implements Transformable
     ];
 
     protected $dates = ['deleted_at'];
-
 }

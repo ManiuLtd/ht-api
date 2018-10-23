@@ -38,8 +38,8 @@ class CreateTbkCouponsTable extends Migration
             $table->string('tag', 50)->nullable(); //标识(主要淘宝用，total、top100等)
             $table->tinyInteger('is_recommend')->default(0); //是否首页推荐显示
             $table->integer('sort')->default(0); //排序
-            $table->string('videoid',191)->default(0); //商品视频ID（id大于0的为有视频单，视频拼接地址  http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/+videoid+.mp4）
-            $table->tinyInteger('activity_type')->nullable();// 活动类型：1普通活动 2聚划算 3淘抢购
+            $table->string('videoid', 191)->default(0); //商品视频ID（id大于0的为有视频单，视频拼接地址  http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/+videoid+.mp4）
+            $table->tinyInteger('activity_type')->nullable(); // 活动类型：1普通活动 2聚划算 3淘抢购
             $table->tinyInteger('type')->nullable(); // 1淘宝 2京东 3拼多多
             $table->tinyInteger('status')->nullable(); // 1 显示 0不显示(爬取存到数据库的为0)
             $table->timestamp('start_time')->nullable(); //优惠开始时间

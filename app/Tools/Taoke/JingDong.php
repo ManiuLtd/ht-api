@@ -12,8 +12,7 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-
-    public function getCouponUrl(array $array =[])
+    public function getCouponUrl(array $array = [])
     {
         // TODO: Implement getCouponUrl() method.
     }
@@ -23,12 +22,11 @@ class JingDong implements TBKInterface
      * @return mixed
      * @throws \Exception
      */
-
-    public function getDetail(array $array=[])
+    public function getDetail(array $array = [])
     {
         // TODO 改为咱们自己的
 
-        $id = request ('itemid');
+        $id = request('itemid');
         if (! is_numeric($id)) {
             throw new \Exception('商品id类型错误');
         }
@@ -43,7 +41,6 @@ class JingDong implements TBKInterface
         $response = json_decode($response);
         if ($response->return != 0) {
             throw new \Exception('接口调用失败');
-
         }
 
         return $response->result;
@@ -55,8 +52,8 @@ class JingDong implements TBKInterface
     public function search()
     {
         //  Implement search() method.
-        $page = request ('page', 1);
-        $q = request ('q');
+        $page = request('page', 1);
+        $q = request('q');
         $sort = request('sort');
         $time = now()->toDateTimeString();
         $params = [
@@ -159,7 +156,7 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function getOrders(array $array=[])
+    public function getOrders(array $array = [])
     {
         // Implement getOrders() method.
         //  Implement search() method.
@@ -175,7 +172,7 @@ class JingDong implements TBKInterface
         $urlparams = [
             'unionId' => 29047,
             'key' => data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY'),
-            'time' => date('YmdH',time()),
+            'time' => date('YmdH', time()),
             'pageIndex' => $page,
             'pageSize' => 500,
         ];
@@ -208,13 +205,13 @@ class JingDong implements TBKInterface
      * @param array $array
      * @return mixed
      */
-    public function submitOrder(array $array =[])
+    public function submitOrder(array $array = [])
     {
         // TODO: Implement submitOrder() method.
     }
 
     /**
-     * 爬虫
+     * 爬虫.
      * @param array $params
      * @return array|mixed
      * @throws \Exception
@@ -252,6 +249,4 @@ class JingDong implements TBKInterface
     {
         return [];
     }
-
-
 }

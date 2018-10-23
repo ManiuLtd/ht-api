@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Haohuo
- * @package App\Models\Taoke
+ * Class Haohuo.
  */
 class HaoHuo extends Model implements Transformable
 {
@@ -22,6 +21,7 @@ class HaoHuo extends Model implements Transformable
     {
         $array = $this->toArray();
         $array['items'] = json_decode($array['items']);
+
         return $array;
     }
 
@@ -38,15 +38,15 @@ class HaoHuo extends Model implements Transformable
     protected $guarded = [];
 
     /**
-     * data是itemid的集合
+     * data是itemid的集合.
      */
     protected static function boot()
     {
         parent::boot();
-        self::creating(function ($model){
+        self::creating(function ($model) {
             $model->itemid = json_encode(request('itemid'));
         });
-        self::updating(function ($model){
+        self::updating(function ($model) {
             $model->itemid = json_encode(request('itemid'));
         });
     }

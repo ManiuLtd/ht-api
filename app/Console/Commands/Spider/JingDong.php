@@ -45,7 +45,7 @@ class JingDong extends Command
      */
     public function handle()
     {
-        $name = $this->argument ('name');
+        $name = $this->argument('name');
         switch ($name) {
             case 'order':
                 $this->order();
@@ -57,16 +57,16 @@ class JingDong extends Command
     }
 
     /**
-     * 获取全网优惠卷
+     * 获取全网优惠卷.
      */
     public function all()
     {
-        try{
+        try {
             // http://www.jingtuitui.com/  账号密码 15538762226  372945452zz
 
             $this->info('正在爬取京推推优惠券');
             $result = $this->tbk->spider([
-                'page' => 1
+                'page' => 1,
             ]);
 
             $totalPage = data_get($result, 'data.totalPage', 1);
@@ -84,33 +84,30 @@ class JingDong extends Command
                 $this->info(">>>已采集完第{$page}页 ");
             }
             $bar->finish();
-        }catch (\Exception $e){
-            $this->warn ($e->getMessage ());
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
         }
-
-
     }
 
     /**
-     * 拼多多订单
+     * 拼多多订单.
      */
     public function order()
     {
         try {
             $bar = $this->output->createProgressBar(10);
             //循环所有页码查出数据
-            for ($page=1;$page<=10;$page++){
+            for ($page = 1; $page <= 10; $page++) {
                 $resp = $this->tbk->getOrders(['page'=>10]);
                 //写入队列
 
-                SaveOrders::dispatch($resp['data'],'jingdong');
+                SaveOrders::dispatch($resp['data'], 'jingdong');
                 $bar->advance();
                 $this->info(">>>已采集完第{$page}页 ");
             }
             $bar->finish();
-        }catch(\Exception $e){
-            $this->warn ($e->getMessage ());
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
         }
-
     }
 }

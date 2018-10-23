@@ -19,12 +19,13 @@ class SaveOrders implements ShouldQueue
      * @var
      */
     protected $type;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($results,$type)
+    public function __construct($results, $type)
     {
         $this->type = $type;
         $this->results = $results;
@@ -37,7 +38,7 @@ class SaveOrders implements ShouldQueue
      */
     public function handle()
     {
-        switch ($this->type){
+        switch ($this->type) {
             case 'taobao':
                 $this->saveTBKOrder($this->results);
                 break;
@@ -54,13 +55,12 @@ class SaveOrders implements ShouldQueue
     }
 
     /**
-     * 淘宝客订单
+     * 淘宝客订单.
      * @param $results
      */
     protected function saveTBKOrder($results)
     {
-
-        foreach ($results as $result){
+        foreach ($results as $result) {
             $item = [
                 'ordernum' => $result->trade_id,
                 'title' => $result->item_title,
@@ -78,10 +78,9 @@ class SaveOrders implements ShouldQueue
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
                 'type' => 1,
-            ],$item);
+            ], $item);
             $item = [];
         }
-
     }
 
     /**
@@ -91,8 +90,7 @@ class SaveOrders implements ShouldQueue
      */
     protected function getStatus($status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 3:
                 return 2;
                 break;
@@ -110,10 +108,9 @@ class SaveOrders implements ShouldQueue
         }
     }
 
-
     protected function savePDDOrder($results)
     {
-        foreach ($results as $result){
+        foreach ($results as $result) {
             $item = [
                 'ordernum' => $result->order_sn,
                 'title' => $result->goods_name,
@@ -121,8 +118,8 @@ class SaveOrders implements ShouldQueue
                 'count' => $result->goods_quantity,
                 'price' => $result->goods_price,
                 'final_price' => $result->order_amount,
-                'commission_rate' => $result->promotion_rate/10,
-                'commission_amount' => $result->promotion_amount/100,
+                'commission_rate' => $result->promotion_rate / 10,
+                'commission_amount' => $result->promotion_amount / 100,
                 'pid' => $result->adzone_id,
                 'status' => $this->getPDDStatus($result->order_status),
                 'type' => 3,
@@ -131,7 +128,7 @@ class SaveOrders implements ShouldQueue
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
                 'type' => 3,
-            ],$item);
+            ], $item);
             $item = [];
         }
     }
@@ -143,8 +140,7 @@ class SaveOrders implements ShouldQueue
      */
     protected function getPDDStatus($status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case -1: //未支付
                 return -1;
                 break;

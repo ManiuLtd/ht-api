@@ -30,7 +30,6 @@ class CreateTbkHaohuoTable extends Migration
             $table->timestamp('end_time')->nullable();  //专场结束时间戳
 
             $table->nullableTimestamps();
-
         });
     }
 

@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Taoke;
 
+use Carbon\Carbon;
 use App\Models\Taoke\Pid;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\PidValidator;
-use Carbon\Carbon;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\PidRepository;
 
@@ -74,14 +74,16 @@ class PidRepositoryEloquent extends BaseRepository implements PidRepository
                 if (! $isExist) {
                     db('tbk_pids')->insert([
                         'user_id'    => getUserId(),
-                        'taobao'     => trim ($pid),
+                        'taobao'     => trim($pid),
                         'created_at' => Carbon::now()->toDateTimeString(),
                         'updated_at' => Carbon::now()->toDateTimeString(),
                     ]);
                 }
             }
+
             return true;
         }
+
         return false;
     }
 }

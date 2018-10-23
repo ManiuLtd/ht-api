@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Oauth.
- *
- * @package namespace App\Models\Taoke;
  */
 class Oauth extends Model implements Transformable
 {
@@ -32,5 +30,4 @@ class Oauth extends Model implements Transformable
         'token',
         'refresh_token',
     ];
-
 }

@@ -20,7 +20,7 @@ $factory->define(App\Models\Taoke\Pid::class, function (Faker $faker) {
         'taobao' => $faker->uuid,
         'jingdong' => $faker->uuid,
         'pinduoduo' => $faker->uuid,
-        'status' => rand(0,1),
+        'status' => rand(0, 1),
     ];
 });
 
@@ -38,8 +38,8 @@ $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
         'commission_rate' => rand(10, 999),
         'commission_amount' => $faker->numberBetween(2, 100),
         'pid' => $faker->uuid,
-        'status' => rand(1,3),
-        'type' => rand(1,3),
+        'status' => rand(1, 3),
+        'type' => rand(1, 3),
         'complete_at' => now(),
     ];
 });
@@ -102,10 +102,10 @@ $factory->define(App\Models\Taoke\Category::class, function (Faker $faker) {
         'user_id' => 1,
         'name' => $faker->title,
         'logo' => $faker->imageUrl(100, 100),
-        'taobao' => rand (1,10),
-        'jingdong' => rand (1,10),
-        'pinduoduo' => rand (1,10),
+        'taobao' => rand(1, 10),
+        'jingdong' => rand(1, 10),
+        'pinduoduo' => rand(1, 10),
         'sort' => rand(1, 20),
-        'status' => rand(0,1),
+        'status' => rand(0, 1),
     ];
 });
