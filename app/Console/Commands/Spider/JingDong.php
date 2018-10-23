@@ -69,7 +69,7 @@ class JingDong extends Command
                 'page' => 1,
             ]);
 
-            $totalPage = data_get($result, 'data.totalPage', 1);
+            $totalPage = data_get($result, 'data.totalPage', 1000);
 
             $this->info("总页码:{$totalPage}");
             $bar = $this->output->createProgressBar($totalPage);

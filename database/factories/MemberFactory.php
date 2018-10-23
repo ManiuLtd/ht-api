@@ -34,7 +34,6 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
         'password' => bcrypt('123456'),
         'headimgurl' => $faker->imageUrl(100, 100),
         'status' => $faker->randomKey([0, 1]),
-        'agent_time' => now(),
         'created_at' => now(),
         'updated_at' => now(),
     ];
