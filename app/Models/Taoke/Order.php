@@ -32,4 +32,22 @@ class Order extends Model implements Transformable
     {
         return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
     }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo('App\Models\Member\Group','group_id')->withDefault(null);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function oldGroup()
+    {
+        return $this->belongsTo('App\Models\Member\Group','oldgroup_id')->withDefault(null);
+    }
 }
