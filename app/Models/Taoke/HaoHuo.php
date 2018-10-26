@@ -45,9 +45,9 @@ class HaoHuo extends Model implements Transformable
     protected static function boot()
     {
         parent::boot();
-//        self::creating(function ($model) {
-//            $model->itemid = json_encode(request('itemid'));
-//        });
+        self::creating(function ($model) {
+            $model->items = json_encode(request('itemid'));
+        });
 //        self::updating(function ($model) {
 //            $model->itemid = json_encode(request('itemid'));
 //        });
