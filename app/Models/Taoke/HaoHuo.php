@@ -35,7 +35,9 @@ class HaoHuo extends Model implements Transformable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'title','app_hot_image','shares','start_time','end_time','data'
+    ];
 
     /**
      * data是itemid的集合.
@@ -44,10 +46,10 @@ class HaoHuo extends Model implements Transformable
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->itemid = json_encode(request('itemid'));
+            $model->items = json_encode(request('itemid'));
         });
-        self::updating(function ($model) {
-            $model->itemid = json_encode(request('itemid'));
-        });
+//        self::updating(function ($model) {
+//            $model->itemid = json_encode(request('itemid'));
+//        });
     }
 }
