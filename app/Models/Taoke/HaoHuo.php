@@ -35,7 +35,9 @@ class HaoHuo extends Model implements Transformable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'title','app_hot_image','shares','start_time','end_time','data'
+    ];
 
     /**
      * data是itemid的集合.
