@@ -27,7 +27,6 @@ class CreateTbkPidsTable extends Migration
             $table->string('pinduoduo', 100)->nullable();
             $table->tinyInteger('status')->nullable()->default(0);
             $table->nullableTimestamps();
-
         });
     }
 

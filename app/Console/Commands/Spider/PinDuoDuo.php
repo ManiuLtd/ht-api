@@ -3,9 +3,9 @@
 namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
+use App\Jobs\SaveOrders;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
-use App\Jobs\SaveOrders;
 
 class PinDuoDuo extends Command
 {
@@ -45,7 +45,7 @@ class PinDuoDuo extends Command
      */
     public function handle()
     {
-        $name = $this->argument ('name');
+        $name = $this->argument('name');
         switch ($name) {
             case 'order':
                 $this->order();
@@ -54,20 +54,19 @@ class PinDuoDuo extends Command
                 $this->all();
                 break;
         }
-
     }
 
     /**
-     * 获取全网优惠卷
+     * 获取全网优惠卷.
      */
     public function all()
     {
-        try{
+        try {
             // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
 
             $this->info('正在爬取拼多多优惠券');
             $result = $this->tbk->spider([
-                'page' => 1
+                'page' => 1,
             ]);
 
             $total = data_get($result, 'data.total_count', 0);
@@ -88,15 +87,13 @@ class PinDuoDuo extends Command
                 $bar->advance();
                 $this->info(" >>>已采集完第{$page}页");
             }
-        }catch (\Exception $e){
-            $this->warn ($e->getMessage ());
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
         }
-
-
     }
 
     /**
-     * 拼多多订单
+     * 拼多多订单.
      */
     public function order()
     {
@@ -120,9 +117,8 @@ class PinDuoDuo extends Command
                 $this->info(">>>已采集完第{$page}页 ");
             }
             $bar->finish();
-        }catch(\Exception $e){
-            $this->warn ($e->getMessage ());
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
         }
-
     }
 }

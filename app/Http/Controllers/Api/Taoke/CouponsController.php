@@ -50,8 +50,6 @@ class CouponsController extends Controller
      */
     public function show($id)
     {
-
-
         try {
             $detail = $this->tbk->getDetail(['id' => $id]);
 

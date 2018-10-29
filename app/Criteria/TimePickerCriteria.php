@@ -7,8 +7,6 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class TimePickerCriteria.
- *
- * @package namespace App\Criteria;
  */
 class TimePickerCriteria implements CriteriaInterface
 {
@@ -30,10 +28,10 @@ class TimePickerCriteria implements CriteriaInterface
                 $model = $model->whereDate('created_at', now()->addDay(-1)->toDateString());
                 break;
             case 'week'://近一周
-                $model = $model->whereDate('created_at','>', now()->addDay(-7)->toDateString());
+                $model = $model->whereDate('created_at', '>', now()->addDay(-7)->toDateString());
                 break;
             case 'halfmonth'://近半月
-                $model = $model->whereDate('created_at','>', now()->addDay(-15)->toDateString());
+                $model = $model->whereDate('created_at', '>', now()->addDay(-15)->toDateString());
                 break;
                 case 'month'://本月
                 $model = $model->whereYear('created_at', now()->year)
@@ -47,6 +45,7 @@ class TimePickerCriteria implements CriteriaInterface
             default:
                 break;
         }
+
         return $model;
     }
 }

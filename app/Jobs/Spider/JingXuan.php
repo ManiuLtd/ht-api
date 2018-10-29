@@ -3,13 +3,13 @@
 namespace App\Jobs\Spider;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\DB;
 
-class JingxuanDp implements ShouldQueue
+class JingXuan implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     /**
@@ -20,7 +20,6 @@ class JingxuanDp implements ShouldQueue
      * @var
      */
     protected $results;
-
 
     /**
      * JingXuan constructor.
@@ -38,7 +37,7 @@ class JingxuanDp implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->results as $result){
+        foreach ($this->results as $result) {
             $item = [
                 'itemid' => $result->itemid,
                 'title' => $result->title,
@@ -51,7 +50,7 @@ class JingxuanDp implements ShouldQueue
                 'shares' => $result->dummy_click_statistics,
                 'comment2' => $result->copy_content,
                 'comment1' => $result->copy_comment,
-                'show_at' => date('Y-m-d H:i:s',$result->show_time),
+                'show_at' => date('Y-m-d H:i:s', $result->show_time),
                 'created_at' => now()->toDateTimeString(),
                 'updated_at' => now()->toDateTimeString(),
 
@@ -59,8 +58,7 @@ class JingxuanDp implements ShouldQueue
 
             DB::table('tbk_jingxuan')->updateOrInsert([
                 'title' => $item['title'],
-            ],$item);
-            $item = [];
+            ], $item);
         }
     }
 }

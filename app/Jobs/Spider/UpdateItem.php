@@ -13,6 +13,7 @@ class UpdateItem implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $results;
+
     /**
      * Create a new job instance.
      *
@@ -30,16 +31,15 @@ class UpdateItem implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->results as $val)
-        {
+        foreach ($this->results as $val) {
             $data = [];
             $data['volume'] = $val->itemsale;
             $data['price'] = $val->itemprice;
             $data['final_price'] = $val->itemendprice;
             $data['commission_rate'] = $val->tkrates;
-            $data['end_time'] = date('Y-m-d H:i:s',$val->couponendtime);
+            $data['end_time'] = date('Y-m-d H:i:s', $val->couponendtime);
             $data['updated_at'] = Carbon::now()->toDateTimeString();
-            db('tbk_coupons')->where('item_id',$val->itemid)->update($data);
+            db('tbk_coupons')->where('item_id', $val->itemid)->update($data);
         }
     }
 }

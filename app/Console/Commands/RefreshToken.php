@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Ixudra\Curl\Facades\Curl;
+use Illuminate\Console\Command;
 
 class RefreshToken extends Command
 {
@@ -48,7 +48,5 @@ class RefreshToken extends Command
         $rest = Curl::to('https://oauth.jd.com/oauth/token')
             ->withData($params)
             ->get();
-
-        return ;
     }
 }

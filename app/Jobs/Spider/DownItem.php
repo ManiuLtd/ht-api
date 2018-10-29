@@ -3,11 +3,11 @@
 namespace App\Jobs\Spider;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\DB;
 
 class DownItem implements ShouldQueue
 {
@@ -20,7 +20,6 @@ class DownItem implements ShouldQueue
      * @var
      */
     protected $results;
-
 
     /**
      * JingXuan constructor.
@@ -38,8 +37,8 @@ class DownItem implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->results as $result){
-            db('tbk_coupons')->where('item_id',$result->itemid)->delete();
+        foreach ($this->results as $result) {
+            db('tbk_coupons')->where('item_id', $result->itemid)->delete();
         }
     }
 }

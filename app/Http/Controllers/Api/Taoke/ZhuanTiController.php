@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
@@ -35,7 +34,7 @@ class ZhuanTiController extends Controller
     }
 
     /**
-     * 专题
+     * 专题.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()

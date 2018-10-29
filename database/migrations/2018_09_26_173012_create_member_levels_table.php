@@ -31,9 +31,9 @@ class CreateMemberLevelsTable extends Migration
             $table->decimal('price', 9, 2)->nullable(); //升级所需支付金额
             $table->integer('duration')->nullable(); // 等级有效时长 按天计算
             $table->string('description', 191)->nullable(); //等级描述
+            $table->tinyInteger('is_group')->default(0)->comment('0不是组，1 组'); //
             $table->tinyInteger('default')->default(0)->comment('1不是默认 0默认'); //0默认1不是默认
             $table->tinyInteger('status')->default(1)->comment('0禁用，1正常'); //0禁用，1正常
-            $table->tinyInteger('is_group')->default(0)->comment('0不是组，1 组'); //
 
             $table->nullableTimestamps();
             $table->softDeletes();

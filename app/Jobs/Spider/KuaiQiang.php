@@ -9,18 +9,27 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class Kuaiqiang implements ShouldQueue
+class KuaiQiang implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    /**
+     * @var
+     */
     protected $kuaiqiang;
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * @var
      */
-    public function __construct($kuaiqiang)
+    protected $hour;
+
+    /**
+     * KuaiQiang constructor.
+     * @param $kuaiqiang
+     * @param $hour
+     */
+    public function __construct($kuaiqiang, $hour)
     {
         $this->kuaiqiang = $kuaiqiang;
+        $this->hour = $hour;
     }
 
     /**
@@ -30,8 +39,7 @@ class Kuaiqiang implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->kuaiqiang as $val)
-        {
+        foreach ($this->kuaiqiang as $val) {
             $data = [];
             $data['itemid'] = $val->itemid;
             $data['title'] = $val->itemtitle;
@@ -44,17 +52,13 @@ class Kuaiqiang implements ShouldQueue
             $data['pic_url'] = $val->itempic;
             $data['shop_type'] = $val->shoptype;
             $data['coupon_price'] = $val->couponmoney;
-//            $data['video_id'] = $val->videoid;
             $data['video_url'] = $val->material_info->main_video_url;
-//            $data['activity_type'] = $val->activity_type;
             $data['commission_rate'] = $val->tkrates;
-//            $data['coupon_start_time'] = $val->couponstarttime;
-//            $data['coupon_end_time'] = $val->couponendtime;
-            $data['start_time'] =date('Y-m-d H:i:s',$val->start_time);
-//            $data['end_time'] = $val->end_time;
+            $data['start_time'] = date('Y-m-d H:i:s', $val->start_time);
             $data['type'] = $val->grab_type;
+            $data['hour_type'] = $this->hour;
             $data['created_at'] = Carbon::now()->toDateTimeString();
-            db('tbk_kuaiqiang')->updateOrInsert(['itemid'=>$data['itemid']],$data);
+            db('tbk_kuaiqiang')->updateOrInsert(['itemid'=>$data['itemid']], $data);
         }
     }
 }

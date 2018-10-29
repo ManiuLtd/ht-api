@@ -3,17 +3,14 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
+use App\Validators\Taoke\JingxuanDpValidator;
 use App\Http\Requests\Taoke\JingXuanCreateRequest;
 use App\Http\Requests\Taoke\JingXuanUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\Taoke\JingXuanRepository;
-use App\Validators\Taoke\JingxuanDpValidator;
 
 /**
  * Class JingXuanController.
- *
- * @package namespace App\Http\Controllers\Taoke;
  */
 class JingXuanController extends Controller
 {
@@ -36,7 +33,7 @@ class JingXuanController extends Controller
     public function __construct(JingXuanRepository $repository, JingxuanDpValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -46,9 +43,9 @@ class JingXuanController extends Controller
      */
     public function index()
     {
-        $jingxuanDps = $this->repository->paginate(request ('limit',10));
+        $jingxuanDps = $this->repository->paginate(request('limit', 10));
 
-        return json(1001,'获取成功',$jingxuanDps);
+        return json(1001, '获取成功', $jingxuanDps);
     }
 
     /**
@@ -57,16 +54,15 @@ class JingXuanController extends Controller
      */
     public function store(JingXuanCreateRequest $request)
     {
-
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $jingxuan = $this->repository->create($request->all ());
-            return json(1001,'创建成功',$jingxuan);
-        } catch (\Exception $e) {
-            return json(5001,$e->getMessage ());
-        }
+            $jingxuan = $this->repository->create($request->all());
 
+            return json(1001, '创建成功', $jingxuan);
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
     }
 
     /**
@@ -76,9 +72,9 @@ class JingXuanController extends Controller
     public function show($id)
     {
         $data = $this->repository->find($id);
-        return json(1001,'获取成功',$data);
-    }
 
+        return json(1001, '获取成功', $data);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -91,13 +87,13 @@ class JingXuanController extends Controller
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $jingxuan = $this->repository->update($request->all (),$id);
-            return json(1001,'修改成功',$jingxuan);
+            $jingxuan = $this->repository->update($request->all(), $id);
+
+            return json(1001, '修改成功', $jingxuan);
         } catch (\Exception $e) {
-            return json(5001,$e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -110,6 +106,6 @@ class JingXuanController extends Controller
     {
         $this->repository->delete($id);
 
-       return json(1001,'删除成功');
+        return json(1001, '删除成功');
     }
 }

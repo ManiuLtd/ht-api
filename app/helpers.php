@@ -147,16 +147,17 @@ if (! function_exists('checkSms')) {
      * @param $code
      * @return bool
      */
-    function checkSms($phone,$code)
+    function checkSms($phone, $code)
     {
         $model = \App\Models\System\Sms::where([
             'code' => $code,
             'phone' => $phone,
-            ['created_at', '>=', \Illuminate\Support\Carbon::now()->addMinute(-1)]
+            ['created_at', '>=', \Illuminate\Support\Carbon::now()->addMinute(-1)],
         ])->first();
-        if (!$model) {
+        if (! $model) {
             return false;
         }
+
         return true;
     }
 }

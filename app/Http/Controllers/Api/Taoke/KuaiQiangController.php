@@ -40,7 +40,7 @@ class KuaiQiangController extends Controller
     }
 
     /**
-     * 抢购
+     * 抢购.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()

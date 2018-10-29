@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Backend\Member;
 
+use App\Models\Member\Withdraw;
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Models\Member\Withdraw;
 use App\Validators\Member\WithdrawValidator;
 use App\Http\Requests\Member\WithdrawUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -79,7 +79,7 @@ class WithdrawsController extends Controller
 
             //只有状态是审核中才能修改状态----
             $withdraw_status = Withdraw::query()->find($id);
-            if ($withdraw_status->status == 1 ||$withdraw_status->status == 2){
+            if ($withdraw_status->status == 1 || $withdraw_status->status == 2) {
                 $insert['status'] = $withdraw_status->status;
             }
 

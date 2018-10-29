@@ -14,6 +14,7 @@ class Haohuo implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $result;
+
     /**
      * Create a new job instance.
      *
@@ -32,30 +33,32 @@ class Haohuo implements ShouldQueue
     public function handle()
     {
         $data = $this->result;
-        foreach ($data as $v){
-            $insert['content'] = $v->content;
-            $insert['introduce'] = $v->show_text;
-            $insert['app_hot_image'] = $v->app_hot_image;
-            $insert['shares'] = $v->share_times;
-            $insert['text'] = $v->copy_text;
-            $insert['start_time'] = date('Y-m-d H:i:s',$v->activity_start_time);
-            $insert['end_time'] = date('Y-m-d H:i:s',$v->activity_end_time);
+        foreach ($data as $v) {
             $items = [];
-            foreach ($v->item_data as $val){
-                if($val->product_id != 0){
-                    $items['itemid'] = $val->itemid;
-                    $items['itemtitle'] = $val->itemtitle;
-                    $items['itemprice'] = $val->itemprice;//在售价
-                    $items['itemendprice'] = $val->itemendprice;//券后价
-                    $items['itempic'] = $val->itempic;//宝贝主图原始图像
+            foreach ($v->item_data as $key => $val) {
+                if ($val->product_id != 0) {
+                    $items[$key]['itemid']      = $val->itemid;
+                    $items[$key]['title']       = $val->itemtitle;
+                    $items[$key]['price']       = $val->itemprice; //在售价
+                    $items[$key]['final_price'] = $val->itemendprice; //券后价
+                    $items[$key]['pic_url']     = $val->itempic; //宝贝主图原始图像
+                    $items[$key]['type']        = 1; //宝贝主图原始图像
                 }
             }
-            $insert['items'] = json_encode($items);
-            $insert['created_at'] = Carbon::now()->toDateTimeString();
-            $insert['updated_at'] = Carbon::now()->toDateTimeString();
-            db('tbk_haohuo')->updateOrInsert(
-                ['title'=>$v->name],$insert
-            );
+            $insert = [
+                'title'         => $v->name,
+                'app_hot_image' => $v->app_hot_image,
+                'shares'        => $v->share_times,
+                'text'          =>  html_entity_decode($v->copy_text),
+                'start_time'    => date('Y-m-d H:i:s', $v->activity_start_time),
+                'end_time'      => date('Y-m-d H:i:s', $v->activity_end_time),
+                'items'         => json_encode($items),
+                'created_at'    => Carbon::now()->toDateTimeString(),
+                'updated_at'    => Carbon::now()->toDateTimeString(),
+            ];
+            db('tbk_haohuo')->updateOrInsert([
+                'title' => $v->name,
+            ], $insert);
         }
     }
 }
