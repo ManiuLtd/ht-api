@@ -90,7 +90,7 @@ class JingDong extends Command
     }
 
     /**
-     * 拼多多订单.
+     * 订单
      */
     public function order()
     {

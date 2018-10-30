@@ -18,7 +18,7 @@ class Taobao extends Command
      *
      * @var string
      */
-    protected $signature = 'spider:tb {name? : The name of the spider} {--type=3} {--all=true}';
+    protected $signature = 'spider:tb {name? : The name of the spider} {--type=3} {--all=true} {--h=1}';
 
     /**
      * The console command description.
@@ -209,13 +209,16 @@ class Taobao extends Command
     {
         try {
             $total = 5;
+            $hour = $this->option('h');
+
             $bar = $this->output->createProgressBar($total);
             $min_id = 1;
+
             for ($i = 1; $i <= $total; $i++) {
-                $res = $this->tbk->kuaiQiang(['min_id' => $min_id]);
+                $res = $this->tbk->kuaiQiang(['min_id' => $min_id,'hour_type'=>$hour]);
                 if ($min_id != $res['min_id']) {
                     // 队列
-                    KuaiQiang::dispatch($res['data']);
+                    KuaiQiang::dispatch($res['data'],$hour);
                     $min_id = $res['min_id'];
                     $bar->advance();
                     $this->info(">>>已采集完第{$total}页 ");

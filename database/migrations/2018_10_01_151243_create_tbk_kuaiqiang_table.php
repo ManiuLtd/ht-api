@@ -40,6 +40,7 @@ class CreateTbkKuaiqiangTable extends Migration
             $table->timestamp('start_time')->nullable();  //快抢开始时间
             $table->timestamp('end_time')->nullable();  //快抢结束时间
             $table->tinyInteger('type')->nullable();  //	快抢开抢状态：1快抢即将开始；2快抢商品已抢光；3快抢商品正在快抢中
+            $table->tinyInteger('hour_type')->nullable(); //快抢时间点：1.昨天的0点，2.昨天10点，3.昨天12点，4.昨天15点，5.昨天20点，6.今天的0点，7.今天10点，8.今天12点，9.今天15点，10.今天20点，11.明天的0点，12.明天10点，13.明天12点，14.明天15点，15.明天20点
             $table->nullableTimestamps();
             $table->softDeletes();
         });

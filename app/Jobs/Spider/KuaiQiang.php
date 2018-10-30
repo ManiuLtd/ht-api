@@ -12,16 +12,24 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class KuaiQiang implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    /**
+     * @var
+     */
     protected $kuaiqiang;
+    /**
+     * @var
+     */
+    protected $hour;
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * KuaiQiang constructor.
+     * @param $kuaiqiang
+     * @param $hour
      */
-    public function __construct($kuaiqiang)
+    public function __construct($kuaiqiang, $hour)
     {
         $this->kuaiqiang = $kuaiqiang;
+        $this->hour = $hour;
     }
 
     /**
@@ -48,6 +56,7 @@ class KuaiQiang implements ShouldQueue
             $data['commission_rate'] = $val->tkrates;
             $data['start_time'] = date('Y-m-d H:i:s', $val->start_time);
             $data['type'] = $val->grab_type;
+            $data['hour_type'] = $this->hour;
             $data['created_at'] = Carbon::now()->toDateTimeString();
             db('tbk_kuaiqiang')->updateOrInsert(['itemid'=>$data['itemid']], $data);
         }
