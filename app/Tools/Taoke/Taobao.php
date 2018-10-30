@@ -347,6 +347,29 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * 专题的商品    
+     * @param array $params
+     * @return mixed
+     * @throws \Exception
+     */
+    public function zhuantiItem(array $params)
+    {
+        $params = [
+            'apikey' => config('coupon.taobao.HDK_APIKEY'),
+            'id'     => $params['id'],
+        ];
+        $resp = Curl::to('http://v2.api.haodanku.com/get_subject_item')
+            ->withData($params)
+            ->get();
+        $res = json_decode($resp);
+        if ($res->code != 1) {
+            throw new \Exception($res->msg);
+        }
+
+        return $res;
+    }
+
+    /**
      * 快抢商品
      * @param array $params
      * @return array
