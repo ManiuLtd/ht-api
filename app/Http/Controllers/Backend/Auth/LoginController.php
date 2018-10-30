@@ -20,7 +20,7 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only(['email', 'password']);
+        $credentials = $request->only(['name','email', 'password']);
         try {
             $token = Auth::guard()->attempt($credentials);
 

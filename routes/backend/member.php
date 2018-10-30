@@ -5,7 +5,7 @@ Route::namespace('Member')
     ->group(function () {
 
     //会员日志
-        Route::resource('member/credit/log', 'CreditLogsController', [
+        Route::resource('member/credit-log', 'CreditLogsController', [
         'only' => ['index'],
     ]);
 

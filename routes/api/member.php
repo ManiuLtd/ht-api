@@ -16,9 +16,6 @@ Route::namespace('Member')
         //好友列表
         Route::get('friends', 'MembersController@friends');
 
-        //会员升级
-        Route::get('promotion', 'MembersController@promotion');
-
         //分销等级列表
         Route::get('commission-level', 'LevelsController@index');
 
