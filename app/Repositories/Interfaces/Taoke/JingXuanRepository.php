@@ -9,5 +9,9 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface JingXuanRepository extends RepositoryInterface
 {
-    //
+    /**
+     * 淘口令转换
+     * @return mixed
+     */
+    public function TaoCommand();
 }

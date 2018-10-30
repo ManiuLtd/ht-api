@@ -53,4 +53,7 @@ Route::namespace('Taoke')
         Route::resource('haohuo', 'HaoHuoController', [
             'only' => ['index'],
         ]);
+
+        //精选单品
+        Route::get('jinxuandp', 'JingXuanController@index');
     });
