@@ -19,12 +19,13 @@ class CreateTbkZhuantiTable extends Migration
     {
         Schema::create('tbk_zhuanti', function (Blueprint $table) {
             $table->increments('id');
-
+            $table->integer('special_id')->nullable();//专题id
             $table->string('title', 190)->nullable();  //专题的标题
             $table->string('thumb', 190)->nullable();  //专题banner长图
             $table->string('banner', 190)->nullable();  //专题banner（正方形图）
 
             $table->text('content')->nullable();  //专题的介绍文案题
+            $table->text('items')->nullable();  //专题的商品
             $table->timestamp('start_time')->nullable();  //专题活动开始时间
             $table->timestamp('end_time')->nullable();  //专题活动结束时间
 
