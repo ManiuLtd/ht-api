@@ -184,12 +184,12 @@ class Taobao extends Command
         try {
             foreach ($res->data as $re) {
                 $insert = [
-                    'title' => $re->name,
-                    'thumb' => $re->app_image,
-                    'banner' => $re->image,
-                    'content' => $re->content,
+                    'title'      => $re->name,
+                    'thumb'      => 'http://img.haodanku.com/'.$re->app_image,
+                    'banner'     => 'http://img.haodanku.com/'.$re->image,
+                    'content'    => $re->content,
                     'start_time' => date('Y-m-d H:i:s', $re->activity_start_time),
-                    'end_time' => date('Y-m-d H:i:s', $re->activity_end_time),
+                    'end_time'   => date('Y-m-d H:i:s', $re->activity_end_time),
                     'created_at' => Carbon::now()->toDateTimeString(),
                     'updated_at' => Carbon::now()->toDateTimeString(),
                 ];
