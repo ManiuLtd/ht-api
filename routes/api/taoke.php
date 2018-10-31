@@ -55,5 +55,5 @@ Route::namespace('Taoke')
         ]);
 
         //精选单品
-        Route::get('jinxuandp', 'JingXuanController@index');
+        Route::get('jingxuandp', 'JingXuanController@index');
     });
