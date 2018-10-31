@@ -17,17 +17,13 @@ class BannerValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'title' => 'required',
             'image' => 'required',
-            'description' => 'required',
             'sort' => 'required|integer',
             'tag' => 'required',
             'status' => 'required|in:0,1',
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'title' => 'required',
             'image' => 'required',
-            'description' => 'required',
             'sort' => 'required|integer',
             'tag' => 'required',
             'status' => 'required|in:0,1',
