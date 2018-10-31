@@ -347,7 +347,7 @@ class Taobao implements TBKInterface
     }
 
     /**
-     * 专题的商品    
+     * 专题的商品
      * @param array $params
      * @return mixed
      * @throws \Exception
