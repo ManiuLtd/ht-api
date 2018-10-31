@@ -3,6 +3,8 @@
 namespace App\Validators\Member;
 
 use Prettus\Validator\LaravelValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
+
 
 /**
  * Class WithdrawValidator.
@@ -15,11 +17,17 @@ class WithdrawValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        'realname' => 'required',
-        'bankname' => 'required',
-        'bankcard' => 'required|numeric',
-        'alipay' => 'required',
-        'amount' => 'required|numeric',
+        ValidatorInterface::RULE_CREATE => [
+            'realname' => 'required',
+            'bankname' => 'required',
+            'bankcard' => 'required|numeric',
+            'alipay' => 'required',
+            'amount' => 'required|numeric',
+        ],
+        ValidatorInterface::RULE_UPDATE => [
+            'amount' => 'required|numeric',
+            'reason' => 'required',
+        ],
     ];
 
     /**
@@ -34,4 +42,6 @@ class WithdrawValidator extends LaravelValidator
         'amount.numeric' => '提现金额不合法',
         'amount.required' => '提现金额不能为空',
     ];
+
+
 }
