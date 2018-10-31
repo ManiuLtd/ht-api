@@ -42,6 +42,7 @@ class LoginController extends Controller
     protected function respondWithToken($token)
     {
         $data = [
+            'role' => 'admin',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
