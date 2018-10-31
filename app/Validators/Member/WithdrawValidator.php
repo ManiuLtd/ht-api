@@ -25,7 +25,7 @@ class WithdrawValidator extends LaravelValidator
             'amount' => 'required|numeric',
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'amount' => 'required|numeric',
+            'real_money' => 'required',
             'reason' => 'required',
         ],
     ];
