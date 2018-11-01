@@ -36,7 +36,13 @@ class HaoHuo extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'title','app_hot_image','shares','start_time','end_time','data'
+        'title',
+        'app_hot_image',
+        'text',
+        'shares',
+        'items',
+        'start_time',
+        'end_time',
     ];
 
     /**
