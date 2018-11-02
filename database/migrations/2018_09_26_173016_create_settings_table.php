@@ -27,6 +27,14 @@ class CreateSettingsTable extends Migration
             $table->text('recharge')->nullable();
             $table->text('credit')->nullable();
             $table->text('shop')->nullable();
+            $table->text('credit_order')->nullable();//订单
+            $table->text('credit_friend')->nullable();//粉丝
+            $table->text('notification')->nullable();//通知
+            $table->string('pid')->nullable();//淘宝、京东、拼多多的默认pid
+            $table->text('withdraw')->nullable();//提现
+            $table->text('taobao')->nullable();//淘宝
+            $table->text('jingdong')->nullable();//京东
+            $table->text('pinduouo')->nullable();//拼多多
             $table->nullableTimestamps();
 
             $table->index('user_id', 'settings_user_id_index');
