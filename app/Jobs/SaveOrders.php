@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\Member\Member;
+use App\Models\Taoke\Pid;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -61,19 +63,34 @@ class SaveOrders implements ShouldQueue
     protected function saveTBKOrder($results)
     {
         foreach ($results as $result) {
+            $pid = Pid::query()->where('taobao',$result->adzone_id)->first();
+            if ($pid){
+                $member = Member::query()->find($pid->member_id);
+                $member_id = $member->id;
+                $group_id = $member->group_id;
+                $oldgroup_id = $member->oldgroup_id;
+            }else{
+                $member_id = '';
+                $group_id = '';
+                $oldgroup_id = '';
+            }
             $item = [
-                'ordernum' => $result->trade_id,
-                'title' => $result->item_title,
-                'itemid' => $result->num_iid,
-                'count' => $result->item_num,
-                'price' => $result->price,
-                'final_price' => $result->pay_price,
-                'commission_rate' => $result->total_commission_rate,
+                'user_id'           => getUserId(),
+                'member_id'         => $member_id,
+                'group_id'          => $group_id,
+                'oldgroup_id'       => $oldgroup_id,
+                'ordernum'          => $result->trade_id,
+                'title'             => $result->item_title,
+                'itemid'            => $result->num_iid,
+                'count'             => $result->item_num,
+                'price'             => $result->price,
+                'final_price'       => $result->pay_price,
+                'commission_rate'   => $result->total_commission_rate,
                 'commission_amount' => $result->total_commission_fee,
-                'pid' => $result->adzone_id,
-                'status' => $this->getStatus($result->tk_status),
-                'type' => 1,
-                'complete_at' => $result->earning_time ?? null,
+                'pid'               => $result->adzone_id,
+                'status'            => $this->getStatus($result->tk_status),
+                'type'              => 1,
+                'complete_at'       => $result->earning_time ?? null,
             ];
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
@@ -111,19 +128,34 @@ class SaveOrders implements ShouldQueue
     protected function savePDDOrder($results)
     {
         foreach ($results as $result) {
+            $pid = Pid::query()->where('taobao',$result->adzone_id)->first();
+            if ($pid){
+                $member = Member::query()->find($pid->member_id);
+                $member_id = $member->id;
+                $group_id = $member->group_id;
+                $oldgroup_id = $member->oldgroup_id;
+            }else{
+                $member_id = '';
+                $group_id = '';
+                $oldgroup_id = '';
+            }
             $item = [
-                'ordernum' => $result->order_sn,
-                'title' => $result->goods_name,
-                'itemid' => $result->goods_id,
-                'count' => $result->goods_quantity,
-                'price' => $result->goods_price,
-                'final_price' => $result->order_amount,
-                'commission_rate' => $result->promotion_rate / 10,
+                'user_id'           => getUserId(),
+                'member_id'         => $member_id,
+                'group_id'          => $group_id,
+                'oldgroup_id'       => $oldgroup_id,
+                'ordernum'          => $result->order_sn,
+                'title'             => $result->goods_name,
+                'itemid'            => $result->goods_id,
+                'count'             => $result->goods_quantity,
+                'price'             => $result->goods_price,
+                'final_price'       => $result->order_amount,
+                'commission_rate'   => $result->promotion_rate / 10,
                 'commission_amount' => $result->promotion_amount / 100,
-                'pid' => $result->adzone_id,
-                'status' => $this->getPDDStatus($result->order_status),
-                'type' => 3,
-                'complete_at' => $result->earning_time ?? null,
+                'pid'               => $result->adzone_id,
+                'status'            => $this->getPDDStatus($result->order_status),
+                'type'              => 3,
+                'complete_at'       => $result->earning_time ?? null,
             ];
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],

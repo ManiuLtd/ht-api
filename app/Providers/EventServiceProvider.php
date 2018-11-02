@@ -24,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\MemberUpgrade' => [
             'App\Listeners\MemberUpgradeEvent',
         ],
+        'App\Events\SendOrder' => [
+            'App\Listeners\SendOrderListener',
+        ],
 
     ];
 
