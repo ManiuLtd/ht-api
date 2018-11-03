@@ -135,7 +135,7 @@ class Taobao extends Command
                 $this->info($min_id);
                 $result = $this->tbk->haohuo(['min_id' => $min_id]);
                 // 队列
-                if ($rsult->min_id != $min_id) {
+                if ($result->min_id != $min_id) {
                     Haohuo::dispatch($result->data);
                     $min_id = $result->min_id;
                     $this->info($min_id);

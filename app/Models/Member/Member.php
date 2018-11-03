@@ -151,10 +151,10 @@ class Member extends Model implements Transformable
      * @param array $extra
      * @return int
      */
-    protected function increment($column, $amount = 1, array $extra = [])
+    protected function increment($column, $amount = 1, array $extra = [],$type = 13)
     {
-        if (in_array($column, ['credit1', 'credit2'])) {
-            event(new CreditIncrement($this, $column, $amount, $extra));
+        if (in_array($column, ['credit1', 'credit2','credit3'])) {
+            event(new CreditIncrement($this, $column, $amount, $extra, $type));
         }
 
         return $this->incrementOrDecrement($column, $amount, $extra, 'increment');
@@ -167,10 +167,10 @@ class Member extends Model implements Transformable
      * @param array $extra
      * @return int
      */
-    protected function decrement($column, $amount = 1, array $extra = [])
+    protected function decrement($column, $amount = 1, array $extra = [],$type = 14)
     {
         if (in_array($column, ['credit1', 'credit2'])) {
-            event(new CreditIncrement($this, $column, $amount, $extra));
+            event(new CreditIncrement($this, $column, $amount, $extra, $type));
         }
 
         return $this->incrementOrDecrement($column, $amount, $extra, 'decrement');
