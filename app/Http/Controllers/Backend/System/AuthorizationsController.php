@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Backend\System;
 
+use App\Models\System\Setting;
+use App\Repositories\Interfaces\System\SettingRepository;
 use Ixudra\Curl\Facades\Curl;
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\Taoke\OauthRepository;
 
 /**
  * Class FeedbacksController.
@@ -18,9 +19,9 @@ class AuthorizationsController extends Controller
 
     /**
      * AuthorizationsController constructor.
-     * @param OauthRepository $repository
+     * @param SettingRepository $repository
      */
-    public function __construct(OauthRepository $repository)
+    public function __construct(SettingRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -48,6 +49,10 @@ class AuthorizationsController extends Controller
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Prettus\Repository\Contracts\ValidatorException
+     */
     public function callback()
     {
         $type = request('type', request('state'));
@@ -75,16 +80,30 @@ class AuthorizationsController extends Controller
                 default:
                     break;
             }
-            $create['user_id'] = $user->id;
-            $where = [
-                'user_id' => $user->id,
-                'type' => $type,
-            ];
-            if ($type == 1) {
-                $where['taoid'] = $create['taoid'];
+            $setting = setting(1);
+
+            if ($type == 2) {
+                $sid_arr = json_decode($setting->jingdong);
+                $sid_arr[] = $create;
+                Setting::query()->where('id',$setting->id)->update([
+                    'jingdong' => json_encode($sid_arr)
+                ]);
+            }elseif ($type == 3) {
+                $sid_arr = json_decode($setting->pinduouo);
+                $sid_arr[] = $create;
+                Setting::query()->where('id',$setting->id)->update([
+                    'pinduouo' => json_encode($sid_arr)
+                ]);
+            }else{
+                $sid_arr = json_decode($setting->taobao);
+                $sid_arr[] = $create;
+                Setting::query()->where('id',$setting->id)->update([
+                    'taobao' => json_encode($sid_arr)
+                ]);
             }
 
-            $this->repository->updateOrCreate($where, $create);
+
+            return json('1001','OK');
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }

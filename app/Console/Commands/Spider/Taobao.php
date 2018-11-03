@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Models\System\Setting;
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
@@ -325,10 +326,10 @@ class Taobao extends Command
     protected function getOrders()
     {
         try {
-            $sids = db('tbk_oauth')->where('type', 1)->get();
-            $sid_arr = $sids->toArray();
+            $setting = setting(1);
+            $sid_arr = json_decode($setting->taobao);
             $bar = $this->output->createProgressBar(10 * count($sid_arr));
-            foreach ($sids as $sid) {
+            foreach ($sid_arr as $sid) {
 //        $this->info("总页码:{10}");
                 //循环所有页码查出数据
                 for ($page = 1; $page <= 10; $page++) {
