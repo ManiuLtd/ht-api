@@ -22,6 +22,7 @@ class CreditFriendEvent
     }
 
     /**
+     * 粉丝增加事件
      * Handle the event.
      *
      * @param  CreditFriend  $event
@@ -29,7 +30,6 @@ class CreditFriendEvent
      */
     public function handle(CreditFriend $event)
     {
-        $member = $event->member;//新增粉丝信息
         //设置信息
         $setting = setting(1);
         $credit_friend = json_decode($setting->credit_friend);
@@ -37,38 +37,38 @@ class CreditFriendEvent
             throw new \Exception('管理员还没配置参数');
         }
         //邀请人
-        $member1 = Member::find($member->inviter_id);
+        $member1 = $event->member;
         if(!$member1){
             throw new \Exception('邀请人不存在');
         }
         creditAdd($member1,$credit_friend->friend_commission1_credit2,'credit2','直推积分增加',17);//积分
-        creditAdd($member1,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',17);//余额
-        creditAdd($member1,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',17);//成长值
+        creditAdd($member1,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',18);//余额
+        creditAdd($member1,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',19);//成长值
 
-        $member2 = Member::find($member1['inviter_id']);//上级
+        $member2 = $event->member->inviter;//上级
         if($member2){
-            creditAdd($member2,$credit_friend->friend_commission1_credit2,'credit2','直推积分增加',17);//积分
-            creditAdd($member2,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',17);//余额
-            creditAdd($member2,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',17);//成长值
+            creditAdd($member2,$credit_friend->friend_commission1_credit2,'credit2','推荐上级积分增加',17);//积分
+            creditAdd($member2,$credit_friend->friend_commission1_credit1,'credit1','推荐上级余额增加',18);//余额
+            creditAdd($member2,$credit_friend->friend_commission1_credit3,'credit3','推荐上级成长值增加',19);//成长值
         }
 
-        $group1 = Group::find($member1['group_id']);//组
+        $group1 = $event->member->group;//组
         if($group1){
             $member3 = Member::find($group1['member_id']);
             if($member3){
-                creditAdd($member3,$credit_friend->friend_commission1_credit2,'credit2','直推积分增加',17);//积分
-                creditAdd($member3,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',17);//余额
-                creditAdd($member3,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',17);//成长值
+                creditAdd($member3,$credit_friend->friend_commission1_credit2,'credit2','推荐组长积分增加',17);//积分
+                creditAdd($member3,$credit_friend->friend_commission1_credit1,'credit1','推荐组长余额增加',18);//余额
+                creditAdd($member3,$credit_friend->friend_commission1_credit3,'credit3','推荐组长成长值增加',19);//成长值
             }
         }
 
-        $group2 = Group::find($member1['oldgroup_id']);//原组
+        $group2 = $event->member->oldGroup;//原组
         if($group2){
             $member4 = Member::find($group2['member_id']);
             if($member4){
-                creditAdd($member4,$credit_friend->friend_commission1_credit2,'credit2','直推积分增加',17);//积分
-                creditAdd($member4,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',17);//余额
-                creditAdd($member4,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',17);//成长值
+                creditAdd($member4,$credit_friend->friend_commission1_credit2,'credit2','推荐原组长积分增加',17);//积分
+                creditAdd($member4,$credit_friend->friend_commission1_credit1,'credit1','推荐原组长余额增加',18);//余额
+                creditAdd($member4,$credit_friend->friend_commission1_credit3,'credit3','推荐原组长成长值增加',19);//成长值
             }
         }
     }

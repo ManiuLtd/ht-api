@@ -190,7 +190,7 @@ if (!function_exists('creditAdd')) {
     {
         $today = \Carbon\Carbon::today()->toDateTimeString();
         $credits = \App\Models\Member\CreditLog::where(['member_id'=>$member->id,'column'=>$credit])
-            ->whereIn('type',[11,13,15,21,22,23,16,17])
+            ->whereIn('type',[11,13,15,21,22,23,16,17,18,19])
             ->whereDate('created_at',$today)
             ->sum('credit');
         //设置信息
@@ -202,15 +202,15 @@ if (!function_exists('creditAdd')) {
 
         if($column == 'credit1' && $credits < $credit_friend->friend_max_credit1){
             event(new \App\Events\CreditIncrement($member, $column, $credit, $extra,$type));//余额
-            return json(1001,'添加成功');
+            return true;
         }elseif ($column == 'credit2' && $credits < $credit_friend->friend_max_credit2){
             event(new \App\Events\CreditIncrement($member, $column, $credit, $extra,$type));//积分
-            return json(1001,'添加成功');
+            return true;
         }elseif ($column == 'credit3' && $credits < $credit_friend->friend_max_credit3){
             event(new \App\Events\CreditIncrement($member, $column, $credit, $extra,$type));//成长值
-            return json(1001,'添加成功');
+            return true;
         }else{
-            return json(4001,'超过当天限制');
+            return false;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\MemberUpgrade;
 use InvalidArgumentException;
 use App\Events\CreditDecrement;
 use App\Events\CreditIncrement;
@@ -61,6 +62,9 @@ class CreditEventSubscriber
         DB::transaction(function () use ($event, $isIncrement) {
             if (! $isIncrement) {
                 $event->member->decrement($event->column, $event->credit);
+                if($event->column == 'credit3'){
+                    event(new MemberUpgrade($this));
+                }
             } else {
                 $event->member->increment($event->column, $event->credit);
             }
