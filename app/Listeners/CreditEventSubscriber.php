@@ -53,7 +53,7 @@ class CreditEventSubscriber
     protected function updateCredit($event, bool $isIncrement): void
     {
         //如果积分数组不符合规范
-        if (! is_numeric($event->credit) || ! in_array($event->type, ['credit1', 'credit2', 'credit3'])) {
+        if (! is_numeric($event->credit) || ! in_array($event->column, ['credit1', 'credit2', 'credit3'])) {
             throw  new InvalidArgumentException('修改基本所需要传入的参数格式错误');
         }
 
@@ -71,6 +71,7 @@ class CreditEventSubscriber
                 'operater_id' => $event->extra->operaterId ?? null,
                 'credit' => $event->credit,
                 'column' => $event->column,
+                'type' => $event->type,
                 'remark' => $event->extra->remark,
                 'created_at' => now()->toDateTimeString(),
                 'updated_at' => now()->toDateTimeString(),

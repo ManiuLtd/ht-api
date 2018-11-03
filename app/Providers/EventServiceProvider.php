@@ -24,7 +24,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\MemberUpgrade' => [
             'App\Listeners\MemberUpgradeEvent',
         ],
-
+        'App\Events\CreditFriend' => [
+            'App\Listeners\CreditFriendEvent',
+        ],
     ];
 
     /**
