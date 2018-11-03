@@ -27,6 +27,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\CreditFriend' => [
             'App\Listeners\CreditFriendEvent',
         ],
+        'App\Events\SendOrder' => [
+            'App\Listeners\SendOrderListener',
+        ],
+
     ];
 
     /**
