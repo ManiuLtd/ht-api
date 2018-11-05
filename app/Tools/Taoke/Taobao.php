@@ -21,12 +21,12 @@ class Taobao implements TBKInterface
         $pids = $this->getPids();
 
         $oauth = DB::table('tbk_oauth')->find($pids->oauth_id);
-
+        //TODO sid需要调用设置
         //  Implement getCouponUrl() method.
         $params = [
             'appkey' => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => $oauth->sid,
+            'sid' => 1942,
             'pid' => $pids->taobao,
             'num_iid' => $array['item_id'],
         ];
@@ -82,7 +82,6 @@ class Taobao implements TBKInterface
         $req->setFields('title,small_images,pict_url,zk_final_price,user_type,volume');
         $req->setNumIids($itemID);
         $resp = $topclient->execute($req);
-
         if (! isset($resp->results->n_tbk_item)) {
             throw new \Exception('淘宝客接口调用失败');
         }
@@ -90,8 +89,8 @@ class Taobao implements TBKInterface
         $data->coupon = $this->getCouponUrl(['item_id' => $itemID]);
         $kouling = $this->taokouling([
             'coupon_click_url' => $data->coupon->coupon_click_url,
-            'pict_url' => $data->pict_url,
-            'title' => $data->title,
+            'pict_url'         => $data->pict_url,
+            'title'            => $data->title,
         ]);
         $data->kouling = $kouling;
 
