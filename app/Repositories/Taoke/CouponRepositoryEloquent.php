@@ -43,79 +43,6 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    /**
-     * @return array|bool|mixed|string
-     * @throws \Exception
-     */
-    public function searchGoods()
-    {
-        $sort = request('sort');
-        $q = request('q');
-        $type = request('type');
-
-        if (! $q) {
-            return [
-                'code' => 4001,
-                'message' => '关键词必能为空',
-            ];
-        }
-        $rest = $this->searchByTKL($q);
-
-        if ($rest) {
-            $coupon = $this->model->where([
-                'item_id' => $rest,
-            ])->get()->toArray();
-
-            if ($coupon) {
-                return $coupon;
-            }
-
-            return $rest;
-        }
-
-        return $q;
-
-//        //sort 1最新 2低价 3高价 4销量 5佣金 6综合
-//        $order = 'receive_num';
-//        $orderAsc = 'desc';
-//        switch ($sort) {
-//            case 1:
-//                $order = 'id';
-//                $orderAsc = 'desc';
-//                break;
-//            case 2:
-//                $order = 'final_price';
-//                $orderAsc = 'asc';
-//                break;
-//            case 3:
-//                $order = 'final_price';
-//                $orderAsc = 'desc';
-//                break;
-//            case 4:
-//                $order = 'volume';
-//                $orderAsc = 'desc';
-//                break;
-//            case 5:
-//                $order = 'coupon_price';
-//                $orderAsc = 'desc';
-//                break;
-//            case 6:
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        $coupon = db('tbk_coupons')->where([
-//            'type' => 2,
-//            'status' => 1,
-//        ])->orderBy($order, $orderAsc)->where('title', 'like', "%$q")->paginate(20);
-//
-//        return [
-//            'code' => 1001,
-//            'message' => '获取成功',
-//            'data' => $coupon,
-//        ];
-    }
 
     /**
      * @return string
@@ -168,5 +95,39 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         }
 
         return false;
+    }
+
+
+    /**
+     * @return array|bool|mixed|string
+     * @throws \Exception
+     */
+    public function searchGoods()
+    {
+        $sort = request('sort');
+        $q = request('q');
+        $type = request('type');
+
+        if (! $q) {
+            return [
+                'code' => 4001,
+                'message' => '关键词必能为空',
+            ];
+        }
+        $rest = $this->searchByTKL($q);
+
+        if ($rest) {
+            $coupon = $this->model->where([
+                'item_id' => $rest,
+            ])->get()->toArray();
+
+            if ($coupon) {
+                return $coupon;
+            }
+
+            return $rest;
+        }
+
+        return $q;
     }
 }
