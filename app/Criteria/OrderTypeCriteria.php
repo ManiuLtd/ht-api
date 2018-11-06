@@ -19,7 +19,7 @@ class OrderTypeCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         //根据type判断  1直推订单 2下下级订单 3团队订单 4补贴订单
-        $type = request('type') ?? 1;
+        $type = request('classify') ?? 1;
         //判断类型是否正确
         if (! in_array($type, [1, 2, 3, 4])) {
             throw new \Exception('订单类型错误');
