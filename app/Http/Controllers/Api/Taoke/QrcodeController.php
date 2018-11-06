@@ -41,11 +41,15 @@ class QrcodeController extends Controller
         try {
             $data = $request->all();
             $this->validator->with($data)->passesOrFail();
+            $memberid = getMemberId();
+            $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
+            //邀请码
+            $hashids = $hashids->encode($memberid);
             $couponPrice = intval($data['coupon_price']).'元';
             $qrcode = new Qrcode(public_path('images/share.png'));
             $qrcode->width = 564;
             $qrcode->height = 971;
-            $qrcode->savePath = 'images/couponShare.jpg';
+            $qrcode->savePath = 'images/cache/'.$hashids.'_'.$data['item_id'].'.jpg';
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
                 ->generate('http://lv5.vaiwan.com:8081/'.$data['item_id'].'?type'.$data['type']);
@@ -88,16 +92,16 @@ class QrcodeController extends Controller
             $qrcode = new Qrcode(public_path("images/{$templateName}.jpg"));
             $qrcode->width = 928;
             $qrcode->height = 1470;
+            $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
+            //邀请码
+            $hashids = $hashids->encode($memberid);
             $qrcode->savePath = "images/invite{$i}.jpg";
-            $fileName = $memberid.'_'.$templateName.'.png';
+            $fileName = $hashids.'_'.$templateName.'.png';
             $cacheImage = public_path('images/cache/').$fileName;
             //生成二维码
             $redirectUrl = url('http://www.baidu.com?unionid='.$memberid);
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
             $cache = Image::make($cacheImage)->resize(156, 141);
-            $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
-            //邀请码
-            $hashids = $hashids->encode($memberid);
             $imageEnumArray = [
                 new ImageEnum($cacheImage, 300, 300, 'bottom', 100, 140),
             ];
