@@ -20,3 +20,4 @@ error.log
 .phpstorm.meta.php
 gpush.log
 public/gpush.log
+public/images/cache/*
