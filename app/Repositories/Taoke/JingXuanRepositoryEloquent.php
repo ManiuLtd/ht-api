@@ -62,29 +62,23 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
     {
         $model = $this->paginate(request('limit',10));
         $member = getMember();
-        $level = Level::query()->find($member->level);
         //判断我是不是会员
-        if ($level){
+        if ($member->level->is_commission == 1){
             $member_id = $member->id;
         }else{
-            $memberInviter = Member::query()->find($member->inviter_id); //$member->inviter->level
-            $levelInviter = Level::query()->find($memberInviter->level);
-            //判断我上级是不是会员 是的话根据他的id获取他的pid     TODO if条件未完善
-            if ($levelInviter){
-                $member_id = $memberInviter->id;
+            //判断我上级是不是会员 是的话根据他的id获取他的pid
+            if ($member->inviter->level->is_commission == 1){
+                $member_id = $member->inviter->id;
             }else{
                 //用我组长的id获取他的pid
-                $group = Group::query()->find($member->group_id);
-                $memberGroup = Member::query()->find($group->member_id);
+                $memberGroup = Member::query()->find($member->group->member_id);
                 $member_id = $memberGroup->id;
             }
         }
         $pidModel = db('tbk_pids')
             ->where([
-                'user_id' => getUserId(), //不用  代理商
                 'member_id' => $member_id,
             ])
-            ->orderByRaw('RAND()')
             ->first();
         if ($pidModel) {
             $pid = $pidModel->taobao;
