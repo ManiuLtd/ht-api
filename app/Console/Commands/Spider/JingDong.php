@@ -98,10 +98,13 @@ class JingDong extends Command
             $bar = $this->output->createProgressBar(10);
             //循环所有页码查出数据
             for ($page = 1; $page <= 10; $page++) {
-                $resp = $this->tbk->getOrders(['page'=>10]);
+                $resp = $this->tbk->getOrders(['page'=>$page]);
                 //写入队列
 
-                SaveOrders::dispatch($resp['data'], 'jingdong');
+                if ($resp) {
+
+                    SaveOrders::dispatch($resp->data, 'jingdong');
+                }
                 $bar->advance();
                 $this->info(">>>已采集完第{$page}页 ");
             }

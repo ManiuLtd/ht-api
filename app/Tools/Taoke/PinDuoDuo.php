@@ -219,11 +219,10 @@ class PinDuoDuo implements TBKInterface
             'end_update_time' => $time,
             'timestamp' => $time,
             'page' => $page,
-            'page_size' => '50',
             'type' => 'pdd.ddk.order.list.increment.get',
         ];
 
-        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'end_update_time'.$time.'page'.$page.'page_size50'.'start_update_time'.$start_update_time.'timestamp'.$time.'typepdd.ddk.order.list.increment.get';
+        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'end_update_time'.$time.'page'.$page.'start_update_time'.$start_update_time.'timestamp'.$time.'typepdd.ddk.order.list.increment.get';
 
         $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
@@ -231,17 +230,14 @@ class PinDuoDuo implements TBKInterface
         $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
             ->withData($params)
             ->post();
+
         $data = json_decode($result);
         if (isset($data->error_response)) {
-            throw new \Exception($data->error_response);
+            throw new \Exception($data->error_response->error_msg);
         }
 
         if (isset($data->order_list_get_response)) {
-            return [
-                'code' => 1001,
-                'message' => '获取成功',
-                'data' => $data->order_list_get_response,
-            ];
+            return $data->order_list_get_response;
         }
         throw new \Exception('未知错误');
     }

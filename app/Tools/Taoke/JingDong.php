@@ -155,6 +155,7 @@ class JingDong implements TBKInterface
      * 获取订单.
      * @param array $array
      * @return mixed
+     * @throws \Exception
      */
     public function getOrders(array $array = [])
     {
@@ -163,16 +164,18 @@ class JingDong implements TBKInterface
         $page = $array['page'] ?? 1;
         $time = now()->toDateTimeString();
         $params = [
-            'method' => 'jingdong.UnionService.queryOrderListWithKey',
+            'method' => 'jingdong.UnionService.queryOrderList',
             'access_token' => data_get(config('coupon'), 'jingdong.access_token'),
             'app_key' => data_get(config('coupon'), 'jingdong.JDM_APP_KEY'),
             'timestamp' => $time,
             'v' => '2.0',
         ];
+
         $urlparams = [
-            'unionId' => 29047,
+            'unionId' => data_get(config('coupon'), 'jingdong.JDMEDIA_UNIONID'),
             'key' => data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY'),
-            'time' => date('YmdH', time()),
+//            'time' => date('YmdH', time()),
+                        'time' => '2018110310',
             'pageIndex' => $page,
             'pageSize' => 500,
         ];
@@ -187,7 +190,27 @@ class JingDong implements TBKInterface
             ->withData($params)
             ->get();
         $response = json_decode($response);
-        //TODO 数据测试
+//        dd($response->jingdong_UnionService_queryOrderList_responce);
+
+        if (isset($response->error_response)) {
+            throw new \Exception($response->error_response->zh_desc);
+        }
+//        $result = data_get($response,'jingdong_UnionService_queryOrderList_responce.result');
+        $result = json_decode($response->jingdong_UnionService_queryOrderList_responce->result);
+
+
+
+        if ($result->success != 1) {
+            throw new \Exception($result->msg);
+        }
+
+
+        if (!isset($result->data)) {
+            throw new \Exception('没有订单数据');
+        }
+
+
+        return $result;
     }
 
     /**

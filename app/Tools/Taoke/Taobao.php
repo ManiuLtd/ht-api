@@ -188,15 +188,24 @@ class Taobao implements TBKInterface
     public function getOrders(array $array = [])
     {
         //  Implement getOrders() method.
+        $type = data_get($array,'type');
+
+        $order_query_type = 'create_time';
+
+        if ($type == 2) {
+            $order_query_type = 'settle_time';
+        }
         $params = [
             'appkey' => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => data_get($array, 'sid', 1942),  //淘宝  京东 拼多多 授权 并保存授权信息
+            'sid' => data_get($array, 'sid', 1942),
             'start_time' => now()->subMinutes(9)->toDateTimeString(),
+//            'start_time' => '2018-11-01 15:45:02',
             'span' => 600,
             'signurl' => 0,
-            'page_no' => data_get($array, 'page', 1),
-            'page_size' => 100,
+            'page_no' => data_get($array,'page',1),
+            'page_size' => 500,
+            'order_query_type' => $order_query_type,
         ];
 
         $resp = Curl::to('https://www.heimataoke.com/api-qdOrder')
@@ -204,6 +213,9 @@ class Taobao implements TBKInterface
             ->get();
         $resp = json_decode($resp);
 
+        if (isset($resp->error)) {
+            throw new \Exception($resp->error);
+        }
         if (! isset($resp->n_tbk_order)) {
             throw  new \Exception('没有数据');
         }

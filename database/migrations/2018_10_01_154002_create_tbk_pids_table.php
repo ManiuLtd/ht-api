@@ -21,10 +21,7 @@ class CreateTbkPidsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->integer('member_id')->nullable();
-<<<<<<< HEAD
 
-=======
->>>>>>> 36a212cd395231f0569af7140d1e4e984005329b
             $table->string('taobao', 100)->nullable();
             $table->string('jingdong', 100)->nullable();
             $table->string('pinduoduo', 100)->nullable();

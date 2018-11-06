@@ -327,22 +327,23 @@ class Taobao extends Command
     {
         try {
             $setting = setting(1);
-            $sid_arr = json_decode($setting->taobao);
-            $bar = $this->output->createProgressBar(10 * count($sid_arr));
-            foreach ($sid_arr as $sid) {
-//        $this->info("总页码:{10}");
-                //循环所有页码查出数据
-                for ($page = 1; $page <= 10; $page++) {
-                    $resp = $this->tbk->getOrders([
-                        'page' => 10,
-                        'sid' => $sid->sid,
-                    ]);
-                    //写入队列
-                    SaveOrders::dispatch($resp['data'], 'taobao');
-                    $bar->advance();
-                    $this->info(">>>已采集完第{$page}页 ");
-                }
+            $sid = json_decode($setting->taobao)->sid ?? 1942;
+            $type = $this->option('type');
+            $bar = $this->output->createProgressBar(4);
+            //循环所有页码查出数据
+            for ($page = 1; $page <= 4; $page++) {
+                $resp = $this->tbk->getOrders([
+                    'page' => $page,
+                    'sid' => $sid,
+                    'type' => $type,
+                ]);
+
+                //写入队列
+                SaveOrders::dispatch($resp, 'taobao');
+                $bar->advance();
+                $this->info(">>>已采集完第{$page}页 ");
             }
+
             $bar->finish();
         } catch (\Exception $e) {
             $this->warn($e->getMessage());
