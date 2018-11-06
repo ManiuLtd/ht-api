@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Models\System\Setting;
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
@@ -183,13 +184,29 @@ class Taobao extends Command
         $res = $this->tbk->zhuanti();
         try {
             foreach ($res->data as $re) {
+                $items = $this->tbk->zhuantiItem([
+                    'id' => $re->id
+                ]);
+                $data = [];
+                foreach ($items->data as $k => $v){
+                    $data[$k]['title']        = $v->itemtitle;//标题
+                    $data[$k]['short_title']  = $v->itemshorttitle;//短标题
+                    $data[$k]['itemid']       = $v->itemid;
+                    $data[$k]['price']        = $v->itemprice;//在售价
+                    $data[$k]['coupon_price'] = $v->itemendprice;//卷后价
+                    $data[$k]['pic_url']      = $v->itempic;//图片
+                    $data[$k]['type']         = 1;
+
+                }
                 $insert = [
-                    'title' => $re->name,
-                    'thumb' => $re->app_image,
-                    'banner' => $re->image,
-                    'content' => $re->content,
+                    'special_id' => $re->id,
+                    'title'      => $re->name,
+                    'thumb'      => 'http://img.haodanku.com/'.$re->app_image,
+                    'banner'     => 'http://img.haodanku.com/'.$re->image,
+                    'content'    => $re->content,
+                    'items'      => json_encode($data),
                     'start_time' => date('Y-m-d H:i:s', $re->activity_start_time),
-                    'end_time' => date('Y-m-d H:i:s', $re->activity_end_time),
+                    'end_time'   => date('Y-m-d H:i:s', $re->activity_end_time),
                     'created_at' => Carbon::now()->toDateTimeString(),
                     'updated_at' => Carbon::now()->toDateTimeString(),
                 ];
@@ -309,10 +326,10 @@ class Taobao extends Command
     protected function getOrders()
     {
         try {
-            $sids = db('tbk_oauth')->where('type', 1)->get();
-            $sid_arr = $sids->toArray();
+            $setting = setting(1);
+            $sid_arr = json_decode($setting->taobao);
             $bar = $this->output->createProgressBar(10 * count($sid_arr));
-            foreach ($sids as $sid) {
+            foreach ($sid_arr as $sid) {
 //        $this->info("总页码:{10}");
                 //循环所有页码查出数据
                 for ($page = 1; $page <= 10; $page++) {

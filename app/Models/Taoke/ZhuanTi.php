@@ -13,11 +13,6 @@ class ZhuanTi extends Model implements Transformable
 {
     use TransformableTrait;
 
-    public function transform()
-    {
-        return $this->toArray();
-    }
-
     protected $table = 'tbk_zhuanti';
 
     /**
@@ -26,4 +21,18 @@ class ZhuanTi extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * 添加更新前
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->items = json_encode(request('items'));
+        });
+        self::updating(function ($model) {
+            $model->items = json_encode(request('items'));
+        });
+    }
 }

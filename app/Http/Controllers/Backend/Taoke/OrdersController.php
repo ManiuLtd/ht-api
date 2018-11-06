@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Taoke;
 
+use App\Criteria\UserCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\OrderValidator;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
@@ -39,7 +40,9 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = $this->repository->with(['member','group','oldGroup'])->paginate(request('limit', 10));
+        $orders = $this->repository
+            ->pushCriteria(new UserCriteria())
+            ->with(['member','group','oldGroup'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $orders);
     }

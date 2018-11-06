@@ -39,21 +39,20 @@ class JingXuan implements ShouldQueue
     {
         foreach ($this->results as $result) {
             $item = [
-                'itemid' => $result->itemid,
-                'title' => $result->title,
-                'pic_url' => json_encode($result->itempic),
-                'content' => $result->content,
-                'price' => $result->itemprice,
-                'final_price' => $result->itemendprice,
-                'coupon_price' => $result->couponmoney,
+                'itemid'          => $result->itemid,
+                'title'           => $result->title,
+                'pic_url'         => json_encode($result->itempic),
+                'content'         => htmlspecialchars_decode ($result->copy_content),
+                'price'           => $result->itemprice,
+                'final_price'     => $result->itemendprice,
+                'coupon_price'    => $result->couponmoney,
                 'commission_rate' => $result->tkrates,
-                'shares' => $result->dummy_click_statistics,
-                'comment2' => $result->copy_content,
-                'comment1' => $result->copy_comment,
-                'show_at' => date('Y-m-d H:i:s', $result->show_time),
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
-
+                'shares'          => $result->dummy_click_statistics,
+                'comment2'        => html_entity_decode($result->copy_content),
+                'comment1'        => $result->copy_comment,
+                'show_at'         => date('Y-m-d H:i:s', $result->show_time),
+                'created_at'      => now()->toDateTimeString(),
+                'updated_at'      => now()->toDateTimeString(),
             ];
 
             DB::table('tbk_jingxuan')->updateOrInsert([

@@ -49,7 +49,7 @@ class Haohuo implements ShouldQueue
                 'title'         => $v->name,
                 'app_hot_image' => $v->app_hot_image,
                 'shares'        => $v->share_times,
-                'text'          =>  html_entity_decode($v->copy_text),
+                'text'          =>  str_replace ('<br>','<br/>',html_entity_decode($v->copy_text)),
                 'start_time'    => date('Y-m-d H:i:s', $v->activity_start_time),
                 'end_time'      => date('Y-m-d H:i:s', $v->activity_end_time),
                 'items'         => json_encode($items),

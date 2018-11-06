@@ -26,7 +26,7 @@ Route::namespace('Taoke')
         ]);
 
         //精选单品
-        Route::resource('jinxuandp', 'JingXuanController', [
+        Route::resource('jingxuan', 'JingXuanController', [
             'except'=> ['create', 'edit'],
         ]);
 

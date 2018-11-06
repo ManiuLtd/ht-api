@@ -20,7 +20,7 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only(['email', 'password']);
+        $credentials = $request->only(['name','email', 'password']);
         try {
             $token = Auth::guard()->attempt($credentials);
 
@@ -42,6 +42,7 @@ class LoginController extends Controller
     protected function respondWithToken($token)
     {
         $data = [
+            'role' => 'admin',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,

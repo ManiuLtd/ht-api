@@ -26,6 +26,14 @@ class Setting extends Model implements Transformable
         'recharge',
         'shop',
         'credit',
+        'credit_order',
+        'credit_friend',
+        'notification',
+        'pid',
+        'withdraw',
+        'taobao',
+        'jingdong',
+        'pinduouo',
     ];
 
     /**
@@ -56,6 +64,30 @@ class Setting extends Model implements Transformable
             }
             if (request('shop')) {
                 $model->shop = json_encode(request('shop'));
+            }
+            if (request('credit_order')) {
+                $model->shop = json_encode(request('credit_order'));
+            }
+            if (request('credit_friend')) {
+                $model->shop = json_encode(request('credit_friend'));
+            }
+            if (request('notification')) {
+                $model->shop = json_encode(request('notification'));
+            }
+            if (request('pid')) {
+                $model->shop = json_encode(request('pid'));
+            }
+            if (request('withdraw')) {
+                $model->shop = json_encode(request('withdraw'));
+            }
+            if (request('taobao')) {
+                $model->shop = json_encode(request('taobao'));
+            }
+            if (request('jingdong')) {
+                $model->shop = json_encode(request('jingdong'));
+            }
+            if (request('pinduouo')) {
+                $model->shop = json_encode(request('pinduouo'));
             }
         });
     }
