@@ -17,19 +17,12 @@ class HaoHuoController extends Controller
     protected $repository;
 
     /**
-     * @var HaoHuoValidator
-     */
-    protected $validator;
-
-    /**
      * HaoHuoController constructor.
      * @param HaoHuoRepository $repository
-     * @param HaoHuoValidator $validator
      */
-    public function __construct(HaoHuoRepository $repository, HaoHuoValidator $validator)
+    public function __construct(HaoHuoRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator = $validator;
     }
 
     /**

@@ -16,7 +16,6 @@ class FeedbackValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-
         ValidatorInterface::RULE_CREATE => [
             'content'=> 'required',
             'title'=>'required',

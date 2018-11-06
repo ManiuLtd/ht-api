@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Api\System;
 
-use Mockery\Exception;
-use Illuminate\Http\Request;
+use App\Http\Requests\System\FeedbackCreateRequest;
 use App\Http\Controllers\Controller;
 use App\Validators\System\FeedbackValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -42,7 +41,7 @@ class FeedbacksController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function index(Request $request)
+    public function store(FeedbackCreateRequest $request)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
@@ -50,7 +49,7 @@ class FeedbacksController extends Controller
             $feedback = $this->repository->create($request->all());
 
             return json('1001', '留言反馈成功', $feedback);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return json('5001', $e->getMessage());
         }
     }

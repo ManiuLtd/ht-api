@@ -16,21 +16,15 @@ class ZhuanTiController extends Controller
      */
     protected $repository;
 
-    /**
-     * @var ZhuanTiValidator
-     */
-    protected $validator;
 
     /**
      * ZhuanTiController constructor.
      *
      * @param ZhuanTiRepository $repository
-     * @param ZhuanTiValidator $validator
      */
-    public function __construct(ZhuanTiRepository $repository, ZhuanTiValidator $validator)
+    public function __construct(ZhuanTiRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator = $validator;
     }
 
     /**
