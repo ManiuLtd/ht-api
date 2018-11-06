@@ -58,16 +58,16 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
      * @return mixed
      * @throws \Exception
      */
-    public function TaoCommand()
+    public function getList()
     {
         $model = $this->paginate(request('limit',10));
         $member = getMember();
         $level = Level::query()->find($member->level);
-        //判断我是不是会员  是的话 根据我id获取我的pid    TODO if条件未完善
+        //判断我是不是会员
         if ($level){
             $member_id = $member->id;
         }else{
-            $memberInviter = Member::query()->find($member->inviter_id);
+            $memberInviter = Member::query()->find($member->inviter_id); //$member->inviter->level
             $levelInviter = Level::query()->find($memberInviter->level);
             //判断我上级是不是会员 是的话根据他的id获取他的pid     TODO if条件未完善
             if ($levelInviter){
@@ -81,7 +81,7 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
         }
         $pidModel = db('tbk_pids')
             ->where([
-                'user_id' => getUserId(),
+                'user_id' => getUserId(), //不用  代理商
                 'member_id' => $member_id,
             ])
             ->orderByRaw('RAND()')

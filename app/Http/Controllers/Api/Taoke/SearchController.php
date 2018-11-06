@@ -63,8 +63,6 @@ class SearchController extends Controller
             }
 
             return json(1001, '获取成功', $rest);
-        } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag()->first());
         } catch (\Exception $exception) {
             return json(5001, $exception->getMessage());
         }
@@ -76,14 +74,11 @@ class SearchController extends Controller
     public function keywords()
     {
         try {
-            //添加SearchValidator
             $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $resp = $this->TBK->hotSearch();
 
             return json(1001, '获取成功', $resp);
-        } catch (ValidatorException $e) {
-            return json(5001, $e->getMessageBag()->first());
         } catch (\Exception $exception) {
             return json(5001, $exception->getMessage());
         }

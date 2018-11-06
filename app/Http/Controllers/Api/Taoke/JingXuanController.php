@@ -19,21 +19,15 @@ class JingXuanController extends Controller
      */
     protected $repository;
 
-    /**
-     * @var JingxuanDpValidator
-     */
-    protected $validator;
 
     /**
      * JingXuanController constructor.
      *
      * @param JingXuanRepository $repository
-     * @param JingxuanDpValidator $validator
      */
-    public function __construct(JingXuanRepository $repository, JingxuanDpValidator $validator)
+    public function __construct(JingXuanRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator = $validator;
     }
 
     /**
@@ -44,9 +38,9 @@ class JingXuanController extends Controller
     public function index()
     {
         try {
-            $jingxuanDps = $this->repository->TaoCommand();
+            $jingxuan = $this->repository->getList();
 
-            return json(1001, '获取成功', $jingxuanDps);
+            return json(1001, '获取成功', $jingxuan);
         }catch (\Exception $e){
             return json(5001, $e->getMessage());
         }
