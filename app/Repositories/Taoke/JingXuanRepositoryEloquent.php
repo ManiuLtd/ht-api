@@ -87,7 +87,7 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
         }
         foreach ($model['data'] as $k => $v){
             $tool = new Taobao();
-            $command = $tool->link([
+            $command = $tool->taokouling([
                 'pid'    => $pid,
                 'itemid' => $v['itemid']
             ]);

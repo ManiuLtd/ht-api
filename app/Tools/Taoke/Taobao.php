@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use http\Exception\InvalidArgumentException;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\DB;
 use Orzcc\TopClient\Facades\TopClient;
@@ -43,6 +44,7 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * 获取推广位
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
      */
     protected function getPids()
@@ -59,6 +61,7 @@ class Taobao implements TBKInterface
         }
         $group = DB::table('groups')->find($member->group_id);
         $group_pid = DB::table('tbk_pids')->where('member_id', $group->member_id)->first();
+        //TODO 如果都没有 获取setting表的默认pid
 
         return $group_pid;
     }
@@ -93,6 +96,7 @@ class Taobao implements TBKInterface
             'title'            => $data->title,
         ]);
         $data->kouling = $kouling;
+        //TODO 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
 
         return $data;
     }
@@ -105,6 +109,7 @@ class Taobao implements TBKInterface
      */
     public function search(array $array = [])
     {
+        //TODO 可根据商品ID搜索
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
@@ -247,10 +252,7 @@ class Taobao implements TBKInterface
         $min_id = $array['min_id'] ?? 1;
 
         if (! in_array($type, [1, 2, 3, 4, 5])) {
-            return [
-                'code' => 4001,
-                'message' => 'type不合法',
-            ];
+            throw new \InvalidArgumentException('type不合法');
         }
         $params = [
             'apikey' => config('coupon.taobao.HDK_APIKEY'),
@@ -517,14 +519,15 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * TODO  该方法删掉  用上面的官方接口就行 ，记得把调用的地方也改了
      * 生成淘口令
      * @param array $params
      * @return mixed
      * @throws \Exception
      */
-    public function link(array $params)
+    public function taokouling11(array $params)
     {
-        // 根据pid item 图片地址生成淘口令，如果我不是会员，则用我上级的pid，如果上级也不是超级会员，就用组长的pid
+        //根据pid item 图片地址生成淘口令，如果我不是会员，则用我上级的pid，如果上级也不是超级会员，就用组长的pid
         //获取领劵地址
         $response = Curl::to('https://www.heimataoke.com/api-zhuanlian')
             ->withData([

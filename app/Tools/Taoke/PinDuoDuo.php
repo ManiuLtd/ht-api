@@ -14,76 +14,68 @@ class PinDuoDuo implements TBKInterface
      */
     public function getCouponUrl(array $array = [])
     {
-        // TODO: Implement getCouponUrl() method.
+        // TODO 返回拼多多领券地址
     }
 
     /**
-     * 获取详情.
      * @param array $array
-     * @return mixed
+     * @return array|mixed
+     * @throws \Exception
      */
     public function getDetail(array $array = [])
     {
-        //  Implement getDetail() method.
 
-        $id = data_get($array, 'id');
-        if (! is_numeric($id)) {
-            return [
-                'code'=>4004,
-                'message' => '商品id类型错误！',
-            ];
+        $id = data_get ($array, 'id');
+        if (!is_numeric ($id)) {
+            throw new \InvalidArgumentException('商品id类型错误');
         }
-        $time = time();
+        $time = time ();
         $params = [
-            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
+            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'goods_id_list' => "[$id]",
             'timestamp' => $time,
             'type' => 'pdd.ddk.goods.detail',
 
         ];
 
-        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'goods_id_list['.$id.']timestamp'.$time.'typepdd.ddk.goods.detail';
-        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'goods_id_list[' . $id . ']timestamp' . $time . 'typepdd.ddk.goods.detail';
+        $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
 
-        $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
-            ->withData($params)
-            ->post();
-        $result = json_decode($result);
+        $result = Curl::to ('http://gw-api.pinduoduo.com/api/router')
+            ->withData ($params)
+            ->post ();
+        $result = json_decode ($result);
 
         if (isset($result->error_response)) {
-            return [
-                'code' => 4004,
-                'message' => $result->error_response,
-            ];
+            throw new \Exception($result->error_response);
         }
 
-        return [
-            'code' => 1001,
-            'message' => '获取成功',
-            'data' => data_get($result, 'goods_detail_response.goods_details.0', []),
-        ];
+        //TODO 这里测试下 看是否能正常返回
+        //TODO 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
+
+        return data_get ($result, 'goods_detail_response.goods_details.0', []);
+
     }
 
     /**
+     * 全网搜索
      * @param array $array
-     * @return mixed
+     * @return array|mixed
+     * @throws \Exception
      */
     public function search(array $array = [])
     {
-        //  Implement search() method.
-        $page = data_get($array, 'page', 1);
+        $page = data_get ($array, 'page', 1);
         $q = $array['q'];
         $sort = $array['sort'];
 
+        //TODO 为什么要限制页数？
         if ($page > 600) {
-            return [
-                'code' => 4004,
-                'message' => '爬取完成',
-            ];
+            throw new \Exception('爬取完成');
         }
-        $time = time();
+        $time = time ();
 
         //sort 1最新 2低价 3高价 4销量 5佣金 6综合
         $sort_type = 0;
@@ -108,7 +100,7 @@ class PinDuoDuo implements TBKInterface
                 break;
         }
         $params = [
-            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
+            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'keyword' => $q,
             'page' => $page,
             'page_size' => 100,
@@ -117,15 +109,15 @@ class PinDuoDuo implements TBKInterface
             'type' => 'pdd.ddk.goods.search',
 
         ];
-        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'keyword'.$q.'page'.$page.'page_size100'.'sort_type'.$sort_type.'timestamp'.$time.'typepdd.ddk.goods.search';
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'keyword' . $q . 'page' . $page . 'page_size100' . 'sort_type' . $sort_type . 'timestamp' . $time . 'typepdd.ddk.goods.search';
 
-        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
+        $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
-        $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
-            ->withData($params)
-            ->post();
-        $result = json_decode($result);
+        $result = Curl::to ('http://gw-api.pinduoduo.com/api/router')
+            ->withData ($params)
+            ->post ();
+        $result = json_decode ($result);
 
         if (isset($result->error_response)) {
             return [
@@ -151,52 +143,49 @@ class PinDuoDuo implements TBKInterface
                 $temp['receive_num'] = $item->coupon_total_quantity - $item->coupon_remain_quantity;
                 $temp['type'] = 3;
                 $temp['status'] = 0;
-                $temp['start_time'] = Carbon::createFromTimestamp(intval($item->coupon_start_time / 1000))->toDateTimeString();
-                $temp['end_time'] = Carbon::createFromTimestamp(intval($item->coupon_end_time / 1000))->toDateTimeString();
-                $temp['created_at'] = Carbon::now()->toDateTimeString();
-                $temp['updated_at'] = Carbon::now()->toDateTimeString();
+                $temp['start_time'] = Carbon::createFromTimestamp (intval ($item->coupon_start_time / 1000))->toDateTimeString ();
+                $temp['end_time'] = Carbon::createFromTimestamp (intval ($item->coupon_end_time / 1000))->toDateTimeString ();
+                $temp['created_at'] = Carbon::now ()->toDateTimeString ();
+                $temp['updated_at'] = Carbon::now ()->toDateTimeString ();
                 $data[] = $temp;
                 $temp = [];
             }
 
             //当前页面地址
-            $uri = request()->getUri();
+            $uri = request ()->getUri ();
             //验证是否填写page参数
-            if (! str_contains('page=', $uri)) {
-                $uri = $uri.'&page=1';
+            if (!str_contains ('page=', $uri)) {
+                $uri = $uri . '&page=1';
             }
 
             //页码信息
-            $totalPage = intval(floor($result->goods_search_response->total_count / 20) + 1);
+            $totalPage = intval (floor ($result->goods_search_response->total_count / 20) + 1);
             $prevPage = $page - 1;
             $nextPage = $page + 1;
             //页码不对
             if ($page > $totalPage) {
-                return response()->json([
-                    'code' => 4001,
-                    'message' => '超出最大页码',
-                ]);
+                throw new \Exception('超出最大页码');
             }
 
             return [
+                'code' => 1001,
+                'message' => '优惠券获取成功',
                 'data' => $data,
                 'links' => [
-                    'first' => str_replace("page={$page}", 'page=1', $uri),
-                    'last' => str_replace("page={$page}", "page={$totalPage}", $uri),
-                    'prev' => $page == 1 ? null : str_replace("page={$page}", "page={$prevPage}", $uri),
-                    'next' => str_replace("page={$page}", "page={$nextPage}", $uri),
+                    'first' => str_replace ("page={$page}", 'page=1', $uri),
+                    'last' => str_replace ("page={$page}", "page={$totalPage}", $uri),
+                    'prev' => $page == 1 ? null : str_replace ("page={$page}", "page={$prevPage}", $uri),
+                    'next' => str_replace ("page={$page}", "page={$nextPage}", $uri),
                 ],
                 'meta' => [
-                    'current_page' => (int) $page,
+                    'current_page' => (int)$page,
                     'from' => 1,
                     'last_page' => $totalPage,
-                    'path' => request()->url(),
+                    'path' => request ()->url (),
                     'per_page' => 20,
                     'to' => 20 * $page,
                     'total' => $result->goods_search_response->total_count,
                 ],
-                'code' => 1001,
-                'message' => '优惠券获取成功',
             ];
         }
     }
@@ -210,11 +199,11 @@ class PinDuoDuo implements TBKInterface
     public function getOrders(array $array = [])
     {
         //  Implement getOrders() method.
-        $time = time();
-        $start_update_time = now()->subDays(30)->timestamp;
-        $page = data_get($array, 'page', 1);
+        $time = time ();
+        $start_update_time = now ()->subDays (30)->timestamp;
+        $page = data_get ($array, 'page', 1);
         $params = [
-            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
+            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'start_update_time' => $start_update_time,
             'end_update_time' => $time,
             'timestamp' => $time,
@@ -223,48 +212,30 @@ class PinDuoDuo implements TBKInterface
             'type' => 'pdd.ddk.order.list.increment.get',
         ];
 
-        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'end_update_time'.$time.'page'.$page.'page_size50'.'start_update_time'.$start_update_time.'timestamp'.$time.'typepdd.ddk.order.list.increment.get';
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'end_update_time' . $time . 'page' . $page . 'page_size50' . 'start_update_time' . $start_update_time . 'timestamp' . $time . 'typepdd.ddk.order.list.increment.get';
 
-        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
+        $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
-        $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
-            ->withData($params)
-            ->post();
-        $data = json_decode($result);
+        $result = Curl::to ('http://gw-api.pinduoduo.com/api/router')
+            ->withData ($params)
+            ->post ();
+        $data = json_decode ($result);
         if (isset($data->error_response)) {
             throw new \Exception($data->error_response);
         }
 
-        if (isset($data->order_list_get_response)) {
-            return [
-                'code' => 1001,
-                'message' => '获取成功',
-                'data' => $data->order_list_get_response,
-            ];
+        if (!isset($data->order_list_get_response)) {
+            throw new \Exception('未知错误');
         }
-        throw new \Exception('未知错误');
+
+        return [
+            'code' => 1001,
+            'message' => '获取成功',
+            'data' => $data->order_list_get_response,
+        ];
     }
 
-    /**
-     * 自动绑定订单.
-     * @param array $array
-     * @return mixed
-     */
-    public function autoBindOrder(array $array = [])
-    {
-        // TODO: Implement autoBindOrder() method.
-    }
-
-    /**
-     * 手动提交订单.
-     * @param array $array
-     * @return mixed
-     */
-    public function submitOrder(array $array = [])
-    {
-        // TODO: Implement submitOrder() method.
-    }
 
     /**
      * 爬虫.
@@ -279,9 +250,9 @@ class PinDuoDuo implements TBKInterface
         if ($page > 600) {
             throw new \Exception('爬取完成');
         }
-        $time = time();
+        $time = time ();
         $params = [
-            'client_id' => data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
+            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'page' => $page,
             'page_size' => 100,
             'sort_type' => 6,
@@ -290,14 +261,14 @@ class PinDuoDuo implements TBKInterface
             'with_coupon' => 'true',
         ];
 
-        $str = 'client_id'.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_ID').'page'.$page.'page_size100'.'sort_type6'.'timestamp'.$time.'typepdd.ddk.goods.search'.'with_coupontrue';
-        $sign = strtoupper(md5(data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET').$str.data_get(config('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'page' . $page . 'page_size100' . 'sort_type6' . 'timestamp' . $time . 'typepdd.ddk.goods.search' . 'with_coupontrue';
+        $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
         $params['sign'] = $sign;
-        $result = Curl::to('http://gw-api.pinduoduo.com/api/router')
-            ->withData($params)
-            ->post();
-        $result = json_decode($result);
+        $result = Curl::to ('http://gw-api.pinduoduo.com/api/router')
+            ->withData ($params)
+            ->post ();
+        $result = json_decode ($result);
 
         if (isset($result->error_response)) {
             throw new \Exception($result->error_response->error_msg);

@@ -14,7 +14,7 @@ class JingDong implements TBKInterface
      */
     public function getCouponUrl(array $array = [])
     {
-        // TODO: Implement getCouponUrl() method.
+        // TODO  返回领券地址
     }
 
     /**
@@ -24,7 +24,7 @@ class JingDong implements TBKInterface
      */
     public function getDetail(array $array = [])
     {
-        // TODO 改为咱们自己的
+        //TODO 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
 
         $id = request('itemid');
         if (! is_numeric($id)) {
@@ -47,11 +47,14 @@ class JingDong implements TBKInterface
     }
 
     /**
-     * @return array|\Illuminate\Http\JsonResponse|mixed
+     * 全网搜索
+     * @return array|mixed
+     * @throws \Exception
      */
     public function search()
     {
-        //  Implement search() method.
+        //TODO 排序没写，测试接口是否正常
+
         $page = request('page', 1);
         $q = request('q');
         $sort = request('sort');
@@ -64,10 +67,8 @@ class JingDong implements TBKInterface
             'v' => '2.0',
         ];
         $urlparams = [
-
             'goodsKeyword' => $q,
             'pageIndex' => $page,
-
         ];
 
         $signparams = array_merge($params, $urlparams);
@@ -79,13 +80,9 @@ class JingDong implements TBKInterface
         $response = Curl::to('https://api.jd.com/routerjson')
             ->withData($params)
             ->get();
-        dd($response);
 
         if ($response->return != 0) {
-            return [
-                'code' => 4001,
-                'message' => $response->result,
-            ];
+            throw new \Exception($response->result);
         }
         $data = [];
         foreach ($response->result->data as $datum) {
@@ -123,13 +120,12 @@ class JingDong implements TBKInterface
         $nextPage = $page + 1;
         //页码不对
         if ($page > $totalPage) {
-            return response()->json([
-                'code' => 4001,
-                'message' => '超出最大页码',
-            ]);
+            throw new \Exception('超出最大页码');
         }
 
         return [
+            'code' => 1001,
+            'message' => '优惠券获取成功',
             'data' => $data,
             'links' => [
                 'first' => str_replace("page={$page}", 'page=1', $uri),
@@ -146,8 +142,6 @@ class JingDong implements TBKInterface
                 'to' => 20 * $page,
                 'total' => count($data),
             ],
-            'code' => 1001,
-            'message' => '优惠券获取成功',
         ];
     }
 
@@ -158,8 +152,7 @@ class JingDong implements TBKInterface
      */
     public function getOrders(array $array = [])
     {
-        // Implement getOrders() method.
-        //  Implement search() method.
+
         $page = $array['page'] ?? 1;
         $time = now()->toDateTimeString();
         $params = [
@@ -187,28 +180,9 @@ class JingDong implements TBKInterface
             ->withData($params)
             ->get();
         $response = json_decode($response);
-        //TODO 数据测试
+        //TODO 数据测试  这里还没写写完
     }
 
-    /**
-     * 自动绑定订单.
-     * @param array $array
-     * @return mixed
-     */
-    public function autoBindOrder(array $array = [])
-    {
-        // TODO: Implement autoBindOrder() method.
-    }
-
-    /**
-     * 手动提交订单.
-     * @param array $array
-     * @return mixed
-     */
-    public function submitOrder(array $array = [])
-    {
-        // TODO: Implement submitOrder() method.
-    }
 
     /**
      * 爬虫.
@@ -218,7 +192,6 @@ class JingDong implements TBKInterface
      */
     public function spider(array $params)
     {
-        // TODO: Implement spider() method.
 
         $page = $params['page'] ?? 1;
 
