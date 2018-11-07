@@ -22,6 +22,14 @@ class ZhuanTi extends Model implements Transformable
      */
     protected $guarded = [];
 
+    public function transform()
+    {
+        $array = $this->toArray();
+        $array['items'] = json_decode($array['items']);
+
+        return $array;
+    }
+
     /**
      * 添加更新前
      */
