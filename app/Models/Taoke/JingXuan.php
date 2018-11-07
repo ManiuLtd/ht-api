@@ -47,4 +47,14 @@ class JingXuan extends Model implements Transformable
         'comment2',
 
     ];
+    /**
+     * 赚多少
+     * @return array
+     */
+    public function transform()
+    {
+        $array = $this->toArray();
+        $array['pic_url'] = json_decode($this->pic_url);
+        return $array;
+    }
 }
