@@ -61,7 +61,6 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
     public function getList()
     {
         $model = $this->paginate(request('limit',10));
-
         foreach ($model['data'] as $k => $v){
             $tool = new Taobao();
             $command = $tool->getDetail([
