@@ -21,7 +21,7 @@ class Taobao implements TBKInterface
     {
         $pids = $this->getPids();
 
-        $setting = setting(getUserId());
+        $setting = setting(getUserId());//TODO 不对 应该是根据member或者user_id
         $taobao = json_decode($setting->taobao);
         //  Implement getCouponUrl() method.
         $params = [
@@ -62,7 +62,7 @@ class Taobao implements TBKInterface
         $group = DB::table('groups')->find($member->group_id);
         $group_pid = DB::table('tbk_pids')->where('member_id', $group->member_id)->first();
         if (!$group_pid){
-            $setting = setting(getUserId());
+            $setting = setting(getUserId()); //TODO 不对 应该是根据member或者user_id
             $group_pid = json_encode($setting->pid);
         }
         return $group_pid;
