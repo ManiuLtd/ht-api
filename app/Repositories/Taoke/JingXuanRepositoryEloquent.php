@@ -67,7 +67,7 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
             $member_id = $member->id;
         }else{
             //判断我上级是不是会员 是的话根据他的id获取他的pid
-            if ($member->inviter->level->is_commission == 1){
+            if ($member->inviter && $member->inviter->level->is_commission == 1){
                 $member_id = $member->inviter->id;
             }else{
                 //用我组长的id获取他的pid
