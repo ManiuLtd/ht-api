@@ -27,7 +27,7 @@ class Taobao implements TBKInterface
         $params = [
             'appkey' => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => 1942,
+            'sid' => 1942,  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
             'pid' => $pids->taobao,
             'num_iid' => $array['item_id'],
         ];
@@ -525,7 +525,7 @@ class Taobao implements TBKInterface
      * @return mixed
      * @throws \Exception
      */
-    public function taokouling11(array $params)
+    public function link(array $params)
     {
         //根据pid item 图片地址生成淘口令，如果我不是会员，则用我上级的pid，如果上级也不是超级会员，就用组长的pid
         //获取领劵地址
