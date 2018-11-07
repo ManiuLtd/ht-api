@@ -21,15 +21,15 @@ class Taobao implements TBKInterface
     {
         $pids = $this->getPids();
 
-        $oauth = DB::table('tbk_oauth')->find($pids->oauth_id);
-        //TODO sid需要调用设置
+        $setting = setting(getUserId());
+        $taobao = json_decode($setting->taobao);
         //  Implement getCouponUrl() method.
         $params = [
-            'appkey' => config('coupon.taobao.HMTK_APP_KEY'),
+            'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => 1942,  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
-            'pid' => $pids->taobao,
-            'num_iid' => $array['item_id'],
+            'sid'       => $taobao->sid,  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
+            'pid'       => $pids->taobao,
+            'num_iid'   => $array['item_id'],
         ];
         $resp = Curl::to('https://www.heimataoke.com/api-zhuanlian')
             ->withData($params)
@@ -61,8 +61,10 @@ class Taobao implements TBKInterface
         }
         $group = DB::table('groups')->find($member->group_id);
         $group_pid = DB::table('tbk_pids')->where('member_id', $group->member_id)->first();
-        //TODO 如果都没有 获取setting表的默认pid
-
+        if (!$group_pid){
+            $setting = setting(getUserId());
+            $group_pid = json_encode($setting->pid);
+        }
         return $group_pid;
     }
 
@@ -509,57 +511,6 @@ class Taobao implements TBKInterface
         $req->setUrl($params['coupon_click_url']);
         $req->setLogo($params['pict_url']);
         $req->setText($params['title']);
-        $resp = $topclient->execute($req);
-        if (! isset($resp->data->model)) {
-            throw new \Exception('淘口令生成失败');
-        }
-        $taokouling = $resp->data->model;
-
-        return $taokouling;
-    }
-
-    /**
-     * TODO  该方法删掉  用上面的官方接口就行 ，记得把调用的地方也改了
-     * 生成淘口令
-     * @param array $params
-     * @return mixed
-     * @throws \Exception
-     */
-    public function link(array $params)
-    {
-        //根据pid item 图片地址生成淘口令，如果我不是会员，则用我上级的pid，如果上级也不是超级会员，就用组长的pid
-        //获取领劵地址
-        $response = Curl::to('https://www.heimataoke.com/api-zhuanlian')
-            ->withData([
-                'appkey'    => '193298714',
-                'appsecret' => '33591f90704bcfc868871794c80ac185',
-                'pid'       => $params['pid'],
-                'sid'       => '1942',
-                'num_iid'   => $params['itemid'],
-            ])
-            ->get();
-        $response = json_decode($response);
-        if (!isset($response->coupon_click_url)) {
-            throw new \Exception('高佣金转链失败');
-        }
-        $coupon_click_url = $response->coupon_click_url;
-        //获取产品标题图片等信息
-        $topclient = TopClient::connection();
-        $req = new TbkItemInfoGetRequest();
-        $req->setFields('title,pict_url');
-        $req->setNumIids($params['itemid']);
-        $resp = $topclient->execute($req);
-        if (!isset($resp->results->n_tbk_item)) {
-            throw new \Exception('淘宝客接口调用失败');
-        }
-        $data = (array)$resp->results->n_tbk_item[0];
-
-        //获取淘口令
-        $req = new TbkTpwdCreateRequest;
-
-        $req->setUrl($coupon_click_url);
-        $req->setLogo($data['pict_url']);
-        $req->setText($data['title']);
         $resp = $topclient->execute($req);
         if (! isset($resp->data->model)) {
             throw new \Exception('淘口令生成失败');

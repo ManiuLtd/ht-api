@@ -329,20 +329,20 @@ class Taobao extends Command
             $setting = setting(1);
             $sid_arr = json_decode($setting->taobao);
             $bar = $this->output->createProgressBar(10 * count($sid_arr));
-            foreach ($sid_arr as $sid) {
+//            foreach ($sid_arr as $sid) {
 //        $this->info("总页码:{10}");
                 //循环所有页码查出数据
                 for ($page = 1; $page <= 10; $page++) {
                     $resp = $this->tbk->getOrders([
                         'page' => 10,
-                        'sid' => $sid->sid,
+                        'sid' => $sid_arr->sid,
                     ]);
                     //写入队列
                     SaveOrders::dispatch($resp['data'], 'taobao');
                     $bar->advance();
                     $this->info(">>>已采集完第{$page}页 ");
                 }
-            }
+//            }
             $bar->finish();
         } catch (\Exception $e) {
             $this->warn($e->getMessage());
