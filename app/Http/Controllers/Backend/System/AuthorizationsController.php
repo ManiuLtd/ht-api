@@ -51,23 +51,21 @@ class AuthorizationsController extends Controller
 
     /**
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Prettus\Repository\Contracts\ValidatorException
      */
     public function callback()
     {
         $type = request('type', request('state'));
 
-        $user = getUser();
         try {
             switch ($type) {
                 case 1:
                     $create = [
-                        'sid' => request('sid'),
-                        'taoid' => request('tao_id'),
-                        'name' => request('tao_name'),
-                        'auth_time' => now()->timestamp(request('auth_time'))->toDateTimeString(),
+                        'sid'         => request('sid'),
+                        'taoid'       => request('tao_id'),
+                        'name'        => request('tao_name'),
+                        'auth_time'   => now()->timestamp(request('auth_time'))->toDateTimeString(),
                         'expire_time' => now()->timestamp(request('expire_time'))->toDateTimeString(),
-                        'type' => 1,
+                        'type'        => 1,
                     ];
                     break;
                 case 2:
@@ -80,25 +78,18 @@ class AuthorizationsController extends Controller
                 default:
                     break;
             }
-            $setting = setting(1);
-
+            $setting = setting(getUserId());
             if ($type == 2) {
-                $sid_arr = json_decode($setting->jingdong);
-                $sid_arr[] = $create;
                 Setting::query()->where('id',$setting->id)->update([
-                    'jingdong' => json_encode($sid_arr)
+                    'jingdong' => json_encode($create)
                 ]);
             }elseif ($type == 3) {
-                $sid_arr = json_decode($setting->pinduouo);
-                $sid_arr[] = $create;
                 Setting::query()->where('id',$setting->id)->update([
-                    'pinduouo' => json_encode($sid_arr)
+                    'pinduouo' => json_encode($create)
                 ]);
             }else{
-                $sid_arr = json_decode($setting->taobao);
-                $sid_arr[] = $create;
                 Setting::query()->where('id',$setting->id)->update([
-                    'taobao' => json_encode($sid_arr)
+                    'taobao' => json_encode($create)
                 ]);
             }
 
@@ -125,6 +116,8 @@ class AuthorizationsController extends Controller
                 'client_secret' => '8d05a49c2bad4c1fa62caa78c2647757',
             ])
             ->post();
+        $resp= iconv('GBK','UTF-8',$resp);
+
         $resp = json_decode($resp);
         if (! $resp) {
             throw new \Exception('请重新授权');

@@ -109,10 +109,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         $type = request('type');
 
         if (! $q) {
-            return [
-                'code' => 4001,
-                'message' => '关键词必能为空',
-            ];
+            throw new \Exception('请输入关键词');
         }
         $rest = $this->searchByTKL($q);
 

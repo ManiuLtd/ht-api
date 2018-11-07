@@ -344,6 +344,7 @@ class Taobao extends Command
                 $this->info(">>>已采集完第{$page}页 ");
             }
 
+
             $bar->finish();
         } catch (\Exception $e) {
             $this->warn($e->getMessage());

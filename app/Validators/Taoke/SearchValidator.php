@@ -16,10 +16,7 @@ class SearchValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
-        ValidatorInterface::RULE_UPDATE => [
-            'type'=>'required|in:1,2,3',
-        ],
+        'type' => 'required|in:1,2,3',
     ];
     protected $messages = [
         'type.required' => 'type不能为空',

@@ -54,8 +54,7 @@ class SearchController extends Controller
     public function index()
     {
         try {
-            //SearchValidator
-            $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with(request()->all())->passesOrFail();
 
             $rest = $this->couponRepository->searchGoods();
             if (! is_array($rest)) {
