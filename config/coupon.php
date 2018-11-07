@@ -26,15 +26,15 @@ return [
 
         'JDMEDIA_APPKEY' => '9357e9ece6b6476db183967e7ea5e892',
         'JDMEDIA_SECRETKEY' => '27ed5eb361184677b14e3075a01e1d88',
-        'JDMEDIA_WEB_ID' => '29047',
+        'JDMEDIA_UNIONID' => '1000383879',
 
-        'access_token' => '177e6693-511f-4678-9161-5d9e9a8bfebd',
-        'refresh_token' => '0d6ffc80-19e0-488d-8198-b20de719b9f5',
+        'access_token' => 'ae5971e5-50db-4699-9907-872b516d80fe',
+        'refresh_token' => '57316424-4e6e-4bc2-95c0-1f1ff7c83b71',
     ],
 
     'pinduoduo' => [
-        'PDD_CLIENT_ID' => env('PDD_CLIENT_ID', 'cdd7fdd7c6164e96b9525f8a9d2d7ddf'),
-        'PDD_CLIENT_SECRET' => env('PDD_CLIENT_SECRET', '6896f97f33c5836f96bc663a708cf85cbde6ee86'),
+        'PDD_CLIENT_ID' => env('PDD_CLIENT_ID', '74f24c204a994dabb89f6b94c08c48a3'),
+        'PDD_CLIENT_SECRET' => env('PDD_CLIENT_SECRET', '92ff1f13aa9be0a166f9513ee25016d34e81fd29'),
     ],
 
 //    'PeWQdV';

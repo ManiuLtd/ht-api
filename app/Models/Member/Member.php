@@ -2,6 +2,7 @@
 
 namespace App\Models\Member;
 
+use App\Models\User\User;
 use Hashids\Hashids;
 use App\Events\CreditIncrement;
 use Illuminate\Database\Eloquent\Model;
@@ -66,6 +67,15 @@ class Member extends Model implements Transformable
                 $model->password = bcrypt(request('password'));
             });
         }
+    }
+
+    /**
+     * 管理员
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id')->withDefault(null);
     }
 
     /**
