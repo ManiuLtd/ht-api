@@ -61,38 +61,13 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
     public function getList()
     {
         $model = $this->paginate(request('limit',10));
-        $member = getMember();
-        //判断我是不是会员
-        if ($member->level->is_commission == 1){
-            $member_id = $member->id;
-        }else{
-            //判断我上级是不是会员 是的话根据他的id获取他的pid
-            if ($member->inviter && $member->inviter->level->is_commission == 1){
-                $member_id = $member->inviter->id;
-            }else{
-                //用我组长的id获取他的pid
-                $memberGroup = Member::query()->find($member->group->member_id);
-                $member_id = $memberGroup->id;
-            }
-        }
-        $pidModel = db('tbk_pids')
-            ->where([
-                'member_id' => $member_id,
-            ])
-            ->first();
-        if ($pidModel) {
-            $pid = $pidModel->taobao;
-        }else{
-            throw new \Exception('PID不正确');
-        }
         foreach ($model['data'] as $k => $v){
             $tool = new Taobao();
-            $command = $tool->taokouling([
-                'pid'    => $pid,
-                'itemid' => $v['itemid']
-            ]);
+            $command = $tool->getDetail([
+                'id' => $v['itemid']
+            ]); 
             if (strpos($v['comment1'],'$淘口令$')){
-                $model['data'][$k]['comment1'] = str_replace('$淘口令$',$command,$v['comment1']);
+                $model['data'][$k]['comment1'] = str_replace('$淘口令$',$command->kouling,$v['comment1']);
             }
         }
 
