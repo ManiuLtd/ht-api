@@ -13,6 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class SaveOrders implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    public $tries = 1;
     /**
      * @var
      */
@@ -69,13 +70,15 @@ class SaveOrders implements ShouldQueue
                 $member_id = $member->id;
                 $group_id = $member->group_id;
                 $oldgroup_id = $member->oldgroup_id;
+                $user_id = $member->user_id;
             }else{
-                $member_id = '';
-                $group_id = '';
-                $oldgroup_id = '';
+                $member_id = null;
+                $group_id = null;
+                $oldgroup_id = null;
+                $user_id = null;
             }
             $item = [
-                'user_id'           => getUserId(),
+                'user_id'           => $user_id,
                 'member_id'         => $member_id,
                 'group_id'          => $group_id,
                 'oldgroup_id'       => $oldgroup_id,
@@ -84,16 +87,19 @@ class SaveOrders implements ShouldQueue
                 'itemid'            => $result->num_iid,
                 'count'             => $result->item_num,
                 'price'             => $result->price,
-                'final_price'       => $result->pay_price,
+                'final_price'       => $result->alipay_total_price,
                 'commission_rate'   => $result->total_commission_rate,
-                'commission_amount' => $result->total_commission_fee,
+                'commission_amount' => $result->pub_share_pre_fee,
                 'pid'               => $result->adzone_id,
                 'status'            => $this->getStatus($result->tk_status),
                 'type'              => 1,
                 'complete_at'       => $result->earning_time ?? null,
+                'created_at'       => $result->create_time ,
+                'updated_at'       => now()->toDateTimeString(),
             ];
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
+                'itemid' => $item['itemid'],
                 'type' => 1,
             ], $item);
             $item = [];
@@ -128,19 +134,18 @@ class SaveOrders implements ShouldQueue
     protected function savePDDOrder($results)
     {
         foreach ($results as $result) {
-            $pid = Pid::query()->where('taobao',$result->adzone_id)->first();
+            $pid = Pid::query()->where('pinduoduo',$result->p_id)->first();
             if ($pid){
                 $member = Member::query()->find($pid->member_id);
                 $member_id = $member->id;
                 $group_id = $member->group_id;
                 $oldgroup_id = $member->oldgroup_id;
             }else{
-                $member_id = '';
-                $group_id = '';
-                $oldgroup_id = '';
+                $member_id = null;
+                $group_id = null;
+                $oldgroup_id = null;
             }
             $item = [
-                'user_id'           => getUserId(),
                 'member_id'         => $member_id,
                 'group_id'          => $group_id,
                 'oldgroup_id'       => $oldgroup_id,
@@ -148,17 +153,21 @@ class SaveOrders implements ShouldQueue
                 'title'             => $result->goods_name,
                 'itemid'            => $result->goods_id,
                 'count'             => $result->goods_quantity,
-                'price'             => $result->goods_price,
-                'final_price'       => $result->order_amount,
+                'price'             => $result->goods_price/100,
+                'final_price'       => $result->order_amount/100,
                 'commission_rate'   => $result->promotion_rate / 10,
                 'commission_amount' => $result->promotion_amount / 100,
-                'pid'               => $result->adzone_id,
+                'pid'               => $result->p_id,
                 'status'            => $this->getPDDStatus($result->order_status),
                 'type'              => 3,
-                'complete_at'       => $result->earning_time ?? null,
+                'pic_url'           => $result->goods_thumbnail_url,
+                'complete_at'       => $result->order_modify_at ?date('Y-m-d H:i:s', $result->order_create_time): null,
+                'created_at'       => $result->order_create_time ? date('Y-m-d H:i:s', $result->order_create_time) : null,
+                'updated_at'       => now()->toDateTimeString(),
             ];
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
+                'itemid' => $item['itemid'],
                 'type' => 3,
             ], $item);
             $item = [];
@@ -174,7 +183,7 @@ class SaveOrders implements ShouldQueue
     {
         switch ($status) {
             case -1: //未支付
-                return -1;
+                return 3;
                 break;
             case 0:
                 return 1;
@@ -202,6 +211,79 @@ class SaveOrders implements ShouldQueue
                 break;
             default:
                 break;
+        }
+    }
+
+    protected function saveJDOrder($results)
+    {
+        foreach ($results as $result) {
+            $p_id = $result->unionId.'_0_'.$result->skuList[0]->spId;
+
+            $pid = Pid::query()->where('jingdong',$p_id)->first();
+            if ($pid){
+                $member = Member::query()->find($pid->member_id);
+                $member_id = $member->id;
+                $group_id = $member->group_id;
+                $oldgroup_id = $member->oldgroup_id;
+            }else{
+                $member_id = null;
+                $group_id = null;
+                $oldgroup_id = null;
+            }
+            $item = [
+                'member_id'         => $member_id,
+                'group_id'          => $group_id,
+                'oldgroup_id'       => $oldgroup_id,
+                'ordernum'          => $result->orderId,
+                'title'             => $result->skuList[0]->skuName,
+                'itemid'            => $result->skuList[0]->skuId,
+                'count'             => $result->skuList[0]->skuNum,
+                'price'             => $result->skuList[0]->price,
+                'final_price'       => $result->skuList[0]->payPrice,
+//                'commission_rate'   => $result->promotion_rate / 10,
+//                'commission_amount' => $result->promotion_amount / 100,
+                'pid'               => $p_id,
+//                'status'            => $this->getPDDStatus($result->order_status),
+                'type'              => 2,
+                'complete_at'       => $result->finishTime ? date('Y-m-d H:i:s', substr($result->finishTime,0,-3)) : null,
+                'created_at'        => $result->orderTime ? date('Y-m-d H:i:s', substr($result->orderTime,0,-3)) : null,
+                'updated_at'       => now()->toDateTimeString(),
+            ];
+            switch ($result->validCode){
+                case 16:
+                    $status = 1;
+                    break;
+                case 15:
+                    $status = 3;
+                    break;
+                case  17:
+                    $status = 1;
+                    break;
+                case 18:
+                    $status = 2;
+                    break;
+                default:
+                    $status = 3;
+                    break;
+            }
+
+            $item['status'] = $status;
+            $commission_rate = 0;
+            $commission_amount = 0;
+            foreach ($result->skuList as $value){
+                $commission_rate += $value->commissionRate;
+                $commission_amount += $value->estimateFee;
+            }
+            $item['commission_rate'] = $commission_rate;
+            $item['commission_amount'] = $commission_amount;
+
+
+            db('tbk_orders')->updateOrInsert([
+                'ordernum' => $item['ordernum'],
+                'itemid' => $item['itemid'],
+                'type' => 2,
+            ], $item);
+            $item = [];
         }
     }
 }

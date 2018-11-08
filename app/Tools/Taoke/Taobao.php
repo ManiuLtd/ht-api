@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\User\User;
 use http\Exception\InvalidArgumentException;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,11 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
+        $userid = $this->getUserId();
 
-        $setting = setting(getUserId());//TODO 不对 应该是根据member或者user_id
+        $setting = setting($userid);// 应该是根据member或者user_id
         $taobao = json_decode($setting->taobao);
+
         //  Implement getCouponUrl() method.
         $params = [
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
@@ -44,6 +47,22 @@ class Taobao implements TBKInterface
     }
 
     /**
+     * 获取当前用户对应的userid
+     * @return mixed
+     */
+    protected function getUserId()
+    {
+        $member = getMember();
+        $user = $member->user;
+
+        if (!$user) {
+            $user = User::query()->find(1);
+        }
+        return $user->id;
+
+    }
+
+    /**
      * 获取推广位
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
      */
@@ -62,9 +81,10 @@ class Taobao implements TBKInterface
         $group = DB::table('groups')->find($member->group_id);
         $group_pid = DB::table('tbk_pids')->where('member_id', $group->member_id)->first();
         if (!$group_pid){
-            $setting = setting(getUserId()); //TODO 不对 应该是根据member或者user_id
-            $group_pid = json_encode($setting->pid);
+            $setting = setting($this->getUserId()); //应该是根据member或者user_id
+            $group_pid = json_decode($setting->pid);
         }
+
         return $group_pid;
     }
 
@@ -97,9 +117,17 @@ class Taobao implements TBKInterface
             'pict_url'         => $data->pict_url,
             'title'            => $data->title,
         ]);
-        $data->kouling = $kouling;
-        //TODO 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
 
+        $data->kouling = $kouling;
+        // 从本地优惠券中获取获取商品介绍 introduce 字段，如果本地没有 该字段为空
+        $coupon = DB::table('tbk_coupons')->where([
+            'item_id' => $itemID,
+            'type' => 1,
+        ])->first();
+        if ($coupon) {
+            $data->introduce = $coupon->introduce;
+        }
+        $data->introduce = null;
         return $data;
     }
 
@@ -111,7 +139,7 @@ class Taobao implements TBKInterface
      */
     public function search(array $array = [])
     {
-        //TODO 可根据商品ID搜索
+        //可根据商品ID搜索
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
@@ -195,26 +223,38 @@ class Taobao implements TBKInterface
     public function getOrders(array $array = [])
     {
         //  Implement getOrders() method.
+        $type = data_get($array,'type');
+
+        $order_query_type = 'create_time';
+
+        if ($type == 2) {
+            $order_query_type = 'settle_time';
+        }
         $params = [
             'appkey' => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => data_get($array, 'sid', 1942),  //淘宝  京东 拼多多 授权 并保存授权信息
+            'sid' => data_get($array, 'sid', 1942),
             'start_time' => now()->subMinutes(9)->toDateTimeString(),
+//            'start_time' => '2018-11-01 15:45:02',
             'span' => 600,
             'signurl' => 0,
-            'page_no' => data_get($array, 'page', 1),
-            'page_size' => 100,
+            'page_no' => data_get($array,'page',1),
+            'page_size' => 500,
+            'order_query_type' => $order_query_type,
         ];
 
         $resp = Curl::to('https://www.heimataoke.com/api-qdOrder')
             ->withData($params)
             ->get();
+
         $resp = json_decode($resp);
 
+        if (isset($resp->error)) {
+            throw new \Exception($resp->error);
+        }
         if (! isset($resp->n_tbk_order)) {
             throw  new \Exception('没有数据');
         }
-
         return $resp->n_tbk_order;
     }
 

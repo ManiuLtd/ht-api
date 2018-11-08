@@ -108,44 +108,7 @@ class TBKServiceProvider extends ServiceProvider
                 ->give(\App\Tools\Taoke\Taobao::class);
         }
         //订单
-        $this->app->when(TaoBaoOrder::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
-        $this->app->when(JingDongOrder::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\JingDong::class);
-        $this->app->when(PinDuoDuoOrder::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\PinDuoDuo::class);
 
-        //好货专场 spider
-        $this->app->when(HaohuoZC::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
-        //精选单品 spider
-        $this->app->when(JingxuanDP::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
-        //精选专题 spider
-        $this->app->when(JingxuanZT::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
-        //快抢商品 spider
-        $this->app->when(KuaiqiangShop::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
-        //失效商品列表
-        $this->app->when(DownItems::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
-        //定时拉取
-        $this->app->when(TimingItems::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
-        // 商品更新
-        $this->app->when(UpdateItem::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
 
         //测试
 //        $this->app->when(HomeController::class)

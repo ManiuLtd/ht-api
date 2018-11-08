@@ -52,12 +52,11 @@ class AuthorizationsController extends Controller
 
     /**
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Prettus\Repository\Contracts\ValidatorException
      */
     public function callback()
     {
         $type = request('type', request('state'));
-        $user = getUser();
+
         try {
             switch ($type) {
                 case 1:
@@ -118,6 +117,8 @@ class AuthorizationsController extends Controller
                 'client_secret' => '8d05a49c2bad4c1fa62caa78c2647757',
             ])
             ->post();
+        $resp= iconv('GBK','UTF-8',$resp);
+
         $resp = json_decode($resp);
         if (! $resp) {
             throw new \Exception('请重新授权');

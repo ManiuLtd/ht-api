@@ -97,26 +97,31 @@ class PinDuoDuo extends Command
      */
     public function order()
     {
+
         try {
             $resp = $this->tbk->getOrders();
 
-            $total_count = data_get($resp, 'data.total_count', 1);
-            $totalPage = (int) ceil($total_count / 50);
+            $total_count = data_get($resp, 'total_count', 1);
+
+            $totalPage = (int) ceil($total_count / 100);
+
             $this->info("总页码:{$totalPage}");
             $bar = $this->output->createProgressBar($totalPage);
 
             for ($page = 1; $page <= $totalPage; $page++) {
                 $response = $this->tbk->getOrders(['page'=>$page]);
 
-                $data = data_get($response, 'data.order_list', null);
+                $data = data_get($response, 'order_list', null);
 
                 if ($data) {
                     SaveOrders::dispatch($data, 'pinduoduo');
                 }
                 $bar->advance();
                 $this->info(">>>已采集完第{$page}页 ");
+
             }
             $bar->finish();
+
         } catch (\Exception $e) {
             $this->warn($e->getMessage());
         }
