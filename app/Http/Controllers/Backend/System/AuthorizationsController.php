@@ -31,21 +31,22 @@ class AuthorizationsController extends Controller
      */
     public function index()
     {
-        //淘宝
-        $tbbackurl = urlencode(env('APP_URL').'/api/admin/system/callback?type=1');
-
-        $tburi = 'https://oauth.taobao.com/authorize?response_type=code&client_id=23205020&redirect_uri=https%3A%2F%2Fwww.heimataoke.com%2Fuser-authback%3Fbackurl%3D'.$tbbackurl.'%26bind%3DUW&state=1';
-        //京东
-        $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
-        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
-        //多多客
-        $ddkbackurl = env('APP_URL').'/api/admin/system/callback';
-        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=3';
+//        //淘宝
+//        $tbbackurl = urlencode(env('APP_URL').'/api/admin/system/callback?type=1');
+//
+//        $tburi = 'https://oauth.taobao.com/authorize?response_type=code&client_id=23205020&redirect_uri=https%3A%2F%2Fwww.heimataoke.com%2Fuser-authback%3Fbackurl%3D'.$tbbackurl.'%26bind%3DUW&state=1';
+//        //京东
+//        $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
+//        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
+//        //多多客
+//        $ddkbackurl = env('APP_URL').'/api/admin/system/callback';
+//        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=3';
+        $setting = setting(getUserId());
 
         return json(1001, '获取成功', [
-            'tb_url' => $tburi,
-            'jd_url' => $jduri,
-            'ddkuri' => $ddkuri,
+            'taobao'    => json_decode($setting->taobao),
+            'jingdong'  => json_decode($setting->jingdong),
+            'pinduoduo' => json_decode($setting->pinduoduo),
         ]);
     }
 
