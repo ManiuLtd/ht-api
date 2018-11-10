@@ -35,6 +35,7 @@ class CreateSettingsTable extends Migration
             $table->text('taobao')->nullable();//淘宝
             $table->text('jingdong')->nullable();//京东
             $table->text('pinduouo')->nullable();//拼多多
+            $table->string('unionid',190)->nullable();//京东联盟id  {"jingdong":"1000383879"} json格式
             $table->nullableTimestamps();
 
             $table->index('user_id', 'settings_user_id_index');

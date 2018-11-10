@@ -7,14 +7,45 @@ use Ixudra\Curl\Facades\Curl;
 
 class JingDong implements TBKInterface
 {
+    use TBKCommon;
+
     /**
      * 获取优惠券地址
      * @param array $array
      * @return mixed
+     * @throws \Exception
      */
     public function getCouponUrl(array $array = [])
     {
-        // TODO  返回领券地址
+        $itemID = $array['itemID'];
+
+        $pids = $this->getPids();
+        if (!isset($pids->jingdong)) {
+            throw new \Exception('请先设置系统京东推广位id');
+        }
+        $userid = $this->getUserId();
+        $setting = setting($userid);
+        $unionid = json_decode($setting->unionid);
+        if (!isset($unionid->jingdong)) {
+            throw new \Exception('请先设置京东联盟id');
+        }
+        // 返回领券地址
+        $result = Curl::to('http://japi.jingtuitui.com/api/get_goods_link')
+            ->withData([
+                'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
+                'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
+                'unionid'=> $unionid->jingdong,
+                'positionid'=>$pids->jingdong,
+                'gid'=>$itemID,
+            ])
+            ->asJsonResponse()
+            ->post();
+
+        if ($result->return != 0) {
+            throw new \Exception($result->result);
+        }
+
+        return $result->result->link;
     }
 
     /**
@@ -24,12 +55,8 @@ class JingDong implements TBKInterface
      */
     public function getDetail(array $array = [])
     {
-        //TODO 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
+        $id = $array['id'];
 
-        $id = request('itemid');
-        if (! is_numeric($id)) {
-            throw new \Exception('商品id类型错误');
-        }
         $params = [
             'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
             'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
@@ -39,9 +66,22 @@ class JingDong implements TBKInterface
             ->withData($params)
             ->post();
         $response = json_decode($response);
+//        dd($response);
         if ($response->return != 0) {
             throw new \Exception('接口调用失败');
         }
+        // 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
+        $coupon = db('tbk_coupons')->where([
+            'item_id' => $id,
+            'type' => 1,
+        ])->first();
+        if ($coupon) {
+            $response->result->introduce = $coupon->introduce;
+        }
+        $response->result->introduce = null;
+        //领券地址
+        $link = $this->getCouponUrl(['itemID'=>$id]);
+        $response->result->coupon_click_url = $link;
 
         return $response->result;
     }
@@ -53,54 +93,64 @@ class JingDong implements TBKInterface
      */
     public function search()
     {
-        //TODO 排序没写，测试接口是否正常
+        //排序没写，测试接口是否正常
 
         $page = request('page', 1);
         $q = request('q');
         $sort = request('sort');
-        $time = now()->toDateTimeString();
+
         $params = [
-            'method' => 'jingdong.union.search.queryCouponGoods',
-            'access_token' => data_get(config('coupon'), 'jingdong.access_token'),
-            'app_key' => data_get(config('coupon'), 'jingdong.JDM_APP_KEY'),
-            'timestamp' => $time,
-            'v' => '2.0',
+            'type' =>'goodslist',
+            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'keyword' => $q,
         ];
-        $urlparams = [
-            'goodsKeyword' => $q,
-            'pageIndex' => $page,
-        ];
+        switch ($sort){
+            case 1: //最新
+                break;
+            case 2: //低价
+                $params['sort'] = 1;
+                $params['sortby'] = 'asc';
+                break;
+            case 3: //高价
+                $params['sort'] = 1;
+                $params['sortby'] = 'desc';
+                break;
+            case 4: //销量
+                $params['sort'] = 2;
+                break;
+            case 5: //佣金
+                $params['sort'] = 4;
+                break;
+            default:
+                $params['sort'] = 0;
+                break;
+        }
+        $response = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi?type=goodslist')
+                    ->withData($params)
+                    ->asJsonResponse()
+                    ->post();
 
-        $signparams = array_merge($params, $urlparams);
-        ksort($signparams);
-        $sign = http_build_query($signparams);
-        $sign = strtoupper(md5(data_get(config('coupon'), 'jingdong.JDM_APP_SECRET').$sign.data_get(config('coupon'), 'jingdong.JDM_APP_SECRET')));
-        $params['sign'] = $sign;
-        $params['360buy_param_json'] = json_encode($urlparams);
-        $response = Curl::to('https://api.jd.com/routerjson')
-            ->withData($params)
-            ->get();
 
-        if ($response->return != 0) {
-            throw new \Exception($response->result);
+        if ($response->status_code != 200) {
+            throw new \Exception($response->message);
         }
         $data = [];
-        foreach ($response->result->data as $datum) {
-            $temp['title'] = $datum->goods_name;
+        foreach ($response->data as $datum) {
+            $temp['title'] = $datum->skuName;
             $temp['cat'] = '';
-            $temp['pic_url'] = $datum->goods_img;
-            $temp['item_id'] = $datum->goods_id;
-            $temp['item_url'] = $datum->goods_link;
-            $temp['price'] = $datum->goods_price;
-            $temp['final_price'] = $datum->coupon_price;
-            $temp['coupon_price'] = $datum->discount_price;
-            $temp['coupon_link'] = $datum->discount_link;
-            $temp['commission_rate'] = $datum->commission;
-            $temp['introduce'] = $datum->goods_content;
+            $temp['pic_url'] = $datum->picUrl;
+            $temp['item_id'] = $datum->skuId;
+            $temp['item_url'] = $datum->materiaUrl;
+            $temp['price'] = $datum->wlPrice;
+            $temp['final_price'] = $datum->wlPrice_after;
+            $temp['coupon_price'] = $datum->discount;
+            $temp['coupon_link'] = $datum->couponList;
+            $temp['commission_rate'] = $datum->wlCommissionShare;
+            $temp['introduce'] = $datum->skuDesc;
             $temp['type'] = 2;
             $temp['status'] = 0;
-            $temp['start_time'] = Carbon::createFromTimestamp(intval($datum->discount_start / 1000))->toDateTimeString();
-            $temp['end_time'] = Carbon::createFromTimestamp(intval($datum->discount_end / 1000))->toDateTimeString();
+            $temp['start_time'] = Carbon::createFromTimestamp(intval($datum->beginTime / 1000))->toDateTimeString();
+            $temp['end_time'] = Carbon::createFromTimestamp(intval($datum->endTime / 1000))->toDateTimeString();
             $temp['created_at'] = Carbon::now()->toDateTimeString();
             $temp['updated_at'] = Carbon::now()->toDateTimeString();
             $data[] = $temp;
@@ -115,7 +165,7 @@ class JingDong implements TBKInterface
         }
 
         //页码信息
-        $totalPage = $response->result->total_page;
+        $totalPage = $response->totalpage;
         $prevPage = $page - 1;
         $nextPage = $page + 1;
         //页码不对
@@ -140,7 +190,7 @@ class JingDong implements TBKInterface
                 'path' => request()->url(),
                 'per_page' => 20,
                 'to' => 20 * $page,
-                'total' => count($data),
+                'total' => $response->total,
             ],
         ];
     }
@@ -153,6 +203,12 @@ class JingDong implements TBKInterface
      */
     public function getOrders(array $array = [])
     {
+        $userid = $this->getUserId();
+        $setting = setting($userid);
+        $unionid = json_decode($setting->unionid);
+        if (!isset($unionid->jingdong)) {
+            throw new \Exception('请先设置京东联盟id');
+        }
 
         $page = $array['page'] ?? 1;
         $time = now()->toDateTimeString();
@@ -165,7 +221,8 @@ class JingDong implements TBKInterface
         ];
 
         $urlparams = [
-            'unionId' => data_get(config('coupon'), 'jingdong.JDMEDIA_UNIONID'),
+//            'unionId' => data_get(config('coupon'), 'jingdong.JDMEDIA_UNIONID'),
+            'unionId' => $unionid->jingdong,
             'key' => data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY'),
             'time' => date('YmdH', time()),
 //                        'time' => '2018110310',
@@ -204,16 +261,7 @@ class JingDong implements TBKInterface
         return $result;
     }
 
-    /**
-     * 自动绑定订单.
-     * @param array $array
-     * @return mixed
-     */
-    public function autoBindOrder(array $array = [])
-    {
-        // TODO: Implement autoBindOrder() method.
 
-    }
 
 
     /**
