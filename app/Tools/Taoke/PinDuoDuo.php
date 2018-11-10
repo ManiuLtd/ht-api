@@ -7,14 +7,54 @@ use Ixudra\Curl\Facades\Curl;
 
 class PinDuoDuo implements TBKInterface
 {
+    use TBKCommon;
+
     /**
      * 获取优惠券地址
      * @param array $array
      * @return mixed
+     * @throws \Exception
      */
     public function getCouponUrl(array $array = [])
     {
-        // TODO 返回拼多多领券地址
+        $id = $array['id'];
+        // 返回拼多多领券地址
+        $url = 'http://mobile.yangkeduo.com/goods2.html?goods_id='.$id;
+        $pids = $this->getPids();
+        if (!isset($pids->pinduoduo)) {
+            throw new \Exception('请先设置系统拼多多推广位id');
+        }
+        $time = time();
+        $params = [
+            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
+            'pid' => $pids->pinduoduo,
+            'source_url' => "$url",
+            'timestamp' => $time,
+            'type' => 'pdd.ddk.goods.zs.unit.url.gen',
+        ];
+
+        $str = 'client_id'.data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID').'pid'.'1000571_10540720'.'source_url'.$url.'timestamp'.$time.'typepdd.ddk.goods.zs.unit.url.gen';
+
+
+        $sign = strtoupper(md5(data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') .$str.data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') ));
+
+        $params['sign'] = $sign;
+        $resp = Curl::to('http://gw-api.pinduoduo.com/api/router')
+            ->withData($params)
+            ->post();
+        $resp = json_decode($resp);
+
+        if (isset($resp->error_response)) {
+
+            throw new \Exception($resp->error_response->error_msg);
+        }
+
+        if (isset($resp->goods_zs_unit_generate_response)) {
+
+            return $resp->goods_zs_unit_generate_response;
+
+        }
+        throw new \Exception('未知错误');
     }
 
     /**
@@ -51,11 +91,16 @@ class PinDuoDuo implements TBKInterface
         if (isset($result->error_response)) {
             throw new \Exception($result->error_response);
         }
+        if (isset($result->goods_detail_response->goods_details[0])) {
+            $data = $result->goods_detail_response->goods_details[0];
+            // 从本地优惠券中获取获取商品介绍 introduce 字段，如果本地没有 该字段为空
+            $data->introduce = $data->goods_desc;
+            $link = $this->getCouponUrl(['id'=>$id]);
+            $data->coupon_click_url = $link;
+            return $data;
+        }
 
-        //TODO 这里测试下 看是否能正常返回
-        //TODO 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
-
-        return data_get ($result, 'goods_detail_response.goods_details.0', []);
+        throw new \Exception('未知错误');
 
     }
 
@@ -67,14 +112,10 @@ class PinDuoDuo implements TBKInterface
      */
     public function search(array $array = [])
     {
-        $page = data_get ($array, 'page', 1);
+        $page = request('page', 1);
         $q = $array['q'];
-        $sort = $array['sort'];
+        $sort = request('sort');
 
-        //TODO 为什么要限制页数？
-        if ($page > 600) {
-            throw new \Exception('爬取完成');
-        }
         $time = time ();
 
         //sort 1最新 2低价 3高价 4销量 5佣金 6综合

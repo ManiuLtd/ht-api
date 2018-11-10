@@ -12,6 +12,7 @@ use TopClient\request\TbkItemInfoGetRequest;
 
 class Taobao implements TBKInterface
 {
+    use TBKCommon;
     /**
      * 获取优惠券地址
      * @param array $array
@@ -21,11 +22,17 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
+        if (!isset($pids->taobao)){
+            throw new \Exception('请先生设置系统pid');
+        }
         $userid = $this->getUserId();
 
         $setting = setting($userid);// 应该是根据member或者user_id
-        $taobao = json_decode($setting->taobao);
 
+        $taobao = json_decode($setting->taobao);
+        if (!isset($taobao->sid)) {
+            throw new \Exception('请先授权淘宝联盟');
+        }
         //  Implement getCouponUrl() method.
         $params = [
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
@@ -46,47 +53,6 @@ class Taobao implements TBKInterface
         return $resp;
     }
 
-    /**
-     * 获取当前用户对应的userid
-     * @return mixed
-     */
-    protected function getUserId()
-    {
-        $member = getMember();
-        $user = $member->user;
-
-        if (!$user) {
-            $user = User::query()->find(1);
-        }
-        return $user->id;
-
-    }
-
-    /**
-     * 获取推广位
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
-     */
-    protected function getPids()
-    {
-        $member = getMember();
-        $member_pid = DB::table('tbk_pids')->where('member_id', $member->id)->first();
-
-        if ($member_pid) {
-            return $member_pid;
-        }
-        $inviter_pid = DB::table('tbk_pids')->where('member_id', $member->inviter_id)->first();
-        if ($inviter_pid) {
-            return $inviter_pid;
-        }
-        $group = DB::table('groups')->find($member->group_id);
-        $group_pid = DB::table('tbk_pids')->where('member_id', $group->member_id)->first();
-        if (!$group_pid){
-            $setting = setting($this->getUserId()); //应该是根据member或者user_id
-            $group_pid = json_decode($setting->pid);
-        }
-
-        return $group_pid;
-    }
 
     /**
      * 获取详情.
@@ -112,6 +78,7 @@ class Taobao implements TBKInterface
         }
         $data = $resp->results->n_tbk_item[0];
         $data->coupon = $this->getCouponUrl(['item_id' => $itemID]);
+
         $kouling = $this->taokouling([
             'coupon_click_url' => $data->coupon->coupon_click_url,
             'pict_url'         => $data->pict_url,
@@ -120,7 +87,7 @@ class Taobao implements TBKInterface
 
         $data->kouling = $kouling;
         // 从本地优惠券中获取获取商品介绍 introduce 字段，如果本地没有 该字段为空
-        $coupon = DB::table('tbk_coupons')->where([
+        $coupon = db('tbk_coupons')->where([
             'item_id' => $itemID,
             'type' => 1,
         ])->first();

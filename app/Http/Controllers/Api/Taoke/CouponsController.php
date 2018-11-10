@@ -50,12 +50,12 @@ class CouponsController extends Controller
      */
     public function show($id)
     {
-        try {
+//        try {
             $detail = $this->tbk->getDetail(['id' => $id]);
 
             return json(1001, '获取成功', $detail);
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
-        }
+//        } catch (\Exception $e) {
+//            return json(5001, $e->getMessage());
+//        }
     }
 }
