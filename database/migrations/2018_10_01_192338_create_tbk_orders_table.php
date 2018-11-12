@@ -37,7 +37,6 @@ class CreateTbkOrdersTable extends Migration
             $table->timestamp('complete_at')->nullable()->comment('完成时间');
             $table->nullableTimestamps();
 
-            $table->index('member_id');
             $table->index('ordernum');
             $table->index('title');
 

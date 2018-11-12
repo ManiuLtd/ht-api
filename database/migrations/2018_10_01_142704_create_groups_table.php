@@ -34,7 +34,6 @@ class CreateGroupsTable extends Migration
             $table->softDeletes();
 
             $table->index('user_id');
-            $table->index('member_id');
         });
     }
 

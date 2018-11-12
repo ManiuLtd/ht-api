@@ -37,7 +37,6 @@ class CreateShopGoodsCommentsTable extends Migration
             $table->softDeletes();
 
             $table->index('user_id', 'shop_goods_comments_user_id_index');
-            $table->index('member_id', 'shop_goods_comments_member_id_index');
             $table->index('merch_id', 'shop_goods_comments_merch_id_index');
             $table->index('order_id', 'shop_goods_comments_order_id_index');
             $table->index('goods_id', 'shop_goods_comments_goods_id_index');

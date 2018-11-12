@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Models\Member;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class History.
+ * Class Recharge.
  */
-class History extends Model implements Transformable
+class Recharge extends Model implements Transformable
 {
     use TransformableTrait;
 
     /**
      * @var string
      */
-    protected $table = 'member_histories';
+    protected $table = 'user_recharges';
 
     /**
      * The attributes that are mass assignable.
@@ -25,19 +25,22 @@ class History extends Model implements Transformable
      */
     protected $fillable = [];
 
+    /**
+     * @var array
+     */
     protected $hidden = [
         'user_id',
         'member_id',
         'merch_id',
-        'goods_id',
+        'order_id',
     ];
 
     /**
-     * 所属商品
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|string
+     * 所属用户.
+     * @return bool|\Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function goods()
+    public function member()
     {
-        return $this->belongsTo('App\Models\Shop\Goods', 'goods_id')->withDefault(null);
+        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
     }
 }

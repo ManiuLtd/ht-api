@@ -15,8 +15,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Taoke\Pid::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'taobao' => $faker->uuid,
         'jingdong' => $faker->uuid,
         'pinduoduo' => $faker->uuid,
@@ -26,8 +25,7 @@ $factory->define(App\Models\Taoke\Pid::class, function (Faker $faker) {
 
 $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'group_id' => rand(1, 50),
         'title' => $faker->text(50),
         'ordernum' => rand(1,9),
@@ -47,7 +45,7 @@ $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
 
 $factory->define(App\Models\Taoke\Favourite::class, function (Faker $faker) {
     return [
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'title' => $faker->title,
         'pic_url' => $faker->imageUrl(100, 100),
         'item_id' => rand(1, 20),
@@ -61,7 +59,7 @@ $factory->define(App\Models\Taoke\Favourite::class, function (Faker $faker) {
 
 $factory->define(App\Models\Taoke\History::class, function (Faker $faker) {
     return [
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'title' => $faker->title,
         'pic_url' => $faker->imageUrl(100, 100),
         'item_id' => rand(1, 20),

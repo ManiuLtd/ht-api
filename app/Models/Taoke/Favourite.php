@@ -16,7 +16,7 @@ class Favourite extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = 'tbk_member_favourites';
+    protected $table = 'tbk_user_favourites';
 
     /**
      * @var array

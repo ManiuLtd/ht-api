@@ -13,9 +13,8 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\Member\Member::class, function (Faker $faker) {
+$factory->define(App\Models\User\User::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
         'inviter_id' => null,
         'group_id' => rand(1, 50),
         'oldgroup_id' => rand(1, 50),
@@ -39,10 +38,9 @@ $factory->define(App\Models\Member\Member::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
+$factory->define(App\Models\User\CreditLog::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'credit' => rand(100, 1000),
         'column' => 'credit1',
         'remark' => $faker->name,
@@ -52,20 +50,18 @@ $factory->define(App\Models\Member\CreditLog::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\History::class, function (Faker $faker) {
+$factory->define(App\Models\User\History::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50), //会员id
+        'user_id' => rand(1, 50), //会员id
         'merch_id' => rand(1, 50), //商户id
         'goods_id' => rand(1, 50), //商品id
         'views' => $faker->numberBetween(1, 9999), //浏览次数
     ];
 });
 
-$factory->define(App\Models\Member\Address::class, function (Faker $faker) {
+$factory->define(App\Models\User\Address::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => 1,
         'realname' => $faker->name,
         'phone' => $faker->numberBetween(1, 100),
         'province' => $faker->name,
@@ -80,10 +76,9 @@ $factory->define(App\Models\Member\Address::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\Favourite::class, function (Faker $faker) {
+$factory->define(App\Models\User\Favourite::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'member_id' => 1,
         'merch_id' => 1,
         'goods_id' => 1,
         'created_at' => now(),
@@ -91,10 +86,9 @@ $factory->define(App\Models\Member\Favourite::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\Recharge::class, function (Faker $faker) {
+$factory->define(App\Models\User\Recharge::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'title' => $faker->name,
         'out_trade_no' => $faker->bankAccountNumber,
         'money' => rand(10, 999),
@@ -108,10 +102,9 @@ $factory->define(App\Models\Member\Recharge::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\Withdraw::class, function (Faker $faker) {
+$factory->define(App\Models\User\Withdraw::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'money' => rand(1, 999),
         'real_money' => rand(1, 999),
         'deduct_money' => rand(1, 999),
@@ -125,10 +118,9 @@ $factory->define(App\Models\Member\Withdraw::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\Address::class, function (Faker $faker) {
+$factory->define(App\Models\User\Address::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'realname' => $faker->name,
         'phone' => rand(1, 999),
         'province' => $faker->name,
@@ -143,7 +135,7 @@ $factory->define(App\Models\Member\Address::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\Level::class, function (Faker $faker) {
+$factory->define(App\Models\User\Level::class, function (Faker $faker) {
     return [
         'user_id' => 1,
         'level' => $faker->numberBetween(1, 100),
@@ -162,10 +154,9 @@ $factory->define(App\Models\Member\Level::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\Member\Group::class, function (Faker $faker) {
+$factory->define(App\Models\User\Group::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'pid' => rand(1, 50),
         'qrcode' => $faker->imageUrl(100, 100),
         'qq' => rand(1111111, 9999999),

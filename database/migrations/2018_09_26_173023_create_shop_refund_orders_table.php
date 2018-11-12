@@ -44,7 +44,6 @@ class CreateShopRefundOrdersTable extends Migration
             $table->nullableTimestamps();
 
             $table->index('user_id', 'shop_order_goods_refunds_user_id_index');
-            $table->index('member_id', 'shop_order_goods_refunds_member_id_index');
             $table->index('merch_id', 'shop_order_goods_refunds_merch_id_index');
             $table->index('order_id', 'shop_order_goods_refunds_order_id_index');
             $table->index('order_goods_id', 'shop_order_goods_refunds_order_goods_id_index');

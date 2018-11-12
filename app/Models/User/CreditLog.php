@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Member;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -16,7 +16,7 @@ class CreditLog extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = 'member_credit_logs';
+    protected $table = 'user_credit_logs';
 
     /**
      * The attributes that are mass assignable.

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Member;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +17,7 @@ class Level extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = 'member_levels';
+    protected $table = 'user_levels';
 
     /**
      * The attributes that are mass assignable.
