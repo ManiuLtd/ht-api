@@ -26,9 +26,9 @@ class CreateUserHistoriesTable extends Migration
             $table->nullableTimestamps();
             $table->softDeletes();
 
-            $table->index('user_id', 'member_histories_user_id_index');
-            $table->index('merch_id', 'member_histories_merch_id_index');
-            $table->index('goods_id', 'member_histories_goods_id_index');
+            $table->index('user_id', 'user_histories_user_id_index');
+            $table->index('merch_id', 'user_histories_merch_id_index');
+            $table->index('goods_id', 'user_histories_goods_id_index');
         });
     }
 
@@ -39,6 +39,6 @@ class CreateUserHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_histories');
+        Schema::dropIfExists('user_histories');
     }
 }

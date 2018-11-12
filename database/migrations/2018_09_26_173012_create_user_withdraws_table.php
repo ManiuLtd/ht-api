@@ -30,9 +30,9 @@ class CreateUserWithdrawsTable extends Migration
             $table->tinyInteger('pay_type')->nullable(); // 1支付宝 2其他
             $table->nullableTimestamps();
 
-            $table->index('user_id', 'member_withdraws_user_id_index');
-            $table->index('status', 'member_withdraws_status_index');
-            $table->index('created_at', 'member_withdraws_created_at_index');
+            $table->index('user_id', 'user_withdraws_user_id_index');
+            $table->index('status', 'user_withdraws_status_index');
+            $table->index('created_at', 'user_withdraws_created_at_index');
         });
     }
 
@@ -43,6 +43,6 @@ class CreateUserWithdrawsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_withdraws');
+        Schema::dropIfExists('user_withdraws');
     }
 }

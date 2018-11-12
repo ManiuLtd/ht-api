@@ -41,6 +41,6 @@ class CreateTbkUserHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbk_member_histories');
+        Schema::dropIfExists('tbk_user_histories');
     }
 }

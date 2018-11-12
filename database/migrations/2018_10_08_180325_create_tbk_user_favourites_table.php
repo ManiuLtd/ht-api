@@ -39,6 +39,6 @@ class CreateTbkUserFavouritesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbk_member_favourites');
+        Schema::dropIfExists('tbk_user_favourites');
     }
 }

@@ -136,7 +136,7 @@ class Taobao implements TBKInterface
         }
 
         //页码信息
-        $totalPage = intval(floor($response->total / $limit) + 1);
+        $totalPage = intval(floor(count($response->data) / $limit) + 1);
 
         //页码不对
         if ($page > $totalPage) {
@@ -176,7 +176,7 @@ class Taobao implements TBKInterface
                 'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
-                'total' => $response->total,
+                'total' => count($response->data),
             ],
         ];
     }
