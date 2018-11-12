@@ -21,7 +21,6 @@ class CreateTbkMemberOrdersTable extends Migration
         Schema::create('tbk_member_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->string('ordernum', 30)->nullable();
             $table->tinyInteger('status')->nullable()->default(0); // 1已跟单 0待跟单
             $table->nullableTimestamps();

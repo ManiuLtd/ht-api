@@ -20,7 +20,6 @@ class CreateMemberHistoriesTable extends Migration
         Schema::create('member_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->integer('goods_id')->nullable();
             $table->integer('views')->nullable();

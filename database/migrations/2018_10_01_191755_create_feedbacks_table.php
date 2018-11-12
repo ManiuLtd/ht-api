@@ -20,7 +20,6 @@ class CreateFeedbacksTable extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->text('title')->nullable();
             $table->text('content')->nullable();
             $table->text('images')->nullable();

@@ -19,7 +19,6 @@ class CreateSmsTable extends Migration
     {
         Schema::create('sms', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('member_id')->nullable();
             $table->integer('user_id')->nullable();
             $table->string('phone', 30)->nullable();
             $table->string('code', 30)->nullable();

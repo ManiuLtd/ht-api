@@ -21,7 +21,6 @@ class CreateShopCouponLogsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->integer('merch_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('coupon_id')->nullable();
             $table->string('ordersn', 191)->nullable();
             $table->string('name', 191)->nullable();

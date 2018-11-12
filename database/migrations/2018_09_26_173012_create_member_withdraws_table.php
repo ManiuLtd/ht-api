@@ -20,7 +20,6 @@ class CreateMemberWithdrawsTable extends Migration
         Schema::create('member_withdraws', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->decimal('money', 8, 2)->nullable()->default(0.00); //提现金额
             $table->decimal('real_money', 8, 2)->nullable()->default(0.00);  //实际到账金额
             $table->decimal('deduct_money', 8, 2)->nullable()->default(0.00);  //扣除金额

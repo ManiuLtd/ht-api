@@ -19,7 +19,6 @@ class CreateTbkMemberFavouritesTable extends Migration
     {
         Schema::create('tbk_member_favourites', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('member_id')->nullable();
             $table->string('title', 190)->nullable(); //名称
             $table->string('pic_url', 190)->nullable(); //图片地址
             $table->string('item_id', 30)->nullable(); //优惠卷id

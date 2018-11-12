@@ -20,7 +20,6 @@ class CreateTbkOrdersTable extends Migration
         Schema::create('tbk_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('member_id')->nullable();
             $table->integer('group_id')->nullable()->comment('组ID');
             $table->integer('oldgroup_id')->nullable()->comment('旧组ID');
             $table->string('ordernum', 190)->nullable()->comment('订单号');

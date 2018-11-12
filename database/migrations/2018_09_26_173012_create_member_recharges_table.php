@@ -20,7 +20,6 @@ class CreateMemberRechargesTable extends Migration
         Schema::create('member_recharges', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->string('title', 191)->nullable();
             $table->string('out_trade_no', 191)->nullable();
             $table->decimal('money', 8, 2)->nullable()->default(0.00);
