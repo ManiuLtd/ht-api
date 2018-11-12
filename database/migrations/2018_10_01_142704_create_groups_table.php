@@ -20,7 +20,6 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('pid')->nullable();
             $table->string('qrcode', 191)->nullable(); //组长微信二维码
             $table->string('qq')->nullable(); //组长QQ

@@ -20,7 +20,6 @@ class CreateMemberCreditLogsTable extends Migration
         Schema::create('member_credit_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('operater_id')->nullable();
             $table->decimal('credit', 8, 2)->nullable()->default(0.00);
             $table->string('column')->nullable();

@@ -20,7 +20,6 @@ class CreateMemberAddressesTable extends Migration
         Schema::create('member_addresses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->string('realname', 191)->nullable();
             $table->string('phone', 191)->nullable();
             $table->string('province', 191)->nullable();

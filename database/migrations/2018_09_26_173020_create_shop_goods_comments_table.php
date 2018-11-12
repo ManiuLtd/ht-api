@@ -20,7 +20,6 @@ class CreateShopGoodsCommentsTable extends Migration
         Schema::create('shop_goods_comments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->integer('order_id')->nullable();
             $table->integer('goods_id')->nullable();

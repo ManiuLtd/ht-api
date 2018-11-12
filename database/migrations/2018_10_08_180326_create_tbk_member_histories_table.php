@@ -19,7 +19,7 @@ class CreateTbkMemberHistoriesTable extends Migration
     {
         Schema::create('tbk_member_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('member_id')->nullable();
+            $table->integer('user_id')->nullable();
             $table->string('title', 190)->nullable();
             $table->string('pic_url', 190)->nullable();
             $table->string('item_id', 30)->nullable();
@@ -30,7 +30,7 @@ class CreateTbkMemberHistoriesTable extends Migration
             $table->string('type', 20)->nullable();
             $table->nullableTimestamps();
 
-            $table->index('member_id', 'member_id');
+            $table->index('user_id', 'user_id');
         });
     }
 

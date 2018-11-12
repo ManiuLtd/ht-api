@@ -20,7 +20,6 @@ class CreateShopRefundOrdersTable extends Migration
         Schema::create('shop_refund_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->integer('order_id')->nullable();
             $table->integer('order_goods_id')->nullable();

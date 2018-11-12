@@ -20,7 +20,6 @@ class CreateShopOrdersTable extends Migration
         Schema::create('shop_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->string('orderno', 191)->nullable();
             $table->decimal('total_price', 8, 2)->nullable();

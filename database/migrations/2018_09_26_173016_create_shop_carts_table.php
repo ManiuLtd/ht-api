@@ -20,7 +20,6 @@ class CreateShopCartsTable extends Migration
         Schema::create('shop_carts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->integer('goods_id')->nullable();
             $table->integer('option_id')->nullable();
