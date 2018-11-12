@@ -49,6 +49,6 @@ class CreateUserLevelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_levels');
+        Schema::dropIfExists('user_levels');
     }
 }

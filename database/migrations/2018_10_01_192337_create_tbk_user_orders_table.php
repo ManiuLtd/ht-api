@@ -34,6 +34,6 @@ class CreateTbkUserOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbk_member_orders');
+        Schema::dropIfExists('tbk_user_orders');
     }
 }

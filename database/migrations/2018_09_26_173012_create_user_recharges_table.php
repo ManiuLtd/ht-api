@@ -17,7 +17,7 @@ class CreateUserRechargesTable extends Migration
      */
     public function up()
     {
-        Schema::create('User_recharges', function (Blueprint $table) {
+        Schema::create('user_recharges', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->string('title', 191)->nullable();
@@ -30,10 +30,10 @@ class CreateUserRechargesTable extends Migration
             $table->timestamp('pay_time')->nullable();
             $table->nullableTimestamps();
 
-            $table->index('user_id', 'member_recharges_user_id_index');
-            $table->index('status', 'member_recharges_status_index');
-            $table->index('created_at', 'member_recharges_created_at_index');
-            $table->index('out_trade_no', 'member_recharges_out_trade_no_index');
+            $table->index('user_id', 'user_id_index');
+            $table->index('status', 'status_index');
+            $table->index('created_at', 'created_at_index');
+            $table->index('out_trade_no', 'out_trade_no_index');
         });
     }
 
@@ -44,6 +44,6 @@ class CreateUserRechargesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_recharges');
+        Schema::dropIfExists('user_recharges');
     }
 }

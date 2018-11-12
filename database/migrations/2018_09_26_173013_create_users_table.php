@@ -44,27 +44,27 @@ class CreateUsersTable extends Migration
             $table->nullableTimestamps();
             $table->softDeletes();
 
-            $table->unique('wx_unionid', 'members_wx_unionid_unique');
-            $table->unique('wx_openid1', 'members_wx_openid1_unique');
-            $table->unique('wx_openid2', 'members_wx_openid2_unique');
-            $table->unique('ali_unionid', 'members_ali_unionid_unique');
-            $table->unique('ali_openid1', 'members_ali_openid1_unique');
-            $table->unique('ali_openid2', 'members_ali_openid2_unique');
-            $table->unique('phone', 'members_phone_unique');
-            $table->index('inviter_id', 'members_inviter_id_index');
-            $table->index('group_id', 'members_group_id_index');
-            $table->index('oldgroup_id', 'members_oldgroup_id_index');
-            $table->index('wx_unionid', 'members_wx_unionid_index');
-            $table->index('wx_openid1', 'members_wx_openid1_index');
-            $table->index('wx_openid2', 'members_wx_openid2_index');
-            $table->index('ali_unionid', 'members_ali_unionid_index');
-            $table->index('ali_openid1', 'members_ali_openid1_index');
-            $table->index('ali_openid2', 'members_ali_openid2_index');
-            $table->index('nickname', 'members_nickname_index');
-            $table->index('level_id', 'members_level_id_index');
-            $table->index('phone', 'members_phone_index');
-            $table->index('status', 'members_status_index');
-            $table->index('created_at', 'members_created_at_index');
+            $table->unique('wx_unionid', 'users_wx_unionid_unique');
+            $table->unique('wx_openid1', 'users_wx_openid1_unique');
+            $table->unique('wx_openid2', 'users_wx_openid2_unique');
+            $table->unique('ali_unionid', 'users_ali_unionid_unique');
+            $table->unique('ali_openid1', 'users_ali_openid1_unique');
+            $table->unique('ali_openid2', 'users_ali_openid2_unique');
+            $table->unique('phone', 'users_phone_unique');
+            $table->index('inviter_id', 'users_inviter_id_index');
+            $table->index('group_id', 'users_group_id_index');
+            $table->index('oldgroup_id', 'users_oldgroup_id_index');
+            $table->index('wx_unionid', 'users_wx_unionid_index');
+            $table->index('wx_openid1', 'users_wx_openid1_index');
+            $table->index('wx_openid2', 'users_wx_openid2_index');
+            $table->index('ali_unionid', 'users_ali_unionid_index');
+            $table->index('ali_openid1', 'users_ali_openid1_index');
+            $table->index('ali_openid2', 'users_ali_openid2_index');
+            $table->index('nickname', 'users_nickname_index');
+            $table->index('level_id', 'users_level_id_index');
+            $table->index('phone', 'users_phone_index');
+            $table->index('status', 'users_status_index');
+            $table->index('created_at', 'users_created_at_index');
         });
     }
 
@@ -75,6 +75,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('members');
+        Schema::dropIfExists('users');
     }
 }

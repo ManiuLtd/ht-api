@@ -32,7 +32,7 @@ class CreateUserAddressesTable extends Migration
             $table->nullableTimestamps();
             $table->softDeletes();
 
-            $table->index('user_id', 'member_addresses_user_id_index');
+            $table->index('user_id', 'user_addresses_user_id_index');
         });
     }
 
@@ -43,6 +43,6 @@ class CreateUserAddressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_addresses');
+        Schema::dropIfExists('user_addresses');
     }
 }

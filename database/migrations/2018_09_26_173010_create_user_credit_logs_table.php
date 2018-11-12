@@ -27,9 +27,9 @@ class CreateUserCreditLogsTable extends Migration
             $table->string('remark', 191)->nullable();
             $table->nullableTimestamps();
 
-            $table->index('type', 'member_credit_logs_type_index');
-            $table->index('user_id', 'member_credit_logs_user_id_index');
-            $table->index('operater_id', 'member_credit_logs_operater_id_index');
+            $table->index('type', 'user_credit_logs_type_index');
+            $table->index('user_id', 'user_credit_logs_user_id_index');
+            $table->index('operater_id', 'user_credit_logs_operater_id_index');
         });
     }
 
@@ -40,6 +40,6 @@ class CreateUserCreditLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_credit_logs');
+        Schema::dropIfExists('user_credit_logs');
     }
 }

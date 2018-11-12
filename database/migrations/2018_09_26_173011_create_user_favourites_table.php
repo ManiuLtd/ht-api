@@ -25,9 +25,9 @@ class CreateUserFavouritesTable extends Migration
             $table->nullableTimestamps();
             $table->softDeletes();
 
-            $table->index('user_id', 'member_favourites_user_id_index');
-            $table->index('merch_id', 'member_favourites_merch_id_index');
-            $table->index('goods_id', 'member_favourites_goods_id_index');
+            $table->index('user_id', 'user_favourites_user_id_index');
+            $table->index('merch_id', 'user_favourites_merch_id_index');
+            $table->index('goods_id', 'user_favourites_goods_id_index');
         });
     }
 
@@ -38,6 +38,6 @@ class CreateUserFavouritesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_favourites');
+        Schema::dropIfExists('user_favourites');
     }
 }
