@@ -2,16 +2,16 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\MemberOrder;
-use App\Validators\Taoke\MemberOrderValidator;
+use App\Models\Taoke\UserOrder;
+use App\Validators\Taoke\UserOrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Taoke\MemberOrderRepository;
+use App\Repositories\Interfaces\Taoke\UserOrderRepository;
 
 /**
- * Class MemberOrderRepositoryEloquent.
+ * Class UserOrderRepositoryEloquent.
  */
-class MemberOrderRepositoryEloquent extends BaseRepository implements MemberOrderRepository
+class UserOrderRepositoryEloquent extends BaseRepository implements UserOrderRepository
 {
     /**
      * Specify Model class name.
@@ -20,7 +20,7 @@ class MemberOrderRepositoryEloquent extends BaseRepository implements MemberOrde
      */
     public function model()
     {
-        return MemberOrder::class;
+        return UserOrder::class;
     }
 
     /**
@@ -30,7 +30,7 @@ class MemberOrderRepositoryEloquent extends BaseRepository implements MemberOrde
      */
     public function validator()
     {
-        return MemberOrderValidator::class;
+        return UserOrderValidator::class;
     }
 
     public function presenter()

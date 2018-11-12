@@ -1,24 +1,28 @@
 <?php
 
-namespace App\Repositories\Member;
+namespace App\Repositories\User;
 
-use App\Models\Member\Address;
+use App\Models\User\Recharge;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\AddressValidator;
+use App\Validators\User\RechargeValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Member\AddressRepository;
+use App\Repositories\Interfaces\User\RechargeRepository;
 
 /**
- * Class AddressRepositoryEloquent.
+ * Class RechargeRepositoryEloquent.
  */
-class AddressRepositoryEloquent extends BaseRepository implements AddressRepository
+class RechargeRepositoryEloquent extends BaseRepository implements RechargeRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'out_trade_no' => 'like',
         'user_id',
+        'user_id',
+        'type',
+        'status',
+        'created_at',
     ];
 
     /**
@@ -28,7 +32,7 @@ class AddressRepositoryEloquent extends BaseRepository implements AddressReposit
      */
     public function model()
     {
-        return Address::class;
+        return Recharge::class;
     }
 
     /**
@@ -38,7 +42,7 @@ class AddressRepositoryEloquent extends BaseRepository implements AddressReposit
      */
     public function validator()
     {
-        return AddressValidator::class;
+        return RechargeValidator::class;
     }
 
     /**

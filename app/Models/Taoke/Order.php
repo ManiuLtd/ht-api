@@ -55,9 +55,9 @@ class Order extends Model implements Transformable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
     }
 
 
@@ -66,7 +66,7 @@ class Order extends Model implements Transformable
      */
     public function group()
     {
-        return $this->belongsTo('App\Models\Member\Group','group_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Group','group_id')->withDefault(null);
     }
 
 
@@ -75,6 +75,6 @@ class Order extends Model implements Transformable
      */
     public function oldGroup()
     {
-        return $this->belongsTo('App\Models\Member\Group','oldgroup_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Group','oldgroup_id')->withDefault(null);
     }
 }

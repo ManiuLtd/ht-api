@@ -30,7 +30,7 @@ class Recharge extends Model implements Transformable
      */
     protected $hidden = [
         'user_id',
-        'member_id',
+
         'merch_id',
         'order_id',
     ];
@@ -39,8 +39,8 @@ class Recharge extends Model implements Transformable
      * 所属用户.
      * @return bool|\Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
     }
 }

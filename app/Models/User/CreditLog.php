@@ -30,18 +30,9 @@ class CreditLog extends Model implements Transformable
      */
     protected $hidden = [
         'user_id',
-        'member_id',
         'operater_id',
     ];
 
-    /**
-     * 所属会员.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function member()
-    {
-        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
-    }
 
     /**
      * 所属用户.

@@ -1,27 +1,25 @@
 <?php
 
-namespace App\Repositories\Member;
+namespace App\Repositories\User;
 
-use App\Models\Member\Recharge;
+use App\Models\User\CreditLog;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\RechargeValidator;
+use App\Validators\User\CreditLogValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Member\RechargeRepository;
+use App\Repositories\Interfaces\User\CreditLogRepository;
 
 /**
- * Class RechargeRepositoryEloquent.
+ * Class CreditLogRepositoryEloquent.
  */
-class RechargeRepositoryEloquent extends BaseRepository implements RechargeRepository
+class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'out_trade_no' => 'like',
-        'member_id',
+        'user_id',
         'user_id',
         'type',
-        'status',
         'created_at',
     ];
 
@@ -32,7 +30,7 @@ class RechargeRepositoryEloquent extends BaseRepository implements RechargeRepos
      */
     public function model()
     {
-        return Recharge::class;
+        return CreditLog::class;
     }
 
     /**
@@ -42,7 +40,7 @@ class RechargeRepositoryEloquent extends BaseRepository implements RechargeRepos
      */
     public function validator()
     {
-        return RechargeValidator::class;
+        return CreditLogValidator::class;
     }
 
     /**

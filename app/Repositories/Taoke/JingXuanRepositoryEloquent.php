@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Member\Group;
-use App\Models\Member\Level;
-use App\Models\Member\Member;
+use App\Models\User\Group;
+use App\Models\User\Level;
+use App\Models\User\User;
 use App\Models\Taoke\JingXuan;
 use App\Tools\Taoke\Taobao;
 use App\Validators\Taoke\JingxuanDpValidator;

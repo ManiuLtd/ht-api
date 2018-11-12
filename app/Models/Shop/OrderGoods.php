@@ -30,7 +30,6 @@ class OrderGoods extends Model implements Transformable
      */
     protected $hidden = [
         'user_id',
-        'member_id',
         'order_id',
         'user_id',
         'merch_id',

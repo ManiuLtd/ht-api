@@ -17,17 +17,20 @@ class UserValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'email' => 'required|email|unique:users',
-            'name' => 'required|unique:users',
+            'phone' => 'unique:members',
             'password' => 'required',
+            'credit1' => 'numeric',
+            'credit2' => 'numeric',
+            'level1' => 'integer',
+            'level2' => 'integer',
             'status' => 'in:0,1',
         ],
         ValidatorInterface::RULE_UPDATE => [
+            'credit1' => 'numeric',
+            'credit2' => 'numeric',
+            'level1' => 'integer',
+            'level2' => 'integer',
             'status' => 'in:0,1',
         ],
-    ];
-
-    protected $messages = [
-//        'password.confirmed' => '确认密码不一致'
     ];
 }

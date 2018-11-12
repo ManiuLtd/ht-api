@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Repositories\Member;
+namespace App\Repositories\User;
 
-use App\Models\Member\CreditLog;
+use App\Models\User\Level;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\CreditLogValidator;
+use App\Validators\User\LevelValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Member\CreditLogRepository;
+use App\Repositories\Interfaces\User\LevelRepository;
 
 /**
- * Class CreditLogRepositoryEloquent.
+ * Class LevelRepositoryEloquent.
  */
-class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRepository
+class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'name' => 'like',
         'user_id',
-        'type',
-        'created_at',
+        'status',
     ];
 
     /**
@@ -30,7 +29,7 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
      */
     public function model()
     {
-        return CreditLog::class;
+        return Level::class;
     }
 
     /**
@@ -40,11 +39,11 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
      */
     public function validator()
     {
-        return CreditLogValidator::class;
+        return LevelValidator::class;
     }
 
     /**
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {

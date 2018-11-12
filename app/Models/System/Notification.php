@@ -43,12 +43,5 @@ class Notification extends Model implements Transformable
         return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
     }
 
-    /**
-     * 前端用户.
-     * @return $this
-     */
-    public function member()
-    {
-        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
-    }
+
 }

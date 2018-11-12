@@ -31,7 +31,6 @@ class GoodsComment extends Model implements Transformable
      */
     protected $hidden = [
         'user_id',
-        'member_id',
         'merch_id',
         'order_id',
         'goods_id',
@@ -41,9 +40,9 @@ class GoodsComment extends Model implements Transformable
      * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
     }
 
     /**

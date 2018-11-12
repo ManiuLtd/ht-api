@@ -70,8 +70,7 @@ class CreditEventSubscriber
             }
             //需要插入的日志
             $insert = [
-                'user_id' => $event->member->user_id,
-                'member_id' => $event->member->id,
+                'user_id' => $event->id,
                 'operater_id' => $event->extra->operaterId ?? null,
                 'credit' => $event->credit,
                 'column' => $event->column,
@@ -81,7 +80,7 @@ class CreditEventSubscriber
                 'updated_at' => now()->toDateTimeString(),
             ];
 
-            db('member_credit_logs')->insert($insert);
+            db('user_credit_logs')->insert($insert);
         });
     }
 }

@@ -27,7 +27,6 @@ class Group extends Model implements Transformable
      */
     protected $fillable = [
         'user_id',
-        'member_id',
         'pid',
         'name',
         'qrcode',
@@ -60,12 +59,5 @@ class Group extends Model implements Transformable
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * 前端会员.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function member()
-    {
-        return $this->belongsTo('App\Models\Member\Member', 'member_id');
-    }
+
 }

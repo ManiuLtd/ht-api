@@ -36,9 +36,9 @@ class Withdraw extends Model implements Transformable
      * 提现所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Member\Member', 'member_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
     }
 
     /**
@@ -46,6 +46,5 @@ class Withdraw extends Model implements Transformable
      */
     protected $hidden = [
         'user_id',
-        'member_id',
     ];
 }

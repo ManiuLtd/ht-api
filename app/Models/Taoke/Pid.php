@@ -37,14 +37,6 @@ class Pid extends Model implements Transformable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
-    {
-        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
         return $this->belongsTo('App\Models\User\User')->withDefault(null);
