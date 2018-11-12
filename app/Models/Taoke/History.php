@@ -16,7 +16,7 @@ class History extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = 'tbk_member_histories';
+    protected $table = 'tbk_user_histories';
 
     /**
      * @var array

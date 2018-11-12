@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Member;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -16,7 +16,7 @@ class Withdraw extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = 'member_withdraws';
+    protected $table = 'user_withdraws';
 
     /**
      * The attributes that are mass assignable.

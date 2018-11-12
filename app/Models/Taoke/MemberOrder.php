@@ -16,7 +16,7 @@ class MemberOrder extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = 'tbk_member_orders';
+    protected $table = 'tbk_user_orders';
 
     /**
      * The attributes that are mass assignable.

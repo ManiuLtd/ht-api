@@ -11,30 +11,21 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->truncate();
-        DB::table('users')->insert(
-            [
-                'name' => 'admin',
-                'avatar' => 'https://lorempixel.com/100/100/?48011',
-                'email' => 'admin@admin.com',
-                'password' => bcrypt('123456'),
-                'status' => 1,
-                'sms' => 1,
-                'remember_token' => str_random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'test',
-                'avatar' => 'https://lorempixel.com/100/100/?48011',
-                'email' => 'test@test.com',
-                'password' => bcrypt('123456'),
-                'status' => 0,
-                'sms' => 0,
-                'remember_token' => str_random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
+        DB::table('user_credit_logs')->truncate();
+        DB::table('user_levels')->truncate();
+//        DB::table('commission_levels')->truncate();
+        DB::table('user_recharges')->truncate();
+        DB::table('user_withdraws')->truncate();
+        DB::table('groups')->truncate();
+
+        factory(App\Models\User\Level::class, 5)->create();
+        factory(App\Models\User\Withdraw::class, 100)->create();
+        factory(App\Models\User\Favourite::class, 100)->create();
+        factory(App\Models\User\Address::class, 5)->create();
+        factory(App\Models\User\CreditLog::class, 100)->create();
+        factory(App\Models\User\Recharge::class, 100)->create();
+        factory(App\Models\User\User::class, 100)->create();
+        factory(App\Models\User\History::class, 100)->create();
+        factory(App\Models\User\Group::class, 50)->create();
     }
 }

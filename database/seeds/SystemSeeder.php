@@ -12,11 +12,11 @@ class SystemSeeder extends Seeder
     public function run()
     {
         DB::table('notifications')->truncate();
-        DB::table('feedbacks')->truncate();
+//        DB::table('feedbacks')->truncate();
         DB::table('sms')->truncate();
 
         factory(App\Models\System\Notification::class, 30)->create();
-        factory(App\Models\System\Feedback::class, 30)->create();
+//        factory(App\Models\System\Feedback::class, 30)->create();
         factory(App\Models\System\Sms::class, 50)->create();
     }
 }

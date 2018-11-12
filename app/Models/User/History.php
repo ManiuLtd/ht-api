@@ -1,45 +1,33 @@
 <?php
 
-namespace App\Models\Member;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Favourite.
+ * Class History.
  */
-class Favourite extends Model implements Transformable
+class History extends Model implements Transformable
 {
-    use TransformableTrait, SoftDeletes;
+    use TransformableTrait;
 
     /**
      * @var string
      */
-    protected $table = 'member_favourites';
+    protected $table = 'user_histories';
 
     /**
+     * The attributes that are mass assignable.
+     *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'member_id',
-        'merch_id',
-        'goods_id',
-    ];
+    protected $fillable = [];
 
-    /**
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
-
-    /**
-     * @var array
-     */
     protected $hidden = [
-        'member_id',
         'user_id',
+        'member_id',
         'merch_id',
         'goods_id',
     ];
