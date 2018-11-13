@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\GroupValidator;
-use App\Http\Requests\Member\GroupUpdateRequest;
+use App\Validators\User\GroupValidator;
+use App\Http\Requests\User\GroupUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Repositories\Interfaces\Member\GroupRepository;
+use App\Repositories\Interfaces\User\GroupRepository;
 
 /**
  * Class GroupsController.
@@ -43,7 +43,7 @@ class GroupsController extends Controller
     public function index()
     {
         $groups = $this->repository
-            ->with(['member'])
+            ->with(['user'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $groups);
@@ -75,11 +75,11 @@ class GroupsController extends Controller
      */
     public function destroy($id)
     {
-        $member = db('members')
+        $user = db('users')
             ->where('group_id', $id)
             ->orWhere('oldgroup_id', $id)
             ->first();
-        if ($member) {
+        if ($user) {
             return json(4001, '禁止删除已包含会员的小组');
         }
         //删除小组

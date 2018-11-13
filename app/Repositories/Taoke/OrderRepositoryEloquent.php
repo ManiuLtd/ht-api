@@ -73,31 +73,31 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function getOrderChart(bool $isCommission = true)
     {
-        $member = getMember();
+        $user = getUser();
         $commission = new Commission();
         $dateType = request('date_type', 'month');
 
         //计算佣金
         if ($isCommission) {
             //自推佣金
-            $commission1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate1', $isCommission, $dateType);
+            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', $isCommission, $dateType);
             //下级佣金
-            $commission2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate2', $isCommission, $dateType);
+            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', $isCommission, $dateType);
             //组长佣金
-            $groupCommission1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate1', $isCommission, $dateType);
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', $isCommission, $dateType);
             //补贴佣金
-            $groupCommission2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate2', $isCommission, $dateType);
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate2', $isCommission, $dateType);
 
             return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
         }
         //计算订单数
-        $group = $member->group;
+        $group = $user->group;
         //如果用户是组长 直接返回小组订单数
-        if ($member->id == $group->member_id ?? null) {
-            return  $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate1', false)->count();
+        if ($user->id == $group->user_id ?? null) {
+            return  $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', false)->count();
         } else {
-            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate1', false);
-            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate2', false);
+            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', false);
+            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', false);
 
             return $commissionOrder1->count() + $commissionOrder2->count();
         }
@@ -109,7 +109,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function submitOrder()
     {
-        $member = getMember();
+        $user = getUser();
         $ordernum = request('ordernum');
         if (is_numeric($ordernum) && strlen($ordernum) >= 16) {
             $re = db('tbk_user_orders')
@@ -123,7 +123,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
             ])->first();
             if ($order) {
                 db('tbk_user_orders')->insert([
-                    'user_id' => $member->id,
+                    'user_id' => $user->id,
                     'ordernum' => $ordernum,
                     'created_at' => now()->toDateTimeString(),
                     'updated_at' => now()->toDateTimeString(),

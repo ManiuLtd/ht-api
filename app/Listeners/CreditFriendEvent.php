@@ -3,10 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\CreditFriend;
-use App\Models\Member\CreditLog;
-use App\Models\Member\Group;
-use App\Models\Member\Member;
-use App\Models\User\User;
+use App\Models\user\CreditLog;
+use App\Models\user\Group;
+use App\Models\user\user;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -24,10 +23,8 @@ class CreditFriendEvent
 
     /**
      * 粉丝增加事件
-     * Handle the event.
-     *
-     * @param  CreditFriend  $event
-     * @return void
+     * @param CreditFriend $event
+     * @throws \Exception
      */
     public function handle(CreditFriend $event)
     {
@@ -38,38 +35,38 @@ class CreditFriendEvent
             throw new \Exception('管理员还没配置参数');
         }
         //邀请人
-        $member1 = $event->user;
-        if(!$member1){
+        $user1 = $event->user;
+        if(!$user1){
             throw new \Exception('邀请人不存在');
         }
-        creditAdd($member1,$credit_friend->friend_commission1_credit2,'credit2','直推积分增加',17);//积分
-        creditAdd($member1,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',18);//余额
-        creditAdd($member1,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',19);//成长值
+        creditAdd($user1,$credit_friend->friend_commission1_credit2,'credit2','直推积分增加',17);//积分
+        creditAdd($user1,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',18);//余额
+        creditAdd($user1,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',19);//成长值
 
-        $member2 = $event->user->inviter;//上级
-        if($member2){
-            creditAdd($member2,$credit_friend->friend_commission1_credit2,'credit2','推荐上级积分增加',17);//积分
-            creditAdd($member2,$credit_friend->friend_commission1_credit1,'credit1','推荐上级余额增加',18);//余额
-            creditAdd($member2,$credit_friend->friend_commission1_credit3,'credit3','推荐上级成长值增加',19);//成长值
+        $user2 = $event->user->inviter;//上级
+        if($user2){
+            creditAdd($user2,$credit_friend->friend_commission1_credit2,'credit2','推荐上级积分增加',17);//积分
+            creditAdd($user2,$credit_friend->friend_commission1_credit1,'credit1','推荐上级余额增加',18);//余额
+            creditAdd($user2,$credit_friend->friend_commission1_credit3,'credit3','推荐上级成长值增加',19);//成长值
         }
 
         $group1 = $event->user->group;//组
         if($group1){
-            $member3 = User::find($group1['member_id']);
-            if($member3){
-                creditAdd($member3,$credit_friend->friend_commission1_credit2,'credit2','推荐组长积分增加',17);//积分
-                creditAdd($member3,$credit_friend->friend_commission1_credit1,'credit1','推荐组长余额增加',18);//余额
-                creditAdd($member3,$credit_friend->friend_commission1_credit3,'credit3','推荐组长成长值增加',19);//成长值
+            $user3 = User::find($group1['user_id']);
+            if($user3){
+                creditAdd($user3,$credit_friend->friend_commission1_credit2,'credit2','推荐组长积分增加',17);//积分
+                creditAdd($user3,$credit_friend->friend_commission1_credit1,'credit1','推荐组长余额增加',18);//余额
+                creditAdd($user3,$credit_friend->friend_commission1_credit3,'credit3','推荐组长成长值增加',19);//成长值
             }
         }
 
         $group2 = $event->user->oldGroup;//原组
         if($group2){
-            $member4 = User::find($group2['member_id']);
-            if($member4){
-                creditAdd($member4,$credit_friend->friend_commission1_credit2,'credit2','推荐原组长积分增加',17);//积分
-                creditAdd($member4,$credit_friend->friend_commission1_credit1,'credit1','推荐原组长余额增加',18);//余额
-                creditAdd($member4,$credit_friend->friend_commission1_credit3,'credit3','推荐原组长成长值增加',19);//成长值
+            $user4 = User::find($group2['user_id']);
+            if($user4){
+                creditAdd($user4,$credit_friend->friend_commission1_credit2,'credit2','推荐原组长积分增加',17);//积分
+                creditAdd($user4,$credit_friend->friend_commission1_credit1,'credit1','推荐原组长余额增加',18);//余额
+                creditAdd($user4,$credit_friend->friend_commission1_credit3,'credit3','推荐原组长成长值增加',19);//成长值
             }
         }
     }

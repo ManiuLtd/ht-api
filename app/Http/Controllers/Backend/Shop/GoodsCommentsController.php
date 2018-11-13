@@ -42,7 +42,7 @@ class GoodsCommentsController extends Controller
      */
     public function index()
     {
-        $comments = $this->repository->with(['member', 'order', 'goods'])->all();
+        $comments = $this->repository->with(['user', 'order', 'goods'])->all();
 
         return json(1001, '列表获取成功', $comments);
     }
@@ -75,7 +75,7 @@ class GoodsCommentsController extends Controller
      */
     public function show($id)
     {
-        $comment = $this->repository->with(['member', 'order', 'goods'])->find($id);
+        $comment = $this->repository->with(['user', 'order', 'goods'])->find($id);
 
         return json(1001, '详情获取成功', $comment);
     }

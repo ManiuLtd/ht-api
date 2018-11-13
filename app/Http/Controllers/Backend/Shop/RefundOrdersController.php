@@ -46,7 +46,7 @@ class RefundOrdersController extends Controller
     {
         $orderGoodsRefunds = $this->repository
             ->pushCriteria(new DatePickerCriteria())
-            ->with(['order', 'goods', 'member'])
+            ->with(['order', 'goods', 'user'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $orderGoodsRefunds);
@@ -61,7 +61,7 @@ class RefundOrdersController extends Controller
      */
     public function show($id)
     {
-        $orderGoodsRefund = $this->repository->with(['order', 'goods', 'member'])->find($id);
+        $orderGoodsRefund = $this->repository->with(['order', 'goods', 'user'])->find($id);
 
         return json(1001, '详情获取成功', $orderGoodsRefund);
     }

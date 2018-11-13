@@ -5,7 +5,7 @@ namespace App\Repositories\User;
 use App\Models\User\User;
 use App\Criteria\RequestCriteria;
 use App\Validators\User\UserValidator;
-use App\Repositories\Interfaces\UserRepository;
+use App\Repositories\Interfaces\User\UserRepository;
 use Hashids\Hashids;
 use Illuminate\Support\Facades\Validator;
 use Prettus\Repository\Eloquent\BaseRepository;
@@ -113,7 +113,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function bindMobile()
     {
-        $member = getMember();
+        $user = getUser();
         $phone = request('phone');
         //验证字段
         $rules = ['password' => 'required|min:6'];
@@ -134,7 +134,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
         //验证手机号是否被占用
         if (db('users')->where([
-            ['id', '<>', $member->id],
+            ['id', '<>', $user->id],
             'phone' => $phone,
         ])->first()) {
             return json(4001, '手机号已被其他用户绑定');
@@ -148,12 +148,12 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         //验证手机号是否存在
         try {
             //查询用户
-            $memberModel = db('users')->find($member->id);
-            if (! $memberModel) {
+            $userModel = db('users')->find($user->id);
+            if (! $userModel) {
                 return json(4001, '用户不存在');
             }
-            $memberModel->update([
-//                'tag' => Hashids::encode($memberModel->id),
+            $userModel->update([
+//                'tag' => Hashids::encode($userModel->id),
                 'phone' => $phone,
                 'password' => bcrypt(request('password')),
             ]);
@@ -173,7 +173,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function bindInviter()
     {
-        $member = getMember();
+        $user = getUser();
 
         $number = request('number');
 
@@ -184,7 +184,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $inviterId = $decodeID[0];
 
         //禁止绑定已被绑定过的用户
-        if ($member->inviter_id != null) {
+        if ($user->inviter_id != null) {
             return json(4001, '用户已被绑定');
         }
 
@@ -195,7 +195,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             return json(4001, '邀请码不存在');
         }
 
-        if ($inviterModel->id == $member->id) {
+        if ($inviterModel->id == $user->id) {
             return json(4001, '禁止绑定自己');
         }
         if (! $inviterModel->user_id) {
@@ -214,23 +214,23 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         //绑定上级 并结算短信
         try {
             //查询用户
-            $member->update([
-//                'tag' => Hashids::encode($member->id),
-                'inviter_id' => $member->id == $inviterModel->id ? null : $inviterModel->id,
+            $user->update([
+//                'tag' => Hashids::encode($user->id),
+                'inviter_id' => $user->id == $inviterModel->id ? null : $inviterModel->id,
                 'group_id' => $inviterModel->group_id,
                 'user_id' => $inviterModel->user_id,
             ]);
             //结算短信
-            if ($member->phone != null) {
+            if ($user->phone != null) {
                 //扣除短信余额
                 $count = db('sms')
-                    ->where('phone', $member->phone)
+                    ->where('phone', $user->phone)
                     ->whereNull('user_id')
                     ->count();
                 $userModel->decrement('sms', $count);
                 //设置短信所属用户
                 db('sms')
-                    ->where('phone', $member->phone)
+                    ->where('phone', $user->phone)
                     ->whereNull('user_id')
                     ->update([
                         'user_id' => $inviterModel->user_id,

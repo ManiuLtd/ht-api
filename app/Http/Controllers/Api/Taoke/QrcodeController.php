@@ -41,10 +41,10 @@ class QrcodeController extends Controller
         try {
             $data = $request->all();
             $this->validator->with($data)->passesOrFail();
-            $memberid = getMemberId();
+            $userid = getUserId();
             $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
             //邀请码
-            $hashids = $hashids->encode($memberid);
+            $hashids = $hashids->encode($userid);
             $couponPrice = intval($data['coupon_price']).'元';
             $qrcode = new Qrcode(public_path('images/share.png'));
             $qrcode->width = 564;
@@ -86,7 +86,7 @@ class QrcodeController extends Controller
      */
     public function invite()
     {
-        $memberid = getMemberId();
+        $userid = getUserId();
         for($i=1;$i<=3;$i++){
             $templateName = "template{$i}";
             $qrcode = new Qrcode(public_path("images/{$templateName}.jpg"));
@@ -94,12 +94,12 @@ class QrcodeController extends Controller
             $qrcode->height = 1470;
             $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
             //邀请码
-            $hashids = $hashids->encode($memberid);
+            $hashids = $hashids->encode($userid);
             $qrcode->savePath = "images/invite{$i}.jpg";
             $fileName = $hashids.'_'.$templateName.'.png';
             $cacheImage = public_path('images/cache/').$fileName;
             //生成二维码
-            $redirectUrl = url('http://www.baidu.com?unionid='.$memberid);
+            $redirectUrl = url('http://www.baidu.com?unionid='.$userid);
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
             $cache = Image::make($cacheImage)->resize(156, 141);
             $imageEnumArray = [

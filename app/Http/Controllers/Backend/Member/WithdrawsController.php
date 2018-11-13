@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
-use App\Models\Member\Withdraw;
+use App\Models\User\Withdraw;
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Validators\Member\WithdrawValidator;
-use App\Http\Requests\Member\WithdrawUpdateRequest;
+use App\Validators\User\WithdrawValidator;
+use App\Http\Requests\User\WithdrawUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Repositories\Interfaces\Member\WithdrawRepository;
+use App\Repositories\Interfaces\User\WithdrawRepository;
 
 /**
  * Class WithdrawsController.
@@ -46,7 +46,7 @@ class WithdrawsController extends Controller
     {
         $withdraws = $this->repository
             ->pushCriteria(new DatePickerCriteria())
-            ->with('member')
+            ->with('user')
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $withdraws);

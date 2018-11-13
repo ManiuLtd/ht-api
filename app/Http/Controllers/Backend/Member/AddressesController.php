@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\AddressValidator;
-use App\Repositories\Interfaces\Member\AddressRepository;
+use App\Validators\User\AddressValidator;
+use App\Repositories\Interfaces\User\AddressRepository;
 
 /**
  * Class AddressesController.
@@ -39,8 +39,8 @@ class AddressesController extends Controller
      */
     public function index()
     {
-        $memberAddresses = $this->repository->all();
+        $userAddresses = $this->repository->all();
 
-        return json(1001, '列表获取成功', $memberAddresses);
+        return json(1001, '列表获取成功', $userAddresses);
     }
 }

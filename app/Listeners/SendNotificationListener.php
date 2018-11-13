@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\SendNotification;
+use Hashids\Hashids;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Vinkla\Hashids\Facades\Hashids;
 
 class SendNotificationListener
 {
@@ -44,7 +44,8 @@ class SendNotificationListener
 
         //判断是否为群发
         if (! $isAllAudience) {
-            $tag = Hashids::encode($messages['member_id']);
+
+            $tag = Hashids::encode($messages['user_id']);
             $push->addTag($tag);
             $insert['type'] = 1;
         } else {
@@ -57,7 +58,7 @@ class SendNotificationListener
         try {
             $push->send();
             $insert['user_id'] = $messages['user_id'];
-            $insert['member_id'] = $messages['member_id'];
+            $insert['user_id'] = $messages['user_id'];
             $insert['title'] = $messages['title'];
             $insert['message'] = $messages['message'];
             $insert['created_at'] = now()->toDateTimeString();

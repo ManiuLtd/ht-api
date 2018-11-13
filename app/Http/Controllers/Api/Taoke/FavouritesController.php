@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Criteria\MemberCriteria;
+use App\Criteria\UserCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\FavouriteValidator;
 use App\Http\Requests\Taoke\FavouriteCreateRequest;
@@ -43,7 +43,7 @@ class FavouritesController extends Controller
     public function index()
     {
         $favourites = $this->repository
-            ->pushCriteria(new MemberCriteria())
+            ->pushCriteria(new UserCriteria())
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $favourites);
@@ -63,7 +63,7 @@ class FavouritesController extends Controller
 
             return json(1001, '添加成功', $category);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage);
+            return json(5001, $e->getMessage());
         }
     }
 

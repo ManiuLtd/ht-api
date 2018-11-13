@@ -44,7 +44,7 @@ class OrdersController extends Controller
     {
         $orders = $this->repository
             ->pushCriteria(new DatePickerCriteria())
-            ->with(['goods', 'member', 'address'])
+            ->with(['goods', 'user', 'address'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $orders);
@@ -57,7 +57,7 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $order = $this->repository->with(['subOrders', 'member'])->find($id);
+        $order = $this->repository->with(['subOrders', 'user'])->find($id);
 
         return json(1001, '详情获取成功', $order);
     }

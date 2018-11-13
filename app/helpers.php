@@ -116,28 +116,7 @@ if (! function_exists('getUser')) {
     }
 }
 
-if (! function_exists('getMemberId')) {
 
-    /**
-     * @return int|mixed
-     */
-    function getMemberId()
-    {
-        return 1;
-    }
-}
-
-//TODO  解密token
-if (! function_exists('getMember')) {
-
-    /**
-     * @return int|mixed
-     */
-    function getMember()
-    {
-        return \App\Models\User\User::find(1);
-    }
-}
 
 if (! function_exists('checkSms')) {
 

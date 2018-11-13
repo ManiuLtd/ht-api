@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Validators\Member\RechargeValidator;
-use App\Repositories\Interfaces\Member\RechargeRepository;
+use App\Validators\User\RechargeValidator;
+use App\Repositories\Interfaces\User\RechargeRepository;
 
 /**
  * 充值记录
@@ -43,7 +43,7 @@ class RechargesController extends Controller
     {
         $recharges = $this->repository
             ->pushCriteria(new DatePickerCriteria())
-            ->with('member')
+            ->with('user')
             ->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $recharges);

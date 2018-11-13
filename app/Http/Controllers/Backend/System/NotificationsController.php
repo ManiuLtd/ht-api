@@ -44,7 +44,7 @@ class NotificationsController extends Controller
     public function index()
     {
         $notifications = $this->repository
-            ->with(['member'])
+            ->with(['user'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $notifications);
