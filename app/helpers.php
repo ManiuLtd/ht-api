@@ -116,29 +116,6 @@ if (! function_exists('getUser')) {
     }
 }
 
-if (! function_exists('getMemberId')) {
-
-    /**
-     * @return int|mixed
-     */
-    function getMemberId()
-    {
-        return 1;
-    }
-}
-
-//TODO  解密token
-if (! function_exists('getMember')) {
-
-    /**
-     * @return int|mixed
-     */
-    function getMember()
-    {
-        return \App\Models\Member\Member::find(1);
-    }
-}
-
 if (! function_exists('checkSms')) {
 
     /**
@@ -189,7 +166,7 @@ if (!function_exists('creditAdd')) {
     function creditAdd($member,$credit,$column,$extra,$type)
     {
         $today = \Carbon\Carbon::today()->toDateTimeString();
-        $credits = \App\Models\Member\CreditLog::where(['member_id'=>$member->id,'column'=>$credit])
+        $credits = \App\Models\User\CreditLog::where(['member_id'=>$member->id,'column'=>$credit])
             ->whereIn('type',[11,13,15,21,22,23,16,17,18,19])
             ->whereDate('created_at',$today)
             ->sum('credit');

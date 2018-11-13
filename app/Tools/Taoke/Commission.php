@@ -2,7 +2,7 @@
 
 namespace App\Tools\Taoke;
 
-use App\Models\Member\Member;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
@@ -13,44 +13,44 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 class Commission
 {
     /**
-     * @param int $memberId
+     * @param int $userId
      * @param float $commission
      * @param string $type
      * @return float|int
      */
-    public function getComminnsionByMember(int $memberId, float $commission, string $type)
+    public function getComminnsionByUser(int $userId, float $commission, string $type)
     {
         //检查会员
-        $memberModel = $this->checkMember($memberId);
+        $userModel = $this->checkUser($userId);
 
         //判断type类型
         $this->checkType($type);
 
         //会员没绑定等级
-        if ($memberModel->level_id == null) {
+        if ($userModel->level_id == null) {
             return 0;
         }
 
         //判断当前Type的返佣比例
-        if ($memberModel->level->$type < 0) {
+        if ($userModel->level->$type < 0) {
             return 0;
         }
 
-        return $commission * $memberModel->level->$type / 100;
+        return $commission * $userModel->level->$type / 100;
     }
 
     /**
-     * @param int $memberId
+     * @param int $userId
      * @param array $orderStatus
      * @param string $type
      * @param bool $isCalculateTotalCommission
      * @param string|null $dateType
      * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
-    public function getOrdersOrCommissionByDate(int $memberId, array $orderStatus, string $type, bool $isCalculateTotalCommission = false, string $dateType = null)
+    public function getOrdersOrCommissionByDate(int $userId, array $orderStatus, string $type, bool $isCalculateTotalCommission = false, string $dateType = null)
     {
         //检查会员
-        $memberModel = $this->checkMember($memberId);
+        $userModel = $this->checkUser($userId);
 
         //判断type类型
         $this->checkType($type);
@@ -59,14 +59,14 @@ class Commission
         $query = db('tbk_orders')->whereIn('status', $orderStatus);
 
         //根据用户返佣层级筛选
-        $query = $this->getQueryByType($memberId, $type, $query, $memberModel);
+        $query = $this->getQueryByType($userId, $type, $query, $userModel);
 
         //根据日期筛选
         $query = $this->getQueryByDateType($query, $dateType);
 
         //是否只算出总佣金数
         if ($isCalculateTotalCommission) {
-            return $this->getComminnsionByMember($memberId, $query->sum('commission_amount'), $type);
+            return $this->getComminnsionByUser($userId, $query->sum('commission_amount'), $type);
         }
 
         return $query;
@@ -74,30 +74,30 @@ class Commission
 
     /**
      * 根据返佣层级筛选.
-     * @param int $memberId
+     * @param int $userId
      * @param string $type
      * @param $query
-     * @param $memberModel
+     * @param $userModel
      * @return mixed
      */
-    public function getQueryByType(int $memberId, string $type, $query, $memberModel)
+    public function getQueryByType(int $userId, string $type, $query, $userModel)
     {
         switch ($type) {
             case 'commission_rate1':
-                $query = $query->where('member_id', $memberId);
+                $query = $query->where('user_id', $userId);
                 break;
             case 'commission_rate2':
-                $query = $query->whereIn('member_id', function ($query) use ($memberId) {
+                $query = $query->whereIn('user_id', function ($query) use ($userId) {
                     $query->select('id')
-                        ->from('members')
-                        ->where('inviter_id', $memberId);
+                        ->from('users')
+                        ->where('inviter_id', $userId);
                 });
                 break;
             case 'group_rate1':
-                $query = $query->where('group_id', $memberModel->group_id);
+                $query = $query->where('group_id', $userModel->group_id);
                 break;
             case 'group_rate2':
-                $query = $query->where('group_id', $memberModel->oldgroup_id);
+                $query = $query->where('group_id', $userModel->oldgroup_id);
                 break;
             default:
                 break;
@@ -153,16 +153,16 @@ class Commission
     }
 
     /**
-     * @param int $memberId
-     * @return Member|Member[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
+     * @param int $userId
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
      */
-    protected function checkMember(int $memberId)
+    protected function checkUser(int $userId)
     {
-        $memberModel = Member::with('level')->find($memberId);
-        if (! $memberModel) {
+        $userModel = User::with('level')->find($userId);
+        if (! $userModel) {
             throw new ModelNotFoundException('会员不存在');
         }
 
-        return $memberModel;
+        return $userModel;
     }
 }
