@@ -107,6 +107,24 @@ class User extends Authenticatable implements JWTSubject, Transformable
      */
     public function level()
     {
-        return $this->belongsTo('App\Models\User\User')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Level','level_id')->withDefault(null);
+    }
+
+    /**
+     * 邀请人
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function inviter()
+    {
+        return $this->belongsTo('App\Models\User\User','inviter_id')->withDefault(null);
+    }
+
+    /**
+     * 组
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo('App\Models\User\Group','group_id')->withDefault(null);
     }
 }
