@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Member;
+namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\LevelValidator;
-use App\Repositories\Interfaces\Member\LevelRepository;
+use App\Validators\User\LevelValidator;
+use App\Repositories\Interfaces\User\LevelRepository;
 
 /**
  * Class LevelsController.

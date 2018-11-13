@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Validators\Member\HistoryValidator;
-use App\Repositories\Interfaces\Member\HistoryRepository;
+use App\Validators\User\HistoryValidator;
+use App\Repositories\Interfaces\User\HistoryRepository;
 
 /**
  * Class HistoriesController.
@@ -40,10 +40,10 @@ class HistoriesController extends Controller
      */
     public function index()
     {
-        $memberHistories = $this->repository
+        $userHistories = $this->repository
             ->pushCriteria(new DatePickerCriteria())
             ->paginate(request('limit', 10));
 
-        return json(1001, '列表获取成功', $memberHistories);
+        return json(1001, '列表获取成功', $userHistories);
     }
 }

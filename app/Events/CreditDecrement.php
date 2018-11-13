@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use App\Models\Member\Member;
-use App\Models\User\User;
+use App\Models\user\user;
+
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -15,7 +15,7 @@ class CreditDecrement
 
     /**
      * 需要操作的会员.
-     * @var Member
+     * @var user
      */
     public $user;
 

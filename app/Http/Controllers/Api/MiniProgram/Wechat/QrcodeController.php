@@ -19,12 +19,12 @@ class QrcodeController extends Controller
     public function appCode()
     {
         try {
-            $member = JWTAuth::parseToken()->authenticate();
+            $user = JWTAuth::parseToken()->authenticate();
             $miniProgram = Facade::miniProgram(); // 小程序
 
             //目录路径
             $templateImage = public_path('images/template.jpg');
-            $openId = $member->wx_openid2;
+            $openId = $user->wx_openid2;
             //文件名
             $fileName = $openId.'.jpeg';
             //图片

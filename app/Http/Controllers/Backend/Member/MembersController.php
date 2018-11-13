@@ -1,37 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Validators\Member\MemberValidator;
-use App\Http\Requests\Member\MemberUpdateRequest;
+use App\Validators\User\UserValidator;
+use App\Http\Requests\User\UserUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Repositories\Interfaces\Member\MemberRepository;
+use App\Repositories\Interfaces\User\UserRepository;
 
 /**
- * Class MembersController.
+ * Class UsersController.
  */
-class MembersController extends Controller
+class UsersController extends Controller
 {
     /**
-     * @var MemberRepository
+     * @var UserRepository
      */
     protected $repository;
 
     /**
-     * @var MemberValidator
+     * @var UserValidator
      */
     protected $validator;
 
     /**
-     * MembersController constructor.
+     * UsersController constructor.
      *
-     * @param MemberRepository $repository
-     * @param MemberValidator $validator
+     * @param UserRepository $repository
+     * @param UserValidator $validator
      */
-    public function __construct(MemberRepository $repository, MemberValidator $validator)
+    public function __construct(UserRepository $repository, UserValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -43,12 +43,12 @@ class MembersController extends Controller
      */
     public function index()
     {
-        $members = $this->repository
+        $users = $this->repository
             ->pushCriteria(new DatePickerCriteria())
             ->with(['level', 'group', 'oldGroup', 'inviter'])
             ->paginate(request('limit', 10));
 
-        return json(1001, '列表获取成功', $members);
+        return json(1001, '列表获取成功', $users);
     }
 
     /**
@@ -58,25 +58,25 @@ class MembersController extends Controller
      */
     public function show($id)
     {
-        $member = $this->repository->with(['level', 'group', 'oldGroup', 'inviter'])->find($id);
+        $user = $this->repository->with(['level', 'group', 'oldGroup', 'inviter'])->find($id);
 
-        return json(1001, '详情获取成功', $member);
+        return json(1001, '详情获取成功', $user);
     }
 
     /**
      * 编辑会员.
-     * @param MemberUpdateRequest $request
+     * @param UserUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(MemberUpdateRequest $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $member = $this->repository->update($request->all(), $id);
+            $user = $this->repository->update($request->all(), $id);
 
-            return json(1001, '更新成功', $member);
+            return json(1001, '更新成功', $user);
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessageBag());
         }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Member;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreditLogCreateRequest extends FormRequest
+class FavouriteUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

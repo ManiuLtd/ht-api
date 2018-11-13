@@ -6,12 +6,12 @@
  * Time: 16:18.
  */
 
-namespace App\Http\Controllers\Api\Member;
+namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\WithdrawValidator;
-use App\Http\Requests\Member\WithdrawCreateRequest;
-use App\Repositories\Interfaces\Member\WithdrawRepository;
+use App\Validators\User\WithdrawValidator;
+use App\Http\Requests\User\WithdrawCreateRequest;
+use App\Repositories\Interfaces\User\WithdrawRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**

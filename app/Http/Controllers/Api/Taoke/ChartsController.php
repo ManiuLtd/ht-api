@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
-use App\Repositories\Interfaces\Member\WithdrawRepository;
-use App\Repositories\Interfaces\Member\CreditLogRepository;
+use App\Repositories\Interfaces\User\WithdrawRepository;
+use App\Repositories\Interfaces\User\CreditLogRepository;
 
 /**
  * 报表

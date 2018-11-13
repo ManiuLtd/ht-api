@@ -2,9 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Member\Member;
-use App\Models\User\User;
-use Illuminate\Broadcasting\Channel;
+use App\Models\user\user;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -20,7 +18,7 @@ class MemberUpgrade
     public $user;
 
     /**
-     * MemberUpgrade constructor.
+     * userUpgrade constructor.
      * @param User $user
      */
     public function __construct(User $user)

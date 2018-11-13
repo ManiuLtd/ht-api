@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Criteria\MemberCriteria;
+use App\Criteria\UserCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\HistoryValidator;
 use App\Http\Requests\Taoke\HistoryCreateRequest;
@@ -44,7 +44,7 @@ class HistoriesController extends Controller
     public function index()
     {
         $histories = $this->repository
-            ->pushCriteria(new MemberCriteria())
+            ->pushCriteria(new UserCriteria())
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $histories);
