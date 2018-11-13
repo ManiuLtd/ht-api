@@ -113,6 +113,7 @@ class Taobao implements TBKInterface
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
+        $sort = $array['sort'] ?? request('sort');
 
         $params = [
             'apikey' => config('coupon.taobao.HDK_APIKEY'),
@@ -120,6 +121,7 @@ class Taobao implements TBKInterface
             'back' => $limit,
             'min_id' => 1,
             'tb_p' => 1,
+            'sort' => $sort,
         ];
         $response = Curl::to('http://v2.api.haodanku.com/supersearch')
             ->withData($params)
@@ -179,7 +181,7 @@ class Taobao implements TBKInterface
                 'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
-                'total' => count($response->data),
+                'total'     => count($response->data),
             ],
         ];
     }
