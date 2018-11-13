@@ -33,6 +33,7 @@ class Taobao implements TBKInterface
         if (!isset($taobao->sid)) {
             throw new \Exception('请先授权淘宝联盟');
         }
+
         //  Implement getCouponUrl() method.
         $params = [
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
@@ -45,7 +46,9 @@ class Taobao implements TBKInterface
             ->withData($params)
             ->get();
         $resp = json_decode($resp);
-
+        if (isset($resp->error)) {
+            throw new \Exception($resp->error);
+        }
         if (isset($resp->error_response)) {
             throw new \Exception($resp->error_response->sub_msg);
         }
