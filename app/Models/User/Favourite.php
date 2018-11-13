@@ -24,7 +24,6 @@ class Favourite extends Model implements Transformable
      */
     protected $fillable = [
         'user_id',
-        'member_id',
         'merch_id',
         'goods_id',
     ];
@@ -38,7 +37,6 @@ class Favourite extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
-        'member_id',
         'user_id',
         'merch_id',
         'goods_id',

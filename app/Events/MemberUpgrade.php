@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Member\Member;
+use App\Models\User\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,15 +17,15 @@ class MemberUpgrade
     /**
      * @var
      */
-    public $member;
+    public $user;
 
     /**
      * MemberUpgrade constructor.
-     * @param Member $member
+     * @param User $user
      */
-    public function __construct(Member $member)
+    public function __construct(User $user)
     {
-        $this->member = $member;
+        $this->user = $user;
     }
 
     /**

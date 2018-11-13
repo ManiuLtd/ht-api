@@ -1,27 +1,24 @@
 <?php
 
-namespace App\Repositories\Shop;
+namespace App\Repositories\User;
 
+use App\Models\User\Group;
 use App\Criteria\RequestCriteria;
-use App\Models\Shop\GoodsComment;
-use App\Validators\Shop\GoodsCommentValidator;
+use App\Validators\User\GroupValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Shop\GoodsCommentRepository;
+use App\Repositories\Interfaces\User\GroupRepository;
 
 /**
- * Class GoodsCommentRepositoryEloquent.
+ * Class GroupRepositoryEloquent.
  */
-class GoodsCommentRepositoryEloquent extends BaseRepository implements GoodsCommentRepository
+class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
         'user_id',
-        'merch_id',
-        'order_id',
-        'goods_id',
-        'nickname',
+        'pid',
     ];
 
     /**
@@ -31,7 +28,7 @@ class GoodsCommentRepositoryEloquent extends BaseRepository implements GoodsComm
      */
     public function model()
     {
-        return GoodsComment::class;
+        return Group::class;
     }
 
     /**
@@ -41,11 +38,11 @@ class GoodsCommentRepositoryEloquent extends BaseRepository implements GoodsComm
      */
     public function validator()
     {
-        return GoodsCommentValidator::class;
+        return GroupValidator::class;
     }
 
     /**
-     * Boot up the repository, pushing criteria.
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {

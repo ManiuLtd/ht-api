@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Member;
+namespace App\Repositories\User;
 
-use App\Models\Member\Favourite;
+use App\Models\User\Favourite;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\FavouriteValidator;
+use App\Validators\User\FavouriteValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Member\FavouriteRepository;
+use App\Repositories\Interfaces\User\FavouriteRepository;
 
 /**
  * Class FavouriteRepositoryEloquent.
@@ -17,7 +17,7 @@ class FavouriteRepositoryEloquent extends BaseRepository implements FavouriteRep
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'user_id',
         'user_id',
     ];
 

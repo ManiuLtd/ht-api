@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Member\Member;
+use App\Models\User\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,7 +17,7 @@ class CreditIncrement
      * 需要操作的会员.
      * @var Member
      */
-    public $member;
+    public $user;
 
     /**
      * 1积分 2余额.
@@ -38,14 +39,14 @@ class CreditIncrement
 
     /**
      * CreditDecrement constructor.
-     * @param Member $member 需要操作的会员
+     * @param User $user 需要操作的会员
      * @param int $column 1积分 2余额 3经验
      * @param float $credit 改变的积分或者余额数量
      * @param array $extra 备注
      */
-    public function __construct(Member $member, int $column, float $credit, array $extra,int $type)
+    public function __construct(User $user, int $column, float $credit, array $extra,int $type)
     {
-        $this->member = $member;
+        $this->user = $user;
         $this->column = $column;
         $this->credit = $credit;
         $this->extra = $extra;

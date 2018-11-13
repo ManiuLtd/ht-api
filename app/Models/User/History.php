@@ -27,7 +27,6 @@ class History extends Model implements Transformable
 
     protected $hidden = [
         'user_id',
-        'member_id',
         'merch_id',
         'goods_id',
     ];

@@ -6,6 +6,7 @@ use App\Events\CreditFriend;
 use App\Models\Member\CreditLog;
 use App\Models\Member\Group;
 use App\Models\Member\Member;
+use App\Models\User\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -37,7 +38,7 @@ class CreditFriendEvent
             throw new \Exception('管理员还没配置参数');
         }
         //邀请人
-        $member1 = $event->member;
+        $member1 = $event->user;
         if(!$member1){
             throw new \Exception('邀请人不存在');
         }
@@ -45,16 +46,16 @@ class CreditFriendEvent
         creditAdd($member1,$credit_friend->friend_commission1_credit1,'credit1','直推余额增加',18);//余额
         creditAdd($member1,$credit_friend->friend_commission1_credit3,'credit3','直推成长值增加',19);//成长值
 
-        $member2 = $event->member->inviter;//上级
+        $member2 = $event->user->inviter;//上级
         if($member2){
             creditAdd($member2,$credit_friend->friend_commission1_credit2,'credit2','推荐上级积分增加',17);//积分
             creditAdd($member2,$credit_friend->friend_commission1_credit1,'credit1','推荐上级余额增加',18);//余额
             creditAdd($member2,$credit_friend->friend_commission1_credit3,'credit3','推荐上级成长值增加',19);//成长值
         }
 
-        $group1 = $event->member->group;//组
+        $group1 = $event->user->group;//组
         if($group1){
-            $member3 = Member::find($group1['member_id']);
+            $member3 = User::find($group1['member_id']);
             if($member3){
                 creditAdd($member3,$credit_friend->friend_commission1_credit2,'credit2','推荐组长积分增加',17);//积分
                 creditAdd($member3,$credit_friend->friend_commission1_credit1,'credit1','推荐组长余额增加',18);//余额
@@ -62,9 +63,9 @@ class CreditFriendEvent
             }
         }
 
-        $group2 = $event->member->oldGroup;//原组
+        $group2 = $event->user->oldGroup;//原组
         if($group2){
-            $member4 = Member::find($group2['member_id']);
+            $member4 = User::find($group2['member_id']);
             if($member4){
                 creditAdd($member4,$credit_friend->friend_commission1_credit2,'credit2','推荐原组长积分增加',17);//积分
                 creditAdd($member4,$credit_friend->friend_commission1_credit1,'credit1','推荐原组长余额增加',18);//余额

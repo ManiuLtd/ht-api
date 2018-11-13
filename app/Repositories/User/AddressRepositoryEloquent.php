@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Repositories\Member;
+namespace App\Repositories\User;
 
-use App\Models\Member\Group;
+use App\Models\User\Address;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\GroupValidator;
+use App\Validators\User\AddressValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Member\GroupRepository;
+use App\Repositories\Interfaces\User\AddressRepository;
 
 /**
- * Class GroupRepositoryEloquent.
+ * Class AddressRepositoryEloquent.
  */
-class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
+class AddressRepositoryEloquent extends BaseRepository implements AddressRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'userr_id',
         'user_id',
-        'pid',
     ];
 
     /**
@@ -29,7 +28,7 @@ class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
      */
     public function model()
     {
-        return Group::class;
+        return Address::class;
     }
 
     /**
@@ -39,7 +38,7 @@ class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
      */
     public function validator()
     {
-        return GroupValidator::class;
+        return AddressValidator::class;
     }
 
     /**

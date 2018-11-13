@@ -29,7 +29,6 @@ class Order extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
-        'member_id',
         'address_id',
         'user_id',
         'merch_id',
@@ -49,9 +48,9 @@ class Order extends Model implements Transformable
      * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
     }
 
     /**
@@ -60,6 +59,6 @@ class Order extends Model implements Transformable
      */
     public function address()
     {
-        return $this->belongsTo('App\Models\Member\Address', 'address_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Address', 'address_id')->withDefault(null);
     }
 }
