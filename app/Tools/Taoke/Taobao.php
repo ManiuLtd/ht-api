@@ -417,7 +417,7 @@ class Taobao implements TBKInterface
     public function timingItems(array $params)
     {
         //获取最近整点时间
-        $timestamp = date('H', time()); //当前时间的整点
+        $timestamp = date('H'); //当前时间的整点
         $min_id = $params['min_id'] ?? 1;
         $params = [
             'apikey' => config('coupon.taobao.HDK_APIKEY'),

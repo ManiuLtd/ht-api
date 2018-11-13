@@ -225,8 +225,8 @@ class Taobao extends Command
     protected function kuaiQiang()
     {
         try {
-            $total = 5;
-            $hour = $this->option('h');
+            $total = 20;
+            $hour = date('H');
 
             $bar = $this->output->createProgressBar($total);
             $min_id = 1;

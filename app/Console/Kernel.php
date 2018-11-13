@@ -47,6 +47,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:tb order --type=1')->everyMinute();
         //以结算时间查询
         $schedule->command('spider:tb order --type=2')->everyMinute();
+        //快抢
+        $schedule->command('spider:tb kuaiqiang')->hourly();
+        //定时拉取
+        $schedule->command('spider:tb timingItems')->hourly();
 
     }
 
