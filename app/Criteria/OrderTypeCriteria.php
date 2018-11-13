@@ -24,14 +24,14 @@ class OrderTypeCriteria implements CriteriaInterface
         if (! in_array($type, [1, 2, 3, 4])) {
             throw new \Exception('订单类型错误');
         }
-        $member = getMember();
+        $member = getUser();
         //直推订单
         if ($type == 1) {
-            return $model->where('member_id', $member->id);
+            return $model->where('user_id', $member->id);
         }
         //下级订单
         if ($type == 2) {
-            return $model->whereIn('member_id', function ($query) use ($member) {
+            return $model->whereIn('user_id', function ($query) use ($member) {
                 $query->select('id')
                     ->from('members')
                     ->where([
@@ -42,7 +42,7 @@ class OrderTypeCriteria implements CriteriaInterface
         //团队订单
         if ($type == 3) {
             $group = db('groups')->find($member->group_id);
-            if ($group->member_id != $member->id) {
+            if ($group->user_id != $member->id) {
                 throw new \Exception('该用户无团队订单');
             }
 
@@ -51,7 +51,7 @@ class OrderTypeCriteria implements CriteriaInterface
         //补贴订单
         if ($type == 4) {
             $group = db('groups')->find($member->group_id);
-            if ($group->member_id != $member->id) {
+            if ($group->user_id != $member->id) {
                 throw new \Exception('该用户无补贴订单');
             }
 

@@ -36,6 +36,27 @@ class Setting extends Model implements Transformable
         'pinduouo',
     ];
 
+    public function transform()
+    {
+        $data = $this->toArray();
+        $data['enough_reduce'] = json_decode($data['enough_reduce']);
+        $data['enough_free']   = json_decode($data['enough_free']);
+        $data['deduction']     = json_decode($data['deduction']);
+        $data['payment']       = json_decode($data['payment']);
+        $data['recharge']      = json_decode($data['recharge']);
+        $data['credit']        = json_decode($data['credit']);
+        $data['shop']          = json_decode($data['shop']);
+        $data['credit_order']  = json_decode($data['credit_order']);
+        $data['credit_friend'] = json_decode($data['credit_friend']);
+        $data['notification']  = json_decode($data['notification']);
+        $data['pid']           = json_decode($data['pid']);
+        $data['withdraw']      = json_decode($data['withdraw']);
+        $data['taobao']        = json_decode($data['taobao']);
+        $data['jingdong']      = json_decode($data['jingdong']);
+        $data['pinduoduo']     = json_decode($data['pinduoduo']);
+        return $data;
+    }
+
     /**
      * The "booting" method of the model.
      */

@@ -6,15 +6,15 @@
  * Date: 2018/9/19
  * Time: 22:25
  */
-Route::namespace('Member')
+Route::namespace('User')
     ->prefix('member')
     ->group(function () {
 
         //会员信息
-        Route::get('/', 'MembersController@index');
+        Route::get('/', 'UsersController@index');
 
         //好友列表
-        Route::get('friends', 'MembersController@friends');
+        Route::get('friends', 'UsersController@friends');
 
         //分销等级列表
         Route::get('commission-level', 'LevelsController@index');
