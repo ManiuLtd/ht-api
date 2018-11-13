@@ -20,7 +20,6 @@ class CreateShopCartsTable extends Migration
         Schema::create('shop_carts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->integer('goods_id')->nullable();
             $table->integer('option_id')->nullable();
@@ -31,7 +30,6 @@ class CreateShopCartsTable extends Migration
             $table->softDeletes();
 
             $table->index('user_id', 'shop_carts_user_id_index');
-            $table->index('member_id', 'shop_carts_member_id_index');
             $table->index('merch_id', 'shop_carts_merch_id_index');
             $table->index('goods_id', 'shop_carts_goods_id_index');
             $table->index('option_id', 'shop_carts_option_id_index');

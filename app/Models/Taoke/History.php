@@ -16,7 +16,7 @@ class History extends Model implements Transformable
     /**
      * @var string
      */
-    protected $table = 'tbk_member_histories';
+    protected $table = 'tbk_user_histories';
 
     /**
      * @var array
@@ -31,7 +31,7 @@ class History extends Model implements Transformable
         parent::boot();
         //创建之前 添加member_id
         self::creating(function ($model) {
-            $model->member_id = getMemberId();
+            $model->user_id = getMemberId();
         });
     }
 }

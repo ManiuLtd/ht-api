@@ -17,7 +17,6 @@ class NotificationRepositoryEloquent extends BaseRepository implements Notificat
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
         'user_id',
         'type',
         'created_at',

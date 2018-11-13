@@ -2,6 +2,8 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\User\User;
+use http\Exception\InvalidArgumentException;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\DB;
 use Orzcc\TopClient\Facades\TopClient;
@@ -10,6 +12,7 @@ use TopClient\request\TbkItemInfoGetRequest;
 
 class Taobao implements TBKInterface
 {
+    use TBKCommon;
     /**
      * 获取优惠券地址
      * @param array $array
@@ -19,16 +22,24 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
+        if (!isset($pids->taobao)){
+            throw new \Exception('请先生设置系统pid');
+        }
+        $userid = $this->getUserId();
 
-        $oauth = DB::table('tbk_oauth')->find($pids->oauth_id);
-        //TODO sid需要调用设置
+        $setting = setting($userid);// 应该是根据member或者user_id
+
+        $taobao = json_decode($setting->taobao);
+        if (!isset($taobao->sid)) {
+            throw new \Exception('请先授权淘宝联盟');
+        }
         //  Implement getCouponUrl() method.
         $params = [
-            'appkey' => config('coupon.taobao.HMTK_APP_KEY'),
+            'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => 1942,
-            'pid' => $pids->taobao,
-            'num_iid' => $array['item_id'],
+            'sid'       => $taobao->sid,  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
+            'pid'       => $pids->taobao,
+            'num_iid'   => $array['item_id'],
         ];
         $resp = Curl::to('https://www.heimataoke.com/api-zhuanlian')
             ->withData($params)
@@ -42,26 +53,6 @@ class Taobao implements TBKInterface
         return $resp;
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
-     */
-    protected function getPids()
-    {
-        $member = getMember();
-        $member_pid = DB::table('tbk_pids')->where('member_id', $member->id)->first();
-
-        if ($member_pid) {
-            return $member_pid;
-        }
-        $inviter_pid = DB::table('tbk_pids')->where('member_id', $member->inviter_id)->first();
-        if ($inviter_pid) {
-            return $inviter_pid;
-        }
-        $group = DB::table('groups')->find($member->group_id);
-        $group_pid = DB::table('tbk_pids')->where('member_id', $group->member_id)->first();
-
-        return $group_pid;
-    }
 
     /**
      * 获取详情.
@@ -87,13 +78,23 @@ class Taobao implements TBKInterface
         }
         $data = $resp->results->n_tbk_item[0];
         $data->coupon = $this->getCouponUrl(['item_id' => $itemID]);
+
         $kouling = $this->taokouling([
             'coupon_click_url' => $data->coupon->coupon_click_url,
             'pict_url'         => $data->pict_url,
             'title'            => $data->title,
         ]);
-        $data->kouling = $kouling;
 
+        $data->kouling = $kouling;
+        // 从本地优惠券中获取获取商品介绍 introduce 字段，如果本地没有 该字段为空
+        $coupon = db('tbk_coupons')->where([
+            'item_id' => $itemID,
+            'type' => 1,
+        ])->first();
+        if ($coupon) {
+            $data->introduce = $coupon->introduce;
+        }
+        $data->introduce = null;
         return $data;
     }
 
@@ -105,6 +106,7 @@ class Taobao implements TBKInterface
      */
     public function search(array $array = [])
     {
+        //可根据商品ID搜索
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
@@ -134,7 +136,7 @@ class Taobao implements TBKInterface
         }
 
         //页码信息
-        $totalPage = intval(floor($response->total / $limit) + 1);
+        $totalPage = intval(floor(count($response->data) / $limit) + 1);
 
         //页码不对
         if ($page > $totalPage) {
@@ -174,7 +176,7 @@ class Taobao implements TBKInterface
                 'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
-                'total' => $response->total,
+                'total' => count($response->data),
             ],
         ];
     }
@@ -188,26 +190,38 @@ class Taobao implements TBKInterface
     public function getOrders(array $array = [])
     {
         //  Implement getOrders() method.
+        $type = data_get($array,'type');
+
+        $order_query_type = 'create_time';
+
+        if ($type == 2) {
+            $order_query_type = 'settle_time';
+        }
         $params = [
             'appkey' => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => data_get($array, 'sid', 1942),  //淘宝  京东 拼多多 授权 并保存授权信息
+            'sid' => data_get($array, 'sid', 1942),
             'start_time' => now()->subMinutes(9)->toDateTimeString(),
+//            'start_time' => '2018-11-01 15:45:02',
             'span' => 600,
             'signurl' => 0,
-            'page_no' => data_get($array, 'page', 1),
-            'page_size' => 100,
+            'page_no' => data_get($array,'page',1),
+            'page_size' => 500,
+            'order_query_type' => $order_query_type,
         ];
 
         $resp = Curl::to('https://www.heimataoke.com/api-qdOrder')
             ->withData($params)
             ->get();
+
         $resp = json_decode($resp);
 
+        if (isset($resp->error)) {
+            throw new \Exception($resp->error);
+        }
         if (! isset($resp->n_tbk_order)) {
             throw  new \Exception('没有数据');
         }
-
         return $resp->n_tbk_order;
     }
 
@@ -247,10 +261,7 @@ class Taobao implements TBKInterface
         $min_id = $array['min_id'] ?? 1;
 
         if (! in_array($type, [1, 2, 3, 4, 5])) {
-            return [
-                'code' => 4001,
-                'message' => 'type不合法',
-            ];
+            throw new \InvalidArgumentException('type不合法');
         }
         $params = [
             'apikey' => config('coupon.taobao.HDK_APIKEY'),
@@ -507,56 +518,6 @@ class Taobao implements TBKInterface
         $req->setUrl($params['coupon_click_url']);
         $req->setLogo($params['pict_url']);
         $req->setText($params['title']);
-        $resp = $topclient->execute($req);
-        if (! isset($resp->data->model)) {
-            throw new \Exception('淘口令生成失败');
-        }
-        $taokouling = $resp->data->model;
-
-        return $taokouling;
-    }
-
-    /**
-     * 生成淘口令
-     * @param array $params
-     * @return mixed
-     * @throws \Exception
-     */
-    public function link(array $params)
-    {
-        // 根据pid item 图片地址生成淘口令，如果我不是会员，则用我上级的pid，如果上级也不是超级会员，就用组长的pid
-        //获取领劵地址
-        $response = Curl::to('https://www.heimataoke.com/api-zhuanlian')
-            ->withData([
-                'appkey'    => '193298714',
-                'appsecret' => '33591f90704bcfc868871794c80ac185',
-                'pid'       => $params['pid'],
-                'sid'       => '1942',
-                'num_iid'   => $params['itemid'],
-            ])
-            ->get();
-        $response = json_decode($response);
-        if (!isset($response->coupon_click_url)) {
-            throw new \Exception('高佣金转链失败');
-        }
-        $coupon_click_url = $response->coupon_click_url;
-        //获取产品标题图片等信息
-        $topclient = TopClient::connection();
-        $req = new TbkItemInfoGetRequest();
-        $req->setFields('title,pict_url');
-        $req->setNumIids($params['itemid']);
-        $resp = $topclient->execute($req);
-        if (!isset($resp->results->n_tbk_item)) {
-            throw new \Exception('淘宝客接口调用失败');
-        }
-        $data = (array)$resp->results->n_tbk_item[0];
-
-        //获取淘口令
-        $req = new TbkTpwdCreateRequest;
-
-        $req->setUrl($coupon_click_url);
-        $req->setLogo($data['pict_url']);
-        $req->setText($data['title']);
         $resp = $topclient->execute($req);
         if (! isset($resp->data->model)) {
             throw new \Exception('淘口令生成失败');

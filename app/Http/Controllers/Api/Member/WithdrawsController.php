@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Validators\Member\WithdrawValidator;
 use App\Http\Requests\Member\WithdrawCreateRequest;
 use App\Repositories\Interfaces\Member\WithdrawRepository;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * 提现
@@ -48,8 +49,7 @@ class WithdrawsController extends Controller
     public function store(WithdrawCreateRequest $request)
     {
         try {
-            $this->validator->with(request()->all())->passesOrFail();
-
+            $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             return $this->repository->create($request->all());
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());

@@ -17,7 +17,7 @@ class FavouriteRepositoryEloquent extends BaseRepository implements FavouriteRep
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'user_id',
     ];
 
     /**

@@ -5,9 +5,9 @@ namespace App\Repositories\Interfaces\Taoke;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface MemberOrderRepository.
+ * Interface UserOrderRepository.
  */
-interface MemberOrderRepository extends RepositoryInterface
+interface UserOrderRepository extends RepositoryInterface
 {
     //
 }

@@ -52,7 +52,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+
     ];
 
     /**
@@ -100,5 +100,13 @@ class User extends Authenticatable implements JWTSubject, Transformable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetUserPassword($token));
+    }
+    /**
+     * 等级
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function level()
+    {
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
     }
 }

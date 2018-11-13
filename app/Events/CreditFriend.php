@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Member\Member;
+use App\Models\User\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -15,15 +16,15 @@ class CreditFriend
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $member;
+    public $user;
+
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * CreditFriend constructor.
+     * @param User $user
      */
-    public function __construct(Member $member)
+    public function __construct(User $user)
     {
-        $this->member = $member;
+        $this->user = $user;
     }
 
     /**

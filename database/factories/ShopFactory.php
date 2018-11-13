@@ -55,7 +55,7 @@ $factory->define(App\Models\Shop\Coupon::class, function (Faker $faker) {
 
 $factory->define(App\Models\Shop\CouponLog::class, function (Faker $faker) {
     return [
-        'member_id' => rand(1, 30),
+        'user_id' => rand(1, 30),
         'coupon_id' => rand(1, 30),
         'ordersn' => $faker->bankAccountNumber,
         'name' => $faker->name,
@@ -104,8 +104,7 @@ $factory->define(App\Models\Shop\GoodsTag::class, function (Faker $faker) {
 
 $factory->define(App\Models\Shop\Order::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'orderno' => 'HT'.$faker->randomNumber(),
         'total_price' => $faker->numberBetween(2, 500),
         'discount_price' => $faker->numberBetween(2, 20),
@@ -132,8 +131,7 @@ $factory->define(App\Models\Shop\Order::class, function (Faker $faker) {
 
 $factory->define(App\Models\Shop\RefundOrder::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'order_id' => rand(1, 100),
         'order_goods_id' => rand(1, 50),
         'refundno' => 'HT'.$faker->randomNumber(),
@@ -185,7 +183,7 @@ $factory->define(App\Models\Shop\OrderGoods::class, function (Faker $faker) {
 
 $factory->define(App\Models\Shop\GoodsComment::class, function (Faker $faker) {
     return [
-        'member_id' => rand(1, 50),
+        'user_id' => rand(1, 50),
         'order_id' => rand(1, 50),
         'goods_id' => rand(1, 50),
         'nickname' => $faker->name,

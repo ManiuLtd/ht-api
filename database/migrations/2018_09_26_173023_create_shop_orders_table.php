@@ -20,7 +20,6 @@ class CreateShopOrdersTable extends Migration
         Schema::create('shop_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('merch_id')->nullable();
             $table->string('orderno', 191)->nullable();
             $table->decimal('total_price', 8, 2)->nullable();
@@ -48,7 +47,6 @@ class CreateShopOrdersTable extends Migration
             $table->softDeletes();
 
             $table->index('user_id', 'shop_orders_user_id_index');
-            $table->index('member_id', 'shop_orders_member_id_index');
             $table->index('merch_id', 'shop_orders_merch_id_index');
             $table->index('type', 'shop_orders_type_index');
             $table->index('paytype', 'shop_orders_paytype_index');

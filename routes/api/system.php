@@ -9,7 +9,9 @@ Route::namespace('System')
     ->prefix('system')
     ->group(function () {
         //添加留言反馈
-        Route::post('feedback', 'FeedbacksController@index');
+        Route::resource('feedback', 'FeedbacksController', [
+            'only' => ['index', 'store'],
+        ]);
         //通知列表
         Route::get('notification', 'NotificationsController@index');
         //获取配置信息

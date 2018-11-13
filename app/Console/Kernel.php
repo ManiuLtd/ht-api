@@ -38,8 +38,16 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:tb --type=3 --all=false')->hourlyAt(9);
         //京东
         $schedule->command('spider:jd')->everyThirtyMinutes();
+        $schedule->command('spider:jd order')->everyFiveMinutes();
 
         $schedule->command('spider:pdd')->everyThirtyMinutes();
+        $schedule->command('spider:pdd order')->everyThirtyMinutes();
+        //淘宝订单
+        //以创建时间查询
+        $schedule->command('spider:tb order --type=1')->everyMinute();
+        //以结算时间查询
+        $schedule->command('spider:tb order --type=2')->everyMinute();
+
     }
 
     /**

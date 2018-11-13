@@ -17,7 +17,7 @@ class GoodsCommentRepositoryEloquent extends BaseRepository implements GoodsComm
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'user_id',
         'merch_id',
         'order_id',
         'goods_id',

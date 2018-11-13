@@ -20,12 +20,12 @@ class CreateTbkOrdersTable extends Migration
         Schema::create('tbk_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('member_id')->nullable();
             $table->integer('group_id')->nullable()->comment('组ID');
             $table->integer('oldgroup_id')->nullable()->comment('旧组ID');
-            $table->string('ordernum', 20)->nullable()->comment('订单号');
+            $table->string('ordernum', 190)->nullable()->comment('订单号');
             $table->string('title', 190)->nullable()->comment('订单名');
             $table->string('itemid', 20)->nullable()->comment('商品ID');
+            $table->string('pic_url', 190)->nullable()->comment('商品缩略图');
             $table->integer('count')->nullable()->comment('商品数');
             $table->decimal('price', 9, 2)->nullable()->comment('单价');
             $table->decimal('final_price', 9, 2)->nullable()->comment('付款价格');
@@ -37,10 +37,9 @@ class CreateTbkOrdersTable extends Migration
             $table->timestamp('complete_at')->nullable()->comment('完成时间');
             $table->nullableTimestamps();
 
-            $table->index('member_id');
             $table->index('ordernum');
             $table->index('title');
-            $table->index('user_id');
+
         });
     }
 

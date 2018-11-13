@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niugengyun
- * Date: 2018/10/7
- * Time: 16:18.
- */
 
 namespace App\Http\Controllers\Api\Taoke;
 
@@ -22,21 +16,15 @@ class KuaiQiangController extends Controller
      */
     protected $repository;
 
-    /**
-     * @var KuaiqiangValidator
-     */
-    protected $validator;
 
     /**
      * CategoriesController constructor.
      *
      * @param KuaiqiangRepository $repository
-     * @param KuaiqiangValidator $validator
      */
-    public function __construct(KuaiqiangRepository $repository, KuaiqiangValidator $validator)
+    public function __construct(KuaiqiangRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator = $validator;
     }
 
     /**

@@ -13,13 +13,13 @@ class TaokeSeeder extends Seeder
     {
         DB::table('tbk_pids')->truncate();
         DB::table('tbk_orders')->truncate();
-        DB::table('tbk_member_favourites')->truncate();
-        DB::table('tbk_member_histories')->truncate();
+//        DB::table('tbk_user_favourites')->truncate();
+//        DB::table('tbk_user_histories')->truncate();
         DB::table('tbk_categories')->truncate();
 
         factory(App\Models\Taoke\Category::class, 10)->create();
-        factory(App\Models\Taoke\History::class, 30)->create();
-        factory(App\Models\Taoke\Favourite::class, 30)->create();
+//        factory(App\Models\Taoke\History::class, 30)->create();
+//        factory(App\Models\Taoke\Favourite::class, 30)->create();
         factory(App\Models\Taoke\Pid::class, 100)->create();
         factory(App\Models\Taoke\Order::class, 100)->create();
     }

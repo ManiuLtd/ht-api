@@ -21,7 +21,6 @@ class CreateShopCouponLogsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->integer('merch_id')->nullable();
-            $table->integer('member_id')->nullable();
             $table->integer('coupon_id')->nullable();
             $table->string('ordersn', 191)->nullable();
             $table->string('name', 191)->nullable();
@@ -38,7 +37,6 @@ class CreateShopCouponLogsTable extends Migration
 
             $table->index('user_id', 'shop_coupon_logs_user_id_index');
             $table->index('merch_id', 'shop_coupon_logs_merch_id_index');
-            $table->index('member_id', 'shop_coupon_logs_member_id_index');
             $table->index('coupon_id', 'shop_coupon_logs_coupon_id_index');
             $table->index('created_at', 'shop_coupon_logs_created_at_index');
         });
