@@ -18,7 +18,7 @@ trait TBKCommon{
         }
         $inviter_pid = db('tbk_pids')->where('user_id', $member->inviter_id)->first();
         if ($inviter_pid) {
-            return $inviter_pid;
+            return $inviter_pid; 
         }
         $group = db('groups')->find($member->group_id);
         $group_pid = db('tbk_pids')->where('user_id', $group->user_id)->first();
