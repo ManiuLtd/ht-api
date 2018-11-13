@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Cms\CategoriesRepository;
 
 /**
- * Class CategoresController.
+ * Class CategoriesController.
  */
-class CategoresController extends Controller
+class CategoriesController extends Controller
 {
     /**
-     * @var CategoriesRepository
+     * @var CategoriesController
      */
     protected $repository;
 
     /**
-     * CategoresController constructor.
+     * CategoriesController constructor.
      * @param CategoriesRepository $repository
      */
     public function __construct(CategoriesRepository $repository)
