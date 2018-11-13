@@ -54,6 +54,7 @@ class Setting extends Model implements Transformable
         $data['taobao']        = json_decode($data['taobao']);
         $data['jingdong']      = json_decode($data['jingdong']);
         $data['pinduoduo']     = json_decode($data['pinduoduo']);
+        $data['unionid']       = json_decode($data['unionid']);
         return $data;
     }
 
@@ -109,6 +110,9 @@ class Setting extends Model implements Transformable
             }
             if (request('pinduouo')) {
                 $model->shop = json_encode(request('pinduouo'));
+            }
+            if (request('unionid')) {
+                $model->shop = json_encode(request('unionid'));
             }
         });
     }
