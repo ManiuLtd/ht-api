@@ -34,17 +34,17 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Shop\RefundOrderRepository::class, \App\Repositories\Shop\RefundOrderRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\GoodsTagRepository::class, \App\Repositories\Shop\GoodsTagRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\GoodsCommentRepository::class, \App\Repositories\Shop\GoodsCommentRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\RechargeRepository::class, \App\Repositories\Member\RechargeRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\WithdrawRepository::class, \App\Repositories\Member\WithdrawRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\MemberRepository::class, \App\Repositories\Member\MemberRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\LevelRepository::class, \App\Repositories\Member\LevelRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\AddressRepository::class, \App\Repositories\Member\AddressRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\FavouriteRepository::class, \App\Repositories\Member\FavouriteRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\HistoryRepository::class, \App\Repositories\Member\HistoryRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\CreditLogRepository::class, \App\Repositories\Member\CreditLogRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\AddressRepository::class, \App\Repositories\Member\AddressRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\FavouriteRepository::class, \App\Repositories\Member\FavouriteRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\GroupRepository::class, \App\Repositories\Member\GroupRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\RechargeRepository::class, \App\Repositories\User\RechargeRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\WithdrawRepository::class, \App\Repositories\User\WithdrawRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\UserRepository::class, \App\Repositories\User\UserRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\LevelRepository::class, \App\Repositories\User\LevelRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\AddressRepository::class, \App\Repositories\User\AddressRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\FavouriteRepository::class, \App\Repositories\User\FavouriteRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\HistoryRepository::class, \App\Repositories\User\HistoryRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\CreditLogRepository::class, \App\Repositories\User\CreditLogRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\AddressRepository::class, \App\Repositories\User\AddressRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\FavouriteRepository::class, \App\Repositories\User\FavouriteRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\GroupRepository::class, \App\Repositories\User\GroupRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\SettingRepository::class, \App\Repositories\System\SettingRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\NotificationRepository::class, \App\Repositories\System\NotificationRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\FeedbackRepository::class, \App\Repositories\System\FeedbackRepositoryEloquent::class);
@@ -59,9 +59,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Taoke\OrderRepository::class, \App\Repositories\Taoke\OrderRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\FavouriteRepository::class, \App\Repositories\Taoke\FavouriteRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\HistoryRepository::class, \App\Repositories\Taoke\HistoryRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Taoke\MemberOrderRepository::class, \App\Repositories\Taoke\MemberOrderRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\UserOrderRepository::class, \App\Repositories\Taoke\UserOrderRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\HaoHuoRepository::class, \App\Repositories\Taoke\HaoHuoRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Member\CommissionLevelRepository::class, \App\Repositories\Member\CommissionLevelRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\CommissionLevelRepository::class, \App\Repositories\User\CommissionLevelRepositoryEloquent::class);
 
         $this->app->bind(\App\Repositories\Interfaces\Taoke\ZhuanTiRepository::class, \App\Repositories\Taoke\ZhuanTiRepositoryEloquent::class);
 
