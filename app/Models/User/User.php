@@ -101,4 +101,12 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         $this->notify(new ResetUserPassword($token));
     }
+    /**
+     * 等级
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function level()
+    {
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
+    }
 }
