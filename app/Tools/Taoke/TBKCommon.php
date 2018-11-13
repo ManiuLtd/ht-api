@@ -11,17 +11,17 @@ trait TBKCommon{
     public function getPids()
     {
         $member = getMember();
-        $member_pid = db('tbk_pids')->where('member_id', $member->id)->first();
+        $member_pid = db('tbk_pids')->where('user_id', $member->id)->first();
 
         if ($member_pid) {
             return $member_pid;
         }
-        $inviter_pid = db('tbk_pids')->where('member_id', $member->inviter_id)->first();
+        $inviter_pid = db('tbk_pids')->where('user_id', $member->inviter_id)->first();
         if ($inviter_pid) {
             return $inviter_pid;
         }
         $group = db('groups')->find($member->group_id);
-        $group_pid = db('tbk_pids')->where('member_id', $group->member_id)->first();
+        $group_pid = db('tbk_pids')->where('user_id', $group->user_id)->first();
         if (!$group_pid){
             $setting = setting($this->getUserId()); //应该是根据member或者user_id
             $group_pid = json_decode($setting->pid);
