@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Validators\Member;
+namespace App\Validators\User;
 
 use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class AddressValidator.
+ * Class RechargeValidator.
  */
-class AddressValidator extends LaravelValidator
+class RechargeValidator extends LaravelValidator
 {
     /**
      * Validation Rules.

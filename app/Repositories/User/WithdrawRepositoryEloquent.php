@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories\Member;
+namespace App\Repositories\User;
 
-use App\Models\Member\Withdraw;
+use App\Models\User\Withdraw;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\WithdrawValidator;
+use App\Validators\User\WithdrawValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Member\WithdrawRepository;
+use App\Repositories\Interfaces\User\WithdrawRepository;
 
 /**
  * Class WithdrawRepositoryEloquent.
@@ -19,7 +19,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      */
     protected $fieldSearchable = [
         'out_trade_no' => 'like',
-        'member_id',
+        'user_id',
         'status',
         'created_at',
     ];
@@ -73,8 +73,8 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         if ($money > $member->credit1) {
             return json(4001, '可提现金额不足');
         }
-        $withdraw = db('member_withdraws')->orderBy('id', 'desc')->where([
-            'member_id' => $member->id,
+        $withdraw = db('user_withdraws')->orderBy('id', 'desc')->where([
+            'user_id' => $member->id,
             'status' => 0,
         ])->first();
 
@@ -82,9 +82,9 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
             return json(4001, '已有在审核中的提现申请');
         }
         $attributes['status'] = 0;
-        $attributes['member_id'] = $member->id;
+        $attributes['user_id'] = $member->id;
         try {
-            db('member_withdraws')->insert($attributes);
+            db('user_withdraws')->insert($attributes);
 
             return json(1001, '申请提现成功，请等待审核');
         } catch (\Exception $e) {
@@ -118,14 +118,14 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         }
         //累计结算
         if ($type == 2) {
-            return db('member_credit_logs')->where([
+            return db('user_credit_logs')->where([
                 'column' => 'credit1',
                 'type' => 11,
             ])->sum('credit');
         }
         // 累计提现
         if ($type == 3) {
-            return db('member_credit_logs')->where([
+            return db('user_credit_logs')->where([
                 'column' => 'credit1',
                 'type' => 12,
             ])->sum('credit');

@@ -18,7 +18,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'user_id',
         'group_id',
         'oldgroup_id',
         'ordernum' => 'like',
@@ -112,7 +112,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         $member = getMember();
         $ordernum = request('ordernum');
         if (is_numeric($ordernum) && strlen($ordernum) >= 16) {
-            $re = db('tbk_member_orders')
+            $re = db('tbk_user_orders')
                 ->where('ordernum', $ordernum)
                 ->first();
             if ($re) {
@@ -122,9 +122,8 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
                 'ordernum' => $ordernum,
             ])->first();
             if ($order) {
-                db('tbk_member_orders')->insert([
-                    'user_id' => $member->user_id,
-                    'member_id' => $member->id,
+                db('tbk_user_orders')->insert([
+                    'user_id' => $member->id,
                     'ordernum' => $ordernum,
                     'created_at' => now()->toDateTimeString(),
                     'updated_at' => now()->toDateTimeString(),

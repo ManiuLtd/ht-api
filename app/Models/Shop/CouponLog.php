@@ -32,7 +32,6 @@ class CouponLog extends Model implements Transformable
         'merch_id',
         'user_id',
         'coupon_id',
-        'member_id',
     ];
 
     /**
@@ -48,8 +47,8 @@ class CouponLog extends Model implements Transformable
      * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Member\Member')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User')->withDefault(null);
     }
 }

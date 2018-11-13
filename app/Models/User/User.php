@@ -52,7 +52,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+
     ];
 
     /**

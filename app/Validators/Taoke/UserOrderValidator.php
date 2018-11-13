@@ -6,9 +6,9 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class MemberOrderValidator.
+ * Class UserOrderValidator.
  */
-class MemberOrderValidator extends LaravelValidator
+class UserOrderValidator extends LaravelValidator
 {
     /**
      * Validation Rules.

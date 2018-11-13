@@ -24,7 +24,7 @@ class MemberUpgradeEvent
      */
     public function handle(MemberUpgrade $event)
     {
-        $member = $event->member;
+        $member = $event->user;
         $level = db('member_levels')
             ->where('level', '>', $member->level->level)
             ->where('status', 1)

@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Repositories\Member;
+namespace App\Repositories\User;
 
-use App\Models\Member\Level;
+use App\Models\User\History;
 use App\Criteria\RequestCriteria;
-use App\Validators\Member\LevelValidator;
+use App\Validators\User\HistoryValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Member\LevelRepository;
+use App\Repositories\Interfaces\User\HistoryRepository;
 
 /**
- * Class LevelRepositoryEloquent.
+ * Class HistoryRepositoryEloquent.
  */
-class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
+class HistoryRepositoryEloquent extends BaseRepository implements HistoryRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name' => 'like',
         'user_id',
-        'status',
+        'user_id',
+        'created_at',
     ];
 
     /**
@@ -29,7 +29,7 @@ class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
      */
     public function model()
     {
-        return Level::class;
+        return History::class;
     }
 
     /**
@@ -39,7 +39,7 @@ class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
      */
     public function validator()
     {
-        return LevelValidator::class;
+        return HistoryValidator::class;
     }
 
     /**
@@ -48,13 +48,5 @@ class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    /**
-     * @return string
-     */
-    public function presenter()
-    {
-        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 }

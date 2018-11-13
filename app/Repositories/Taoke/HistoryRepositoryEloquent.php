@@ -17,7 +17,7 @@ class HistoryRepositoryEloquent extends BaseRepository implements HistoryReposit
      * @var array
      */
     protected $fieldSearchable = [
-        'member_id',
+        'user_id',
     ];
 
     /**

@@ -24,7 +24,6 @@ class Address extends Model implements Transformable
      */
     protected $fillable = [
         'user_id',
-        'member_id',
         'realname',
         'phone',
         'province',
@@ -45,7 +44,6 @@ class Address extends Model implements Transformable
      * @var array
      */
     protected $hidden = [
-        'member_id',
         'user_id',
     ];
 }
