@@ -1,26 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Api\Member;
+namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\Member\MemberRepository;
+use App\Repositories\Interfaces\User\UserRepository;
+
 
 /**
  * 会员管理
- * Class MemberController.
+ * Class UserController.
  */
-class MembersController extends Controller
+class UsersController extends Controller
 {
     /**
-     * @var MemberRepository
+     * @var UserRepository
      */
     protected $repository;
 
     /**
-     * MemberController constructor.
-     * @param MemberRepository $repository
+     * UserController constructor.
+     * @param UserRepository $repository
      */
-    public function __construct(MemberRepository $repository)
+    public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -31,12 +32,12 @@ class MembersController extends Controller
      */
     public function index()
     {
-        $memberId = getMemberId();
-        $members = $this->repository
+        $userId = getUserId();
+        $users = $this->repository
             ->with(['level', 'inviter', 'group'])
-            ->find($memberId);
+            ->find($userId);
 
-        return json(1001, '会员信息获取成功', $members);
+        return json(1001, '会员信息获取成功', $users);
     }
 
     /**

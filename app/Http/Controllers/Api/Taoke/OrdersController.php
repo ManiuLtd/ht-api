@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Criteria\MemberCriteria;
+use App\Criteria\UserCriteria;
 use App\Criteria\OrderTypeCriteria;
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
@@ -42,10 +42,10 @@ class OrdersController extends Controller
     {
         try {
             $orders = $this->repository
-                ->with('member')
+                ->with('user')
                 ->pushCriteria(new DatePickerCriteria())
                 ->pushCriteria(new OrderTypeCriteria())
-                ->pushCriteria(new MemberCriteria())
+                ->pushCriteria(new UserCriteria())
                 ->paginate(request('limit', 10));
 
             return json(1001, '列表获取成功', $orders);

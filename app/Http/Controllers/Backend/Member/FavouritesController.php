@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\FavouriteValidator;
-use App\Repositories\Interfaces\Member\FavouriteRepository;
+use App\Validators\User\FavouriteValidator;
+use App\Repositories\Interfaces\User\FavouriteRepository;
 
 /**
  * Class FavouritesController.
@@ -39,8 +39,8 @@ class FavouritesController extends Controller
      */
     public function index()
     {
-        $memberFavourites = $this->repository->paginate(request('limit', 10));
+        $userFavourites = $this->repository->paginate(request('limit', 10));
 
-        return json(1001, '列表获取成功', $memberFavourites);
+        return json(1001, '列表获取成功', $userFavourites);
     }
 }

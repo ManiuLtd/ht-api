@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\OfficialAccount\Alipay;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\MemberRepository;
+use App\Repositories\Interfaces\User\UserRepository;
 
 /**
  * Class RegisterController.
@@ -12,15 +12,15 @@ use App\Repositories\Interfaces\MemberRepository;
 class RegisterController extends Controller
 {
     /**
-     * @var MemberRepository
+     * @var UserRepository
      */
     protected $repository;
 
     /**
      * RegisterController constructor.
-     * @param MemberRepository $repository
+     * @param UserRepository $repository
      */
-    public function __construct(MemberRepository $repository)
+    public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -31,15 +31,15 @@ class RegisterController extends Controller
     }
 
     /**
-     * @param $member
+     * @param $user
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($member)
+    protected function respondWithToken($user)
     {
-        $token = auth('member')->login($member);
+        $token = auth('user')->login($user);
 
         $data = [
-            'member' => $member,
+            'user' => $user,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,

@@ -36,7 +36,7 @@ class Order extends Model implements Transformable
         if (request('status') == 3 && request('member_id')) {
             self::creating(function ($model) {
                 event(new SendOrder([
-                    'member_id' => request('member_id')
+                    'user_id' => request('member_id')
                 ]));
             });
         }
@@ -45,7 +45,7 @@ class Order extends Model implements Transformable
         if (request('status') == 3 && request('member_id')) {
             self::updating(function ($model) {
                 event(new SendOrder([
-                    'member_id' => request('member_id')
+                    'user_id' => request('member_id')
                 ]));
             });
         }

@@ -64,7 +64,7 @@ class Feedback extends Model implements Transformable
         parent::boot();
         //创建之前 修改memberid
         self::creating(function ($model) {
-            $model->user_id = getMemberId();
+            $model->user_id = getUserId();
         });
     }
 }

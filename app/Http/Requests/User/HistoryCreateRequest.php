@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Member;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MemberUpdateRequest extends FormRequest
+class HistoryCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class MemberUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,11 +23,8 @@ class MemberUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
-//        $id = $this->route('member'); //获取当前需要排除的id
-//
-//        return [
-//            'phone' => 'required|unique:members,phone,'.$id,
-//        ];
+        return [
+            //
+        ];
     }
 }

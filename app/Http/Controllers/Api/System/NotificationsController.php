@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\System;
 
 use Illuminate\Http\Request;
-use App\Criteria\MemberCriteria;
+use App\Criteria\UserCriteria;
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\System\NotificationValidator;
@@ -44,7 +44,7 @@ class NotificationsController extends Controller
     {
         $notification = $this->repository
             ->pushCriteria(new DatePickerCriteria())
-            ->pushCriteria(new MemberCriteria())
+            ->pushCriteria(new UserCriteria())
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $notification);

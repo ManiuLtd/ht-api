@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Member\Member;
 use App\Models\Taoke\Pid;
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -66,20 +66,17 @@ class SaveOrders implements ShouldQueue
         foreach ($results as $result) {
             $pid = Pid::query()->where('taobao',$result->adzone_id)->first();
             if ($pid){
-                $member = Member::query()->find($pid->member_id);
-                $member_id = $member->id;
-                $group_id = $member->group_id;
-                $oldgroup_id = $member->oldgroup_id;
-                $user_id = $member->user_id;
+                $user = User::query()->find($pid->user_id);
+                $group_id = $user->group_id;
+                $oldgroup_id = $user->oldgroup_id;
+                $user_id = $user->id;
             }else{
-                $member_id = null;
                 $group_id = null;
                 $oldgroup_id = null;
                 $user_id = null;
             }
             $item = [
                 'user_id'           => $user_id,
-                'member_id'         => $member_id,
                 'group_id'          => $group_id,
                 'oldgroup_id'       => $oldgroup_id,
                 'ordernum'          => $result->trade_id,
@@ -136,17 +133,17 @@ class SaveOrders implements ShouldQueue
         foreach ($results as $result) {
             $pid = Pid::query()->where('pinduoduo',$result->p_id)->first();
             if ($pid){
-                $member = Member::query()->find($pid->member_id);
-                $member_id = $member->id;
-                $group_id = $member->group_id;
-                $oldgroup_id = $member->oldgroup_id;
+                $user = User::query()->find($pid->user_id);
+                $user_id = $user->id;
+                $group_id = $user->group_id;
+                $oldgroup_id = $user->oldgroup_id;
             }else{
-                $member_id = null;
+                $user_id = null;
                 $group_id = null;
                 $oldgroup_id = null;
             }
             $item = [
-                'member_id'         => $member_id,
+                'user_id'         => $user_id,
                 'group_id'          => $group_id,
                 'oldgroup_id'       => $oldgroup_id,
                 'ordernum'          => $result->order_sn,
@@ -221,17 +218,17 @@ class SaveOrders implements ShouldQueue
 
             $pid = Pid::query()->where('jingdong',$p_id)->first();
             if ($pid){
-                $member = Member::query()->find($pid->member_id);
-                $member_id = $member->id;
-                $group_id = $member->group_id;
-                $oldgroup_id = $member->oldgroup_id;
+                $user = User::query()->find($pid->user_id);
+                $user_id = $user->id;
+                $group_id = $user->group_id;
+                $oldgroup_id = $user->oldgroup_id;
             }else{
-                $member_id = null;
+                $user_id = null;
                 $group_id = null;
                 $oldgroup_id = null;
             }
             $item = [
-                'member_id'         => $member_id,
+                'user_id'         => $user_id,
                 'group_id'          => $group_id,
                 'oldgroup_id'       => $oldgroup_id,
                 'ordernum'          => $result->orderId,

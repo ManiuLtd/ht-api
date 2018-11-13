@@ -27,7 +27,7 @@ class Taobao implements TBKInterface
         }
         $userid = $this->getUserId();
 
-        $setting = setting($userid);// 应该是根据member或者user_id
+        $setting = setting($userid);// 应该是根据user或者user_id
 
         $taobao = json_decode($setting->taobao);
         if (!isset($taobao->sid)) {

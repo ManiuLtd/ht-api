@@ -59,9 +59,7 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
-     * Execute the job.
      *
-     * @return void
      */
     public function handle()
     {
@@ -77,6 +75,7 @@ class SaveGoods implements ShouldQueue
                 break;
             case 'timingItems':
                 $this->saveTimeGoods($this->results);
+                break;
             default:
                 break;
         }

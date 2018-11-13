@@ -66,15 +66,15 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      */
     public function create(array $attributes)
     {
-        $member = getMember();
+        $user = getUser();
 
         //验证金额
         $money = $attributes['money'];
-        if ($money > $member->credit1) {
+        if ($money > $user->credit1) {
             return json(4001, '可提现金额不足');
         }
         $withdraw = db('user_withdraws')->orderBy('id', 'desc')->where([
-            'user_id' => $member->id,
+            'user_id' => $user->id,
             'status' => 0,
         ])->first();
 
@@ -82,7 +82,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
             return json(4001, '已有在审核中的提现申请');
         }
         $attributes['status'] = 0;
-        $attributes['user_id'] = $member->id;
+        $attributes['user_id'] = $user->id;
         try {
             db('user_withdraws')->insert($attributes);
 
@@ -99,20 +99,20 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
     public function getWithdrawChart()
     {
         $type = request('type', 1);
-        $member = getMember();
+        $user = getUser();
         $commission = new Commission();
 
         //待结算
         if ($type == 1) {
 
             //自推收益
-            $commission1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate1', true);
+            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', true);
             //下级收益
-            $commission2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'commission_rate2', true);
+            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', true);
             //组长收益
-            $groupCommission1 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate1', true);
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', true);
             //补贴收益
-            $groupCommission2 = $commission->getOrdersOrCommissionByDate($member->id, [1], 'group_rate2', true);
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate2', true);
 
             return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
         }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Criteria\DatePickerCriteria;
 use App\Criteria\TimePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\Member\CreditLogRepository;
+use App\Repositories\Interfaces\User\CreditLogRepository;
 
 /**
  * Class CreditLogsController.
@@ -33,12 +33,12 @@ class CreditLogsController extends Controller
      */
     public function index()
     {
-        $memberCreditLogs = $this->repository
+        $userCreditLogs = $this->repository
             ->pushCriteria(new DatePickerCriteria())
             ->pushCriteria(new TimePickerCriteria())
-            ->with(['member', 'user'])
+            ->with(['user', 'user'])
             ->paginate(request('limit', 10));
 
-        return json(1001, '列表获取成功', $memberCreditLogs);
+        return json(1001, '列表获取成功', $userCreditLogs);
     }
 }

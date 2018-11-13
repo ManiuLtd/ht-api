@@ -61,12 +61,12 @@ class CreditEventSubscriber
         //修改积分并添加操作日志
         DB::transaction(function () use ($event, $isIncrement) {
             if (! $isIncrement) {
-                $event->member->decrement($event->column, $event->credit);
+                $event->user->decrement($event->column, $event->credit);
                 if($event->column == 'credit3'){
                     event(new MemberUpgrade($this));
                 }
             } else {
-                $event->member->increment($event->column, $event->credit);
+                $event->user->increment($event->column, $event->credit);
             }
             //需要插入的日志
             $insert = [

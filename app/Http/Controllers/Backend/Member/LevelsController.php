@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Member;
+namespace App\Http\Controllers\Backend\User;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Member\LevelValidator;
-use App\Http\Requests\Member\LevelCreateRequest;
-use App\Http\Requests\Member\LevelUpdateRequest;
+use App\Validators\User\LevelValidator;
+use App\Http\Requests\User\LevelCreateRequest;
+use App\Http\Requests\User\LevelUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Repositories\Interfaces\Member\LevelRepository;
+use App\Repositories\Interfaces\User\LevelRepository;
 
 /**
  * Class LevelsController.
@@ -105,10 +105,10 @@ class LevelsController extends Controller
     public function destroy($id)
     {
         //检查该等级是否已有用户
-        $member = db('members')
+        $user = db('users')
             ->where('level_id', $id)
             ->first();
-        if ($member) {
+        if ($user) {
             return json(4001, '删除失败，该等级已有会员');
         }
 

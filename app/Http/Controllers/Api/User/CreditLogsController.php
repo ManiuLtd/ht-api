@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Member;
+namespace App\Http\Controllers\Api\User;
 
-use App\Criteria\MemberCriteria;
+use App\Criteria\UserCriteria;
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\Member\CreditLogRepository;
+use App\Repositories\Interfaces\User\CreditLogRepository;
 
 /**
  * Class CreditLogsController.
@@ -34,12 +34,12 @@ class CreditLogsController extends Controller
     public function index()
     {
         try {
-            $memberCreditLogs = $this->repository
+            $userCreditLogs = $this->repository
                 ->pushCriteria(new DatePickerCriteria())
-                ->pushCriteria(new MemberCriteria())
+                ->pushCriteria(new UserCriteria())
                 ->paginate(request('limit', 10));
 
-            return json(1001, '列表获取成功', $memberCreditLogs);
+            return json(1001, '列表获取成功', $userCreditLogs);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }

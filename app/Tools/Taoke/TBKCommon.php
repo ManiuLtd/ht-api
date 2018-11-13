@@ -10,20 +10,20 @@ trait TBKCommon{
      */
     public function getPids()
     {
-        $member = getMember();
-        $member_pid = db('tbk_pids')->where('user_id', $member->id)->first();
+        $user = getUser();
+        $user_pid = db('tbk_pids')->where('user_id', $user->id)->first();
 
-        if ($member_pid) {
-            return $member_pid;
+        if ($user_pid) {
+            return $user_pid;
         }
-        $inviter_pid = db('tbk_pids')->where('user_id', $member->inviter_id)->first();
+        $inviter_pid = db('tbk_pids')->where('user_id', $user->inviter_id)->first();
         if ($inviter_pid) {
             return $inviter_pid; 
         }
-        $group = db('groups')->find($member->group_id);
+        $group = db('groups')->find($user->group_id);
         $group_pid = db('tbk_pids')->where('user_id', $group->user_id)->first();
         if (!$group_pid){
-            $setting = setting($this->getUserId()); //应该是根据member或者user_id
+            $setting = setting($this->getUserId()); //应该是根据user或者user_id
             $group_pid = json_decode($setting->pid);
         }
 
@@ -36,8 +36,8 @@ trait TBKCommon{
      */
     protected function getUserId()
     {
-        $member = getMember();
-        $user = $member->user;
+        $user = getUser();
+        $user = $user->user;
 
         if (!$user) {
             $user = \App\Models\User\User::query()->find(1);

@@ -24,9 +24,9 @@ class MemberUpgradeEvent
      */
     public function handle(MemberUpgrade $event)
     {
-        $member = $event->user;
-        $level = db('member_levels')
-            ->where('level', '>', $member->level->level)
+        $user = $event->user;
+        $level = db('user_levels')
+            ->where('level', '>', $user->level->level)
             ->where('status', 1)
             ->orderBy('level', 'asc')
             ->first();
@@ -36,14 +36,14 @@ class MemberUpgradeEvent
             return;
         }
 
-        if ($member->credit2 < $level->credit) {
+        if ($user->credit2 < $level->credit) {
             //积分不够不能升级
             return;
         }
-        DB::transaction(function () use ($member,$level) {
+        DB::transaction(function () use ($user,$level) {
             //可以升级
-            $member = db('members')->find($member->id);
-            $member->update([
+            $user = db('users')->find($user->id);
+            $user->update([
                 'level_id' => $level->id,
             ]);
 
@@ -53,25 +53,25 @@ class MemberUpgradeEvent
                 return;
             }
             //会员未绑定手机号
-            if ($member->phone == null) {
+            if ($user->phone == null) {
                 return;
             }
             $user = db('users')->insert([
-                'name' => $member->phone,
-                'password' => $member->password ?? Hash::make('123456'),
+                'name' => $user->phone,
+                'password' => $user->password ?? Hash::make('123456'),
                 'status' => 1,
             ]);
 
             //创建group
             $group = db('groups')->insert([
-                'member_id' => $member->id,
+                'user_id' => $user->id,
                 'user_id' => 1, //只有一个app
                 'status' => 1,
             ]);
-            $member->update([
+            $user->update([
                 'user_id' => $user->id,
                 'group_id' => $group->id,
-                'oldgroup_id' => $member->group_id != null ? $member->group_id : null,
+                'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
             ]);
         });
     }

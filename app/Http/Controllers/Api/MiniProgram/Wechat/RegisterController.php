@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Overtrue\LaravelWeChat\Facade;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use App\Repositories\Interfaces\MemberRepository;
+use App\Repositories\Interfaces\User\UserRepository;
 
 /**
  * 微信小程序注册
@@ -15,15 +15,15 @@ use App\Repositories\Interfaces\MemberRepository;
 class RegisterController extends Controller
 {
     /**
-     * @var MemberRepository
+     * @var UserRepository
      */
     protected $repository;
 
     /**
      * RegisterController constructor.
-     * @param MemberRepository $repository
+     * @param UserRepository $repository
      */
-    public function __construct(MemberRepository $repository)
+    public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -65,17 +65,17 @@ class RegisterController extends Controller
 
             //验证上级
             if ($inviter = request('inviter')) {
-                $inviterModel = db('members')->where('wx_openid2', $inviter)->first();
+                $inviterModel = db('users')->where('wx_openid2', $inviter)->first();
                 if ($inviterModel) {
                     $insert['inviter_id'] = $inviterModel->id;
                 }
             }
             //创建或者更新用户
-            $member = $this->repository->updateOrCreate([
+            $user = $this->repository->updateOrCreate([
                 'wx_openid2' => $insert['wx_openid2'],
             ], $insert);
 
-            return $this->respondWithToken($member);
+            return $this->respondWithToken($user);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
@@ -102,15 +102,15 @@ class RegisterController extends Controller
     }
 
     /**
-     * @param $member
+     * @param $user
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($member)
+    protected function respondWithToken($user)
     {
-        $token = auth('member')->login($member);
+        $token = auth('user')->login($user);
 
         $data = [
-            'member' => $member,
+            'user' => $user,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
