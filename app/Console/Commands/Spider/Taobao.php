@@ -226,7 +226,7 @@ class Taobao extends Command
     {
         try {
             $total = 20;
-            $hour = date('H');
+            $hour = date('H')-1;
 
             $bar = $this->output->createProgressBar($total);
             $min_id = 1;
