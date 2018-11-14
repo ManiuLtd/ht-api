@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\Taoke\Favourite;
 use App\Models\User\User;
 use http\Exception\InvalidArgumentException;
 use Ixudra\Curl\Facades\Curl;
@@ -98,6 +99,18 @@ class Taobao implements TBKInterface
             $data->introduce = $coupon->introduce;
         }
         $data->introduce = null;
+        //判断优惠卷是否被收藏
+        $user = getUser();
+        $favourites = Favourite::query()->where([
+            'user_id' => $user->id,
+            'item_id' => $itemID
+        ])->first();
+        if ($favourites){
+            $is_favourites = 1;//已收藏
+        }else{
+            $is_favourites = 2;//未收藏
+        }
+        $data->is_favourites = $is_favourites;
         return $data;
     }
 
