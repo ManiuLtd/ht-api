@@ -58,6 +58,7 @@ class KuaiQiang implements ShouldQueue
             $data['type'] = $val->grab_type;
             $data['hour_type'] = $this->hour;
             $data['created_at'] = Carbon::now()->toDateTimeString();
+            $data['updated_at'] = Carbon::now()->toDateTimeString();
             db('tbk_kuaiqiang')->updateOrInsert(['itemid'=>$data['itemid']], $data);
         }
     }

@@ -225,20 +225,20 @@ class Taobao extends Command
     protected function kuaiQiang()
     {
         try {
-            $total = 20;
-            $hour = date('H');
-
+            $total = 5;
             $bar = $this->output->createProgressBar($total);
             $min_id = 1;
-
-            for ($i = 1; $i <= $total; $i++) {
-                $res = $this->tbk->kuaiQiang(['min_id' => $min_id,'hour_type'=>$hour]);
-                if ($min_id != $res['min_id']) {
-                    // 队列
-                    KuaiQiang::dispatch($res['data'],$hour);
-                    $min_id = $res['min_id'];
-                    $bar->advance();
-                    $this->info(">>>已采集完第{$total}页 ");
+            for ($j=1;$j<=15;$j++){
+                for ($i = 1; $i <= $total; $i++) {
+                    $res = $this->tbk->kuaiQiang(['min_id' => $min_id,'hour_type'=>$j]);
+                    $this->info($j);
+                    if ($min_id != $res['min_id']) {
+                        // 队列
+                        KuaiQiang::dispatch($res['data'],$j);
+                        $min_id = $res['min_id'];
+                        $bar->advance();
+                        $this->info(">>>已采集完第{$total}页 ");
+                    }
                 }
             }
             $bar->finish();
