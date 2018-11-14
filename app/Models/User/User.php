@@ -136,7 +136,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         $array = $this->toArray();
         $hashids = new Hashids(' ',6);
-        $array['tag'] = $hashids->encode($this->id);
+        $array['hashid'] = $hashids->encode($this->id);
         return $array;
     }
 }
