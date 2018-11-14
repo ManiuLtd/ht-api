@@ -105,9 +105,12 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     public function searchGoods()
     {
         $sort = request('sort');
-        if ($sort == 1){
+        if ($sort == 7){
             $sort   = 'coupon_price';
-            $sort_a = 'desc';
+            $sort_a = 'desc';//倒序
+        }elseif ($sort == 8){
+            $sort   = 'coupon_price';
+            $sort_a = 'asc';//升序
         }elseif ($sort == 4){
             $sort   = 'price';
             $sort_a = 'asc';
