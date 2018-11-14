@@ -34,6 +34,9 @@ class Setting extends Model implements Transformable
         'taobao',
         'jingdong',
         'pinduouo',
+        'zhuanti',
+        'image',
+        'params',
     ];
 
     public function transform()
@@ -55,6 +58,8 @@ class Setting extends Model implements Transformable
         $data['jingdong']      = json_decode($data['jingdong']);
         $data['pinduoduo']     = json_decode($data['pinduoduo']);
         $data['unionid']       = json_decode($data['unionid']);
+        $data['zhuanti']       = json_decode($data['zhuanti']);
+        $data['params']       = json_decode($data['params']);
         return $data;
     }
 
@@ -113,6 +118,12 @@ class Setting extends Model implements Transformable
             }
             if (request('unionid')) {
                 $model->shop = json_encode(request('unionid'));
+            }
+            if (request('params')) {
+                $model->shop = json_encode(request('params'));
+            }
+            if (request('zhuanti')) {
+                $model->shop = json_encode(request('zhuanti'));
             }
         });
     }
