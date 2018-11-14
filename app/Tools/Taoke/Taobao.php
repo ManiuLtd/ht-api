@@ -134,8 +134,10 @@ class Taobao implements TBKInterface
             'back' => $limit,
             'min_id' => 1,
             'tb_p' => 1,
-            'sort' => $sort,
         ];
+        if ($sort != 7 || $sort != 8){
+            $params['sort'] = $sort;
+        }
         $response = Curl::to('http://v2.api.haodanku.com/supersearch')
             ->withData($params)
             ->get();
@@ -186,7 +188,15 @@ class Taobao implements TBKInterface
             ];
             array_push($data, $temp);
         }
-
+        foreach ($data as $key => $row)
+        {
+            $coupon_price[$key]  = $row['coupon_price'];
+        }
+        if ($sort == 7){
+            array_multisort($coupon_price, SORT_DESC,  $data);
+        }elseif ($sort == 8){
+            array_multisort($coupon_price, SORT_ASC,  $data);
+        }
         return [
             'data' => $data,
             //分页信息只要这四个参数就够了
