@@ -8,6 +8,7 @@
  */
 Route::namespace('User')
     ->prefix('member')
+    ->middleware(['jwt.auth'])
     ->group(function () {
 
         //会员信息

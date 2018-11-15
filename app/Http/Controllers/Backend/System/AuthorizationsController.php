@@ -39,11 +39,12 @@ class AuthorizationsController extends Controller
 //        $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
 //        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
 //        //多多客
-//        $ddkbackurl = env('APP_URL').'/api/admin/system/callback';
-//        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=3';
+        $ddkbackurl = env('APP_URL').'/api/admin/system/callback';
+        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=3';
         $setting = setting(getUserId());
 
         return json(1001, '获取成功', [
+            'ddkuri' => $ddkuri,
             'taobao'    => json_decode($setting->taobao),
             'jingdong'  => json_decode($setting->jingdong),
             'pinduoduo' => json_decode($setting->pinduoduo),

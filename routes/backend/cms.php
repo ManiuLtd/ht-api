@@ -1,7 +1,7 @@
 <?php
 
 Route::namespace('Cms')
-//    ->middleware('jwt.auth')
+    ->middleware('jwt.auth')
     ->prefix('cms')
     ->group(function () {
         Route::resource('article', 'ArticlesController');

@@ -7,6 +7,7 @@
  */
 Route::namespace('System')
     ->prefix('system')
+    ->middleware(['jwt.auth'])
     ->group(function () {
         //添加留言反馈
         Route::resource('feedback', 'FeedbacksController', [

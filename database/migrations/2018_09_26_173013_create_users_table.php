@@ -41,6 +41,7 @@ class CreateUsersTable extends Migration
             $table->string('alipay', 191)->nullable();
             $table->tinyInteger('status')->nullable()->default(1);
             $table->timestamp('expired_time')->nullable(); //等级到期时间
+            $table->string('remember_token',191)->nullable();
             $table->nullableTimestamps();
             $table->softDeletes();
 

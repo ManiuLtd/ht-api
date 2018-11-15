@@ -2,57 +2,72 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Models\User\User;
+use Illuminate\Support\Facades\Cache;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use App\Http\Controllers\Auth\Passwords\Facade\Password;
+use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
 
 class ResetPasswordController extends Controller
 {
     use ResetsPasswords;
 
     /**
-     * Reset the given user's password.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|string
+     * @throws \Exception
      */
     public function reset(Request $request)
     {
         //验证表单内容
         $validate = Validator::make($request->all(), $this->rules());
         if ($validate->fails()) {
-            return json(4001, $validate->getMessageBag());
+
+            return json(4001, $validate->getMessageBag()->first());
+        }
+        $user = User::query()->where([
+            'phone' => $request->phone,
+        ])->first();
+
+        if (!$user) {
+            return json(4001,'手机号不存在');
+        }
+        if (isset($request->phone) && !checkSms($request->phone, $request->code)) {
+            //手机验证码错误次数超过5次时重新验证
+            $errorTime = cache('password:phone:error:'.$request->phone) ?? 0;
+            $errorTime = $errorTime + 1;
+            Cache::put('password:phone:error:'.$request->phone, $errorTime, now()->addSecond(env('VERIFY_CODE_EXPIRED_TIME')));
+
+            if ($errorTime > 5) {
+                Cache::forget('password:phone:error:'.$request->phone);
+
+                return Password::MAX_ERROR;
+            }
+
+            return PasswordBrokerContract::INVALID_TOKEN;
         }
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $response = $this->broker()->resetByEmail(
-            $this->credentials($request), function ($user, $password) {
-                $this->resetPassword($user, $password);
-            }
-        );
-
-        if ($response !== Password::PASSWORD_RESET) {
-            if ($response == Password::MAX_ERROR) {
-                return json(4001, '验证码错误次数过多，请重新接受验证码');
-            }
-
-            return json(4001, '验证码错误');
-        }
+        $this->resetPassword($user,$request->password);
 
         return json(1001, '密码重置成功');
     }
 
     /**
-     * Get the broker to be used during password reset.
+     * Get the password reset validation rules.
      *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
+     * @return array
      */
-    public function broker()
+    protected function rules()
     {
-        return Password::broker();
+        return [
+            'code' => 'required',
+            'phone' => 'required',
+            'password' => 'required|confirmed|min:6',
+        ];
     }
+
+
 }
