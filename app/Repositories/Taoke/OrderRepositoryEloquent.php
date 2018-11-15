@@ -3,6 +3,7 @@
 namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\Order;
+use App\Models\User\User;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\OrderValidator;
@@ -71,11 +72,11 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      * @param bool $isCommission  计算佣金或者订单数
      * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
-    public function getOrderChart(bool $isCommission = true)
+    public function getOrderChart(bool $isCommission = true,array $params = [])
     {
         $user = getUser();
         $commission = new Commission();
-        $dateType = request('date_type', 'month');
+        $dateType = $params['date_type'] ?? request('date_type', 'month');
 
         //计算佣金
         if ($isCommission) {
@@ -134,5 +135,24 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         }
 
         return json(4001, '订单格式不对');
+    }
+
+    /**
+     * 获取会员收入信息
+     * @return array|mixed
+     */
+    public function getMember()
+    {
+        $last_month = $this->getOrderChart(true,['date_type' => 'lastMonth']);
+        $month = $this->getOrderChart(true,['date_type' => 'month']);
+        $day = $this->getOrderChart(true,['date_type' => 'day']);
+        $user = getUser();
+        $inviter_count = User::query()->where('inviter_id',$user->id)->count();
+        return [
+            'last_month'    => $last_month,
+            'month'         => $month,
+            'day'           => $day,
+            'inviter_count' => $inviter_count,
+        ];
     }
 }

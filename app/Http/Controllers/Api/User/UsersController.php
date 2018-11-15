@@ -52,4 +52,17 @@ class UsersController extends Controller
             return json(5001, $e->getMessage());
         }
     }
+
+    /**
+     * 根据邀请码查看用户信息
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function inviter()
+    {
+        try {
+            return $this->repository->getInviter();
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
+    }
 }
