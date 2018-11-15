@@ -120,7 +120,7 @@ class JingDong implements TBKInterface
         $arr['kouling']             = null;//淘口令
         $arr['introduce']           = $data->introduce;//描述
         $arr['is_favourites']       = $data->is_favourites;//是否收藏
-        $arr['coupon_url']          = ['coupon_link' => ['url' => $link]];//领劵地址
+        $arr['coupon_link']          = ['url' => $link];//领劵地址
 
         return $arr;
     }

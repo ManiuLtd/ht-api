@@ -133,7 +133,7 @@ class Taobao implements TBKInterface
         $arr['kouling']             = $data->kouling;//淘口令
         $arr['introduce']           = $data->introduce;//描述
         $arr['is_favourites']       = $data->is_favourites;//是否收藏
-        $arr['coupon_url']          = ['coupon_link' => ['url' => $data->coupon->coupon_click_url]];//领劵地址
+        $arr['coupon_link']         =  ['url' => $data->coupon->coupon_click_url];//领劵地址
         return $arr;
     }
 
