@@ -1,7 +1,7 @@
 <?php
 
 Route::namespace('System')
-//    ->middleware('jwt.auth')
+    ->middleware('jwt.auth')
     ->prefix('system')
     ->group(function () {
 

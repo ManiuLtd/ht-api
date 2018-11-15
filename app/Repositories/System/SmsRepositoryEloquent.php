@@ -2,6 +2,7 @@
 
 namespace App\Repositories\System;
 
+use App\Events\SendSMS;
 use App\Models\System\Sms;
 use App\Validators\System\SmsValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
@@ -47,5 +48,27 @@ class SmsRepositoryEloquent extends BaseRepository implements SmsRepository
     public function presenter()
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function sendSms()
+    {
+        $phone = request('phone');
+        if (!preg_match("/^1[3456789]{1}\d{9}$/", $phone)) {
+            return response()->json([
+                'code' => 4046,
+                'message' => '手机号格式不正确'
+            ]);
+        }
+        $token = rand(100000, 999999);
+        event(new SendSMS($phone, env('JUHE_SMS_VERIFY_TEMPLATE_ID'), $token));
+        $this->create([
+            'phone' => $phone,
+            'code' => $token,
+        ]);
+        return json(1001,'短信发送成功');
     }
 }

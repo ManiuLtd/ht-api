@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
+use App\Models\User\User;
 use Auth;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -14,24 +15,47 @@ class LoginController extends Controller
 {
     /**
      * 用户登录.
-     *
      * @param LoginRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only(['name','email', 'password']);
         try {
-            $token = Auth::guard()->attempt($credentials);
-
-            if (! $token) {
-                return json(4001, '用户登录失败');
+            //验证字段
+            $validator = \Validator::make(request()->all(), [
+                'phone' => 'required',
+                'code' => 'required',
+            ]);
+            //字段验证失败
+            if ($validator->fails()) {
+                return response()->json([
+                    'code' => 4061,
+                    'message' => $validator->errors()->first()
+                ]);
             }
-        } catch (JWTException $e) {
+            $phone = request('phone');
+            $code = request('code');
+            if (!checkSms($phone,$code)) {
+                return json(4001,'验证码错误');
+            }
+            $user = User::query()->where([
+                'phone' => $phone,
+            ])->first();
+            //TODO 判断权限
+
+            if (! $user) {
+                return json(4001, '用户不存在');
+            }
+            $token = auth()->login($user);
+
+            return $this->respondWithToken($token);
+
+        }catch (JWTException $e){
+
             return json(5001, $e->getMessage());
         }
 
-        return $this->respondWithToken($token);
+
     }
 
     /**

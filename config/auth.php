@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'member',
+        'guard' => 'user',
         'passwords' => 'users',
     ],
 
@@ -46,10 +46,6 @@ return [
             'provider' => 'users',
         ],
 
-        'member' => [
-            'driver' => 'jwt',
-            'provider' => 'members',
-        ],
     ],
 
     /*
@@ -75,10 +71,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User\User::class,
         ],
-        'members' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Member\Member::class,
-        ],
+//        'members' => [
+//            'driver' => 'eloquent',
+//            'model' => App\Models\Member\Member::class,
+//        ],
 
         // 'users' => [
         //     'driver' => 'database',

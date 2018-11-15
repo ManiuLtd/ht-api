@@ -7,6 +7,7 @@ use App\Criteria\RequestCriteria;
 use App\Validators\User\UserValidator;
 use App\Repositories\Interfaces\User\UserRepository;
 use Hashids\Hashids;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -236,9 +237,10 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
                     ]);
             }
 
-            return json (1001, '邀请码绑定成功');
+            return json(1001, '邀请码绑定成功');
         } catch (\Exception $e) {
-            return json (5001, '邀请码绑定失败' . $e->getMessage ());
+            return json(5001, '邀请码绑定失败'.$e->getMessage());
+
         }
     }
 
@@ -261,5 +263,106 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             throw new \Exception('该用户不存在');
         }
         return $user;
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function register()
+    {
+        $phone = request('phone');
+        //验证字段
+        $rules = [
+            'phone' => 'required',
+            'code' => 'required',
+            'password' => 'required|min:6',
+        ];
+        $messages = [
+            'code.required' => '验证码为必填项',
+            'password.min' => '密码最低6位数',
+            'password.required' => '密码为必填项',
+        ];
+
+        $validator = \Validator::make(request()->all(), $rules, $messages);
+        //字段验证失败
+        if ($validator->fails()) {
+            return json(4061, $validator->errors()->first());
+        }
+        //验证手机号
+        if (! preg_match("/^1[3456789]{1}\d{9}$/", $phone)) {
+            return json(4001, '手机号格式不正确');
+        }
+
+        //验证手机号是否被占用
+        if (db('users')->where([
+            'phone' => $phone,
+        ])->first()) {
+            return json(4001, '手机号已被其他用户绑定');
+        }
+        //验证短信是否过期
+        if (! checkSms($phone, request('code'))) {
+            return json(4001, '验证码不存在或者已过期');
+        }
+        //创建
+        $user = $this->model->newQuery()->create([
+            'phone' => $phone,
+            'password' => Hash::make(request('password')),
+        ]);
+        //判断是否有邀请码
+        if ($inviter_code = request('inviter_code')) {
+            $this->bindinviterRegister($user);
+        }
+        $token = auth()->login($user);
+
+        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
+        return json(1001,'注册成功',[
+            'tag' => $hashids->encode($user->id),
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+        ]);
+
+    }
+
+    /**
+     * @param $user
+     * @return bool
+     * @throws \Exception
+     */
+    protected function bindinviterRegister($user)
+    {
+
+        $inviter_code = request('inviter_code');
+        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
+
+        $decodeID = $hashids->decode($inviter_code);
+
+        if (! isset($decodeID[0])) {
+            db('users')->delete($user->id);
+            throw new \Exception('邀请码不存在');
+        }
+        $inviterId = $decodeID[0];
+
+        //验证邀请码是否存在
+        $inviterModel = db('users')->find($inviterId);
+
+        if (! $inviterModel) {
+            db('users')->delete($user->id);
+            throw new \Exception('邀请码不存在');
+        }
+        if (! $inviterModel->inviter_id) {
+            db('users')->delete($user->id);
+            throw new \Exception('邀请人还没归属客户');
+        }
+        if (! $inviterModel->group_id) {
+            db('users')->delete($user->id);
+            throw new \Exception('邀请人还没归属组');
+        }
+       $user->update([
+           'inviter_id' => $inviterModel->id,
+           'group_id' => $inviterModel->group_id,
+       ]);
+        return true;
     }
 }

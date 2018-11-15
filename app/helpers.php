@@ -102,7 +102,7 @@ if (! function_exists('getUserId')) {
      */
     function getUserId()
     {
-        return 1;
+        return auth()->id();
     }
 }
 if (! function_exists('getUser')) {
@@ -112,7 +112,7 @@ if (! function_exists('getUser')) {
      */
     function getUser()
     {
-        return \App\Models\User\User::find(1);
+        return auth()->user();
     }
 }
 
@@ -131,7 +131,7 @@ if (! function_exists('checkSms')) {
         $model = \App\Models\System\Sms::where([
             'code' => $code,
             'phone' => $phone,
-            ['created_at', '>=', \Illuminate\Support\Carbon::now()->addMinute(-1)],
+            ['created_at', '>=', \Illuminate\Support\Carbon::now()->subMinute(env('SMS_SENDTIME'))],
         ])->first();
         if (! $model) {
             return false;
