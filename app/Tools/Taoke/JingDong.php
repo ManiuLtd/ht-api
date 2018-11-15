@@ -100,6 +100,7 @@ class JingDong implements TBKInterface
             $data->introduce = null;
         }
         //获取优惠卷信息
+        dd($data);
         $arr = [];
         $arr['title']               = $data->goodsName;//标题
         $arr['item_id']             = $data->skuId;//商品id
@@ -108,7 +109,7 @@ class JingDong implements TBKInterface
         $arr['price']               = $data->unitPrice;//原价
         $arr['final_price']         = isset($resCoupon->discount) ? $data->unitPrice - $resCoupon->discount : $data->unitPrice;//最终价
         $arr['coupon_price']        = isset($resCoupon->discount) ? $resCoupon->discount : 0;//优惠价
-        $arr['commossion_rate']     = $coupon->commission_rate ?? null;//佣金比例
+        $arr['commossion_rate']     = $data->commisionRatioPc;//佣金比例
         $arr['coupon_start_time']   = Carbon::createFromTimestamp(intval($data->startDate/ 1000))->toDateTimeString();//优惠卷开始时间
         $arr['coupon_end_time']     = Carbon::createFromTimestamp(intval($data->endDate/ 1000))->toDateTimeString();//优惠卷结束时间
         $arr['coupon_remain_count'] = isset($resCoupon->remainnum) ? $resCoupon->remainnum : null;//已使用优惠卷数量
@@ -198,23 +199,16 @@ class JingDong implements TBKInterface
         }
         $data = [];
         foreach ($response->data as $datum) {
-            $temp['title'] = $datum->skuName;
-            $temp['cat'] = '';
-            $temp['pic_url'] = $datum->picUrl;
-            $temp['item_id'] = $datum->skuId;
-            $temp['item_url'] = $datum->materiaUrl;
-            $temp['price'] = $datum->wlPrice;
-            $temp['final_price'] = $datum->wlPrice_after;
-            $temp['coupon_price'] = $datum->discount;
-            $temp['coupon_link'] = $datum->couponList;
+            $temp['title']           = $datum->skuName;
+            $temp['pic_url']         = $datum->picUrl;
+            $temp['item_id']         = $datum->skuId;
+            $temp['price']           = $datum->wlPrice;
+            $temp['final_price']     = $datum->wlPrice_after;
+            $temp['coupon_price']    = $datum->discount;
             $temp['commission_rate'] = $datum->wlCommissionShare;
-            $temp['introduce'] = $datum->skuDesc;
-            $temp['type'] = 2;
-            $temp['status'] = 0;
-            $temp['start_time'] = Carbon::createFromTimestamp(intval($datum->beginTime / 1000))->toDateTimeString();
-            $temp['end_time'] = Carbon::createFromTimestamp(intval($datum->endTime / 1000))->toDateTimeString();
-            $temp['created_at'] = Carbon::now()->toDateTimeString();
-            $temp['updated_at'] = Carbon::now()->toDateTimeString();
+            $temp['coupon_link']     = $datum->couponList;
+            $temp['type']            = 2;
+            $temp['item_url']        = $datum->materiaUrl;
             $data[] = $temp;
             $temp = [];
         }

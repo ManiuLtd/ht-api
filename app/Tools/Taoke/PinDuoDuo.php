@@ -204,24 +204,20 @@ class PinDuoDuo implements TBKInterface
         if (isset($result->goods_search_response)) {
             $data = [];
             foreach ($result->goods_search_response->goods_list as $item) {
-                $temp['title'] = $item->goods_name;
-                $temp['cat'] = $item->category_id;
-                $temp['pic_url'] = $item->goods_image_url;
-                $temp['item_id'] = $item->goods_id;
-                $temp['volume'] = $item->sold_quantity;
-                $temp['price'] = $item->min_group_price / 100;
-                $temp['final_price'] = $item->min_group_price / 100 - $item->coupon_discount / 100;
-                $temp['coupon_price'] = $item->coupon_discount / 100;
+                $link = $this->getCouponUrl(['id'=>$item->goods_id]);
+                $temp['title']           = $item->goods_name;
+                $temp['pic_url']         = $item->goods_image_url;
+                $temp['item_id']         = $item->goods_id;
+                $temp['price']           = $item->min_group_price / 100;
+                $temp['final_price']     = round ($item->min_group_price / 100 - $item->coupon_discount / 100, 2);
+                $temp['coupon_price']    = $item->coupon_discount / 100;
                 $temp['commission_rate'] = $item->promotion_rate / 10;
-                $temp['introduce'] = $item->goods_desc;
-                $temp['total_num'] = $item->coupon_total_quantity;
-                $temp['receive_num'] = $item->coupon_total_quantity - $item->coupon_remain_quantity;
-                $temp['type'] = 3;
-                $temp['status'] = 0;
-                $temp['start_time'] = Carbon::createFromTimestamp (intval ($item->coupon_start_time / 1000))->toDateTimeString ();
-                $temp['end_time'] = Carbon::createFromTimestamp (intval ($item->coupon_end_time / 1000))->toDateTimeString ();
-                $temp['created_at'] = Carbon::now ()->toDateTimeString ();
-                $temp['updated_at'] = Carbon::now ()->toDateTimeString ();
+                $temp['coupon_link']     = $link;
+                $temp['total_num']       = $item->coupon_total_quantity;
+                $temp['receive_num']     = $item->coupon_total_quantity - $item->coupon_remain_quantity;
+                $temp['type']            = 3;
+                $temp['volume']          = $item->sold_quantity;
+
                 $data[] = $temp;
                 $temp = [];
             }
