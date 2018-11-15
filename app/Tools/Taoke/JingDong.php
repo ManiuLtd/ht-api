@@ -19,6 +19,7 @@ class JingDong implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $itemID = $array['itemID'];
+        $coupon_url = $array['coupon_url'];
 
         $pids = $this->getPids();
         if (!isset($pids->jingdong)) {
@@ -38,6 +39,7 @@ class JingDong implements TBKInterface
                 'unionid'    => $unionid->jingdong,
                 'positionid' => $pids->jingdong,
                 'gid'        => $itemID,
+                'coupon_url' => 'http://item.jd.com/'.$coupon_url.'.html'
             ])
             ->asJsonResponse()
             ->post();
@@ -75,19 +77,28 @@ class JingDong implements TBKInterface
             'type' => 2,
         ])->first();
         //领券地址
-        $link = $this->getCouponUrl(['itemID'=>$id]);
-        $response->result->coupon_click_url = $link;
+        $link = null;
+        if (getUserId()) {
+            $link = $this->getCouponUrl([
+                'itemID' => $id,
+                'coupon_url' => $response->result->materialUrl,
+            ]);
+//            $response->result->coupon_click_url = $link;
+        }
         //判断优惠卷是否被收藏
-        $user = getUser();
-        $favourites = Favourite::query()->where([
-            'user_id' => $user->id,
-            'item_id' => $id,
-            'type'    => 2
-        ])->first();
-        if ($favourites){
-            $is_favourites = 1;//已收藏
-        }else{
-            $is_favourites = 2;//未收藏
+        $is_favourites = null;
+        if (getUserId()) {
+            $user = getUser();
+            $favourites = Favourite::query()->where([
+                'user_id' => $user->id,
+                'item_id' => $id,
+                'type' => 2
+            ])->first();
+            if ($favourites) {
+                $is_favourites = 1;//已收藏
+            } else {
+                $is_favourites = 2;//未收藏
+            }
         }
         $response->result->is_favourites = $is_favourites;
         $data = $response->result;
@@ -100,7 +111,6 @@ class JingDong implements TBKInterface
             $data->introduce = null;
         }
         //获取优惠卷信息
-        dd($data);
         $arr = [];
         $arr['title']               = $data->goodsName;//标题
         $arr['item_id']             = $data->skuId;//商品id
@@ -166,6 +176,8 @@ class JingDong implements TBKInterface
             'type'    => 'goodslist',
             'apikey'  => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
             'keyword' => $q,
+            'page' => $page,
+
         ];
         switch ($sort){
             case 1: //最新
@@ -245,7 +257,7 @@ class JingDong implements TBKInterface
                 'path' => request()->url(),
                 'per_page' => 20,
                 'to' => 20 * $page,
-                'total' => $response->total,
+                'total' => count($response->data),
             ],
         ];
     }

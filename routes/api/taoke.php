@@ -3,9 +3,8 @@ Route::namespace('Taoke')
     ->prefix('taoke')
     ->group(function (){
         //优惠卷
-        Route::resource('coupon', 'CouponsController', [
-            'only' => ['index', 'show'],
-        ]);
+        Route::get('coupon', 'CouponsController@index');
+        Route::get('coupon/detail', 'CouponsController@detail');
 
         //搜索
         Route::get('search', 'SearchController@index');
