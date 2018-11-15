@@ -60,13 +60,12 @@ class Taobao implements TBKInterface
 
     /**
      * 获取详情.
-     * @param array $array
      * @return mixed
      * @throws \Exception
      */
-    public function getDetail(array $array = [])
+    public function getDetail()
     {
-        $itemID = $array['id'];
+        $itemID = request ('itemid');
         if (! is_numeric($itemID)) {
             throw  new \InvalidArgumentException('商品id类型错误');
         }
