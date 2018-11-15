@@ -29,9 +29,10 @@ Route::namespace('Taoke')
         Route::get('category', 'CategoriesController@index');
 
         //优惠卷
-        Route::resource('coupon', 'CouponsController', [
-            'only' => ['index', 'show'],
-        ]);
+
+        Route::get('coupon', 'CouponsController@index');
+
+        Route::get('coupon/detail', 'CouponsController@detail');
 
         //搜索
 
