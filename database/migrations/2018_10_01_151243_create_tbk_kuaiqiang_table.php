@@ -33,12 +33,12 @@ class CreateTbkKuaiqiangTable extends Migration
             $table->decimal('coupon_price', 12, 2)->nullable();  //优惠券金额
             $table->string('video_id', 190)->nullable();  //商品视频ID（id大于0的为有视频单，视频拼接地址
             $table->string('video_url', 190)->nullable();  //	实拍视频地址
-            $table->tinyInteger('activity_type')->nullable();  //活动类型：普通活动 聚划算 淘抢购
+//            $table->tinyInteger('activity_type')->nullable();  //活动类型：普通活动 聚划算 淘抢购
             $table->decimal('commission_rate', 12, 2)->nullable();  //佣金比例
-            $table->timestamp('coupon_start_time')->nullable();  //优惠券开始时间
-            $table->timestamp('coupon_end_time')->nullable();  //优惠券结束时间
+//            $table->timestamp('coupon_start_time')->nullable();  //优惠券开始时间
+//            $table->timestamp('coupon_end_time')->nullable();  //优惠券结束时间
             $table->timestamp('start_time')->nullable();  //快抢开始时间
-            $table->timestamp('end_time')->nullable();  //快抢结束时间
+//            $table->timestamp('end_time')->nullable();  //快抢结束时间
             $table->tinyInteger('type')->nullable();  //	快抢开抢状态：1快抢即将开始；2快抢商品已抢光；3快抢商品正在快抢中
             $table->tinyInteger('hour_type')->nullable(); //快抢时间点：1.昨天的0点，2.昨天10点，3.昨天12点，4.昨天15点，5.昨天20点，6.今天的0点，7.今天10点，8.今天12点，9.今天15点，10.今天20点，11.明天的0点，12.明天10点，13.明天12点，14.明天15点，15.明天20点
             $table->nullableTimestamps();
