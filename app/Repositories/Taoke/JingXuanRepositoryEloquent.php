@@ -65,9 +65,9 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
             $tool = new Taobao();
             $command = $tool->getDetail([
                 'id' => $v['itemid']
-            ]); 
+            ]);
             if (strpos($v['comment1'],'$淘口令$')){
-                $model['data'][$k]['comment1'] = str_replace('$淘口令$',$command->kouling,$v['comment1']);
+                $model['data'][$k]['comment1'] = str_replace('$淘口令$',$command['kouling'],$v['comment1']);
             }
         }
 

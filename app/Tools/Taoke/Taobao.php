@@ -119,10 +119,10 @@ class Taobao implements TBKInterface
         $arr['item_id']             = $data->num_iid;//商品id
         $arr['user_type']           = $data->user_type;//京东  拼多多 null  1淘宝 2天猫
         $arr['volume']              = $data->volume;//销量
-        $arr['price']               = round ($data->zk_final_price);//原价
-        $arr['final_price']         = round ($data->zk_final_price - $coupon_price);//最终价
-        $arr['coupon_price']        = round ($coupon_price);//优惠价
-        $arr['commossion_rate']     = round ($data->coupon->max_commission_rate);//佣金比例
+        $arr['price']               = $data->zk_final_price;//原价
+        $arr['final_price']         = $data->zk_final_price - $coupon_price;//最终价
+        $arr['coupon_price']        = $coupon_price;//优惠价
+        $arr['commossion_rate']     = $data->coupon->max_commission_rate;//佣金比例
         $arr['coupon_start_time']   = $data->coupon->coupon_start_time;//优惠卷开始时间
         $arr['coupon_end_time']     = $data->coupon->coupon_end_time;//优惠卷结束时间
         $arr['coupon_remain_count'] = $data->coupon->coupon_remain_count;//已使用优惠卷数量
