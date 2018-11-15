@@ -59,7 +59,7 @@ class JingDong implements TBKInterface
         $id = $array['id'];
 
         $params = [
-            'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
+            'appid'  => data_get(config('coupon'), 'jingdong.JD_APPID'),
             'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
             'gid' => $id,
         ];
@@ -92,6 +92,9 @@ class JingDong implements TBKInterface
         }
         $response->result->is_favourites = $is_favourites;
         $data = $response->result;
+        //获取优惠卷信息
+        $resCoupon = $this->getCoupon(['url' => $link]);
+        dd($resCoupon);
         //重组字段
         if ($coupon) {
             $data->introduce = $coupon->introduce;
@@ -103,7 +106,7 @@ class JingDong implements TBKInterface
         $arr['item_id']             = $data->skuId;//商品id
         $arr['user_type']           = null;//京东  拼多多 null  1淘宝 2天猫
 //        $arr['volume']              = $data->;//销量
-        $arr['price']               = $coupon->price ??  null;//原价
+        $arr['price']               = $data->unitprice;//原价
         $arr['final_price']         = $coupon->final_price ?? null;//最终价
         $arr['coupon_price']        = $coupon->coupon_price ?? null;//优惠价
         $arr['commossion_rate']     = $coupon->commission_rate ?? null;//佣金比例
@@ -117,8 +120,26 @@ class JingDong implements TBKInterface
         $arr['kouling']             = null;//淘口令
         $arr['introduce']           = $data->introduce;//描述
         $arr['is_favourites']       = $data->is_favourites;//是否收藏
+        $arr['coupon_url'][]        = $link;//领劵地址
 
         return $arr;
+    }
+
+    public function getCoupon(array $array = [])
+    {
+        $url = $array['url'];
+        $params = [
+            'appid'  => data_get(config('coupon'), 'jingdong.JD_APPID'),
+            'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
+            'url' => $url,
+        ];
+        $response = Curl::to('http://japi.jingtuitui.com/api/get_coupom_info')
+            ->withData($params)
+            ->post();
+        $response = json_decode($response);
+        if ($response->return != 0) {
+            throw new \Exception($response->result);
+        }
     }
 
     /**
