@@ -200,23 +200,16 @@ class JingDong implements TBKInterface
         }
         $data = [];
         foreach ($response->data as $datum) {
-            $temp['title'] = $datum->skuName;
-            $temp['cat'] = '';
-            $temp['pic_url'] = $datum->picUrl;
-            $temp['item_id'] = $datum->skuId;
-            $temp['item_url'] = $datum->materiaUrl;
-            $temp['price'] = $datum->wlPrice;
-            $temp['final_price'] = $datum->wlPrice_after;
-            $temp['coupon_price'] = $datum->discount;
-            $temp['coupon_link'] = $datum->couponList;
+            $temp['title']           = $datum->skuName;
+            $temp['pic_url']         = $datum->picUrl;
+            $temp['item_id']         = $datum->skuId;
+            $temp['price']           = $datum->wlPrice;
+            $temp['final_price']     = $datum->wlPrice_after;
+            $temp['coupon_price']    = $datum->discount;
             $temp['commission_rate'] = $datum->wlCommissionShare;
-            $temp['introduce'] = $datum->skuDesc;
-            $temp['type'] = 2;
-            $temp['status'] = 0;
-            $temp['start_time'] = Carbon::createFromTimestamp(intval($datum->beginTime / 1000))->toDateTimeString();
-            $temp['end_time'] = Carbon::createFromTimestamp(intval($datum->endTime / 1000))->toDateTimeString();
-            $temp['created_at'] = Carbon::now()->toDateTimeString();
-            $temp['updated_at'] = Carbon::now()->toDateTimeString();
+            $temp['coupon_link']     = $datum->couponList;
+            $temp['type']            = 2;
+            $temp['item_url']        = $datum->materiaUrl;
             $data[] = $temp;
             $temp = [];
         }

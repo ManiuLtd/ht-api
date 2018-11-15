@@ -204,26 +204,19 @@ class Taobao implements TBKInterface
 
         //重组字段
         $data = [];
-
         foreach ($response->data as $list) {
             $temp = [
-                'title' => $list->itemtitle,
-                'pic_url' => $list->itempic,
-                'cat' => '',
-                'shop_type' => $list->shoptype == 'B' ? 2 : 1,
-                'item_id' => $list->itemid,
-                'volume' => $list->itemsale,
-                'price' => $list->itemprice,
-                'final_price' => $list->itemendprice,
-                'coupon_price' => $list->couponmoney,
-                'coupon_link' => '',
-                'activity_id' => '',
+                'title'           => $list->itemtitle,
+                'pic_url'         => $list->itempic,
+                'item_id'         => $list->itemid,
+                'price'           => $list->itemprice,
+                'final_price'     => $list->itemendprice,
+                'coupon_price'    => $list->couponmoney,
                 'commission_rate' => $list->tkrates,
-                'type' => 1,
-                'introduce' => '',
-                'start_time' => $list->couponstarttime ? date('Y-m-d H:i:s', $list->couponstarttime) : '',
-                'end_time' => $list->couponendtime ? date('Y-m-d H:i:s', $list->couponendtime) : '',
-
+                'coupon_link'     => $list->couponurl,
+                'type'            => 1,
+                'shop_type'       => $list->shoptype == 'B' ? 2 : 1,
+                'volume'          => $list->itemsale,
             ];
             array_push($data, $temp);
         }
