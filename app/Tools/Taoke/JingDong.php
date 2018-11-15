@@ -101,6 +101,7 @@ class JingDong implements TBKInterface
             $data->introduce = null;
         }
         //获取优惠卷信息
+        dd($data);
         $arr = [];
         $arr['title']               = $data->goodsName;//标题
         $arr['item_id']             = $data->skuId;//商品id
@@ -109,7 +110,7 @@ class JingDong implements TBKInterface
         $arr['price']               = $data->unitPrice;//原价
         $arr['final_price']         = isset($resCoupon->discount) ? $data->unitPrice - $resCoupon->discount : $data->unitPrice;//最终价
         $arr['coupon_price']        = isset($resCoupon->discount) ? $resCoupon->discount : 0;//优惠价
-        $arr['commossion_rate']     = $coupon->commission_rate ?? null;//佣金比例
+        $arr['commossion_rate']     = $data->commisionRatioPc;//佣金比例
         $arr['coupon_start_time']   = Carbon::createFromTimestamp(intval($data->startDate/ 1000))->toDateTimeString();//优惠卷开始时间
         $arr['coupon_end_time']     = Carbon::createFromTimestamp(intval($data->endDate/ 1000))->toDateTimeString();//优惠卷结束时间
         $arr['coupon_remain_count'] = isset($resCoupon->remainnum) ? $resCoupon->remainnum : null;//已使用优惠卷数量
