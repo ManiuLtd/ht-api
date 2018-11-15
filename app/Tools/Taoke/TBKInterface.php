@@ -12,10 +12,9 @@ interface TBKInterface
 
     /**
      * 超级搜索.
-     * @param array $array
      * @return mixed
      */
-    public function getDetail(array $array = []);
+    public function getDetail();
 
     /**
      * 搜索.

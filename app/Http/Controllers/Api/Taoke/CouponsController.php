@@ -45,13 +45,12 @@ class CouponsController extends Controller
 
     /**
      * 详情.
-     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function detail()
     {
         try {
-            $detail = $this->tbk->getDetail(['id' => $id]);
+            $detail = $this->tbk->getDetail();
 
             return json(1001, '获取成功', $detail);
         } catch (\Exception $e) {

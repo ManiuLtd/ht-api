@@ -17,4 +17,6 @@ Route::namespace('System')
         Route::get('notification', 'NotificationsController@index');
         //获取配置信息
         Route::get('setting', 'SettingsController@index');
+        //成长值途径列表
+        Route::get('upgrade', 'SettingsController@upgrade');
     });

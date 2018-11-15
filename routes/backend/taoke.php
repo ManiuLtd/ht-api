@@ -2,6 +2,7 @@
 
 Route::namespace('Taoke')
     ->prefix('taoke')
+    ->middleware('jwt.auth')
     ->group(function () {
         //产品分类
         Route::resource('category', 'CategoriesController');

@@ -9,5 +9,6 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface SettingRepository extends RepositoryInterface
 {
-    //
+    //成长值途径列表
+    public function upgrade();
 }

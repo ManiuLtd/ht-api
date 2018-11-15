@@ -16,7 +16,8 @@ Route::namespace('Auth')
         Route::get('logout', 'LogoutController@logout')->middleware('jwt.auth');
         //注册
         Route::post('register', 'RegisterController@register');
-
+        //重置密码
+        Route::post('password/reset', 'ResetPasswordController@reset');
     });
 
 

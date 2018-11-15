@@ -36,7 +36,7 @@ class CreditLogsController extends Controller
         $userCreditLogs = $this->repository
             ->pushCriteria(new DatePickerCriteria())
             ->pushCriteria(new TimePickerCriteria())
-            ->with(['user', 'user'])
+            ->with(['user'])
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $userCreditLogs);

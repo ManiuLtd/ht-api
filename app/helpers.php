@@ -102,7 +102,7 @@ if (! function_exists('getUserId')) {
      */
     function getUserId()
     {
-        return 1;
+        return auth()->id();
     }
 }
 if (! function_exists('getUser')) {
@@ -112,7 +112,7 @@ if (! function_exists('getUser')) {
      */
     function getUser()
     {
-        return \App\Models\User\User::find(1);
+        return auth()->user();
     }
 }
 

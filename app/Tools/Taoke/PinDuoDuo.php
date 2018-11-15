@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\Taoke\Favourite;
 use Carbon\Carbon;
 use Ixudra\Curl\Facades\Curl;
 
@@ -58,14 +59,13 @@ class PinDuoDuo implements TBKInterface
     }
 
     /**
-     * @param array $array
      * @return array|mixed
      * @throws \Exception
      */
-    public function getDetail(array $array = [])
+    public function getDetail()
     {
 
-        $id = data_get ($array, 'id');
+        $id = request ('itemid');
         if (!is_numeric ($id)) {
             throw new \InvalidArgumentException('商品id类型错误');
         }
@@ -97,7 +97,41 @@ class PinDuoDuo implements TBKInterface
             $data->introduce = $data->goods_desc;
             $link = $this->getCouponUrl(['id'=>$id]);
             $data->coupon_click_url = $link;
-            return $data;
+            //判断优惠卷是否被收藏
+            $user = getUser();
+            $favourites = Favourite::query()->where([
+                'user_id' => $user->id,
+                'item_id' => $id,
+                'type'    => 3
+            ])->first();
+            if ($favourites){
+                $is_favourites = 1;//已收藏
+            }else{
+                $is_favourites = 2;//未收藏
+            }
+            $data->is_favourites = $is_favourites;
+            //重组字段
+            $arr = [];
+            $arr['title']               = $data->goods_name;//标题
+            $arr['item_id']             = $data->goods_id;//商品id
+            $arr['user_type']           = null;//京东  拼多多 null  1淘宝 2天猫
+            $arr['volume']              = $data->sold_quantity;//销量
+            $arr['price']               = $data->min_group_price / 100;//原价
+            $arr['final_price']         = $data->min_group_price / 100 - $data->coupon_discount / 100;//最终价
+            $arr['coupon_price']        = $data->coupon_discount / 100;//优惠价
+            $arr['commossion_rate']     = $data->promotion_rate / 10;//佣金比例
+            $arr['coupon_start_time']   = $data->coupon_start_time ? Carbon::createFromTimestamp(intval($data->coupon_start_time))->toDateTimeString() : null;//优惠卷开始时间
+            $arr['coupon_end_time']     = $data->coupon_start_time ? Carbon::createFromTimestamp(intval($data->coupon_end_time))->toDateTimeString() : null;//优惠卷结束时间
+            $arr['coupon_remain_count'] = $data->coupon_remain_quantity;//已使用优惠卷数量
+            $arr['coupon_total_count']  = $data->coupon_total_quantity;//优惠卷总数
+            $arr['pic_url']             = $data->goods_image_url;//商品主图
+            $arr['small_images']        = $data->goods_gallery_urls;//商品图
+//            $arr['images']              = $data->;//商品详情图
+            $arr['kouling']             = null;//淘口令
+            $arr['introduce']           = $data->introduce;//描述
+            $arr['is_favourites']       = $data->is_favourites;//是否收藏
+            $arr['coupon_link']          = $link;//领劵地址
+            return $arr;
         }
 
         throw new \Exception('未知错误');
@@ -170,24 +204,15 @@ class PinDuoDuo implements TBKInterface
         if (isset($result->goods_search_response)) {
             $data = [];
             foreach ($result->goods_search_response->goods_list as $item) {
-                $temp['title'] = $item->goods_name;
-                $temp['cat'] = $item->category_id;
-                $temp['pic_url'] = $item->goods_image_url;
-                $temp['item_id'] = $item->goods_id;
-                $temp['volume'] = $item->sold_quantity;
-                $temp['price'] = $item->min_group_price / 100;
-                $temp['final_price'] = $item->min_group_price / 100 - $item->coupon_discount / 100;
-                $temp['coupon_price'] = $item->coupon_discount / 100;
+                $temp['title']           = $item->goods_name;
+                $temp['pic_url']         = $item->goods_image_url;
+                $temp['item_id']         = $item->goods_id;
+                $temp['price']           = $item->min_group_price / 100;
+                $temp['final_price']     = round ($item->min_group_price / 100 - $item->coupon_discount / 100, 2);
+                $temp['coupon_price']    = $item->coupon_discount / 100;
                 $temp['commission_rate'] = $item->promotion_rate / 10;
-                $temp['introduce'] = $item->goods_desc;
-                $temp['total_num'] = $item->coupon_total_quantity;
-                $temp['receive_num'] = $item->coupon_total_quantity - $item->coupon_remain_quantity;
-                $temp['type'] = 3;
-                $temp['status'] = 0;
-                $temp['start_time'] = Carbon::createFromTimestamp (intval ($item->coupon_start_time / 1000))->toDateTimeString ();
-                $temp['end_time'] = Carbon::createFromTimestamp (intval ($item->coupon_end_time / 1000))->toDateTimeString ();
-                $temp['created_at'] = Carbon::now ()->toDateTimeString ();
-                $temp['updated_at'] = Carbon::now ()->toDateTimeString ();
+                $temp['type']            = 3;
+                $temp['volume']          = $item->sold_quantity;
                 $data[] = $temp;
                 $temp = [];
             }
@@ -270,11 +295,8 @@ class PinDuoDuo implements TBKInterface
         }
 
         if (isset($data->order_list_get_response)) {
-
             return $data->order_list_get_response;
-
         }
-
     }
 
 

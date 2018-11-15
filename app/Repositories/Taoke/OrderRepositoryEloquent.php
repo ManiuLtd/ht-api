@@ -3,6 +3,7 @@
 namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\Order;
+use App\Models\User\User;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\OrderValidator;
@@ -54,7 +55,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria (app (RequestCriteria::class));
     }
 
     /**
@@ -68,25 +69,25 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     /**
      * TODO 后端可显示近一周、一月订单和佣金状态
      * 订单数据报表  可根据时间返回当前用户的佣金数或者订单数.
-     * @param bool $isCommission  计算佣金或者订单数
+     * @param bool $isCommission 计算佣金或者订单数
      * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
-    public function getOrderChart(bool $isCommission = true)
+    public function getOrderChart(bool $isCommission = true, array $params = [])
     {
-        $user = getUser();
+        $user = getUser ();
         $commission = new Commission();
-        $dateType = request('date_type', 'month');
+        $dateType = $params['date_type'] ?? request ('date_type', 'month');
 
         //计算佣金
         if ($isCommission) {
             //自推佣金
-            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', $isCommission, $dateType);
+            $commission1 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'commission_rate1', $isCommission, $dateType);
             //下级佣金
-            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', $isCommission, $dateType);
+            $commission2 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'commission_rate2', $isCommission, $dateType);
             //组长佣金
-            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', $isCommission, $dateType);
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'group_rate1', $isCommission, $dateType);
             //补贴佣金
-            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate2', $isCommission, $dateType);
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'group_rate2', $isCommission, $dateType);
 
             return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
         }
@@ -94,12 +95,12 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         $group = $user->group;
         //如果用户是组长 直接返回小组订单数
         if ($user->id == $group->user_id ?? null) {
-            return  $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', false)->count();
+            return $commission->getOrdersOrCommissionByDate ($user->id, [1], 'group_rate1', false)->count ();
         } else {
-            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', false);
-            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', false);
+            $commissionOrder1 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'commission_rate1', false);
+            $commissionOrder2 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'commission_rate2', false);
 
-            return $commissionOrder1->count() + $commissionOrder2->count();
+            return $commissionOrder1->count () + $commissionOrder2->count ();
         }
     }
 
@@ -109,30 +110,47 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function submitOrder()
     {
-        $user = getUser();
-        $ordernum = request('ordernum');
-        if (is_numeric($ordernum) && strlen($ordernum) >= 16) {
-            $re = db('tbk_user_orders')
-                ->where('ordernum', $ordernum)
-                ->first();
+        $user = getUser ();
+        $ordernum = request ('ordernum');
+        if (is_numeric ($ordernum) && strlen ($ordernum) >= 16) {
+            $re = db ('tbk_user_orders')
+                ->where ('ordernum', $ordernum)
+                ->first ();
             if ($re) {
-                return json(4001, '订单号已提交');
+                return json (4001, '订单号已提交');
             }
-            $order = db('tbk_orders')->where([
+            $order = db ('tbk_orders')->where ([
                 'ordernum' => $ordernum,
-            ])->first();
+            ])->first ();
             if ($order) {
-                db('tbk_user_orders')->insert([
+                db ('tbk_user_orders')->insert ([
                     'user_id' => $user->id,
                     'ordernum' => $ordernum,
-                    'created_at' => now()->toDateTimeString(),
-                    'updated_at' => now()->toDateTimeString(),
+                    'created_at' => now ()->toDateTimeString (),
+                    'updated_at' => now ()->toDateTimeString (),
                 ]);
 
-                return json(1001, '订单提交成功');
+                return json (1001, '订单提交成功');
             }
         }
 
-        return json(4001, '订单格式不对');
+        return json (4001, '订单格式不对');
+    }
+
+    /**
+     * 获取会员收入信息
+     * @return array|mixed
+     */
+    public function getMember()
+    {
+        $last_month = $this->getOrderChart (true, ['date_type' => 'lastMonth']);
+        $month = $this->getOrderChart (true, ['date_type' => 'month']);
+        $day = $this->getOrderChart (true, ['date_type' => 'day']);
+        return [
+            'last_month' => $last_month,
+            'month' => $month,
+            'today' => $day,
+            'friends' => User::query ()->where ('inviter_id', getUserId ())->count (),
+        ];
     }
 }
