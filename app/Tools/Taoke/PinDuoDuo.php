@@ -301,11 +301,8 @@ class PinDuoDuo implements TBKInterface
         }
 
         if (isset($data->order_list_get_response)) {
-
             return $data->order_list_get_response;
-
         }
-
     }
 
 
