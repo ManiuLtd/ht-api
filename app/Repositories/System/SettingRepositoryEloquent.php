@@ -53,7 +53,7 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
      * 成长值途径列表
      * @return array
      */
-    public function getPath()
+    public function upgrade()
     {
         $setting = \setting(1);
         $data = array();
