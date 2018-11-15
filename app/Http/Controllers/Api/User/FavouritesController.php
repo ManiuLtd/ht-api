@@ -34,7 +34,7 @@ class FavouritesController extends Controller
     }
 
     /**
-     * 添加收藏.
+     * 收藏列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()

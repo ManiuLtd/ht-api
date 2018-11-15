@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\Taoke\Favourite;
 use App\Models\User\User;
 use http\Exception\InvalidArgumentException;
 use Ixudra\Curl\Facades\Curl;
@@ -98,6 +99,18 @@ class Taobao implements TBKInterface
             $data->introduce = $coupon->introduce;
         }
         $data->introduce = null;
+        //判断优惠卷是否被收藏
+        $user = getUser();
+        $favourites = Favourite::query()->where([
+            'user_id' => $user->id,
+            'item_id' => $itemID
+        ])->first();
+        if ($favourites){
+            $is_favourites = 1;//已收藏
+        }else{
+            $is_favourites = 2;//未收藏
+        }
+        $data->is_favourites = $is_favourites;
         return $data;
     }
 
@@ -113,6 +126,7 @@ class Taobao implements TBKInterface
         $page = request('page') ?? 1;
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
+        $sort = $array['sort'] ?? request('sort');
 
         $params = [
             'apikey' => config('coupon.taobao.HDK_APIKEY'),
@@ -121,6 +135,9 @@ class Taobao implements TBKInterface
             'min_id' => 1,
             'tb_p' => 1,
         ];
+        if ($sort != 7 || $sort != 8){
+            $params['sort'] = $sort;
+        }
         $response = Curl::to('http://v2.api.haodanku.com/supersearch')
             ->withData($params)
             ->get();
@@ -171,7 +188,15 @@ class Taobao implements TBKInterface
             ];
             array_push($data, $temp);
         }
-
+        foreach ($data as $key => $row)
+        {
+            $coupon_price[$key]  = $row['coupon_price'];
+        }
+        if ($sort == 7){
+            array_multisort($coupon_price, SORT_DESC,  $data);
+        }elseif ($sort == 8){
+            array_multisort($coupon_price, SORT_ASC,  $data);
+        }
         return [
             'data' => $data,
             //分页信息只要这四个参数就够了
@@ -179,7 +204,7 @@ class Taobao implements TBKInterface
                 'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
-                'total' => count($response->data),
+                'total'     => count($response->data),
             ],
         ];
     }
@@ -401,9 +426,9 @@ class Taobao implements TBKInterface
             ->withData($params)
             ->get();
         $rest = json_decode($rest);
-        if ($rest->code != 1) {
-            throw  new \Exception($rest->msg);
-        }
+//        if ($rest->code != 1) {
+//            throw  new \Exception($rest->msg);
+//        }
 
         return [
             'data' => $rest->data,

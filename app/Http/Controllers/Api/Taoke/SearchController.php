@@ -57,8 +57,9 @@ class SearchController extends Controller
             $this->validator->with(request()->all())->passesOrFail();
 
             $rest = $this->couponRepository->searchGoods();
+
             if (! is_array($rest)) {
-                $rest = $this->TBK->search(['q'=>$rest]);
+                $rest = $this->TBK->search(['q'=>$rest,'sort' => request('sort')]);
             }
 
             return json(1001, '获取成功', $rest);

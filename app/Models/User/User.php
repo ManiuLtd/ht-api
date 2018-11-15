@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use Hashids\Hashids;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\ResetUserPassword;
 use Illuminate\Notifications\Notifiable;
@@ -107,6 +108,35 @@ class User extends Authenticatable implements JWTSubject, Transformable
      */
     public function level()
     {
-        return $this->belongsTo('App\Models\User\User')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Level','level_id')->withDefault(null);
+    }
+
+    /**
+     * 邀请人
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function inviter()
+    {
+        return $this->belongsTo('App\Models\User\User','inviter_id')->withDefault(null);
+    }
+
+    /**
+     * 组
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo('App\Models\User\Group','group_id')->withDefault(null);
+    }
+
+    /**
+     * @return array
+     */
+    public function transform()
+    {
+        $array = $this->toArray();
+        $hashids = new Hashids(' ',6);
+        $array['hashid'] = $hashids->encode($this->id);
+        return $array;
     }
 }
