@@ -68,7 +68,7 @@ class JingDong implements TBKInterface
         $response = json_decode($response);
 //        dd($response);
         if ($response->return != 0) {
-            throw new \Exception('接口调用失败');
+            throw new \Exception($response->result);
         }
         // 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
         $coupon = db('tbk_coupons')->where([
