@@ -14,6 +14,9 @@ Route::namespace('Taoke')
         //订单报表
         Route::get('chart/order', 'ChartsController@order');
 
+        //用户收入信息
+        Route::get('chart/member', 'ChartsController@member');
+
         //提现报表
         Route::get('chart/withdraw', 'ChartsController@withdraw');
 
@@ -55,5 +58,5 @@ Route::namespace('Taoke')
         ]);
 
         //精选单品
-        Route::get('jingxuandp', 'JingXuanController@index');
+        Route::get('jingxuan', 'JingXuanController@index');
     });
