@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\Taoke\Favourite;
 use Carbon\Carbon;
 use Ixudra\Curl\Facades\Curl;
 
@@ -97,6 +98,36 @@ class PinDuoDuo implements TBKInterface
             $data->introduce = $data->goods_desc;
             $link = $this->getCouponUrl(['id'=>$id]);
             $data->coupon_click_url = $link;
+            //判断优惠卷是否被收藏
+            $user = getUser();
+            $favourites = Favourite::query()->where([
+                'user_id' => $user->id,
+                'item_id' => $id,
+                'type'    => 3
+            ])->first();
+            if ($favourites){
+                $is_favourites = 1;//已收藏
+            }else{
+                $is_favourites = 2;//未收藏
+            }
+            $data->is_favourites = $is_favourites;
+
+            //重组字段
+            $string = [];
+            $string['string']                            = $data->goods_gallery_urls;
+            $data->title                                 = $data->goods_name;//商品名
+            $data->small_images                          = $string;//商品详情图
+            $data->pict_url                              = $data->goods_image_url;//商品主图
+            $data->num_iid                               = $data->goods_id;//商品id
+            $data->volume                                = $data->sold_quantity;//销售量
+            $data->user_type                             = 3;
+            $data->material_lib_type                     = 3;
+            $data->coupon_click_url->coupon_total_count  = $data->coupon_total_quantity;//优惠卷总数
+            $data->coupon_click_url->coupon_remain_count = $data->coupon_remain_quantity;//优惠卷已使用数量
+            $data->coupon_click_url->coupon_start_time   = Carbon::createFromTimestamp(intval($data->coupon_start_time))->toDateTimeString();
+            $data->coupon_click_url->coupon_end_time     = Carbon::createFromTimestamp(intval($data->coupon_end_time))->toDateTimeString();
+            $data->coupon_click_url->category_id         = $data->category_id;
+            $data->coupon_click_url->max_commission_rate = $data->coupon_discount / 100;
             return $data;
         }
 
@@ -270,11 +301,8 @@ class PinDuoDuo implements TBKInterface
         }
 
         if (isset($data->order_list_get_response)) {
-
             return $data->order_list_get_response;
-
         }
-
     }
 
 

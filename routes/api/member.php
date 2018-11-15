@@ -15,6 +15,7 @@ Route::namespace('User')
 
         //好友列表
         Route::get('friends', 'UsersController@friends');
+        Route::get('inviter', 'UsersController@inviter');
 
         //分销等级列表
         Route::get('commission-level', 'LevelsController@index');

@@ -63,4 +63,19 @@ class ChartsController extends Controller
             return json(4001, $e->getMessage());
         }
     }
+    /**
+     * 会员收入信息
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function member()
+    {
+        try {
+            $withdraw = $this->orderRepository->getMember();
+
+            return json(1001, '获取成功', $withdraw);
+        } catch (\Exception $e) {
+            return json(4001, $e->getMessage());
+        }
+    }
+
 }

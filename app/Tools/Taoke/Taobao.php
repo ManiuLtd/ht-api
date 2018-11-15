@@ -24,7 +24,7 @@ class Taobao implements TBKInterface
     {
         $pids = $this->getPids();
         if (!isset($pids->taobao)){
-            throw new \Exception('请先生设置系统pid');
+            throw new \Exception('请先设置系统pid');
         }
         $userid = $this->getUserId();
 
@@ -103,7 +103,8 @@ class Taobao implements TBKInterface
         $user = getUser();
         $favourites = Favourite::query()->where([
             'user_id' => $user->id,
-            'item_id' => $itemID
+            'item_id' => $itemID,
+            'type'    => 1
         ])->first();
         if ($favourites){
             $is_favourites = 1;//已收藏
