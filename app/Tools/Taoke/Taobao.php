@@ -209,14 +209,12 @@ class Taobao implements TBKInterface
                 'title'           => $list->itemtitle,
                 'pic_url'         => $list->itempic,
                 'item_id'         => $list->itemid,
-                'price'           => $list->itemprice,
-                'final_price'     => $list->itemendprice,
-                'coupon_price'    => $list->couponmoney,
-                'commission_rate' => $list->tkrates,
-                'coupon_link'     => $list->couponurl,
+                'price'           => round($list->itemprice),
+                'final_price'     => round($list->itemendprice),
+                'coupon_price'    => round($list->couponmoney),
+                'commission_rate' => round($list->tkrates),
                 'type'            => 1,
-                'shop_type'       => $list->shoptype == 'B' ? 2 : 1,
-                'volume'          => $list->itemsale,
+                'volume'          => round($list->itemsale),
             ];
             array_push($data, $temp);
         }

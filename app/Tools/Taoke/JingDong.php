@@ -203,13 +203,12 @@ class JingDong implements TBKInterface
             $temp['title']           = $datum->skuName;
             $temp['pic_url']         = $datum->picUrl;
             $temp['item_id']         = $datum->skuId;
-            $temp['price']           = $datum->wlPrice;
-            $temp['final_price']     = $datum->wlPrice_after;
-            $temp['coupon_price']    = $datum->discount;
-            $temp['commission_rate'] = $datum->wlCommissionShare;
-            $temp['coupon_link']     = $datum->couponList;
+            $temp['price']           = round($datum->wlPrice);
+            $temp['final_price']     = round($datum->wlPrice_after);
+            $temp['coupon_price']    = round($datum->discount);
+            $temp['commission_rate'] = round($datum->wlCommissionShare);
             $temp['type']            = 2;
-            $temp['item_url']        = $datum->materiaUrl;
+            $temp['volume']          = null;
             $data[] = $temp;
             $temp = [];
         }
