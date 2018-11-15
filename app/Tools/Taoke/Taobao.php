@@ -162,6 +162,7 @@ class Taobao implements TBKInterface
     {
         //可根据商品ID搜索
         $page = request('page') ?? 1;
+        $tb_p = request('tb_p',1);
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
         $sort = $array['sort'] ?? request('sort');
@@ -170,8 +171,8 @@ class Taobao implements TBKInterface
             'apikey' => config('coupon.taobao.HDK_APIKEY'),
             'keyword' => $q,
             'back' => $limit,
-            'min_id' => 1,
-            'tb_p' => 1,
+            'min_id' => $page,
+            'tb_p' => $tb_p,
         ];
         if ($sort != 7 || $sort != 8){
             $params['sort'] = $sort;
@@ -187,19 +188,20 @@ class Taobao implements TBKInterface
             throw new \Exception('淘客基地接口请求失败');
         }
         //当前页面地址
-        $uri = request()->getUri();
+        $uri = \Request::url();
+
         //验证是否填写page参数
-        if (! str_contains('page=', $uri)) {
-            $uri = $uri.'&page=1';
-        }
+//        if (! str_contains('page=', $uri)) {
+//            $uri = $uri.'&page=1';
+//        }
 
         //页码信息
         $totalPage = intval(floor(count($response->data) / $limit) + 1);
 
         //页码不对
-        if ($page > $totalPage) {
-            throw new \Exception('超出最大页码');
-        }
+//        if ($page > $totalPage) {
+//            throw new \Exception('超出最大页码');
+//        }
 
         //重组字段
         $data = [];
@@ -226,8 +228,12 @@ class Taobao implements TBKInterface
         }elseif ($sort == 8){
             array_multisort($coupon_price, SORT_ASC,  $data);
         }
+
         return [
             'data' => $data,
+            'links' => [
+                'next' => $uri."?type=1&q=$q&sort=$sort&page=$response->min_id&tb_p=$response->tb_p",
+            ],
             //分页信息只要这四个参数就够了
             'meta' => [
                 'current_page' => (int) $page,
