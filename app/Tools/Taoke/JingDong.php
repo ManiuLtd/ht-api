@@ -50,13 +50,12 @@ class JingDong implements TBKInterface
     }
 
     /**
-     * @param array $array
      * @return mixed
      * @throws \Exception
      */
-    public function getDetail(array $array = [])
+    public function getDetail()
     {
-        $id = $array['id'];
+        $id =  request ('itemid');
 
         $params = [
             'appid'  => data_get(config('coupon'), 'jingdong.JD_APPID'),
