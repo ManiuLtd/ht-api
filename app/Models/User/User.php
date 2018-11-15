@@ -2,7 +2,6 @@
 
 namespace App\Models\User;
 
-use Hashids\Hashids;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\ResetUserPassword;
 use Illuminate\Notifications\Notifiable;
@@ -57,16 +56,6 @@ class User extends Authenticatable implements JWTSubject, Transformable
     protected $hidden = [
 
     ];
-
-    public function transform()
-    {
-        $data = $this->toArray();
-        $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
-        //邀请码
-        $hashids = $hashids->encode($data['id']);
-        $data['tag'] = $hashids;
-        return $data;
-    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
