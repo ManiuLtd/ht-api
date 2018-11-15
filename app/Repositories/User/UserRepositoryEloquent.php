@@ -238,8 +238,29 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             }
 
             return json(1001, '邀请码绑定成功');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return json(5001, '邀请码绑定失败'.$e->getMessage());
         }
+    }
+
+
+    /**
+     * 根据邀请码查看用户信息
+     * @return \Illuminate\Http\JsonResponse|mixed
+     * @throws \Exception
+     */
+    public function getInviter()
+    {
+        $tag = request('tag');
+        if (!$tag){
+            throw new \Exception('缺少参数');
+        }
+        $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
+        $user_id = $hashids->decode($tag);
+        $user = User::query()->find($user_id['0']);
+        if (!$user){
+            throw new \Exception('该用户不存在');
+        }
+        return json('1001','用户信息',$user);
     }
 }
