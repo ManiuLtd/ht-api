@@ -35,9 +35,6 @@ class CreateSettingsTable extends Migration
             $table->text('taobao')->nullable();//淘宝
             $table->text('jingdong')->nullable();//京东
             $table->text('pinduoduo')->nullable();//拼多多
-            $table->text('zhuanti')->nullable();//专题（首页专题图片）json格式
-            $table->text('params')->nullable();//列表json格式
-            $table->string('image',190)->nullable();//个人中心里面的图
             $table->string('unionid',190)->nullable();//京东联盟id  {"jingdong":"1000383879"} json格式
             $table->nullableTimestamps();
 
