@@ -22,7 +22,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         'nickname' => 'like',
         'status',
         'inviter_id',
-
         'alipay' => 'like',
         'realname' => 'like',
         'phone' => 'like',
@@ -53,7 +52,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria (app (RequestCriteria::class));
     }
 
     /**
@@ -76,34 +75,34 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function getFrineds($level = 1)
     {
-        $inviterId = request('inviter_id') ? request('inviter_id') : getUserId();
+        $inviterId = request ('inviter_id') ? request ('inviter_id') : getUserId ();
         //一级粉丝
         if ($level == 1) {
-            return User::where('inviter_id', $inviterId)
-                ->orderBy('id', 'desc')
-                ->paginate(20);
+            return User::where ('inviter_id', $inviterId)
+                ->orderBy ('id', 'desc')
+                ->paginate (20);
         }
         //二级粉丝
         if ($level == 2) {
-            return User::whereIn('inviter_id', function ($query) use ($inviterId) {
-                $query->select('id')
-                    ->from('users')
-                    ->where('inviter_id', $inviterId);
-            })->orderBy('id', 'desc')
-                ->paginate(20);
+            return User::whereIn ('inviter_id', function ($query) use ($inviterId) {
+                $query->select ('id')
+                    ->from ('users')
+                    ->where ('inviter_id', $inviterId);
+            })->orderBy ('id', 'desc')
+                ->paginate (20);
         }
         //三级粉丝
         if ($level == 3) {
-            return User::whereIn('inviter_id', function ($query) use ($inviterId) {
-                $query->select('id')
-                    ->from('users')
-                    ->whereIn('inviter_id', function ($query2) use ($inviterId) {
-                        $query2->select('id')
-                            ->from('users')
-                            ->where('inviter_id', $inviterId);
+            return User::whereIn ('inviter_id', function ($query) use ($inviterId) {
+                $query->select ('id')
+                    ->from ('users')
+                    ->whereIn ('inviter_id', function ($query2) use ($inviterId) {
+                        $query2->select ('id')
+                            ->from ('users')
+                            ->where ('inviter_id', $inviterId);
                     });
-            })->orderBy('id', 'desc')
-                ->paginate(20);
+            })->orderBy ('id', 'desc')
+                ->paginate (20);
         }
     }
 
@@ -113,57 +112,57 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function bindMobile()
     {
-        $user = getUser();
-        $phone = request('phone');
+        $user = getUser ();
+        $phone = request ('phone');
         //验证字段
         $rules = ['password' => 'required|min:6'];
         $messages = [
             'password.min' => '密码最低6位数',
             'password.required' => '密码为必填项',
         ];
-        $validator = Validator::make(request()->all(), $rules, $messages);
+        $validator = Validator::make (request ()->all (), $rules, $messages);
         //字段验证失败
-        if ($validator->fails()) {
-            return json(4001, $validator->errors()->first());
+        if ($validator->fails ()) {
+            return json (4001, $validator->errors ()->first ());
         }
 
         //验证手机号
-        if (! preg_match("/^1[3456789]{1}\d{9}$/", $phone)) {
-            return json(4001, '手机号格式不正确');
+        if (!preg_match ("/^1[3456789]{1}\d{9}$/", $phone)) {
+            return json (4001, '手机号格式不正确');
         }
 
         //验证手机号是否被占用
-        if (db('users')->where([
+        if (db ('users')->where ([
             ['id', '<>', $user->id],
             'phone' => $phone,
-        ])->first()) {
-            return json(4001, '手机号已被其他用户绑定');
+        ])->first ()) {
+            return json (4001, '手机号已被其他用户绑定');
         }
 
         //验证短信是否过期
-        if (! checkSms($phone, request('code'))) {
-            return json(4001, '验证码不存在或者已过期');
+        if (!checkSms ($phone, request ('code'))) {
+            return json (4001, '验证码不存在或者已过期');
         }
 
         //验证手机号是否存在
         try {
             //查询用户
-            $userModel = db('users')->find($user->id);
-            if (! $userModel) {
-                return json(4001, '用户不存在');
+            $userModel = db ('users')->find ($user->id);
+            if (!$userModel) {
+                return json (4001, '用户不存在');
             }
-            $userModel->update([
+            $userModel->update ([
 //                'tag' => Hashids::encode($userModel->id),
                 'phone' => $phone,
-                'password' => bcrypt(request('password')),
+                'password' => bcrypt (request ('password')),
             ]);
             //增加积分
             $data = new User();
-            $data->increment('credit2', 20, ['remark'=>131313, 'operaterId'=>1]);
+            $data->increment ('credit2', 20, ['remark' => 131313, 'operaterId' => 1]);
 
-            return json(1001, '手机号绑定成功');
+            return json (1001, '手机号绑定成功');
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -173,48 +172,48 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function bindInviter()
     {
-        $user = getUser();
+        $user = getUser ();
 
-        $number = request('number');
+        $number = request ('number');
 
-        $decodeID = Hashids::decode($number);
-        if (! isset($decodeID[0])) {
-            return json(4001, '邀请码不存在');
+        $decodeID = Hashids::decode ($number);
+        if (!isset($decodeID[0])) {
+            return json (4001, '邀请码不存在');
         }
         $inviterId = $decodeID[0];
 
         //禁止绑定已被绑定过的用户
         if ($user->inviter_id != null) {
-            return json(4001, '用户已被绑定');
+            return json (4001, '用户已被绑定');
         }
 
         //验证邀请码是否存在
-        $inviterModel = db('users')->find($inviterId);
+        $inviterModel = db ('users')->find ($inviterId);
 
-        if (! $inviterModel) {
-            return json(4001, '邀请码不存在');
+        if (!$inviterModel) {
+            return json (4001, '邀请码不存在');
         }
 
         if ($inviterModel->id == $user->id) {
-            return json(4001, '禁止绑定自己');
+            return json (4001, '禁止绑定自己');
         }
-        if (! $inviterModel->user_id) {
-            return json(4001, '邀请人还没归属客户');
+        if (!$inviterModel->user_id) {
+            return json (4001, '邀请人还没归属客户');
         }
-        if (! $inviterModel->group_id) {
-            return json(4001, '邀请人还没归属组');
+        if (!$inviterModel->group_id) {
+            return json (4001, '邀请人还没归属组');
         }
 
-        $userModel = User::find($inviterModel->user_id);
+        $userModel = User::find ($inviterModel->user_id);
 
         if ($userModel->sms < 0) {
-            return json(4001, '短信余额不足');
+            return json (4001, '短信余额不足');
         }
 
         //绑定上级 并结算短信
         try {
             //查询用户
-            $user->update([
+            $user->update ([
 //                'tag' => Hashids::encode($user->id),
                 'inviter_id' => $user->id == $inviterModel->id ? null : $inviterModel->id,
                 'group_id' => $inviterModel->group_id,
@@ -223,23 +222,23 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             //结算短信
             if ($user->phone != null) {
                 //扣除短信余额
-                $count = db('sms')
-                    ->where('phone', $user->phone)
-                    ->whereNull('user_id')
-                    ->count();
-                $userModel->decrement('sms', $count);
+                $count = db ('sms')
+                    ->where ('phone', $user->phone)
+                    ->whereNull ('user_id')
+                    ->count ();
+                $userModel->decrement ('sms', $count);
                 //设置短信所属用户
-                db('sms')
-                    ->where('phone', $user->phone)
-                    ->whereNull('user_id')
-                    ->update([
+                db ('sms')
+                    ->where ('phone', $user->phone)
+                    ->whereNull ('user_id')
+                    ->update ([
                         'user_id' => $inviterModel->user_id,
                     ]);
             }
 
-            return json(1001, '邀请码绑定成功');
+            return json (1001, '邀请码绑定成功');
         } catch (\Exception $e) {
-            return json(5001, '邀请码绑定失败'.$e->getMessage());
+            return json (5001, '邀请码绑定失败' . $e->getMessage ());
         }
     }
 
@@ -251,16 +250,16 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function getInviter()
     {
-        $tag = request('tag');
-        if (!$tag){
+        $tag = request ('tag');
+        if (!$tag) {
             throw new \Exception('缺少参数');
         }
         $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
-        $user_id = $hashids->decode($tag);
-        $user = User::query()->find($user_id['0']);
-        if (!$user){
+        $decode = $hashids->decode ($tag);
+        $user = User::query ()->find ($decode[0]);
+        if (!$user) {
             throw new \Exception('该用户不存在');
         }
-        return json('1001','用户信息',$user);
+        return $user;
     }
 }

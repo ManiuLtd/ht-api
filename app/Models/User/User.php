@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Hashids\Hashids;
 
 
 class User extends Authenticatable implements JWTSubject, Transformable
@@ -64,7 +63,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
         $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
         //邀请码
         $hashids = $hashids->encode($data['id']);
-        $data['tag'] = $hashids;
+        $data['hashid'] = $hashids;
         return $data;
     }
 
@@ -139,16 +138,5 @@ class User extends Authenticatable implements JWTSubject, Transformable
     public function group()
     {
         return $this->belongsTo('App\Models\User\Group','group_id')->withDefault(null);
-    }
-
-    /**
-     * @return array
-     */
-    public function transform()
-    {
-        $array = $this->toArray();
-        $hashids = new Hashids(' ',6);
-        $array['hashid'] = $hashids->encode($this->id);
-        return $array;
     }
 }

@@ -256,11 +256,9 @@ class JingDong implements TBKInterface
         ];
 
         $urlparams = [
-//            'unionId' => data_get(config('coupon'), 'jingdong.JDMEDIA_UNIONID'),
             'unionId' => $unionid->jingdong,
             'key' => data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY'),
             'time' => date('YmdH', time()),
-//                        'time' => '2018110310',
             'pageIndex' => $page,
             'pageSize' => 500,
         ];
@@ -276,12 +274,9 @@ class JingDong implements TBKInterface
             ->get();
         $response = json_decode($response);
 
-//        dd($response->jingdong_UnionService_queryOrderList_responce);
-
         if (isset($response->error_response)) {
             throw new \Exception($response->error_response->zh_desc);
         }
-//        $result = data_get($response,'jingdong_UnionService_queryOrderList_responce.result');
         $result = json_decode($response->jingdong_UnionService_queryOrderList_responce->result);
 
         if ($result->success != 1) {
