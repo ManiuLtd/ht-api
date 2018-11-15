@@ -26,6 +26,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
      */
     protected $fillable = [
         'inviter_id',
+        'group_id',
         'name',
         'email',
         'password',
@@ -35,6 +36,9 @@ class User extends Authenticatable implements JWTSubject, Transformable
         'credit2',
         'headimgurl',
         'status',
+        'wx_unionid',
+        'wx_openid1',
+        'wx_openid2',
     ];
 
     /**

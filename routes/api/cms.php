@@ -2,6 +2,7 @@
 
 Route::namespace('Cms')
     ->prefix('cms')
+    ->middleware(['jwt.auth'])
     ->group(function () {
         //会员信息
         Route::get('article', 'ArticlesController@index');

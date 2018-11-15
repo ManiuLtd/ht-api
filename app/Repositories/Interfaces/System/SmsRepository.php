@@ -9,5 +9,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface SmsRepository extends RepositoryInterface
 {
-    //
+    public function sendSms();
 }

@@ -131,7 +131,7 @@ if (! function_exists('checkSms')) {
         $model = \App\Models\System\Sms::where([
             'code' => $code,
             'phone' => $phone,
-            ['created_at', '>=', \Illuminate\Support\Carbon::now()->addMinute(-1)],
+            ['created_at', '>=', \Illuminate\Support\Carbon::now()->subMinute(env('SMS_SENDTIME'))],
         ])->first();
         if (! $model) {
             return false;

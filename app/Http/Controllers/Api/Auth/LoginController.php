@@ -1,0 +1,128 @@
+<?php
+
+namespace App\Http\Controllers\Api\Auth;
+
+use App\Http\Requests\Auth\User\LoginRequest;
+use App\Http\Controllers\Controller;
+use App\Models\User\User;
+use Hashids\Hashids;
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
+class LoginController extends Controller
+{
+
+    /**
+     * 用户登录.
+     *
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(LoginRequest $request)
+    {
+
+        switch (request('type')){
+            case 'wechat':
+                return $this->wechatLogin();
+                break;
+            case 'phone':
+                return $this->phoneLogin();
+                break;
+            default:
+                return json(4001,'login type error');
+        }
+
+    }
+
+    /**
+     * 获取token.
+     * @param $token
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token,$user)
+    {
+        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
+        $data = [
+            'tag' => $hashids->encode($user->id),
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+        ];
+
+        return json(1001, '成功', $data);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function wechatLogin()
+    {
+        //验证字段
+        $validator = \Validator::make(request()->all(), [
+            'unionid' => 'required',
+            'openid' => 'required',
+            'headimgurl' => 'required',
+            'nickname' => 'required',
+        ]);
+        //字段验证失败
+        if ($validator->fails()) {
+            return response()->json([
+                'code' => 4061,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+
+        try {
+            $user = User::query()->where([
+                'wx_unionid' => request('unionid'),
+            ])->first();
+
+            // 用户存在， 登陆
+            if ($user) {
+                $user->update([
+                    'headimgurl' => request('headimgurl'),
+                    'nickname' => request('nickname'),
+                ]);
+                $token = auth()->login($user);
+
+                return $this->respondWithToken($token,$user);
+            }
+
+            // 用户不存在，注册
+            $insert = [
+                'wx_unionid' => request('unionid'),
+                'wx_openid1' => request('openid'),
+                'headimgurl' => request('headimgurl'),
+                'nickname' => request('nickname'),
+            ];
+
+            $user = User::query()->create($insert);
+            $token = auth()->login($user);
+
+            return $this->respondWithToken($token,$user);
+
+        } catch (JWTException $e) {
+            return json(5001, $e->getMessage());
+        }
+    }
+
+    /***
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function phoneLogin()
+    {
+        $credentials = request()->only(['phone','password']);
+        try {
+            $token = auth()->attempt($credentials);
+            if (! $token) {
+                return json(4001, '用户登录失败');
+            }
+            $user = auth()->user();
+        }catch (JWTException $e){
+
+            return json(5001, $e->getMessage());
+        }
+        return $this->respondWithToken($token, $user);
+    }
+}
