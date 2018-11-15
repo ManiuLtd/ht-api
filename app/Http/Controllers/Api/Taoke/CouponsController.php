@@ -47,7 +47,7 @@ class CouponsController extends Controller
      * 详情.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show()
+    public function detail()
     {
         try {
             $detail = $this->tbk->getDetail();
