@@ -112,7 +112,44 @@ class Taobao implements TBKInterface
             $is_favourites = 2;//未收藏
         }
         $data->is_favourites = $is_favourites;
-        return $data;
+        //重组字段
+        $coupon_price = $this->getCouponPrice($data->coupon->coupon_info);
+        $arr = [];
+        $arr['title']               = $data->title;//标题
+        $arr['item_id']             = $data->num_iid;//商品id
+        $arr['user_type']           = $data->user_type;//京东  拼多多 null  1淘宝 2天猫
+        $arr['volume']              = $data->volume;//销量
+        $arr['price']               = $data->zk_final_price;//原价
+        $arr['final_price']         = $data->zk_final_price - $coupon_price;//最终价
+        $arr['coupon_price']        = $coupon_price;//优惠价
+        $arr['commossion_rate']     = $data->coupon->max_commission_rate;//佣金比例
+        $arr['coupon_start_time']   = $data->coupon->coupon_start_time;//优惠卷开始时间
+        $arr['coupon_end_time']     = $data->coupon->coupon_end_time;//优惠卷结束时间
+        $arr['coupon_remain_count'] = $data->coupon->coupon_remain_count;//已使用优惠卷数量
+        $arr['coupon_total_count']  = $data->coupon->coupon_total_count;//优惠卷总数
+        $arr['pic_url']             = $data->pict_url;//商品主图
+        $arr['small_images']        = $data->small_images->string;//商品图
+//        $arr['images']              = '';//商品详情图
+        $arr['kouling']             = $data->kouling;//淘口令
+        $arr['introduce']           = $data->introduce;//描述
+        $arr['is_favourites']       = $data->is_favourites;//是否收藏
+        return $arr;
+    }
+
+    /**
+     * 获取优惠卷金额
+     * @param $couponInfo
+     * @return float
+     */
+    protected function getCouponPrice($couponInfo)
+    {
+        $start = strpos($couponInfo, "减");
+        $len = strlen($couponInfo);
+        $str = substr($couponInfo, $start, $len - $start);
+        $str1 = str_replace("减", '', $str);
+        $str2 = str_replace('元', '', $str1);
+
+        return floatval($str2);
     }
 
     /**
