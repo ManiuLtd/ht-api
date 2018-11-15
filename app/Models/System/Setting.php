@@ -88,31 +88,31 @@ class Setting extends Model implements Transformable
                 $model->shop = json_encode(request('shop'));
             }
             if (request('credit_order')) {
-                $model->shop = json_encode(request('credit_order'));
+                $model->credit_order = json_encode(request('credit_order'));
             }
             if (request('credit_friend')) {
-                $model->shop = json_encode(request('credit_friend'));
+                $model->credit_friend = json_encode(request('credit_friend'));
             }
             if (request('notification')) {
-                $model->shop = json_encode(request('notification'));
+                $model->notification = json_encode(request('notification'));
             }
             if (request('pid')) {
-                $model->shop = json_encode(request('pid'));
+                $model->pid = json_encode(request('pid'));
             }
             if (request('withdraw')) {
-                $model->shop = json_encode(request('withdraw'));
+                $model->withdraw = json_encode(request('withdraw'));
             }
             if (request('taobao')) {
-                $model->shop = json_encode(request('taobao'));
+                $model->taobao = json_encode(request('taobao'));
             }
             if (request('jingdong')) {
-                $model->shop = json_encode(request('jingdong'));
+                $model->jingdong = json_encode(request('jingdong'));
             }
             if (request('pinduouo')) {
-                $model->shop = json_encode(request('pinduouo'));
+                $model->pinduouo = json_encode(request('pinduouo'));
             }
             if (request('unionid')) {
-                $model->shop = json_encode(request('unionid'));
+                $model->unionid = json_encode(request('unionid'));
             }
         });
     }

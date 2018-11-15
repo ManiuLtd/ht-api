@@ -113,11 +113,7 @@ class Taobao implements TBKInterface
         }
         $data->is_favourites = $is_favourites;
         //重组字段
-        if (isset($data->coupon->coupon_info)){
-            $coupon_price = $this->getCouponPrice($data->coupon->coupon_info);
-        }else{
-            $coupon_price = 0;
-        }
+        $coupon_price = $this->getCouponPrice($data->coupon->coupon_info);
         $arr = [];
         $arr['title']               = $data->title;//标题
         $arr['item_id']             = $data->num_iid;//商品id
@@ -127,10 +123,10 @@ class Taobao implements TBKInterface
         $arr['final_price']         = $data->zk_final_price - $coupon_price;//最终价
         $arr['coupon_price']        = $coupon_price;//优惠价
         $arr['commossion_rate']     = $data->coupon->max_commission_rate;//佣金比例
-        $arr['coupon_start_time']   = isset($data->coupon->coupon_start_time) ? $data->coupon->coupon_start_time : null;//优惠卷开始时间
-        $arr['coupon_end_time']     = isset($data->coupon->coupon_end_time) ? $data->coupon->coupon_end_time : null;//优惠卷结束时间
-        $arr['coupon_remain_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_remain_count : null;//已使用优惠卷数量
-        $arr['coupon_total_count']  = isset($data->coupon->coupon_total_count) ? $data->coupon->coupon_total_count : null;//优惠卷总数
+        $arr['coupon_start_time']   = $data->coupon->coupon_start_time;//优惠卷开始时间
+        $arr['coupon_end_time']     = $data->coupon->coupon_end_time;//优惠卷结束时间
+        $arr['coupon_remain_count'] = $data->coupon->coupon_remain_count;//已使用优惠卷数量
+        $arr['coupon_total_count']  = $data->coupon->coupon_total_count;//优惠卷总数
         $arr['pic_url']             = $data->pict_url;//商品主图
         $arr['small_images']        = $data->small_images->string;//商品图
 //        $arr['images']              = '';//商品详情图
