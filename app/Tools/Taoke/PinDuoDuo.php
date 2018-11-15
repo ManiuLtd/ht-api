@@ -234,8 +234,6 @@ class PinDuoDuo implements TBKInterface
             }
 
             return [
-                'code' => 1001,
-                'message' => '优惠券获取成功',
                 'data' => $data,
                 'links' => [
                     'first' => str_replace ("page={$page}", 'page=1', $uri),
