@@ -33,11 +33,11 @@ class JingDong implements TBKInterface
         // 返回领券地址
         $result = Curl::to('http://japi.jingtuitui.com/api/get_goods_link')
             ->withData([
-                'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
-                'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
-                'unionid'=> $unionid->jingdong,
-                'positionid'=>$pids->jingdong,
-                'gid'=>$itemID,
+                'appid'      => data_get(config('coupon'), 'jingdong.JD_APPID'),
+                'appkey'     => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
+                'unionid'    => $unionid->jingdong,
+                'positionid' => $pids->jingdong,
+                'gid'        => $itemID,
             ])
             ->asJsonResponse()
             ->post();
@@ -92,46 +92,52 @@ class JingDong implements TBKInterface
         }
         $response->result->is_favourites = $is_favourites;
         $data = $response->result;
-        //获取优惠卷信息
-        $resCoupon = $this->getCoupon(['url' => $link]);
-        dd($resCoupon);
         //重组字段
         if ($coupon) {
             $data->introduce = $coupon->introduce;
+            $couponLink = $coupon->coupon_link;
+            $resCoupon = $this->getCoupon(['url' => $couponLink]);
         }else{
             $data->introduce = null;
         }
+        //获取优惠卷信息
         $arr = [];
         $arr['title']               = $data->goodsName;//标题
         $arr['item_id']             = $data->skuId;//商品id
         $arr['user_type']           = null;//京东  拼多多 null  1淘宝 2天猫
-//        $arr['volume']              = $data->;//销量
-        $arr['price']               = $data->unitprice;//原价
-        $arr['final_price']         = $coupon->final_price ?? null;//最终价
-        $arr['coupon_price']        = $coupon->coupon_price ?? null;//优惠价
+        $arr['volume']              = null;//销量
+        $arr['price']               = $data->unitPrice;//原价
+        $arr['final_price']         = isset($resCoupon->discount) ? $data->unitPrice - $resCoupon->discount : $data->unitPrice;//最终价
+        $arr['coupon_price']        = isset($resCoupon->discount) ? $resCoupon->discount : 0;//优惠价
         $arr['commossion_rate']     = $coupon->commission_rate ?? null;//佣金比例
         $arr['coupon_start_time']   = Carbon::createFromTimestamp(intval($data->startDate/ 1000))->toDateTimeString();//优惠卷开始时间
         $arr['coupon_end_time']     = Carbon::createFromTimestamp(intval($data->endDate/ 1000))->toDateTimeString();//优惠卷结束时间
-//        $arr['coupon_remain_count'] = $data->;//已使用优惠卷数量
-//        $arr['coupon_total_count']  = $data->;//优惠卷总数
+        $arr['coupon_remain_count'] = isset($resCoupon->remainnum) ? $resCoupon->remainnum : null;//已使用优惠卷数量
+        $arr['coupon_total_count']  = isset($resCoupon->num) ? $resCoupon->num : null;//优惠卷总数
         $arr['pic_url']             = $data->imgUrl;//商品主图
-//        $arr['small_images']        = $data->;//商品图
+        $arr['small_images']        = [];//商品图
 //        $arr['images']              = ;//商品详情图
         $arr['kouling']             = null;//淘口令
         $arr['introduce']           = $data->introduce;//描述
         $arr['is_favourites']       = $data->is_favourites;//是否收藏
-        $arr['coupon_url'][]        = $link;//领劵地址
+        $arr['coupon_url']          = ['coupon_link' => ['url' => $link]];//领劵地址
 
         return $arr;
     }
 
+    /**
+     * 获取优惠卷详情
+     * @param array $array
+     * @return mixed
+     * @throws \Exception
+     */
     public function getCoupon(array $array = [])
     {
         $url = $array['url'];
         $params = [
             'appid'  => data_get(config('coupon'), 'jingdong.JD_APPID'),
             'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
-            'url' => $url,
+            'url'    => $url,
         ];
         $response = Curl::to('http://japi.jingtuitui.com/api/get_coupom_info')
             ->withData($params)
@@ -140,6 +146,7 @@ class JingDong implements TBKInterface
         if ($response->return != 0) {
             throw new \Exception($response->result);
         }
+        return $response->result;
     }
 
     /**
@@ -156,8 +163,8 @@ class JingDong implements TBKInterface
         $sort = request('sort');
 
         $params = [
-            'type' =>'goodslist',
-            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'type'    => 'goodslist',
+            'apikey'  => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
             'keyword' => $q,
         ];
         switch ($sort){
