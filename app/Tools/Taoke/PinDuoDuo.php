@@ -111,24 +111,27 @@ class PinDuoDuo implements TBKInterface
                 $is_favourites = 2;//未收藏
             }
             $data->is_favourites = $is_favourites;
-
             //重组字段
-            $string = [];
-            $string['string']                            = $data->goods_gallery_urls;
-            $data->title                                 = $data->goods_name;//商品名
-            $data->small_images                          = $string;//商品详情图
-            $data->pict_url                              = $data->goods_image_url;//商品主图
-            $data->num_iid                               = $data->goods_id;//商品id
-            $data->volume                                = $data->sold_quantity;//销售量
-            $data->user_type                             = 3;
-            $data->material_lib_type                     = 3;
-            $data->coupon_click_url->coupon_total_count  = $data->coupon_total_quantity;//优惠卷总数
-            $data->coupon_click_url->coupon_remain_count = $data->coupon_remain_quantity;//优惠卷已使用数量
-            $data->coupon_click_url->coupon_start_time   = Carbon::createFromTimestamp(intval($data->coupon_start_time))->toDateTimeString();
-            $data->coupon_click_url->coupon_end_time     = Carbon::createFromTimestamp(intval($data->coupon_end_time))->toDateTimeString();
-            $data->coupon_click_url->category_id         = $data->category_id;
-            $data->coupon_click_url->max_commission_rate = $data->coupon_discount / 100;
-            return $data;
+            $arr = [];
+            $arr['title']               = $data->goods_name;//标题
+            $arr['item_id']             = $data->goods_id;//商品id
+            $arr['user_type']           = null;//京东  拼多多 null  1淘宝 2天猫
+            $arr['volume']              = $data->sold_quantity;//销量
+            $arr['price']               = $data->min_group_price / 100;//原价
+            $arr['final_price']         = $data->min_group_price / 100 - $data->coupon_discount / 100;//最终价
+            $arr['coupon_price']        = $data->coupon_discount / 100;//优惠价
+            $arr['commossion_rate']     = $data->promotion_rate / 10;//佣金比例
+            $arr['coupon_start_time']   = $data->coupon_start_time ? Carbon::createFromTimestamp(intval($data->coupon_start_time))->toDateTimeString() : null;//优惠卷开始时间
+            $arr['coupon_end_time']     = $data->coupon_start_time ? Carbon::createFromTimestamp(intval($data->coupon_end_time))->toDateTimeString() : null;//优惠卷结束时间
+            $arr['coupon_remain_count'] = $data->coupon_remain_quantity;//已使用优惠卷数量
+            $arr['coupon_total_count']  = $data->coupon_total_quantity;//优惠卷总数
+            $arr['pic_url']             = $data->goods_image_url;//商品主图
+            $arr['small_images']        = $data->goods_gallery_urls;//商品图
+//            $arr['images']              = $data->;//商品详情图
+            $arr['kouling']             = null;//淘口令
+            $arr['introduce']           = $data->introduce;//描述
+            $arr['is_favourites']       = $data->is_favourites;//是否收藏
+            return $arr;
         }
 
         throw new \Exception('未知错误');
