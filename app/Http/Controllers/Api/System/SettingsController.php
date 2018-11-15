@@ -50,10 +50,10 @@ class SettingsController extends Controller
      * 成长值途径列表
      * @return \Illuminate\Http\JsonResponse
      */
-    public function path()
+    public function upgrade()
     {
         try {
-            return $this->repository->getPath();
+            return $this->repository->upgrade();
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
