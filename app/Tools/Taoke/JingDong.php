@@ -102,6 +102,9 @@ class JingDong implements TBKInterface
         }
         $response->result->is_favourites = $is_favourites;
         $data = $response->result;
+        //图文详情
+        $images  = $this->Graphic($id);
+
         //重组字段
         if ($coupon) {
             $data->introduce = $coupon->introduce;
@@ -126,13 +129,38 @@ class JingDong implements TBKInterface
         $arr['coupon_total_count']  = isset($resCoupon->num) ? $resCoupon->num : null;//优惠卷总数
         $arr['pic_url']             = $data->imgUrl;//商品主图
         $arr['small_images']        = [];//商品图
-//        $arr['images']              = ;//商品详情图
+        $arr['images']              = $images;//商品详情图
         $arr['kouling']             = null;//淘口令
         $arr['introduce']           = $data->introduce;//描述
         $arr['is_favourites']       = $data->is_favourites;//是否收藏
         $arr['coupon_link']          = ['url' => $link];//领劵地址
-
         return $arr;
+    }
+
+    /**
+     * @param $id
+     * @return null
+     * @throws \Exception
+     */
+    protected function Graphic($id)
+    {
+        $resp = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
+            ->withData([
+                'type' => 'detail',
+                'apikey'  => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+                'skuid' => $id
+            ])
+            ->asJsonResponse()
+            ->post();
+        if ($resp->status_code != 200){
+            throw new \Exception($resp->message);
+        }
+        $rest = Curl::to($resp->data)->asJsonResponse()->get();
+        if (isset($rest->content)) {
+            return $rest->content;
+        }
+        return null;
+
     }
 
     /**
@@ -141,7 +169,7 @@ class JingDong implements TBKInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getCoupon(array $array = [])
+    protected function getCoupon(array $array = [])
     {
         $url = $array['url'];
         $params = [
@@ -256,6 +284,7 @@ class JingDong implements TBKInterface
                 'per_page' => 20,
                 'to' => 20 * $page,
                 'total' => count($response->data),
+                'tb_p'      => null,
             ],
         ];
     }
@@ -325,7 +354,7 @@ class JingDong implements TBKInterface
 
 
     /**
-     * 爬虫.
+     * 爬虫.好京客
      * @param array $params
      * @return array|mixed
      * @throws \Exception
@@ -336,22 +365,23 @@ class JingDong implements TBKInterface
         $page = $params['page'] ?? 1;
 
         $params = [
-            'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
-            'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
-            'num' => 100,
+            'type' => 'goodslist',
+            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'pageSize' => 20,
             'page' => $page,
         ];
-        $response = Curl::to(data_get(config('coupon'), 'jingdong.JD_LIST_APPURL'))
+        $response = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
             ->withData($params)
             ->post();
         $response = json_decode($response);
-        if ($response->return != 0) {
-            throw new \Exception($response->result);
+
+        if ($response->status_code != 200) {
+            throw new \Exception($response->message);
         }
 
         return [
-            'totalPage' => $response->result->total_page,
-            'data' => $response->result->data,
+            'totalPage' => $response->totalpage,
+            'data' => $response->data,
         ];
     }
 

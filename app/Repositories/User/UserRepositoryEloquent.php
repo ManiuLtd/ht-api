@@ -321,6 +321,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => $user,
         ]);
 
     }

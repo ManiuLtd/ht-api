@@ -128,11 +128,13 @@ if (! function_exists('checkSms')) {
      */
     function checkSms($phone, $code)
     {
+
         $model = \App\Models\System\Sms::where([
             'code' => $code,
             'phone' => $phone,
-            ['created_at', '>=', now()->addSecond(-env('VERIFY_CODE_EXPIRED_TIME'))],
+            ['created_at', '>=', now()->addSecond(-env('VERIFY_CODE_EXPIRED_TIME'))->toDateTimeString()],
         ])->first();
+
         if (! $model) {
             return false;
         }

@@ -69,72 +69,69 @@ class PinDuoDuo implements TBKInterface
         if (!is_numeric ($id)) {
             throw new \InvalidArgumentException('商品id类型错误');
         }
-        $time = time ();
+
         $params = [
-            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
-            'goods_id_list' => "[$id]",
-            'timestamp' => $time,
-            'type' => 'pdd.ddk.goods.detail',
+            'type' => 'goodsdetail',
+            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'skuid' => $id,
 
         ];
 
-        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'goods_id_list[' . $id . ']timestamp' . $time . 'typepdd.ddk.goods.detail';
-        $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
-
-        $params['sign'] = $sign;
-
-        $result = Curl::to ('http://gw-api.pinduoduo.com/api/router')
+        $result = Curl::to ('http://api-gw.haojingke.com/index.php/api/pdd/myapi')
             ->withData ($params)
             ->post ();
         $result = json_decode ($result);
-
-        if (isset($result->error_response)) {
-            throw new \Exception($result->error_response);
+        if (!$result) {
+            throw new \Exception('优惠券不存在');
         }
-        if (isset($result->goods_detail_response->goods_details[0])) {
-            $data = $result->goods_detail_response->goods_details[0];
-            // 从本地优惠券中获取获取商品介绍 introduce 字段，如果本地没有 该字段为空
-            $data->introduce = $data->goods_desc;
-            $link = $this->getCouponUrl(['id'=>$id]);
-            $data->coupon_click_url = $link;
-            //判断优惠卷是否被收藏
-            $user = getUser();
-            $favourites = Favourite::query()->where([
-                'user_id' => $user->id,
-                'item_id' => $id,
-                'type'    => 3
-            ])->first();
-            if ($favourites){
-                $is_favourites = 1;//已收藏
-            }else{
-                $is_favourites = 2;//未收藏
-            }
-            $data->is_favourites = $is_favourites;
-            //重组字段
-            $arr = [];
-            $arr['title']               = $data->goods_name;//标题
-            $arr['item_id']             = $data->goods_id;//商品id
-            $arr['user_type']           = null;//京东  拼多多 null  1淘宝 2天猫
-            $arr['volume']              = $data->sold_quantity;//销量
-            $arr['price']               = $data->min_group_price / 100;//原价
-            $arr['final_price']         = $data->min_group_price / 100 - $data->coupon_discount / 100;//最终价
-            $arr['coupon_price']        = $data->coupon_discount / 100;//优惠价
-            $arr['commossion_rate']     = $data->promotion_rate / 10;//佣金比例
-            $arr['coupon_start_time']   = $data->coupon_start_time ? Carbon::createFromTimestamp(intval($data->coupon_start_time))->toDateTimeString() : null;//优惠卷开始时间
-            $arr['coupon_end_time']     = $data->coupon_start_time ? Carbon::createFromTimestamp(intval($data->coupon_end_time))->toDateTimeString() : null;//优惠卷结束时间
-            $arr['coupon_remain_count'] = $data->coupon_remain_quantity;//已使用优惠卷数量
-            $arr['coupon_total_count']  = $data->coupon_total_quantity;//优惠卷总数
-            $arr['pic_url']             = $data->goods_image_url;//商品主图
-            $arr['small_images']        = $data->goods_gallery_urls;//商品图
+        if ($result->status_code != 200) {
+            throw new \Exception($result->message);
+        }
+
+        $data = $result->data;
+
+
+        $data->introduce = $data->skuDesc;
+        $link = $this->getCouponUrl(['id'=>$id]);
+
+        //判断优惠卷是否被收藏
+        $user = getUser();
+        $favourites = Favourite::query()->where([
+            'user_id' => $user->id,
+            'item_id' => $id,
+            'type'    => 3
+        ])->first();
+        if ($favourites){
+            $is_favourites = 1;//已收藏
+        }else{
+            $is_favourites = 2;//未收藏
+        }
+        $data->is_favourites = $is_favourites;
+        //重组字段
+        $arr = [];
+        $arr['title']               = $data->skuName;//标题
+        $arr['item_id']             = $data->skuId;//商品id
+        $arr['user_type']           = null;//京东  拼多多 null  1淘宝 2天猫
+        $arr['volume']              = $data->sales;//销量
+        $arr['price']               = $data->wlPrice;//原价
+        $arr['final_price']         = $data->wlPrice_after;//最终价
+        $arr['coupon_price']        = $data->discount;//优惠价
+        $arr['commossion_rate']     = $data->wlCommissionShare;//佣金比例
+        $arr['coupon_start_time']   = $data->beginTime ? Carbon::createFromTimestamp(intval($data->beginTime))->toDateTimeString() : null;//优惠卷开始时间
+        $arr['coupon_end_time']     = $data->endTime ? Carbon::createFromTimestamp(intval($data->endTime))->toDateTimeString() : null;//优惠卷结束时间
+        $arr['coupon_remain_count'] = $data->coupon_total_quantity - $data->coupon_remain_quantity;//已使用优惠卷数量
+        $arr['coupon_total_count']  = $data->coupon_total_quantity;//优惠卷总数
+        $arr['pic_url']             = $data->picUrl;//商品主图
+        $arr['small_images']        = $data->picUrls;//商品图
 //            $arr['images']              = $data->;//商品详情图
-            $arr['kouling']             = null;//淘口令
-            $arr['introduce']           = $data->introduce;//描述
-            $arr['is_favourites']       = $data->is_favourites;//是否收藏
-            $arr['coupon_link']          = $link;//领劵地址
-            return $arr;
-        }
+        $arr['kouling']             = null;//淘口令
+        $arr['introduce']           = $data->skuDesc;//描述
+        $arr['is_favourites']       = $data->is_favourites;//是否收藏
+        $arr['coupon_link']          = $link;//领劵地址
+        return $arr;
 
-        throw new \Exception('未知错误');
+
+
 
     }
 
@@ -178,7 +175,7 @@ class PinDuoDuo implements TBKInterface
             'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
             'keyword' => $q,
             'page' => $page,
-            'page_size' => 100,
+            'page_size' => 20,
             'sort_type' => $sort_type,
             'timestamp' => $time,
             'type' => 'pdd.ddk.goods.search',
@@ -249,6 +246,7 @@ class PinDuoDuo implements TBKInterface
                     'per_page' => 20,
                     'to' => 20 * $page,
                     'total' => $result->goods_search_response->total_count,
+                    'tb_p'      => null,
                 ],
             ];
         }
@@ -299,51 +297,43 @@ class PinDuoDuo implements TBKInterface
 
 
     /**
-     * 爬虫.
-     * @param array $params
+     * 爬虫.  好京客
+     * @param array $array
      * @return array|mixed
      * @throws \Exception
      */
-    public function spider(array $params)
+    public function spider(array $array)
     {
         //  Implement spider() method.
-        $page = $params['page'] ?? 1;
+        $page = $array['page'] ?? 1;
         if ($page > 600) {
             throw new \Exception('爬取完成');
         }
-        $time = time ();
         $params = [
-            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
+            'type' => 'goodslist',
+            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'iscoupon' => 1,
             'page' => $page,
-            'page_size' => 100,
-            'sort_type' => 6,
-            'timestamp' => $time,
-            'type' => 'pdd.ddk.goods.search',
-            'with_coupon' => 'true',
+            'pageSize' => 20,
         ];
 
-        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'page' . $page . 'page_size100' . 'sort_type6' . 'timestamp' . $time . 'typepdd.ddk.goods.search' . 'with_coupontrue';
-        $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
-
-        $params['sign'] = $sign;
-        $result = Curl::to ('http://gw-api.pinduoduo.com/api/router')
+        $result = Curl::to ('http://api-gw.haojingke.com/index.php/api/pdd/myapi')
             ->withData ($params)
             ->post ();
         $result = json_decode ($result);
 
-        if (isset($result->error_response)) {
-            throw new \Exception($result->error_response->error_msg);
+        if ($result->status_code != 200) {
+            throw new \Exception($result->message);
         }
 
-        if (isset($result->goods_search_response)) {
-            return [
-                'code' => 1001,
-                'data' => [
-                    'total_count' => $result->goods_search_response->total_count > 60000 ? 60000 : $result->goods_search_response->total_count,
-                    'goods_list' => $result->goods_search_response->goods_list,
-                ],
-            ];
-        }
+        return [
+            'code' => 1001,
+            'data' => [
+                'total_count' => $result->total > 60000 ? 60000 : $result->total,
+                'goods_list' => $result->data,
+            ],
+        ];
+
     }
 
     /**
