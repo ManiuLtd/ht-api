@@ -326,109 +326,72 @@ class SaveGoods implements ShouldQueue
         return $url;
     }
 
-    /**
-     * 好单库 1女装，2男装，3内衣，4美妆，5配饰，6鞋品，7箱包，8儿童，9母婴，10居家，11美食，12数码，13家电，14其他，15车品，16文体
-     * 设置大淘客分类ID.
-     * @param $cat
-     * @return int
-     */
-    private function setDTKCat($cat)
-    {
-        switch ($cat) {
-            case 1:  //女装
-                return 15;
-            case 2: //男装
-                return 16;
-            case 3: //内衣
-                return 17;
-            case 4: //美妆
-                return 19;
-            case 5: //配饰
-                return 17;
-            case 6: //鞋品
-                return 22;
-            case 7: //箱包
-                return 22;
-            case 8: //儿童
-                return 19;
-            case 9: //母婴
-                return 18;
-            case 10: //居家
-                return 21;
-            case 11: //美食
-                return 25;
-            case 12: //数码
-                return 25;
-            case 13: //家电
-                return 25;
-            case 15: //车品
-                return 24;
-            case 16: //文体
-                return 24;
-            default:
-                return 26;
-        }
-    }
 
     /**
-     * 设置京推推分类ID.
+     * 设置好京客京东分类ID.
      * @param $cat
      * @return int
      */
     private function setJTTCat($cat)
     {
         switch ($cat) {
-//            case 1:  //女装
-//                return 15;
-            case '鞋靴': //男装
+            case '个人护理':
+                return 1;
+            case '农资绿植':
+                return 2;
+            case '医药保健':
+                return 3;
+            case '厨具':
+                return 4;
+            case '图书':
+                return 5;
+            case '宠物生活':
+                return 6;
+            case '家具':
+                return 7;
+            case '家居日用':
+                return 8;
+            case '家庭清洁/纸品':
+                return 9;
+            case '家用电器':
+                return 10;
+            case '家纺':
+                return 11;
+            case '手机':
+                return 12;
+            case '教育培训':
+                return 13;
+            case '数码':
+                return 14;
+            case '服饰内衣':
+                return 15;
+            case '母婴':
                 return 16;
-            case '服饰内衣': //内衣配饰
+            case '汽车用品':
                 return 17;
-            case '珠宝首饰':
-                return 17;
-            case '母婴': //母婴玩具
-                return 18;
             case '玩具乐器':
                 return 18;
-            case '个人护理': //美妆个护
+
+            case '珠宝首饰':
                 return 19;
-            case '美妆护肤':
-                return 19;
-            case '食品饮料': //食品保健
-                return 20;
-            case '酒类':
-                return 20;
             case '生鲜':
                 return 20;
-            case '医药保健': //食品保健
-                return 20;
-            case '厨具': //居家生活
-                return 21;
-            case '家居日用':
-                return 21;
-            case '家纺':
-                return 21;
-            case '汽车用品':
-                return 21;
-            case '家庭清洁/纸品':
-                return 21;
-            case '礼品箱包': //鞋品箱包
-                return 22;
-
-            case '运动户外': //运动户外
-                return 23;
-            case '图书': //文体车品
-                return 24;
-            case '家用电器': //数码家电
-                return 25;
-            case '手机': //数码家电
-                return 25;
-            case '数码': //数码家电
-                return 25;
             case '电脑、办公':
+                return 21;
+            case '礼品箱包':
+                return 22;
+            case '美妆护肤':
+                return 23;
+            case '运动户外':
+                return 24;
+            case '酒类':
                 return 25;
-            default:
+            case '鞋靴':
                 return 26;
+            case '食品饮料':
+                return 27;
+            default:
+                return null;
         }
     }
 
@@ -471,7 +434,7 @@ class SaveGoods implements ShouldQueue
             case '家装':
                 return 1917;
             default:
-                return 2;
+                return null;
         }
     }
 
