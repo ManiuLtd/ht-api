@@ -134,35 +134,35 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
-     * 京推推.
+     * 好京客.
      * @param $results
      */
     protected function saveJTTGoods($results)
     {
-        $coupon = new Coupon();
+
         $inserts = [];
         foreach ($results as $result) {
-            $data['title'] = $result->goods_name;
-            $data['cat'] = $this->setJTTCat($result->goods_type);
-            $data['pic_url'] = $result->goods_img;
-            $data['item_id'] = $result->goods_id;
-            $data['item_url'] = $result->goods_link;
-            $data['price'] = $result->goods_price;
-            $data['final_price'] = $result->coupon_price;
-            $data['coupon_price'] = $result->discount_price;
-            $data['coupon_link'] = $result->discount_link;
-            $data['commission_rate'] = $result->commission;
-            $data['introduce'] = $result->goods_content;
+            $data['title'] = $result->skuName;
+            $data['cat'] = $this->setJTTCat($result->cname);
+            $data['pic_url'] = $result->picUrl;
+            $data['item_id'] = $result->skuId;
+            $data['item_url'] = $result->materiaUrl;
+            $data['price'] = $result->wlPrice;
+            $data['final_price'] = $result->wlPrice_after;
+            $data['coupon_price'] = $result->discount;
+            $data['coupon_link'] = $result->couponList;
+            $data['commission_rate'] = $result->wlCommissionShare;
+            $data['introduce'] = $result->skuDesc;
             $data['type'] = 2;
             $data['status'] = 0;
-            $data['start_time'] = Carbon::createFromTimestamp(intval($result->discount_start / 1000))->toDateTimeString();
-            $data['end_time'] = Carbon::createFromTimestamp(intval($result->discount_end / 1000))->toDateTimeString();
+            $data['start_time'] = Carbon::createFromTimestamp(intval($result->beginTime))->toDateTimeString();
+            $data['end_time'] = Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString();
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $inserts[] = $data;
             //不是全部抓取 更新单条产品
             if ($this->all == 'false') {
-                $coupon::updateOrCreate(
+                db('tbk_coupons')->updateOrInsert(
                     ['item_id' => $data['item_id']],
                     $data
                 );
@@ -178,34 +178,34 @@ class SaveGoods implements ShouldQueue
      * 多多进宝.
      * @param $results
      */
-    protected function savePDDGoods($results)
+    protected function  savePDDGoods($results)
     {
-        $coupon = new Coupon();
+
         $inserts = [];
         foreach ($results as $result) {
-            $data['title'] = $result->goods_name;
-            $data['cat'] = $result->category_id;
-            $data['pic_url'] = $result->goods_image_url;
-            $data['item_id'] = $result->goods_id;
-            $data['volume'] = $result->sold_quantity;
-            $data['price'] = $result->min_group_price / 100;
-            $data['final_price'] = $result->min_group_price / 100 - $result->coupon_discount / 100;
-            $data['coupon_price'] = $result->coupon_discount / 100;
-
-            $data['commission_rate'] = $result->promotion_rate / 10;
-            $data['introduce'] = $result->goods_desc;
+            $data['title'] = $result->skuName;
+            $data['cat'] = $this->setHJKPDDCat($result->cname);
+            $data['pic_url'] = $result->picUrl;
+            $data['item_id'] = $result->skuId;
+            $data['item_url'] = $result->materiaUrl;
+            $data['volume'] = $result->sales;
+            $data['price'] = $result->wlPrice;
+            $data['final_price'] = $result->wlPrice_after;
+            $data['coupon_price'] = $result->discount;
+            $data['commission_rate'] = $result->wlCommissionShare;
+            $data['introduce'] = $result->skuDesc;
             $data['total_num'] = $result->coupon_total_quantity;
             $data['receive_num'] = $result->coupon_total_quantity - $result->coupon_remain_quantity;
             $data['type'] = 3;
             $data['status'] = 0;
-            $data['start_time'] = Carbon::createFromTimestamp(intval($result->coupon_start_time / 1000))->toDateTimeString();
-            $data['end_time'] = Carbon::createFromTimestamp(intval($result->coupon_end_time / 1000))->toDateTimeString();
+            $data['start_time'] = Carbon::createFromTimestamp(intval($result->beginTime))->toDateTimeString();
+            $data['end_time'] = Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString();
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $inserts[] = $data;
             //不是全部抓取 更新单条产品
             if ($this->all == 'false') {
-                $coupon::updateOrCreate(
+                db('tbk_coupons')->updateOrInsert(
                     ['item_id' => $data['item_id']],
                     $data
                 );
@@ -378,30 +378,101 @@ class SaveGoods implements ShouldQueue
     private function setJTTCat($cat)
     {
         switch ($cat) {
-            case 1:  //女装
-                return 15;
-            case 2: //男装
+//            case 1:  //女装
+//                return 15;
+            case '鞋靴': //男装
                 return 16;
-            case 3: //内衣配饰
+            case '服饰内衣': //内衣配饰
                 return 17;
-            case 4: //母婴玩具
+            case '珠宝首饰':
+                return 17;
+            case '母婴': //母婴玩具
                 return 18;
-            case 5: //美妆个护
+            case '玩具乐器':
+                return 18;
+            case '个人护理': //美妆个护
                 return 19;
-            case 6: //食品保健
+            case '美妆护肤':
+                return 19;
+            case '食品饮料': //食品保健
                 return 20;
-            case 7: //居家生活
+            case '酒类':
+                return 20;
+            case '生鲜':
+                return 20;
+            case '医药保健': //食品保健
+                return 20;
+            case '厨具': //居家生活
                 return 21;
-            case 8: //鞋品箱包
+            case '家居日用':
+                return 21;
+            case '家纺':
+                return 21;
+            case '汽车用品':
+                return 21;
+            case '家庭清洁/纸品':
+                return 21;
+            case '礼品箱包': //鞋品箱包
                 return 22;
-            case 9: //运动户外
+
+            case '运动户外': //运动户外
                 return 23;
-            case 10: //文体车品
+            case '图书': //文体车品
                 return 24;
-            case 11: //数码家电
+            case '家用电器': //数码家电
+                return 25;
+            case '手机': //数码家电
+                return 25;
+            case '数码': //数码家电
+                return 25;
+            case '电脑、办公':
                 return 25;
             default:
                 return 26;
         }
     }
+
+    /**
+     * 好京客 拼多多分类
+     * @param $cat
+     * @return int
+     */
+    protected function setHJKPDDCat($cat)
+    {
+        switch ($cat) {
+            case '美食':
+                return 1;
+            case '母婴':
+                return 4;
+            case '水果':
+                return 13;
+            case '服饰':
+                return 14;
+            case '百货' :
+                return 15;
+            case '美妆':
+                return 16;
+            case '电器':
+                return 18;
+            case '男装':
+                return 743;
+            case '家纺':
+                return 818;
+            case '鞋包':
+                return 1281;
+            case '运动':
+                return 1451;
+            case '手机':
+                return 1543;
+            case '汽车':
+                return 2408;
+            case '内衣':
+                return 1282;
+            case '家装':
+                return 1917;
+            default:
+                return 2;
+        }
+    }
+
 }

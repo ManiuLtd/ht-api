@@ -111,6 +111,9 @@ class Taobao implements TBKInterface
             $is_favourites = 2;//未收藏
         }
         $data->is_favourites = $is_favourites;
+        //获取图文详情
+        $images = $this->getDesc($itemID);
+
         //重组字段
         $coupon_price = $this->getCouponPrice($data->coupon->coupon_info);
         $arr = [];
@@ -128,12 +131,28 @@ class Taobao implements TBKInterface
         $arr['coupon_total_count']  = $data->coupon->coupon_total_count;//优惠卷总数
         $arr['pic_url']             = $data->pict_url;//商品主图
         $arr['small_images']        = $data->small_images->string;//商品图
-//        $arr['images']              = '';//商品详情图
+        $arr['images']              = $images;//商品详情图
         $arr['kouling']             = $data->kouling;//淘口令
         $arr['introduce']           = $data->introduce;//描述
         $arr['is_favourites']       = $data->is_favourites;//是否收藏
         $arr['coupon_link']         =  ['url' => $data->coupon->coupon_click_url];//领劵地址
         return $arr;
+    }
+
+    /**
+     * @param $id
+     * @return null
+     */
+    protected function getDesc($id)
+    {
+
+        $rest = Curl::to('http://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"'.$id.'"}')
+            ->asJsonResponse()
+            ->get();
+        if (isset($rest->data->pcDescContent)) {
+            return $rest->data->pcDescContent;
+        }
+        return null;
     }
 
     /**
@@ -185,23 +204,14 @@ class Taobao implements TBKInterface
 
         //接口信息获取失败
         if ($response->code != 1) {
-            throw new \Exception('淘客基地接口请求失败');
+            throw new \Exception('淘客接口请求失败');
         }
         //当前页面地址
         $uri = \Request::url();
 
-        //验证是否填写page参数
-//        if (! str_contains('page=', $uri)) {
-//            $uri = $uri.'&page=1';
-//        }
 
         //页码信息
         $totalPage = intval(floor(count($response->data) / $limit) + 1);
-
-        //页码不对
-//        if ($page > $totalPage) {
-//            throw new \Exception('超出最大页码');
-//        }
 
         //重组字段
         $data = [];
@@ -231,15 +241,16 @@ class Taobao implements TBKInterface
 
         return [
             'data' => $data,
-            'links' => [
-                'next' => $uri."?type=1&q=$q&sort=$sort&page=$response->min_id&tb_p=$response->tb_p",
-            ],
+//            'links' => [
+//                'next' => $uri."?type=1&q=$q&sort=$sort&page=$response->min_id&tb_p=$response->tb_p",
+//            ],
             //分页信息只要这四个参数就够了
             'meta' => [
                 'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
                 'total'     => count($response->data),
+                'tb_p'      => $response->tb_p,
             ],
         ];
     }

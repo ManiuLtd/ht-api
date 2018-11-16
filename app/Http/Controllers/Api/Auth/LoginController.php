@@ -43,6 +43,7 @@ class LoginController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => $user
         ];
 
         return json(1001, '登录成功', $data);
