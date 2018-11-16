@@ -27,19 +27,19 @@ class SendSMSNotification
     {
         $phone = $event->phone;
         //验证手机号
-        if (! preg_match("/^1[3456789]\d{9}$/", $phone)) {
+        if (!preg_match ("/^1[3456789]\d{9}$/", $phone)) {
             throw  new InvalidArgumentException('手机号格式错误');
         }
         //60秒内只可以发送一次验证码
-        $lastSendTime = cache('SMS_'.$phone);
-        if (! $lastSendTime) {
-            $lastSendTime = time();
-            Cache::put('SMS_'.$phone, $lastSendTime, now()->addSecond(1));
-        } elseif (time() - $lastSendTime < 60) {
+        $lastSendTime = cache ('SMS_' . $phone);
+        if (!$lastSendTime) {
+            $lastSendTime = time ();
+            Cache::put ('SMS_' . $phone, $lastSendTime, now ()->addSecond (1));
+        } elseif (time () - $lastSendTime < 60) {
             throw  new InvalidArgumentException('验证码发送过于频繁');
         }
 
-        $sms = new EasySms(config('sms'));
+        $sms = new EasySms(config ('sms'));
 
         //消息内容
         $message = [
@@ -51,9 +51,9 @@ class SendSMSNotification
         ];
 
         try {
-            $sms->send($phone, $message, $event->gateways);
+            $sms->send ($phone, $message, $event->gateways);
         } catch (\Exception $e) {
-            throw  new InvalidArgumentException($e->getMessage());
+            throw  new InvalidArgumentException($e->getMessage ());
         }
     }
 }

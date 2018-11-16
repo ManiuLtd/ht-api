@@ -22,37 +22,35 @@ class LoginController extends Controller
     {
         try {
             //验证字段
-            $validator = \Validator::make(request()->all(), [
+            $validator = \Validator::make (request ()->all (), [
                 'phone' => 'required',
                 'code' => 'required',
             ]);
             //字段验证失败
-            if ($validator->fails()) {
-                return response()->json([
-                    'code' => 4061,
-                    'message' => $validator->errors()->first()
-                ]);
+            if ($validator->fails ()) {
+                return json (4001, $validator->errors ()->first ());
             }
-            $phone = request('phone');
-            $code = request('code');
-            if (!checkSms($phone,$code)) {
-                return json(4001,'验证码错误');
+            $phone = request ('phone');
+            $code = request ('code');
+            //检查验证码
+            if (!checkSms ($phone, $code)) {
+                return json (4001, '验证码错误');
             }
-            $user = User::query()->where([
+            $user = User::query ()->where ([
                 'phone' => $phone,
-            ])->first();
+            ])->first ();
             //TODO 判断权限
 
-            if (! $user) {
-                return json(4001, '用户不存在');
+            if (!$user) {
+                return json (4001, '用户不存在');
             }
-            $token = auth()->login($user);
+            $token = auth ()->login ($user);
 
-            return $this->respondWithToken($token);
+            return $this->respondWithToken ($token);
 
-        }catch (JWTException $e){
+        } catch (\Exception $e) {
 
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
 
 
@@ -69,9 +67,9 @@ class LoginController extends Controller
             'role' => 'admin',
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth ()->factory ()->getTTL () * 60,
         ];
 
-        return json(1001, '登录成功', $data);
+        return json (1001, '登录成功', $data);
     }
 }

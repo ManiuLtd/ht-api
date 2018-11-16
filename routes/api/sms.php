@@ -7,5 +7,5 @@
  */
 Route::namespace('Sms')
     ->group(function () {
-        Route::get('sendSms','SmsController@index');
+        Route::get('sms','SmsController@index');
     });
