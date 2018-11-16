@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Auth;
 use App\Models\User\User;
 use Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\Auth\User\LoginRequest;
 
@@ -46,11 +47,37 @@ class LoginController extends Controller
             }
             $token = auth ()->login ($user);
 
-            return $this->respondWithToken ($token);
+            return $this->respondWithToken ($token,$user);
 
         } catch (\Exception $e) {
 
             return json (5001, $e->getMessage ());
+        }
+    }
+
+    public function guestLogin(Request $request)
+    {
+        try {
+            //验证字段
+            $validator = \Validator::make(request()->all(), [
+                'phone' => 'required',
+                'password' => 'required',
+            ]);
+            //字段验证失败
+            if ($validator->fails()) {
+                return json(4001, $validator->errors()->first());
+            }
+
+            $credentials = $request->only('phone', 'password');
+
+            $token = Auth::attempt($credentials);
+            if (!$token) {
+                return josn(4001,'登陆失败');
+            }
+            $user = Auth::user();
+            return $this->respondWithToken($token,$user);
+        }catch (JWTException $e){
+            return json(5001,$e->getMessage());
         }
 
 
@@ -61,13 +88,14 @@ class LoginController extends Controller
      * @param $token
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $user)
     {
         $data = [
             'role' => 'admin',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth ()->factory ()->getTTL () * 60,
+            'user' => $user,
         ];
 
         return json (1001, '登录成功', $data);

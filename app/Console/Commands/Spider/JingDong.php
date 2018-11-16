@@ -64,7 +64,7 @@ class JingDong extends Command
         try {
             // http://www.jingtuitui.com/  账号密码 15538762226  372945452zz
 
-            $this->info('正在爬取京推推优惠券');
+            $this->info('正在爬取京东优惠券');
             $result = $this->tbk->spider([
                 'page' => 1,
             ]);
