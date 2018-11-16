@@ -25,9 +25,6 @@ class Sms extends Model implements Transformable
      */
     protected $guarded = [];
 
-    protected $hidden = [
-        'user_id',
-    ];
 
     /**
      * 字段映射.
@@ -37,15 +34,5 @@ class Sms extends Model implements Transformable
     {
         return $this->toArray();
     }
-
-    /**
-     * 后台用户.
-     * @return mixed
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
-    }
-
 
 }
