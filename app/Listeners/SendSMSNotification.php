@@ -34,13 +34,13 @@ class SendSMSNotification
 
         $model = db('sms')->where([
             'phone' => $phone,
-            ['created_at', '>=', \Illuminate\Support\Carbon::now()->subMinute(-env('VERIFY_CODE_EXPIRED_TIME'))],
+            ['created_at', '>=', now()->addSecond(-env('VERIFY_CODE_EXPIRED_TIME'))],
         ])->first();
 
         if ($model) {
             throw new \Exception('验证码发送过于频繁');
         }
-        
+
         $sms = new EasySms(config ('sms'));
 
         //消息内容
