@@ -64,7 +64,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
     public function transform()
     {
         $data = $this->toArray();
-        $hashids = new Hashids('hongtang', 6, 'abcdefghijklmnopqrstuvwxyz0123456789');
+        $hashids = new Hashids(config ('hasdid.SALT'), config ('hasdid.LENGTH'), config ('hasdid.ALPHABET'));
         //邀请码
         $hashids = $hashids->encode($data['id']);
         $data['hashid'] = $hashids;
