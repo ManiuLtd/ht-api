@@ -21,6 +21,22 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
+        switch (request('type')){
+            case 1:
+                return $this->pwdLogin();
+            case 2:
+                return $this->phoneLogin();
+            default:
+                return json(4001,'login error type');
+        }
+
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function phoneLogin()
+    {
         try {
             //验证字段
             $validator = \Validator::make (request ()->all (), [
@@ -55,7 +71,10 @@ class LoginController extends Controller
         }
     }
 
-    public function guestLogin(Request $request)
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function pwdLogin()
     {
         try {
             //验证字段
@@ -68,7 +87,7 @@ class LoginController extends Controller
                 return json(4001, $validator->errors()->first());
             }
 
-            $credentials = $request->only('phone', 'password');
+            $credentials = request()->only('phone', 'password');
 
             $token = Auth::attempt($credentials);
             if (!$token) {
