@@ -34,7 +34,7 @@ class PinDuoDuo implements TBKInterface
             'type' => 'pdd.ddk.goods.zs.unit.url.gen',
         ];
 
-        $str = 'client_id'.data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID').'pid'.'1000571_10540720'.'source_url'.$url.'timestamp'.$time.'typepdd.ddk.goods.zs.unit.url.gen';
+        $str = 'client_id'.data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID').'pid'.$pids->pinduoduo.'source_url'.$url.'timestamp'.$time.'typepdd.ddk.goods.zs.unit.url.gen';
 
 
         $sign = strtoupper(md5(data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') .$str.data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') ));
@@ -234,8 +234,6 @@ class PinDuoDuo implements TBKInterface
             }
 
             return [
-                'code' => 1001,
-                'message' => '优惠券获取成功',
                 'data' => $data,
                 'links' => [
                     'first' => str_replace ("page={$page}", 'page=1', $uri),
