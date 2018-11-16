@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Requests\Auth\User\LoginRequest;
 use App\Http\Controllers\Controller;
 use App\Models\User\User;
-use Hashids\Hashids;
-use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class LoginController extends Controller
@@ -41,15 +39,13 @@ class LoginController extends Controller
      */
     protected function respondWithToken($token,$user)
     {
-        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
         $data = [
-            'tag' => $hashids->encode($user->id),
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
         ];
 
-        return json(1001, '成功', $data);
+        return json(1001, '登录成功', $data);
     }
 
     /**
