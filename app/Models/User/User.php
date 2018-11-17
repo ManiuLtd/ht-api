@@ -156,4 +156,13 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         return $this->belongsTo('App\Models\User\Group','group_id')->withDefault(null);
     }
+
+    /**
+     * 组
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function oldGroup()
+    {
+        return $this->belongsTo('App\Models\User\Group','oldgroup_id')->withDefault(null);
+    }
 }
