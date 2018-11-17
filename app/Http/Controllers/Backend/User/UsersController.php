@@ -46,7 +46,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $userss = $this->repository->paginate();
+        $userss = $this->repository->with (['group','level','oldGroup','inviter'])->paginate();
 
         return json(1001, '列表获取成功', $userss);
     }
@@ -76,7 +76,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $users = $this->repository->find($id);
+        $users = $this->repository->with (['group','level','oldGroup','inviter'])->find($id);
 
         return json(1001, '详情获取成功', $users);
     }
