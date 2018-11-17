@@ -26,8 +26,8 @@ class CreateUserWithdrawsTable extends Migration
             $table->string('realname', 191)->nullable(); //从member表读取
             $table->string('alipay', 191)->nullable(); //从member表读取
             $table->text('reason')->nullable(); //原因
-            $table->tinyInteger('status')->nullable();
-            $table->tinyInteger('pay_type')->nullable(); // 1支付宝 2其他
+            $table->tinyInteger('status')->nullable()->comment('status  1审核中 2被决绝  3已完成');
+            $table->tinyInteger('pay_type')->nullable()->comment('pay_type 1微信 2支付宝 3手动转账'); // 1支付宝 2其他
             $table->nullableTimestamps();
 
             $table->index('user_id', 'user_withdraws_user_id_index');

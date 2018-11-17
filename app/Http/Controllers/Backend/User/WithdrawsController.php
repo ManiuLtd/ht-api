@@ -102,4 +102,9 @@ class WithdrawsController extends Controller
 
         return json(1001, '删除成功');
     }
+
+    public function mark()
+    {
+        return $this->repository->mark();
+    }
 }
