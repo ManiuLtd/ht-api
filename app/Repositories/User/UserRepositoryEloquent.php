@@ -256,7 +256,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         if (!$tag) {
             throw new \Exception('缺少参数');
         }
-        $hashids = new Hashids(config ('hasdid.SALT'), config ('hasdid.LENGTH'), config ('hasdid.ALPHABET'));
+        $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
         $decode = $hashids->decode ($tag);
         $user = User::query ()->find ($decode[0]);
         if (!$user) {
