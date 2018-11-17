@@ -46,7 +46,7 @@ class Pid extends Model implements Transformable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function agent()p
+    public function agent()
     {
         return $this->belongsTo('App\Models\User\User','agent_id')->withDefault(null);
     }
