@@ -7,7 +7,7 @@
  * Time: 22:25
  */
 Route::namespace('User')
-    ->prefix('member')
+    ->prefix('user')
     ->middleware(['jwt.auth'])
     ->group(function () {
 
