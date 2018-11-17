@@ -24,7 +24,6 @@ class CreateUserRechargesTable extends Migration
             $table->string('out_trade_no', 191)->nullable();
             $table->decimal('money', 8, 2)->nullable()->default(0.00);
             $table->decimal('real_money', 8, 2)->nullable()->default(0.00);
-            $table->decimal('giving_money', 8, 2)->nullable()->default(0.00);
             $table->tinyInteger('type')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->timestamp('pay_time')->nullable();

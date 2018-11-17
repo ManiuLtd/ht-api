@@ -93,7 +93,6 @@ $factory->define(App\Models\User\Recharge::class, function (Faker $faker) {
         'out_trade_no' => $faker->bankAccountNumber,
         'money' => rand(10, 999),
         'real_money' => rand(10, 999),
-        'giving_money' => rand(10, 999),
         'status' => rand(0, 1),
         'type' => rand(1, 4),
         'pay_time' => now(),
