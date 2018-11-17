@@ -20,7 +20,7 @@ class CreateTbkPidsTable extends Migration
         Schema::create('tbk_pids', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-
+            $table->integer('agent_id')->nullable();
             $table->string('taobao', 100)->nullable();
             $table->string('jingdong', 100)->nullable();
             $table->string('pinduoduo', 100)->nullable();
