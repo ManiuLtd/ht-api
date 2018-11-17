@@ -9,6 +9,7 @@ use App\Validators\User\WithdrawValidator;
 use Illuminate\Validation\Rule;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\User\WithdrawRepository;
+use EasyWeChat\Factory;
 
 /**
  * Class WithdrawRepositoryEloquent.
@@ -133,6 +134,11 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse|mixed
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
     public function mark()
     {
 
@@ -143,7 +149,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
             'id' => 'required',
             'status' => [
                 'required',
-                Rule::in([1,0]),
+                Rule::in([1,0,2]),
             ],
         ]);
         //字段验证失败
@@ -174,17 +180,62 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
             return json(4001,'提现失败,提现金额大于余额');
         }
 
-        if (!$user_member->wx_openid1) {
-            return json(4001,'用户没有绑定微信');
+        $setting = setting(getUserId());
+        if (!$setting) {
+            return json(4001,'没有进行系统设置');
         }
-        $deduct_rate = setting(getUserId());
-
-        $withdraw = data_get($deduct_rate,'withdraw');
-        $withdraw = json_decode($withdraw);
-        $deduct_rate = data_get($withdraw,'deduct_rate');
+        $withdraw_set = data_get($setting,'withdraw');
+        $withdraw_set = json_decode($withdraw_set);
+        $deduct_rate = data_get($withdraw_set,'deduct_rate');
         // 扣除金额
         $deduct_money = $withdraw->money * $deduct_rate/100;
 
+        //手动转账
+        $pay_type = 3;
+        //企业付款
+        if ($status == 1) {
+            if (!$user_member->wx_openid1) {
+                return json(4001, '用户没有绑定微信');
+            }
 
+            $app = Factory::payment(json_decode($setting->payment, true));
+
+            $merchantPayData = [
+                'partner_trade_no' => str_random(16),
+                'openid' => $user_member->wx_openid1,
+                'check_name' => 'NO_CHECK',
+                'amount' => $withdraw->money * 100,
+                'desc' => '淘宝返利提现',
+                'spbill_create_ip' => \EasyWeChat\Kernel\Support\get_client_ip(),
+            ];
+            $result = $app->transfer->toBalance($merchantPayData);
+            //红包发送失败
+            if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'FAIL') {
+                return json(4001, $result['err_code_des']);
+            }
+            $pay_type = 1;
+        }
+
+        //修改订单状态
+        $this->model->newQuery()->where('id',$withdraw->id)->update([
+            'status' => 3,
+            'pay_type' => $pay_type,
+            'real_money' => $withdraw->money - $deduct_money,
+            'deduct_money' => $deduct_money,
+        ]);
+
+        //减少余额
+        $user_member->decrement('credit1', $withdraw->money);
+
+        //写入日志
+        $inster = [
+            'user_id' => $user_member->id,
+            'operater_id' => getUserId(),
+            'credit' => $withdraw->money,
+            'type' => 12,
+            'remark' => '用户提现'
+        ];
+        db('user_credit_logs')->insert($inster);
+        return json(1001,'提现成功');
     }
 }
