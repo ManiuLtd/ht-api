@@ -49,12 +49,12 @@ class CouponsController extends Controller
      */
     public function detail()
     {
-//        try {
+        try {
             $detail = $this->tbk->getDetail();
 
             return json(1001, '获取成功', $detail);
-//        } catch (\Exception $e) {
-//            return json(5001, $e->getMessage());
-//        }
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
     }
 }

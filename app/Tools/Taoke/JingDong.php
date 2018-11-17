@@ -39,7 +39,7 @@ class JingDong implements TBKInterface
                 'unionid'    => $unionid->jingdong,
                 'positionid' => $pids->jingdong,
                 'gid'        => $itemID,
-                'coupon_url' => 'http://item.jd.com/'.$coupon_url.'.html'
+                'coupon_url' => $coupon_url
             ])
             ->asJsonResponse()
             ->post();
@@ -60,31 +60,31 @@ class JingDong implements TBKInterface
         $id =  request ('itemid');
 
         $params = [
-            'appid'  => data_get(config('coupon'), 'jingdong.JD_APPID'),
-            'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
-            'gid' => $id,
+            'type'  => 'goodsdetail',
+            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'skuid' => $id,
         ];
-        $response = Curl::to('http://japi.jingtuitui.com/api/get_goods_info')
+        $response = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
             ->withData($params)
             ->post();
         $response = json_decode($response);
-        if ($response->return != 0) {
-            throw new \Exception($response->result);
+
+        if ($response->status_code != 200) {
+            throw new \Exception($response->message);
         }
-        // 从本地优惠券中获取获取商品介绍 introduce字段，如果本地没有 该字段为空
-        $coupon = db('tbk_coupons')->where([
-            'item_id' => $id,
-            'type' => 2,
-        ])->first();
+
         //领券地址
         $link = null;
         if (getUserId()) {
             $link = $this->getCouponUrl([
                 'itemID' => $id,
-                'coupon_url' => $response->result->materialUrl,
+                'coupon_url' => $response->data->couponList,
             ]);
 //            $response->result->coupon_click_url = $link;
         }
+        $resCoupon = $this->getCoupon([
+            'url' => $response->data->couponList
+        ]);
         //判断优惠卷是否被收藏
         $is_favourites = null;
         if (getUserId()) {
@@ -100,39 +100,31 @@ class JingDong implements TBKInterface
                 $is_favourites = 2;//未收藏
             }
         }
-        $response->result->is_favourites = $is_favourites;
-        $data = $response->result;
+
+        $data = $response->data;
         //图文详情
         $images  = $this->Graphic($id);
 
-        //重组字段
-        if ($coupon) {
-            $data->introduce = $coupon->introduce;
-            $couponLink = $coupon->coupon_link;
-            $resCoupon = $this->getCoupon(['url' => $couponLink]);
-        }else{
-            $data->introduce = null;
-        }
         //获取优惠卷信息
         $arr = [];
-        $arr['title']               = $data->goodsName;//标题
+        $arr['title']               = $data->skuName;//标题
         $arr['item_id']             = $data->skuId;//商品id
         $arr['user_type']           = null;//京东  拼多多 null  1淘宝 2天猫
         $arr['volume']              = null;//销量
-        $arr['price']               = $data->unitPrice;//原价
-        $arr['final_price']         = isset($resCoupon->discount) ? $data->unitPrice - $resCoupon->discount : $data->unitPrice;//最终价
-        $arr['coupon_price']        = isset($resCoupon->discount) ? $resCoupon->discount : 0;//优惠价
-        $arr['commossion_rate']     = $data->commisionRatioPc;//佣金比例
-        $arr['coupon_start_time']   = Carbon::createFromTimestamp(intval($data->startDate/ 1000))->toDateTimeString();//优惠卷开始时间
-        $arr['coupon_end_time']     = Carbon::createFromTimestamp(intval($data->endDate/ 1000))->toDateTimeString();//优惠卷结束时间
+        $arr['price']               = $data->wlPrice;//原价
+        $arr['final_price']         = $data->wlPrice_after;//最终价
+        $arr['coupon_price']        = $data->discount;//优惠价
+        $arr['commossion_rate']     = $data->wlCommissionShare;//佣金比例
+        $arr['coupon_start_time']   = Carbon::createFromTimestamp(intval($data->beginTime))->toDateTimeString();//优惠卷开始时间
+        $arr['coupon_end_time']     = Carbon::createFromTimestamp(intval($data->endTime))->toDateTimeString();//优惠卷结束时间
         $arr['coupon_remain_count'] = isset($resCoupon->remainnum) ? $resCoupon->remainnum : null;//已使用优惠卷数量
         $arr['coupon_total_count']  = isset($resCoupon->num) ? $resCoupon->num : null;//优惠卷总数
-        $arr['pic_url']             = $data->imgUrl;//商品主图
+        $arr['pic_url']             = $data->picUrl;//商品主图
         $arr['small_images']        = [];//商品图
         $arr['images']              = $images;//商品详情图
         $arr['kouling']             = null;//淘口令
-        $arr['introduce']           = $data->introduce;//描述
-        $arr['is_favourites']       = $data->is_favourites;//是否收藏
+        $arr['introduce']           = $data->skuDesc;//描述
+        $arr['is_favourites']       = $is_favourites;//是否收藏
         $arr['coupon_link']          = ['url' => $link];//领劵地址
         return $arr;
     }
@@ -152,6 +144,7 @@ class JingDong implements TBKInterface
             ])
             ->asJsonResponse()
             ->post();
+
         if ($resp->status_code != 200){
             throw new \Exception($resp->message);
         }

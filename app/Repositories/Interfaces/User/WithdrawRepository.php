@@ -15,4 +15,9 @@ interface WithdrawRepository extends RepositoryInterface
      * @return mixed
      */
     public function getWithdrawChart();
+
+    /**
+     * @return mixed
+     */
+    public function mark();
 }
