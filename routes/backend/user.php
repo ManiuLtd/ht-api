@@ -4,7 +4,10 @@ Route::namespace('User')
     ->middleware('jwt.auth')
     ->group(function () {
 
-
+        Route::get('user/current',function(){
+            return auth ()->user ();
+        });
+        
         //会员日志
         Route::resource('user/credit-log', 'CreditLogsController', [
             'only' => ['index'],
