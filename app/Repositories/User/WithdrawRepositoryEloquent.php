@@ -6,6 +6,7 @@ use App\Models\User\Withdraw;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
 use App\Validators\User\WithdrawValidator;
+use Illuminate\Validation\Rule;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\User\WithdrawRepository;
 
@@ -130,5 +131,60 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
                 'type' => 12,
             ])->sum('credit');
         }
+    }
+
+    public function mark()
+    {
+
+        $id = request('id');
+        $status = request('status');
+        //验证字段
+        $validator = \Validator::make(request()->all(), [
+            'id' => 'required',
+            'status' => [
+                'required',
+                Rule::in([1,0]),
+            ],
+        ]);
+        //字段验证失败
+        if ($validator->fails()) {
+            return json(4001, $validator->errors()->first());
+        }
+        $withdraw = $this->model->newQuery()->find($id);
+
+        if (!$withdraw) {
+            return json(4001,'提现记录不存在');
+        }
+        //不在审核中
+        if ($withdraw->status != 1) {
+            return json(4001,'恶意提交');
+        }
+        // 拒绝提现
+        if ($status==0) {
+            $this->update([
+                'status' => 2
+            ],$id);
+            return json(1001,'拒绝提现成功');
+
+        }
+        //允许提现
+        $user_member = $withdraw->user;
+        //验证提现金额是否合法
+        if ($user_member->credit1 < $withdraw->money) {
+            return json(4001,'提现失败,提现金额大于余额');
+        }
+
+        if (!$user_member->wx_openid1) {
+            return json(4001,'用户没有绑定微信');
+        }
+        $deduct_rate = setting(getUserId());
+
+        $withdraw = data_get($deduct_rate,'withdraw');
+        $withdraw = json_decode($withdraw);
+        $deduct_rate = data_get($withdraw,'deduct_rate');
+        // 扣除金额
+        $deduct_money = $withdraw->money * $deduct_rate/100;
+
+
     }
 }

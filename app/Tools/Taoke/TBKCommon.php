@@ -24,6 +24,7 @@ trait TBKCommon{
         $group_pid = db('tbk_pids')->where('user_id', $group->user_id)->first();
         if (!$group_pid){
             $setting = setting($this->getUserId()); //应该是根据user或者user_id
+
             $group_pid = json_decode($setting->pid);
         }
 

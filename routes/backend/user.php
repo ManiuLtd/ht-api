@@ -32,6 +32,8 @@ Route::namespace('User')
         Route::resource('user/withdraw', 'WithdrawsController', [
             'except' => ['create', 'edit', 'store'],
         ]);
+        //提现审核
+        Route::get('user/payment/mark','WithdrawsController@mark');
 
         //充值记录
         Route::get('user/recharge', 'RechargesController@index');
