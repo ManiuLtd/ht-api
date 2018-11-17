@@ -58,13 +58,18 @@ class User extends Authenticatable implements JWTSubject, Transformable
      * @var array
      */
     protected $hidden = [
-
+        'wx_unionid',
+        'wx_openid1',
+        'wx_openid2',
+        'ali_unionid',
+        'ali_openid1',
+        'ali_openid2',
     ];
 
     public function transform()
     {
         $data = $this->toArray();
-        $hashids = new Hashids(config ('hasdid.SALT'), config ('hasdid.LENGTH'), config ('hasdid.ALPHABET'));
+        $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
         //邀请码
         $hashids = $hashids->encode($data['id']);
         $data['hashid'] = $hashids;
@@ -135,6 +140,14 @@ class User extends Authenticatable implements JWTSubject, Transformable
         return $this->belongsTo('App\Models\User\User','inviter_id')->withDefault(null);
     }
 
+    /**
+     * 粉丝
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function freinds()
+    {
+        return $this->hasMany ('App\Models\User\User','inviter_id');
+    }
     /**
      * 组
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

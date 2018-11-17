@@ -42,7 +42,7 @@ class QrcodeController extends Controller
             $data = $request->all ();
             $this->validator->with ($data)->passesOrFail ();
             $userid = getUserId ();
-            $hashids = new Hashids(config ('hasdid.SALT'), config ('hasdid.LENGTH'), config ('hasdid.ALPHABET'));
+            $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
             //邀请码
             $hashids = $hashids->encode ($userid);
             $couponPrice = intval ($data['coupon_price']) . '元';
@@ -92,7 +92,7 @@ class QrcodeController extends Controller
             $qrcode = new Qrcode(public_path ("images/{$templateName}.jpg"));
             $qrcode->width = 928;
             $qrcode->height = 1470;
-            $hashids = new Hashids(config ('hasdid.SALT'), config ('hasdid.LENGTH'), config ('hasdid.ALPHABET'));
+            $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
             //邀请码
             $hashids = $hashids->encode ($userid);
             $qrcode->savePath = "images/invite{$i}.jpg";
