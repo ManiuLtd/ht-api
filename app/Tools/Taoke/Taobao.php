@@ -23,12 +23,11 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
-        if (! isset($pids->taobao)) {
+        if (! isset($pids['taobao'])) {
             throw new \Exception('请先设置系统pid');
         }
-        $userid = $this->getUserId();
-
-        $setting = setting($userid); // 应该是根据user或者user_id
+        // todo
+        $setting = setting(1); // 应该是根据user或者user_id
 
         $taobao = $setting->taobao;
         if (! isset($taobao['sid'])) {
@@ -40,7 +39,7 @@ class Taobao implements TBKInterface
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
             'sid'       => $taobao['sid'],  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
-            'pid'       => $pids->taobao,
+            'pid'       => $pids['taobao'],
             'num_iid'   => $array['item_id'],
         ];
         $resp = Curl::to('https://www.heimataoke.com/api-zhuanlian')
@@ -101,11 +100,16 @@ class Taobao implements TBKInterface
         $data->introduce = null;
         //判断优惠卷是否被收藏
         $user = getUser();
-        $favourites = Favourite::query()->where([
-            'user_id' => $user->id,
-            'item_id' => $itemID,
-            'type'    => 1,
-        ])->first();
+        if(!$user){
+            $favourites = false;
+        }else{
+            $favourites = Favourite::query()->where([
+                'user_id' => $user->id,
+                'item_id' => $itemID,
+                'type'    => 1,
+            ])->first();
+        }
+
         if ($favourites) {
             $is_favourites = 1; //已收藏
         } else {
