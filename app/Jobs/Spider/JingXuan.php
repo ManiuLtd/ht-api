@@ -42,7 +42,7 @@ class JingXuan implements ShouldQueue
                 'itemid'          => $result->itemid,
                 'title'           => $result->title,
                 'pic_url'         => json_encode($result->itempic),
-                'content'         => htmlspecialchars_decode ($result->copy_content),
+                'content'         => htmlspecialchars_decode($result->copy_content),
                 'price'           => $result->itemprice,
                 'final_price'     => $result->itemendprice,
                 'coupon_price'    => $result->couponmoney,

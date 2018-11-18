@@ -58,9 +58,6 @@ class SaveGoods implements ShouldQueue
         $this->all = $all;
     }
 
-    /**
-     *
-     */
     public function handle()
     {
         switch ($this->spider) {
@@ -139,7 +136,6 @@ class SaveGoods implements ShouldQueue
      */
     protected function saveJTTGoods($results)
     {
-
         $inserts = [];
         foreach ($results as $result) {
             $data['title'] = $result->skuName;
@@ -178,9 +174,8 @@ class SaveGoods implements ShouldQueue
      * 多多进宝.
      * @param $results
      */
-    protected function  savePDDGoods($results)
+    protected function savePDDGoods($results)
     {
-
         $inserts = [];
         foreach ($results as $result) {
             $data['title'] = $result->skuName;
@@ -326,7 +321,6 @@ class SaveGoods implements ShouldQueue
         return $url;
     }
 
-
     /**
      * 设置好京客京东分类ID.
      * @param $cat
@@ -391,12 +385,12 @@ class SaveGoods implements ShouldQueue
             case '食品饮料':
                 return 27;
             default:
-                return null;
+                return;
         }
     }
 
     /**
-     * 好京客 拼多多分类
+     * 好京客 拼多多分类.
      * @param $cat
      * @return int
      */
@@ -411,7 +405,7 @@ class SaveGoods implements ShouldQueue
                 return 13;
             case '服饰':
                 return 14;
-            case '百货' :
+            case '百货':
                 return 15;
             case '美妆':
                 return 16;
@@ -434,8 +428,7 @@ class SaveGoods implements ShouldQueue
             case '家装':
                 return 1917;
             default:
-                return null;
+                return;
         }
     }
-
 }

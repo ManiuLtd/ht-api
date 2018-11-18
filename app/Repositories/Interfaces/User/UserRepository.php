@@ -34,13 +34,11 @@ interface UserRepository extends RepositoryInterface
      */
     public function bindInviter();
 
-
     public function register();
 
     /**
-     * 根据邀请码查看用户信息
+     * 根据邀请码查看用户信息.
      * @return mixed
      */
     public function getInviter();
-
 }

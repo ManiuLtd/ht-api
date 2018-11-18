@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\user\user;
-
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;

@@ -24,6 +24,4 @@ class Sms extends Model implements Transformable
      * @var array
      */
     protected $guarded = [];
-
-
 }

@@ -64,13 +64,13 @@ class SaveOrders implements ShouldQueue
     protected function saveTBKOrder($results)
     {
         foreach ($results as $result) {
-            $pid = Pid::query()->where('taobao',$result->adzone_id)->first();
-            if ($pid){
+            $pid = Pid::query()->where('taobao', $result->adzone_id)->first();
+            if ($pid) {
                 $user = User::query()->find($pid->user_id);
                 $group_id = $user->group_id;
                 $oldgroup_id = $user->oldgroup_id;
                 $user_id = $user->id;
-            }else{
+            } else {
                 $group_id = null;
                 $oldgroup_id = null;
                 $user_id = null;
@@ -91,7 +91,7 @@ class SaveOrders implements ShouldQueue
                 'status'            => $this->getStatus($result->tk_status),
                 'type'              => 1,
                 'complete_at'       => $result->earning_time ?? null,
-                'created_at'       => $result->create_time ,
+                'created_at'       => $result->create_time,
                 'updated_at'       => now()->toDateTimeString(),
             ];
             db('tbk_orders')->updateOrInsert([
@@ -131,13 +131,13 @@ class SaveOrders implements ShouldQueue
     protected function savePDDOrder($results)
     {
         foreach ($results as $result) {
-            $pid = Pid::query()->where('pinduoduo',$result->p_id)->first();
-            if ($pid){
+            $pid = Pid::query()->where('pinduoduo', $result->p_id)->first();
+            if ($pid) {
                 $user = User::query()->find($pid->user_id);
                 $user_id = $user->id;
                 $group_id = $user->group_id;
                 $oldgroup_id = $user->oldgroup_id;
-            }else{
+            } else {
                 $user_id = null;
                 $group_id = null;
                 $oldgroup_id = null;
@@ -150,15 +150,15 @@ class SaveOrders implements ShouldQueue
                 'title'             => $result->goods_name,
                 'itemid'            => $result->goods_id,
                 'count'             => $result->goods_quantity,
-                'price'             => $result->goods_price/100,
-                'final_price'       => $result->order_amount/100,
+                'price'             => $result->goods_price / 100,
+                'final_price'       => $result->order_amount / 100,
                 'commission_rate'   => $result->promotion_rate / 10,
                 'commission_amount' => $result->promotion_amount / 100,
                 'pid'               => $result->p_id,
                 'status'            => $this->getPDDStatus($result->order_status),
                 'type'              => 3,
                 'pic_url'           => $result->goods_thumbnail_url,
-                'complete_at'       => $result->order_modify_at ?date('Y-m-d H:i:s', $result->order_create_time): null,
+                'complete_at'       => $result->order_modify_at ? date('Y-m-d H:i:s', $result->order_create_time) : null,
                 'created_at'       => $result->order_create_time ? date('Y-m-d H:i:s', $result->order_create_time) : null,
                 'updated_at'       => now()->toDateTimeString(),
             ];
@@ -216,13 +216,13 @@ class SaveOrders implements ShouldQueue
         foreach ($results as $result) {
             $p_id = $result->unionId.'_0_'.$result->skuList[0]->spId;
 
-            $pid = Pid::query()->where('jingdong',$p_id)->first();
-            if ($pid){
+            $pid = Pid::query()->where('jingdong', $p_id)->first();
+            if ($pid) {
                 $user = User::query()->find($pid->user_id);
                 $user_id = $user->id;
                 $group_id = $user->group_id;
                 $oldgroup_id = $user->oldgroup_id;
-            }else{
+            } else {
                 $user_id = null;
                 $group_id = null;
                 $oldgroup_id = null;
@@ -242,11 +242,11 @@ class SaveOrders implements ShouldQueue
                 'pid'               => $p_id,
 //                'status'            => $this->getPDDStatus($result->order_status),
                 'type'              => 2,
-                'complete_at'       => $result->finishTime ? date('Y-m-d H:i:s', substr($result->finishTime,0,-3)) : null,
-                'created_at'        => $result->orderTime ? date('Y-m-d H:i:s', substr($result->orderTime,0,-3)) : null,
+                'complete_at'       => $result->finishTime ? date('Y-m-d H:i:s', substr($result->finishTime, 0, -3)) : null,
+                'created_at'        => $result->orderTime ? date('Y-m-d H:i:s', substr($result->orderTime, 0, -3)) : null,
                 'updated_at'       => now()->toDateTimeString(),
             ];
-            switch ($result->validCode){
+            switch ($result->validCode) {
                 case 16:
                     $status = 1;
                     break;
@@ -267,13 +267,12 @@ class SaveOrders implements ShouldQueue
             $item['status'] = $status;
             $commission_rate = 0;
             $commission_amount = 0;
-            foreach ($result->skuList as $value){
+            foreach ($result->skuList as $value) {
                 $commission_rate += $value->commissionRate;
                 $commission_amount += $value->estimateFee;
             }
             $item['commission_rate'] = $commission_rate;
             $item['commission_amount'] = $commission_amount;
-
 
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],

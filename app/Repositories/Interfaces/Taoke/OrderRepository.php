@@ -21,7 +21,7 @@ interface OrderRepository extends RepositoryInterface
     public function submitOrder();
 
     /**
-     * 会员收入信息
+     * 会员收入信息.
      * @return mixed
      */
     public function getMember();

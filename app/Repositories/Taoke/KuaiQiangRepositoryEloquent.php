@@ -18,8 +18,8 @@ class KuaiQiangRepositoryEloquent extends BaseRepository implements KuaiQiangRep
      */
     protected $fieldSearchable = [
         'type',
-        'title' => 'like'
-    ]; 
+        'title' => 'like',
+    ];
 
     /**
      * Specify Model class name.

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Backend\Sms;
 
-use App\Repositories\Interfaces\System\SmsRepository;
 use App\Http\Controllers\Controller;
+use App\Repositories\Interfaces\System\SmsRepository;
 
 class SmsController extends Controller
 {
@@ -28,9 +28,8 @@ class SmsController extends Controller
     {
         try {
             return $this->repository->sendSms();
-        }catch (\Exception $e){
-            return json(5001,$e->getMessage());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
         }
-
     }
 }

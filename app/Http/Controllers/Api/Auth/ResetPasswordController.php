@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Models\User\User;
-use Illuminate\Support\Facades\Cache;
 use Validator;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use App\Http\Controllers\Auth\Passwords\Facade\Password;
 use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
@@ -25,17 +25,16 @@ class ResetPasswordController extends Controller
         //验证表单内容
         $validate = Validator::make($request->all(), $this->rules());
         if ($validate->fails()) {
-
             return json(4001, $validate->getMessageBag()->first());
         }
         $user = User::query()->where([
             'phone' => $request->phone,
         ])->first();
 
-        if (!$user) {
-            return json(4001,'手机号不存在');
+        if (! $user) {
+            return json(4001, '手机号不存在');
         }
-        if (isset($request->phone) && !checkSms($request->phone, $request->code)) {
+        if (isset($request->phone) && ! checkSms($request->phone, $request->code)) {
             //手机验证码错误次数超过5次时重新验证
             $errorTime = cache('password:phone:error:'.$request->phone) ?? 0;
             $errorTime = $errorTime + 1;
@@ -50,7 +49,7 @@ class ResetPasswordController extends Controller
             return PasswordBrokerContract::INVALID_TOKEN;
         }
 
-        $this->resetPassword($user,$request->password);
+        $this->resetPassword($user, $request->password);
 
         return json(1001, '密码重置成功');
     }
@@ -68,6 +67,4 @@ class ResetPasswordController extends Controller
             'password' => 'required|confirmed|min:6',
         ];
     }
-
-
 }

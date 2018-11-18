@@ -33,7 +33,6 @@ class CreditLog extends Model implements Transformable
         'operater_id',
     ];
 
-
     /**
      * 所属用户.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

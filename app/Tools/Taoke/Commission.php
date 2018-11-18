@@ -2,7 +2,6 @@
 
 namespace App\Tools\Taoke;
 
-
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
