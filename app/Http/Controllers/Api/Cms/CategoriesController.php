@@ -25,7 +25,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     *  分类列表
+     *  分类列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()

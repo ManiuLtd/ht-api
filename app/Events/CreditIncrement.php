@@ -43,7 +43,7 @@ class CreditIncrement
      * @param float $credit 改变的积分或者余额数量
      * @param array $extra 备注
      */
-    public function __construct(User $user, int $column, float $credit, array $extra,int $type)
+    public function __construct(User $user, int $column, float $credit, array $extra, int $type)
     {
         $this->user = $user;
         $this->column = $column;

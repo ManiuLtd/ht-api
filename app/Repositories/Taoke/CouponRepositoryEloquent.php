@@ -43,7 +43,6 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-
     /**
      * @return string
      */
@@ -97,7 +96,6 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         return false;
     }
 
-
     /**
      * @return array|bool|mixed|string
      * @throws \Exception
@@ -105,26 +103,26 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     public function searchGoods()
     {
         $sort = request('sort');
-        if ($sort == 7){
-            $sort   = 'coupon_price';
-            $sort_a = 'desc';//倒序
-        }elseif ($sort == 8){
-            $sort   = 'coupon_price';
-            $sort_a = 'asc';//升序
-        }elseif ($sort == 4){
-            $sort   = 'price';
+        if ($sort == 7) {
+            $sort = 'coupon_price';
+            $sort_a = 'desc'; //倒序
+        } elseif ($sort == 8) {
+            $sort = 'coupon_price';
+            $sort_a = 'asc'; //升序
+        } elseif ($sort == 4) {
+            $sort = 'price';
             $sort_a = 'asc';
-        }elseif ($sort == 5){
-            $sort   = 'price';
+        } elseif ($sort == 5) {
+            $sort = 'price';
             $sort_a = 'desc';
-        }elseif ($sort == 2){
-            $sort   = 'volume';
+        } elseif ($sort == 2) {
+            $sort = 'volume';
             $sort_a = 'asc';
-        }elseif ($sort == 6){
-            $sort   = 'commission_rate';
+        } elseif ($sort == 6) {
+            $sort = 'commission_rate';
             $sort_a = 'asc';
-        }else{
-            $sort   = 'id';
+        } else {
+            $sort = 'id';
             $sort_a = 'asc';
         }
 
@@ -140,7 +138,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
             $coupon = db('coupons')->where([
                 'item_id' => $rest,
             ])
-                ->orderBy($sort,$sort_a)
+                ->orderBy($sort, $sort_a)
                 ->get()
                 ->toArray();
 

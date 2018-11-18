@@ -2,10 +2,8 @@
 
 namespace App\Tools\Taoke;
 
-use App\Models\Taoke\Favourite;
-use App\Models\User\User;
-use http\Exception\InvalidArgumentException;
 use Ixudra\Curl\Facades\Curl;
+use App\Models\Taoke\Favourite;
 use Illuminate\Support\Facades\DB;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkTpwdCreateRequest;
@@ -14,6 +12,7 @@ use TopClient\request\TbkItemInfoGetRequest;
 class Taobao implements TBKInterface
 {
     use TBKCommon;
+
     /**
      * 获取优惠券地址
      * @param array $array
@@ -23,15 +22,15 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
-        if (!isset($pids->taobao)){
+        if (! isset($pids->taobao)) {
             throw new \Exception('请先设置系统pid');
         }
         $userid = $this->getUserId();
 
-        $setting = setting($userid);// 应该是根据user或者user_id
+        $setting = setting($userid); // 应该是根据user或者user_id
 
-        $taobao = json_decode($setting->taobao);
-        if (!isset($taobao->sid)) {
+        $taobao = $setting->taobao;
+        if (! isset($taobao->sid)) {
             throw new \Exception('请先授权淘宝联盟');
         }
 
@@ -57,16 +56,15 @@ class Taobao implements TBKInterface
         return $resp;
     }
 
-
     /**
-     * 获取详情
+     * 获取详情.
      * @param array $params
      * @return array|mixed
      * @throws \Exception
      */
     public function getDetail(array $params = [])
     {
-        $itemID = $params['itemid'] ?? request ('itemid');
+        $itemID = $params['itemid'] ?? request('itemid');
         if (! is_numeric($itemID)) {
             throw  new \InvalidArgumentException('商品id类型错误');
         }
@@ -105,12 +103,12 @@ class Taobao implements TBKInterface
         $favourites = Favourite::query()->where([
             'user_id' => $user->id,
             'item_id' => $itemID,
-            'type'    => 1
+            'type'    => 1,
         ])->first();
-        if ($favourites){
-            $is_favourites = 1;//已收藏
-        }else{
-            $is_favourites = 2;//未收藏
+        if ($favourites) {
+            $is_favourites = 1; //已收藏
+        } else {
+            $is_favourites = 2; //未收藏
         }
         $data->is_favourites = $is_favourites;
         //获取图文详情
@@ -119,25 +117,25 @@ class Taobao implements TBKInterface
         //重组字段
         $coupon_price = isset($data->coupon->coupon_info) ? $this->getCouponPrice($data->coupon->coupon_info) : 0;
         $arr = [];
-        $arr['title']               = $data->title;//标题
-        $arr['item_id']             = $data->num_iid;//商品id
-        $arr['user_type']           = $data->user_type;//京东  拼多多 null  1淘宝 2天猫
-        $arr['volume']              = $data->volume;//销量
-        $arr['price']               = $data->zk_final_price;//原价
-        $arr['final_price']         = $data->zk_final_price - $coupon_price;//最终价
-        $arr['coupon_price']        = $coupon_price;//优惠价
-        $arr['commossion_rate']     = $data->coupon->max_commission_rate;//佣金比例
-        $arr['coupon_start_time']   = isset($data->coupon->coupon_start_time) ? $data->coupon->coupon_start_time : null;//优惠卷开始时间
-        $arr['coupon_end_time']     = isset($data->coupon->coupon_end_time) ? $data->coupon->coupon_end_time : null;//优惠卷结束时间
-        $arr['coupon_remain_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_remain_count : null;//已使用优惠卷数量
-        $arr['coupon_total_count']  = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_total_count : null;//优惠卷总数
-        $arr['pic_url']             = $data->pict_url;//商品主图
-        $arr['small_images']        = $data->small_images->string;//商品图
-        $arr['images']              = $images;//商品详情图
-        $arr['kouling']             = $data->kouling;//淘口令
-        $arr['introduce']           = $data->introduce;//描述
-        $arr['is_favourites']       = $data->is_favourites;//是否收藏
-        $arr['coupon_link']         =  ['url' => $data->coupon->coupon_click_url];//领劵地址
+        $arr['title'] = $data->title; //标题
+        $arr['item_id'] = $data->num_iid; //商品id
+        $arr['user_type'] = $data->user_type; //京东  拼多多 null  1淘宝 2天猫
+        $arr['volume'] = $data->volume; //销量
+        $arr['price'] = $data->zk_final_price; //原价
+        $arr['final_price'] = $data->zk_final_price - $coupon_price; //最终价
+        $arr['coupon_price'] = $coupon_price; //优惠价
+        $arr['commossion_rate'] = $data->coupon->max_commission_rate; //佣金比例
+        $arr['coupon_start_time'] = isset($data->coupon->coupon_start_time) ? $data->coupon->coupon_start_time : null; //优惠卷开始时间
+        $arr['coupon_end_time'] = isset($data->coupon->coupon_end_time) ? $data->coupon->coupon_end_time : null; //优惠卷结束时间
+        $arr['coupon_remain_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_remain_count : null; //已使用优惠卷数量
+        $arr['coupon_total_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_total_count : null; //优惠卷总数
+        $arr['pic_url'] = $data->pict_url; //商品主图
+        $arr['small_images'] = $data->small_images->string; //商品图
+        $arr['images'] = $images; //商品详情图
+        $arr['kouling'] = $data->kouling; //淘口令
+        $arr['introduce'] = $data->introduce; //描述
+        $arr['is_favourites'] = $data->is_favourites; //是否收藏
+        $arr['coupon_link'] = ['url' => $data->coupon->coupon_click_url]; //领劵地址
         return $arr;
     }
 
@@ -147,27 +145,25 @@ class Taobao implements TBKInterface
      */
     protected function getDesc($id)
     {
-
         $rest = Curl::to('http://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"'.$id.'"}')
             ->asJsonResponse()
             ->get();
         if (isset($rest->data->pcDescContent)) {
             return $rest->data->pcDescContent;
         }
-        return null;
     }
 
     /**
-     * 获取优惠卷金额
+     * 获取优惠卷金额.
      * @param $couponInfo
      * @return float
      */
     protected function getCouponPrice($couponInfo)
     {
-        $start = strpos($couponInfo, "减");
+        $start = strpos($couponInfo, '减');
         $len = strlen($couponInfo);
         $str = substr($couponInfo, $start, $len - $start);
-        $str1 = str_replace("减", '', $str);
+        $str1 = str_replace('减', '', $str);
         $str2 = str_replace('元', '', $str1);
 
         return floatval($str2);
@@ -183,7 +179,7 @@ class Taobao implements TBKInterface
     {
         //可根据商品ID搜索
         $page = request('page') ?? 1;
-        $tb_p = request('tb_p',1);
+        $tb_p = request('tb_p', 1);
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
         $sort = $array['sort'] ?? request('sort');
@@ -195,7 +191,7 @@ class Taobao implements TBKInterface
             'min_id' => $page,
             'tb_p' => $tb_p,
         ];
-        if ($sort != 7 || $sort != 8){
+        if ($sort != 7 || $sort != 8) {
             $params['sort'] = $sort;
         }
         $response = Curl::to('http://v2.api.haodanku.com/supersearch')
@@ -210,7 +206,6 @@ class Taobao implements TBKInterface
         }
         //当前页面地址
         $uri = \Request::url();
-
 
         //页码信息
         $totalPage = intval(floor(count($response->data) / $limit) + 1);
@@ -231,14 +226,13 @@ class Taobao implements TBKInterface
             ];
             array_push($data, $temp);
         }
-        foreach ($data as $key => $row)
-        {
-            $coupon_price[$key]  = $row['coupon_price'];
+        foreach ($data as $key => $row) {
+            $coupon_price[$key] = $row['coupon_price'];
         }
-        if ($sort == 7){
-            array_multisort($coupon_price, SORT_DESC,  $data);
-        }elseif ($sort == 8){
-            array_multisort($coupon_price, SORT_ASC,  $data);
+        if ($sort == 7) {
+            array_multisort($coupon_price, SORT_DESC, $data);
+        } elseif ($sort == 8) {
+            array_multisort($coupon_price, SORT_ASC, $data);
         }
 
         return [
@@ -266,7 +260,7 @@ class Taobao implements TBKInterface
     public function getOrders(array $array = [])
     {
         //  Implement getOrders() method.
-        $type = data_get($array,'type');
+        $type = data_get($array, 'type');
 
         $order_query_type = 'create_time';
 
@@ -281,7 +275,7 @@ class Taobao implements TBKInterface
 //            'start_time' => '2018-11-01 15:45:02',
             'span' => 600,
             'signurl' => 0,
-            'page_no' => data_get($array,'page',1),
+            'page_no' => data_get($array, 'page', 1),
             'page_size' => 500,
             'order_query_type' => $order_query_type,
         ];
@@ -298,6 +292,7 @@ class Taobao implements TBKInterface
         if (! isset($resp->n_tbk_order)) {
             throw  new \Exception('没有数据');
         }
+
         return $resp->n_tbk_order;
     }
 

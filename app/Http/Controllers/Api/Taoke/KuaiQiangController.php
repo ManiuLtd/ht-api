@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\KuaiQiangValidator;
 use App\Repositories\Interfaces\Taoke\KuaiQiangRepository;
 
 /**
@@ -15,7 +14,6 @@ class KuaiQiangController extends Controller
      * @var KuaiqiangRepository
      */
     protected $repository;
-
 
     /**
      * CategoriesController constructor.

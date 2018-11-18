@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Requests\Auth\User\LoginRequest;
-use App\Http\Controllers\Controller;
 use App\Models\User\User;
+use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Http\Requests\Auth\User\LoginRequest;
 
 class LoginController extends Controller
 {
-
     /**
      * 用户登录.
      *
@@ -18,8 +17,7 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-
-        switch (request('type')){
+        switch (request('type')) {
             case 'wechat':
                 return $this->wechatLogin();
                 break;
@@ -27,9 +25,8 @@ class LoginController extends Controller
                 return $this->phoneLogin();
                 break;
             default:
-                return json(4001,'login type error');
+                return json(4001, 'login type error');
         }
-
     }
 
     /**
@@ -37,13 +34,13 @@ class LoginController extends Controller
      * @param $token
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token,$user)
+    protected function respondWithToken($token, $user)
     {
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => $user
+            'user' => $user,
         ];
 
         return json(1001, '登录成功', $data);
@@ -65,10 +62,9 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'code' => 4061,
-                'message' => $validator->errors()->first()
+                'message' => $validator->errors()->first(),
             ]);
         }
-
 
         try {
             $user = User::query()->where([
@@ -83,7 +79,7 @@ class LoginController extends Controller
                 ]);
                 $token = auth()->login($user);
 
-                return $this->respondWithToken($token,$user);
+                return $this->respondWithToken($token, $user);
             }
 
             // 用户不存在，注册
@@ -97,8 +93,7 @@ class LoginController extends Controller
             $user = User::query()->create($insert);
             $token = auth()->login($user);
 
-            return $this->respondWithToken($token,$user);
-
+            return $this->respondWithToken($token, $user);
         } catch (JWTException $e) {
             return json(5001, $e->getMessage());
         }
@@ -109,17 +104,17 @@ class LoginController extends Controller
      */
     protected function phoneLogin()
     {
-        $credentials = request()->only(['phone','password']);
+        $credentials = request()->only(['phone', 'password']);
         try {
             $token = auth()->attempt($credentials);
             if (! $token) {
                 return json(4001, '用户登录失败');
             }
             $user = auth()->user();
-        }catch (JWTException $e){
-
+        } catch (JWTException $e) {
             return json(5001, $e->getMessage());
         }
+
         return $this->respondWithToken($token, $user);
     }
 }

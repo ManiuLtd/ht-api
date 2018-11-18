@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Validators\User\WithdrawValidator;
 use App\Http\Requests\User\WithdrawCreateRequest;
-use App\Repositories\Interfaces\User\WithdrawRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
+use App\Repositories\Interfaces\User\WithdrawRepository;
 
 /**
  * 提现
@@ -50,6 +50,7 @@ class WithdrawsController extends Controller
     {
         try {
             $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+
             return $this->repository->create($request->all());
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());

@@ -42,6 +42,4 @@ class Notification extends Model implements Transformable
     {
         return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
     }
-
-
 }

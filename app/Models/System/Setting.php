@@ -36,84 +36,24 @@ class Setting extends Model implements Transformable
         'pinduouo',
     ];
 
-    public function transform()
-    {
-        $data = $this->toArray();
-        $data['enough_reduce'] = json_decode($data['enough_reduce']);
-        $data['enough_free']   = json_decode($data['enough_free']);
-        $data['deduction']     = json_decode($data['deduction']);
-        $data['payment']       = json_decode($data['payment']);
-        $data['recharge']      = json_decode($data['recharge']);
-        $data['credit']        = json_decode($data['credit']);
-        $data['shop']          = json_decode($data['shop']);
-        $data['credit_order']  = json_decode($data['credit_order']);
-        $data['credit_friend'] = json_decode($data['credit_friend']);
-        $data['notification']  = json_decode($data['notification']);
-        $data['pid']           = json_decode($data['pid']);
-        $data['withdraw']      = json_decode($data['withdraw']);
-        $data['taobao']        = json_decode($data['taobao']);
-        $data['jingdong']      = json_decode($data['jingdong']);
-        $data['pinduoduo']     = json_decode($data['pinduoduo']);
-        $data['unionid']       = json_decode($data['unionid']);
-        return $data;
-    }
-
     /**
-     * The "booting" method of the model.
+     * @var array
      */
-    public static function boot()
-    {
-        parent::boot();
-
-        self::updating(function ($model) {
-            if (request('enough_reduce')) {
-                $model->enough_reduce = json_encode(request('enough_reduce'));
-            }
-            if (request('enough_free')) {
-                $model->enough_free = json_encode(request('enough_free'));
-            }
-            if (request('deduction')) {
-                $model->deduction = json_encode(request('deduction'));
-            }
-            if (request('payment')) {
-                $model->payment = json_encode(request('payment'));
-            }
-            if (request('recharge')) {
-                $model->recharge = json_encode(request('recharge'));
-            }
-            if (request('credit')) {
-                $model->credit = json_encode(request('credit'));
-            }
-            if (request('shop')) {
-                $model->shop = json_encode(request('shop'));
-            }
-            if (request('credit_order')) {
-                $model->credit_order = json_encode(request('credit_order'));
-            }
-            if (request('credit_friend')) {
-                $model->credit_friend = json_encode(request('credit_friend'));
-            }
-            if (request('notification')) {
-                $model->notification = json_encode(request('notification'));
-            }
-            if (request('pid')) {
-                $model->pid = json_encode(request('pid'));
-            }
-            if (request('withdraw')) {
-                $model->withdraw = json_encode(request('withdraw'));
-            }
-            if (request('taobao')) {
-                $model->taobao = json_encode(request('taobao'));
-            }
-            if (request('jingdong')) {
-                $model->jingdong = json_encode(request('jingdong'));
-            }
-            if (request('pinduouo')) {
-                $model->pinduouo = json_encode(request('pinduouo'));
-            }
-            if (request('unionid')) {
-                $model->unionid = json_encode(request('unionid'));
-            }
-        });
-    }
+    protected $casts = [
+        'enough_reduce' => 'array',
+        'enough_free' => 'array',
+        'deduction' => 'array',
+        'payment' => 'array',
+        'recharge' => 'array',
+        'shop' => 'array',
+        'credit' => 'array',
+        'credit_order' => 'array',
+        'credit_friend' => 'array',
+        'notification' => 'array',
+        'pid' => 'array',
+        'withdraw' => 'array',
+        'taobao' => 'array',
+        'jingdong' => 'array',
+        'pinduouo' => 'array',
+    ];
 }

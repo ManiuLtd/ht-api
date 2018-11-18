@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Backend\User;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\User\UserRepository;
 use App\Validators\User\UserValidator;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
+use App\Repositories\Interfaces\User\UserRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 /**
@@ -46,7 +46,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $userss = $this->repository->with (['group','level','oldGroup','inviter'])->paginate();
+        $userss = $this->repository->with(['group', 'level', 'oldGroup', 'inviter'])->paginate();
 
         return json(1001, '列表获取成功', $userss);
     }
@@ -76,7 +76,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $users = $this->repository->with (['group','level','oldGroup','inviter'])->find($id);
+        $users = $this->repository->with(['group', 'level', 'oldGroup', 'inviter'])->find($id);
 
         return json(1001, '详情获取成功', $users);
     }

@@ -102,7 +102,7 @@ if (! function_exists('getUserId')) {
      */
     function getUserId()
     {
-        return auth()->id ();
+        return auth()->id();
     }
 }
 if (! function_exists('getUser')) {
@@ -116,8 +116,6 @@ if (! function_exists('getUser')) {
     }
 }
 
-
-
 if (! function_exists('checkSms')) {
 
     /**
@@ -128,7 +126,6 @@ if (! function_exists('checkSms')) {
      */
     function checkSms($phone, $code)
     {
-
         $model = \App\Models\System\Sms::where([
             'code' => $code,
             'phone' => $phone,
@@ -143,22 +140,23 @@ if (! function_exists('checkSms')) {
     }
 }
 
-if (!function_exists('setting')) {
+if (! function_exists('setting')) {
     /**
-     * 获取设置信息
+     * 获取设置信息.
      * @param $userID
      * @return mixed
      */
     function setting($userID)
     {
         $setting = (new \App\Models\System\Setting())->where('user_id', $userID)->first();
+
         return $setting;
     }
 }
 
-if (!function_exists('creditAdd')) {
+if (! function_exists('creditAdd')) {
     /**
-     * 积分、余额、成长值增加
+     * 积分、余额、成长值增加.
      * @param $member
      * @param $credit
      * @param $column
@@ -167,30 +165,30 @@ if (!function_exists('creditAdd')) {
      * @return \Illuminate\Http\JsonResponse
      * @throws Exception
      */
-    function creditAdd($member,$credit,$column,$extra,$type)
+    function creditAdd($member, $credit, $column, $extra, $type)
     {
         $today = \Carbon\Carbon::today()->toDateTimeString();
-        $credits = \App\Models\User\CreditLog::where(['member_id'=>$member->id,'column'=>$credit])
-            ->whereIn('type',[11,13,15,21,22,23,16,17,18,19])
-            ->whereDate('created_at',$today)
+        $credits = \App\Models\User\CreditLog::where(['member_id'=>$member->id, 'column'=>$credit])
+            ->whereIn('type', [11, 13, 15, 21, 22, 23, 16, 17, 18, 19])
+            ->whereDate('created_at', $today)
             ->sum('credit');
         //设置信息
         $setting = setting(1);
-        $credit_friend = json_decode($setting->credit_friend);
-        if (!$credit_friend) {
+        $credit_friend = $setting->credit_friend;
+        if (! $credit_friend) {
             throw new \Exception('管理员还没配置参数');
         }
 
-        if($column == 'credit1' && $credits < $credit_friend->friend_max_credit1){
-            event(new \App\Events\CreditIncrement($member, $column, $credit, $extra,$type));//余额
+        if ($column == 'credit1' && $credits < $credit_friend->friend_max_credit1) {
+            event(new \App\Events\CreditIncrement($member, $column, $credit, $extra, $type)); //余额
             return true;
-        }elseif ($column == 'credit2' && $credits < $credit_friend->friend_max_credit2){
-            event(new \App\Events\CreditIncrement($member, $column, $credit, $extra,$type));//积分
+        } elseif ($column == 'credit2' && $credits < $credit_friend->friend_max_credit2) {
+            event(new \App\Events\CreditIncrement($member, $column, $credit, $extra, $type)); //积分
             return true;
-        }elseif ($column == 'credit3' && $credits < $credit_friend->friend_max_credit3){
-            event(new \App\Events\CreditIncrement($member, $column, $credit, $extra,$type));//成长值
+        } elseif ($column == 'credit3' && $credits < $credit_friend->friend_max_credit3) {
+            event(new \App\Events\CreditIncrement($member, $column, $credit, $extra, $type)); //成长值
             return true;
-        }else{
+        } else {
             return false;
         }
     }

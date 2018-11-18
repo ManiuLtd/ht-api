@@ -1,7 +1,8 @@
 <?php
+
 Route::namespace('Taoke')
     ->prefix('taoke')
-    ->group(function (){
+    ->group(function () {
         //优惠卷
         Route::get('coupon', 'CouponsController@index');
         //优惠券详情
@@ -19,8 +20,6 @@ Route::namespace('Taoke')
             'only' => ['index'],
         ]);
     });
-
-
 
 Route::namespace('Taoke')
     ->prefix('taoke')

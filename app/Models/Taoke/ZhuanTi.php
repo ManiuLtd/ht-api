@@ -31,7 +31,7 @@ class ZhuanTi extends Model implements Transformable
     }
 
     /**
-     * 添加更新前
+     * 添加更新前.
      */
     protected static function boot()
     {

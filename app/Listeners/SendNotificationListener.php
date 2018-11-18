@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\SendNotification;
 use Hashids\Hashids;
+use App\Events\SendNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -44,7 +44,6 @@ class SendNotificationListener
 
         //判断是否为群发
         if (! $isAllAudience) {
-
             $tag = Hashids::encode($messages['user_id']);
             $push->addTag($tag);
             $insert['type'] = 1;

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Requests\Auth\User\RegisterRequest;
-use App\Repositories\Interfaces\System\SmsRepository;
-use App\Repositories\Interfaces\User\UserRepository;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\User\RegisterRequest;
+use App\Repositories\Interfaces\User\UserRepository;
+use App\Repositories\Interfaces\System\SmsRepository;
 
 class RegisterController extends Controller
 {
@@ -24,7 +23,7 @@ class RegisterController extends Controller
      * @param UserRepository $repository
      * @param SmsRepository $smsRepository
      */
-    public function __construct(UserRepository $repository,SmsRepository $smsRepository)
+    public function __construct(UserRepository $repository, SmsRepository $smsRepository)
     {
         $this->repository = $repository;
         $this->smsRepository = $smsRepository;
@@ -36,10 +35,10 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        try{
+        try {
             return $this->repository->register();
-        }catch (\Exception $e){
-            return json(5001,$e->getMessage());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
         }
     }
 }

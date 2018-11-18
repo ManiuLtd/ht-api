@@ -57,8 +57,8 @@ class SmsRepositoryEloquent extends BaseRepository implements SmsRepository
     public function sendSms()
     {
         $phone = request('phone');
-        if (!preg_match("/^1[3456789]{1}\d{9}$/", $phone)) {
-            return json(4001,'手机号格式不正确');
+        if (! preg_match("/^1[3456789]{1}\d{9}$/", $phone)) {
+            return json(4001, '手机号格式不正确');
         }
         $token = rand(100000, 999999);
         event(new SendSMS($phone, env('JUHE_SMS_VERIFY_TEMPLATE_ID'), $token));
@@ -66,6 +66,7 @@ class SmsRepositoryEloquent extends BaseRepository implements SmsRepository
             'phone' => $phone,
             'code' => $token,
         ]);
-        return json(1001,'短信发送成功');
+
+        return json(1001, '短信发送成功');
     }
 }

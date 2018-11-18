@@ -2,7 +2,6 @@
 
 namespace App\Models\User;
 
-use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
@@ -58,6 +57,4 @@ class Group extends Model implements Transformable
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-
 }

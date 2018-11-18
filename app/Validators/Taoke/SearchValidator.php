@@ -3,7 +3,6 @@
 namespace App\Validators\Taoke;
 
 use Prettus\Validator\LaravelValidator;
-use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class CouponValidator.

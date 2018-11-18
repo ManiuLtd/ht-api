@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Backend\System;
 
-use App\Models\System\Setting;
-use App\Repositories\Interfaces\System\SettingRepository;
 use Ixudra\Curl\Facades\Curl;
+use App\Models\System\Setting;
 use App\Http\Controllers\Controller;
+use App\Repositories\Interfaces\System\SettingRepository;
 
 /**
  * Class FeedbacksController.
@@ -45,9 +45,9 @@ class AuthorizationsController extends Controller
 
         return json(1001, '获取成功', [
             'ddkuri' => $ddkuri,
-            'taobao'    => json_decode($setting->taobao),
-            'jingdong'  => json_decode($setting->jingdong),
-            'pinduoduo' => json_decode($setting->pinduoduo),
+            'taobao'    => $setting->taobao,
+            'jingdong'  => $setting->jingdong,
+            'pinduoduo' => $setting->pinduoduo,
         ]);
     }
 
@@ -58,6 +58,7 @@ class AuthorizationsController extends Controller
     {
         $type = request('type', request('state'));
 
+        $create = [];
         try {
             switch ($type) {
                 case 1:
@@ -82,21 +83,20 @@ class AuthorizationsController extends Controller
             }
             $setting = setting(getUserId());
             if ($type == 2) {
-                Setting::query()->where('id',$setting->id)->update([
-                    'jingdong' => json_encode($create)
+                Setting::query()->where('id', $setting->id)->update([
+                    'jingdong' => $create,
                 ]);
-            }elseif ($type == 3) {
-                Setting::query()->where('id',$setting->id)->update([
-                    'pinduouo' => json_encode($create)
+            } elseif ($type == 3) {
+                Setting::query()->where('id', $setting->id)->update([
+                    'pinduouo' => $create,
                 ]);
-            }else{
-                Setting::query()->where('id',$setting->id)->update([
-                    'taobao' => json_encode($create)
+            } else {
+                Setting::query()->where('id', $setting->id)->update([
+                    'taobao' => $create,
                 ]);
             }
 
-
-            return json('1001','OK');
+            return json('1001', 'OK');
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
@@ -118,7 +118,7 @@ class AuthorizationsController extends Controller
                 'client_secret' => '8d05a49c2bad4c1fa62caa78c2647757',
             ])
             ->post();
-        $resp= iconv('GBK','UTF-8',$resp);
+        $resp = iconv('GBK', 'UTF-8', $resp);
 
         $resp = json_decode($resp);
         if (! $resp) {

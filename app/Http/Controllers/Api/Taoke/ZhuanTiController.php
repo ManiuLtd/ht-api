@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\ZhuanTiValidator;
 use App\Repositories\Interfaces\Taoke\ZhuanTiRepository;
 
 /**
@@ -15,7 +14,6 @@ class ZhuanTiController extends Controller
      * @var ZhuanTiRepository
      */
     protected $repository;
-
 
     /**
      * ZhuanTiController constructor.

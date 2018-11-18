@@ -8,14 +8,4 @@ Route::middleware('api')->namespace('Backend')->prefix('admin')->group(function 
 
 Route::middleware('api')->namespace('Api')->group(function () {
     include_route_files(__DIR__.'/api/');
-
 });
-
-
-
-
-
-
-
-
-
