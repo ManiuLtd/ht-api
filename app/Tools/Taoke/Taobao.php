@@ -229,6 +229,7 @@ class Taobao implements TBKInterface
                 'commission_rate' => round($list->tkrates),
                 'type'            => 1,
                 'volume'          => round($list->itemsale),
+                'finalCommission' => 8.88
             ];
             array_push($data, $temp);
         }
