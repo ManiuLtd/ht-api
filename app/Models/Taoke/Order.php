@@ -32,25 +32,26 @@ class Order extends Model implements Transformable
     public static function boot()
     {
         parent::boot();
-        //创建订单时候,根据订单状态调用事件
-        if (request('status') == 3 && request('member_id')) {
-            self::creating(function ($model) {
-                event(new SendOrder([
-                    'user_id' => request('member_id')
-                ]));
-            });
-            //TODO 发送推送
-        }
-
-        //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
-        if (request('status') == 3 && request('member_id')) {
-            self::updating(function ($model) {
-                event(new SendOrder([
-                    'user_id' => request('member_id')
-                ]));
-            });
-            //TODO 发送推送
-        }
+        //TODO 这里代码是什么意思
+//        //创建订单时候,根据订单状态调用事件
+//        if (request('status') == 3 && request('member_id')) {
+//            self::creating(function ($model) {
+//                event(new SendOrder([
+//                    'user_id' => request('member_id')
+//                ]));
+//            });
+//            //TODO 发送推送
+//        }
+//
+//        //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
+//        if (request('status') == 3 && request('member_id')) {
+//            self::updating(function ($model) {
+//                event(new SendOrder([
+//                    'user_id' => request('member_id')
+//                ]));
+//            });
+//            //TODO 发送推送
+//        }
     }
 
 
