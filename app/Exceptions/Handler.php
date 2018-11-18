@@ -68,10 +68,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
             //判断token 是否注销或者过期
             if (! \auth()->guard('api')->user()) {
-                return response()->json([
-                    'code' => 4002,
-                    'message' => 'The token has been blacklisted',
-                ]);
+                return json(4002, 'The token has been blacklisted');
             }
         }
 
