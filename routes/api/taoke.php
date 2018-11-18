@@ -9,6 +9,8 @@ Route::namespace('Taoke')
 
         Route::get('coupon/detail', 'CouponsController@detail');
 
+        //分类
+        Route::get('category', 'CategoriesController@index');
         //搜索
         Route::get('search', 'SearchController@index');
         Route::get('search/hot', 'SearchController@keywords');
@@ -45,8 +47,7 @@ Route::namespace('Taoke')
             'only' => ['index', 'store', 'destory'],
         ]);
 
-        //分类
-        Route::get('category', 'CategoriesController@index');
+
 
         //详情分享二维码
         Route::get('qrcode/share', 'QrcodeController@share');
