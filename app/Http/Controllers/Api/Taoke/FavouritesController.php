@@ -52,7 +52,7 @@ class FavouritesController extends Controller
     /**
      * 添加收藏.
      * @param FavouriteCreateRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse5
      */
     public function store(FavouriteCreateRequest $request)
     {
