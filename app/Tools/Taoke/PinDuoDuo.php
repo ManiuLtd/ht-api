@@ -107,12 +107,12 @@ class PinDuoDuo implements TBKInterface
         $arr['item_id'] = $data->skuId; //商品id
         $arr['user_type'] = null; //京东  拼多多 null  1淘宝 2天猫
         $arr['volume'] = $data->sales; //销量
-        $arr['price'] = $data->wlPrice; //原价
-        $arr['final_price'] = $data->wlPrice_after; //最终价
-        $arr['coupon_price'] = $data->discount; //优惠价
+        $arr['price'] = floatval ($data->wlPrice); //原价
+        $arr['final_price'] = floatval ($data->wlPrice_after); //最终价
+        $arr['coupon_price'] = floatval ($data->discount); //优惠价
         $arr['commossion_rate'] = $data->wlCommissionShare; //佣金比例
-        $arr['coupon_start_time'] = $data->beginTime ? Carbon::createFromTimestamp(intval($data->beginTime))->toDateTimeString() : null; //优惠卷开始时间
-        $arr['coupon_end_time'] = $data->endTime ? Carbon::createFromTimestamp(intval($data->endTime))->toDateTimeString() : null; //优惠卷结束时间
+        $arr['coupon_start_time'] = $data->beginTime ? Carbon::createFromTimestamp(intval($data->beginTime))->toDateString() : Carbon::now ()->toDateString (); //优惠卷开始时间
+        $arr['coupon_end_time'] = $data->endTime ? Carbon::createFromTimestamp(intval($data->endTime))->toDateString() : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
         $arr['coupon_remain_count'] = $data->coupon_total_quantity - $data->coupon_remain_quantity; //已使用优惠卷数量
         $arr['coupon_total_count'] = $data->coupon_total_quantity; //优惠卷总数
         $arr['pic_url'] = $data->picUrl; //商品主图

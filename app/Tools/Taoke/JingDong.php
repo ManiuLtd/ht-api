@@ -21,28 +21,28 @@ class JingDong implements TBKInterface
         $itemID = $array['itemID'];
         $coupon_url = $array['coupon_url'];
 
-        $pids = $this->getPids();
-        if (! isset($pids->jingdong)) {
+        $pids = $this->getPids ();
+        if (!isset($pids->jingdong)) {
             throw new \Exception('请先设置系统京东推广位id');
         }
-        $userid = $this->getUserId();
-        $setting = setting($userid);
+        $userid = $this->getUserId ();
+        $setting = setting ($userid);
         $unionid = $setting->unionid;
-        if (! isset($unionid->jingdong)) {
+        if (!isset($unionid->jingdong)) {
             throw new \Exception('请先设置京东联盟id');
         }
         // 返回领券地址
-        $result = Curl::to('http://japi.jingtuitui.com/api/get_goods_link')
-            ->withData([
-                'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
-                'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
+        $result = Curl::to ('http://japi.jingtuitui.com/api/get_goods_link')
+            ->withData ([
+                'appid' => data_get (config ('coupon'), 'jingdong.JD_APPID'),
+                'appkey' => data_get (config ('coupon'), 'jingdong.JD_APPKEY'),
                 'unionid' => $unionid->jingdong,
                 'positionid' => $pids->jingdong,
                 'gid' => $itemID,
                 'coupon_url' => $coupon_url,
             ])
-            ->asJsonResponse()
-            ->post();
+            ->asJsonResponse ()
+            ->post ();
 
         if ($result->return != 0) {
             throw new \Exception($result->result);
@@ -57,17 +57,17 @@ class JingDong implements TBKInterface
      */
     public function getDetail()
     {
-        $id = request('itemid');
+        $id = request ('itemid');
 
         $params = [
             'type' => 'goodsdetail',
-            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),
             'skuid' => $id,
         ];
-        $response = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
-            ->withData($params)
-            ->post();
-        $response = json_decode($response);
+        $response = Curl::to ('http://api-gw.haojingke.com/index.php/api/index/myapi')
+            ->withData ($params)
+            ->post ();
+        $response = json_decode ($response);
 
         if ($response->status_code != 200) {
             throw new \Exception($response->message);
@@ -75,27 +75,27 @@ class JingDong implements TBKInterface
 
         //领券地址
         $link = null;
-        if (getUserId()) {
+        if (getUserId ()) {
             try {
-                $link = $this->getCouponUrl([
+                $link = $this->getCouponUrl ([
                     'itemID' => $id,
                     'coupon_url' => $response->data->couponList,
                 ]);
             } catch (\Exception $e) {
             }
         }
-        $resCoupon = $this->getCoupon([
+        $resCoupon = $this->getCoupon ([
             'url' => $response->data->couponList,
         ]);
         //判断优惠卷是否被收藏
         $is_favourites = null;
-        if (getUserId()) {
-            $user = getUser();
-            $favourites = Favourite::query()->where([
+        if (getUserId ()) {
+            $user = getUser ();
+            $favourites = Favourite::query ()->where ([
                 'user_id' => $user->id,
                 'item_id' => $id,
                 'type' => 2,
-            ])->first();
+            ])->first ();
             if ($favourites) {
                 $is_favourites = 1; //已收藏
             } else {
@@ -105,7 +105,7 @@ class JingDong implements TBKInterface
 
         $data = $response->data;
         //图文详情
-        $images = $this->Graphic($id);
+        $images = $this->Graphic ($id);
 
         //获取优惠卷信息
         $arr = [];
@@ -113,12 +113,12 @@ class JingDong implements TBKInterface
         $arr['item_id'] = $data->skuId; //商品id
         $arr['user_type'] = null; //京东  拼多多 null  1淘宝 2天猫
         $arr['volume'] = null; //销量
-        $arr['price'] = $data->wlPrice; //原价
-        $arr['final_price'] = $data->wlPrice_after; //最终价
-        $arr['coupon_price'] = $data->discount; //优惠价
+        $arr['price'] = floatval ($data->wlPrice); //原价
+        $arr['final_price'] = floatval ($data->wlPrice_after); //最终价
+        $arr['coupon_price'] = floatval ($data->discount); //优惠价
         $arr['commossion_rate'] = $data->wlCommissionShare; //佣金比例
-        $arr['coupon_start_time'] = Carbon::createFromTimestamp(intval($data->beginTime))->toDateTimeString(); //优惠卷开始时间
-        $arr['coupon_end_time'] = Carbon::createFromTimestamp(intval($data->endTime))->toDateTimeString(); //优惠卷结束时间
+        $arr['coupon_start_time'] = isset($data->beginTime) ? Carbon::createFromTimestamp ($data->beginTime)->toDateString () : Carbon::now ()->toDateString (); //优惠卷开始时间
+        $arr['coupon_end_time'] = isset($data->endTime) ? Carbon::createFromTimestamp ($data->endTime)->toDateString () : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
         $arr['coupon_remain_count'] = isset($resCoupon->remainnum) ? $resCoupon->remainnum : 0; //已使用优惠卷数量
         $arr['coupon_total_count'] = isset($resCoupon->num) ? $resCoupon->num : 0; //优惠卷总数
         $arr['pic_url'] = $data->picUrl; //商品主图
@@ -138,19 +138,19 @@ class JingDong implements TBKInterface
      */
     protected function Graphic($id)
     {
-        $resp = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
-            ->withData([
+        $resp = Curl::to ('http://api-gw.haojingke.com/index.php/api/index/myapi')
+            ->withData ([
                 'type' => 'detail',
-                'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+                'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),
                 'skuid' => $id,
             ])
-            ->asJsonResponse()
-            ->post();
+            ->asJsonResponse ()
+            ->post ();
 
         if ($resp->status_code != 200) {
             throw new \Exception($resp->message);
         }
-        $rest = Curl::to($resp->data)->asJsonResponse()->get();
+        $rest = Curl::to ($resp->data)->asJsonResponse ()->get ();
         if (isset($rest->content)) {
             return $rest->content;
         }
@@ -169,15 +169,15 @@ class JingDong implements TBKInterface
             return false;
         }
         $params = [
-            'appid' => data_get(config('coupon'), 'jingdong.JD_APPID'),
-            'appkey' => data_get(config('coupon'), 'jingdong.JD_APPKEY'),
+            'appid' => data_get (config ('coupon'), 'jingdong.JD_APPID'),
+            'appkey' => data_get (config ('coupon'), 'jingdong.JD_APPKEY'),
             'url' => $url,
         ];
-        $response = Curl::to('http://japi.jingtuitui.com/api/get_coupom_info')
-            ->withData($params)
-            ->post();
+        $response = Curl::to ('http://japi.jingtuitui.com/api/get_coupom_info')
+            ->withData ($params)
+            ->post ();
 
-        $response = json_decode($response);
+        $response = json_decode ($response);
         if ($response->return != 0) {
             throw new \Exception($response->result);
         }
@@ -194,13 +194,13 @@ class JingDong implements TBKInterface
     {
         //排序没写，测试接口是否正常
 
-        $page = request('page', 1);
-        $q = request('q');
-        $sort = request('sort');
+        $page = request ('page', 1);
+        $q = request ('q');
+        $sort = request ('sort');
 
         $params = [
             'type' => 'goodslist',
-            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),
             'keyword' => $q,
             'page' => $page,
 
@@ -226,10 +226,10 @@ class JingDong implements TBKInterface
                 $params['sort'] = 0;
                 break;
         }
-        $response = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi?type=goodslist')
-            ->withData($params)
-            ->asJsonResponse()
-            ->post();
+        $response = Curl::to ('http://api-gw.haojingke.com/index.php/api/index/myapi?type=goodslist')
+            ->withData ($params)
+            ->asJsonResponse ()
+            ->post ();
 
         if ($response->status_code != 200) {
             throw new \Exception($response->message);
@@ -239,10 +239,10 @@ class JingDong implements TBKInterface
             $temp['title'] = $datum->skuName;
             $temp['pic_url'] = $datum->picUrl;
             $temp['item_id'] = $datum->skuId;
-            $temp['price'] = round($datum->wlPrice);
-            $temp['final_price'] = round($datum->wlPrice_after);
-            $temp['coupon_price'] = round($datum->discount);
-            $temp['commission_rate'] = round($datum->wlCommissionShare);
+            $temp['price'] = round ($datum->wlPrice);
+            $temp['final_price'] = round ($datum->wlPrice_after);
+            $temp['coupon_price'] = round ($datum->discount);
+            $temp['commission_rate'] = round ($datum->wlCommissionShare);
             $temp['type'] = 2;
             $temp['volume'] = null;
             $data[] = $temp;
@@ -250,10 +250,10 @@ class JingDong implements TBKInterface
         }
 
         //当前页面地址
-        $uri = request()->getUri();
+        $uri = request ()->getUri ();
         //验证是否填写page参数
-        if (! str_contains('page=', $uri)) {
-            $uri = $uri.'&page=1';
+        if (!str_contains ('page=', $uri)) {
+            $uri = $uri . '&page=1';
         }
 
         //页码信息
@@ -268,19 +268,19 @@ class JingDong implements TBKInterface
         return [
             'data' => $data,
             'links' => [
-                'first' => str_replace("page={$page}", 'page=1', $uri),
-                'last' => str_replace("page={$page}", "page={$totalPage}", $uri),
-                'prev' => $page == 1 ? null : str_replace("page={$page}", "page={$prevPage}", $uri),
-                'next' => str_replace("page={$page}", "page={$nextPage}", $uri),
+                'first' => str_replace ("page={$page}", 'page=1', $uri),
+                'last' => str_replace ("page={$page}", "page={$totalPage}", $uri),
+                'prev' => $page == 1 ? null : str_replace ("page={$page}", "page={$prevPage}", $uri),
+                'next' => str_replace ("page={$page}", "page={$nextPage}", $uri),
             ],
             'meta' => [
-                'current_page' => (int) $page,
+                'current_page' => (int)$page,
                 'from' => 1,
                 'last_page' => $totalPage,
-                'path' => request()->url(),
+                'path' => request ()->url (),
                 'per_page' => 20,
                 'to' => 20 * $page,
-                'total' => count($response->data),
+                'total' => count ($response->data),
                 'tb_p' => null,
             ],
         ];
@@ -294,52 +294,52 @@ class JingDong implements TBKInterface
      */
     public function getOrders(array $array = [])
     {
-        $userid = $this->getUserId();
-        $setting = setting($userid);
+        $userid = $this->getUserId ();
+        $setting = setting ($userid);
         $unionid = $setting->unionid;
-        if (! isset($unionid->jingdong)) {
+        if (!isset($unionid->jingdong)) {
             throw new \Exception('请先设置京东联盟id');
         }
 
         $page = $array['page'] ?? 1;
-        $time = now()->toDateTimeString();
+        $time = now ()->toDateTimeString ();
         $params = [
             'method' => 'jingdong.UnionService.queryOrderList',
-            'access_token' => data_get(config('coupon'), 'jingdong.access_token'),
-            'app_key' => data_get(config('coupon'), 'jingdong.JDM_APP_KEY'),
+            'access_token' => data_get (config ('coupon'), 'jingdong.access_token'),
+            'app_key' => data_get (config ('coupon'), 'jingdong.JDM_APP_KEY'),
             'timestamp' => $time,
             'v' => '2.0',
         ];
 
         $urlparams = [
             'unionId' => $unionid->jingdong,
-            'key' => data_get(config('coupon'), 'jingdong.JDMEDIA_APPKEY'),
-            'time' => date('YmdH', time()),
+            'key' => data_get (config ('coupon'), 'jingdong.JDMEDIA_APPKEY'),
+            'time' => date ('YmdH', time ()),
             'pageIndex' => $page,
             'pageSize' => 500,
         ];
 
-        $signparams = array_merge($params, $urlparams);
-        ksort($signparams);
-        $sign = http_build_query($signparams);
-        $sign = strtoupper(md5(data_get(config('coupon'), 'jingdong.JDM_APP_SECRET').$sign.data_get(config('coupon'), 'jingdong.JDM_APP_SECRET')));
+        $signparams = array_merge ($params, $urlparams);
+        ksort ($signparams);
+        $sign = http_build_query ($signparams);
+        $sign = strtoupper (md5 (data_get (config ('coupon'), 'jingdong.JDM_APP_SECRET') . $sign . data_get (config ('coupon'), 'jingdong.JDM_APP_SECRET')));
         $params['sign'] = $sign;
-        $params['360buy_param_json'] = json_encode($urlparams);
-        $response = Curl::to('https://api.jd.com/routerjson')
-            ->withData($params)
-            ->get();
-        $response = json_decode($response);
+        $params['360buy_param_json'] = json_encode ($urlparams);
+        $response = Curl::to ('https://api.jd.com/routerjson')
+            ->withData ($params)
+            ->get ();
+        $response = json_decode ($response);
 
         if (isset($response->error_response)) {
             throw new \Exception($response->error_response->zh_desc);
         }
-        $result = json_decode($response->jingdong_UnionService_queryOrderList_responce->result);
+        $result = json_decode ($response->jingdong_UnionService_queryOrderList_responce->result);
 
         if ($result->success != 1) {
             throw new \Exception($result->msg);
         }
 
-        if (! isset($result->data)) {
+        if (!isset($result->data)) {
             throw new \Exception('没有订单数据');
         }
 
@@ -358,14 +358,14 @@ class JingDong implements TBKInterface
 
         $params = [
             'type' => 'goodslist',
-            'apikey' => data_get(config('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),
             'pageSize' => 20,
             'page' => $page,
         ];
-        $response = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
-            ->withData($params)
-            ->post();
-        $response = json_decode($response);
+        $response = Curl::to ('http://api-gw.haojingke.com/index.php/api/index/myapi')
+            ->withData ($params)
+            ->post ();
+        $response = json_decode ($response);
 
         if ($response->status_code != 200) {
             throw new \Exception($response->message);
