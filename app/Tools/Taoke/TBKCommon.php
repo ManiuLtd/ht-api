@@ -12,9 +12,10 @@ trait TBKCommon
     {
         $user = getUser ();
         $setting = setting (1); //应该是根据user或者user_id
+
         //未登录 获取系统默认pid
         if (!$user) {
-            return $setting->pid;
+            return $this->arrayToObject ($setting->pid);
         }
         $user_pid = db ('tbk_pids')->where ('user_id', $user->id)->first ();
         //自己
@@ -36,4 +37,15 @@ trait TBKCommon
         return $group_pid;
     }
 
+
+    private function arrayToObject($e)
+    {
+
+        if (gettype($e) != 'array') return;
+        foreach ($e as $k => $v) {
+            if (gettype($v) == 'array' || getType($v) == 'object')
+                $e[$k] = (object)$this->arrayToObject($v);
+        }
+        return (object)$e;
+    }
 }
