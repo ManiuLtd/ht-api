@@ -327,7 +327,7 @@ class Taobao extends Command
     {
         try {
             $setting = setting(1);
-            $sid = json_decode($setting->taobao)->sid ?? 1942;
+            $sid = $setting->taobao->sid ?? 1942;
             $type = $this->option('type');
             $bar = $this->output->createProgressBar(4);
             //循环所有页码查出数据

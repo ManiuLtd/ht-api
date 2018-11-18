@@ -45,9 +45,9 @@ class AuthorizationsController extends Controller
 
         return json(1001, '获取成功', [
             'ddkuri' => $ddkuri,
-            'taobao'    => json_decode($setting->taobao),
-            'jingdong'  => json_decode($setting->jingdong),
-            'pinduoduo' => json_decode($setting->pinduoduo),
+            'taobao'    => $setting->taobao,
+            'jingdong'  => $setting->jingdong,
+            'pinduoduo' => $setting->pinduoduo,
         ]);
     }
 
@@ -58,6 +58,7 @@ class AuthorizationsController extends Controller
     {
         $type = request('type', request('state'));
 
+        $create = [];
         try {
             switch ($type) {
                 case 1:
@@ -83,15 +84,15 @@ class AuthorizationsController extends Controller
             $setting = setting(getUserId());
             if ($type == 2) {
                 Setting::query()->where('id',$setting->id)->update([
-                    'jingdong' => json_encode($create)
+                    'jingdong' => $create
                 ]);
             }elseif ($type == 3) {
                 Setting::query()->where('id',$setting->id)->update([
-                    'pinduouo' => json_encode($create)
+                    'pinduouo' => $create
                 ]);
             }else{
                 Setting::query()->where('id',$setting->id)->update([
-                    'taobao' => json_encode($create)
+                    'taobao' => $create
                 ]);
             }
 

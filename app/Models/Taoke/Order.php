@@ -39,6 +39,7 @@ class Order extends Model implements Transformable
                     'user_id' => request('member_id')
                 ]));
             });
+            //TODO 发送推送
         }
 
         //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
@@ -48,6 +49,7 @@ class Order extends Model implements Transformable
                     'user_id' => request('member_id')
                 ]));
             });
+            //TODO 发送推送
         }
     }
 

@@ -26,13 +26,4 @@ class Sms extends Model implements Transformable
     protected $guarded = [];
 
 
-    /**
-     * 字段映射.
-     * @return array
-     */
-    public function transform()
-    {
-        return $this->toArray();
-    }
-
 }

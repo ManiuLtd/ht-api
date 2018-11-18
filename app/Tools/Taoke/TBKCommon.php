@@ -25,7 +25,7 @@ trait TBKCommon{
         if (!$group_pid){
             $setting = setting($this->getUserId()); //应该是根据user或者user_id
 
-            $group_pid = json_decode($setting->pid);
+            $group_pid = $setting->pid;
         }
 
         return $group_pid;

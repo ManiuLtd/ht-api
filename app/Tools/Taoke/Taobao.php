@@ -30,7 +30,7 @@ class Taobao implements TBKInterface
 
         $setting = setting($userid);// 应该是根据user或者user_id
 
-        $taobao = json_decode($setting->taobao);
+        $taobao = $setting->taobao;
         if (!isset($taobao->sid)) {
             throw new \Exception('请先授权淘宝联盟');
         }

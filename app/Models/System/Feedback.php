@@ -54,8 +54,6 @@ class Feedback extends Model implements Transformable
         return $this->belongsTo('App\Models\User\User', 'user_id')->withDefault(null);
     }
 
-
-
     /**
      * The "booting" method of the model.
      */

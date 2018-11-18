@@ -58,7 +58,7 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
         $setting = \setting(1);
         $data = array();
         //订单
-        $path = json_decode($setting->credit_order);
+        $path = $setting->credit_order;
         $data['order']['title'] = '新增订单奖';
         $data['order']['describe'] = '每天新增一个订单,成长值增加'.$path->order_commission1_credit3;
         $data['order']['credit'] = $path->order_commission1_credit3;
@@ -75,7 +75,7 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
         $data['order_group2']['describe'] = '每天新增一个订单,旧组长成长值增加'.$path->order_group2_credit3;
         $data['order_group2']['credit'] = $path->order_group2_credit3;
         //粉丝
-        $path = json_decode($setting->credit_friend);
+        $path = $setting->credit_friend;
         $data['friend']['title'] = '新增粉丝奖';
         $data['friend']['describe'] = '每天新增一个粉丝,成长值增加'.$path->friend_commission1_credit3;
         $data['friend']['credit'] = $path->friend_commission1_credit3;
@@ -92,7 +92,7 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
         $data['friend_group2']['describe'] = '每天新增一个粉丝,旧组长成长值增加'.$path->friend_group2_credit3;
         $data['friend_group2']['credit'] = $path->friend_group2_credit3;
         //绑定电话，微信
-        $path = json_decode($setting->credit);
+        $path = $setting->credit;
         $data['phone']['title'] = '绑定手机';
         $data['phone']['describe'] = '绑定手机成长值增加'.$path->phone;
         $data['phone']['credit'] = $path->phone;

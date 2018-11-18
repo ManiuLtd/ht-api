@@ -176,7 +176,7 @@ if (!function_exists('creditAdd')) {
             ->sum('credit');
         //设置信息
         $setting = setting(1);
-        $credit_friend = json_decode($setting->credit_friend);
+        $credit_friend = $setting->credit_friend;
         if (!$credit_friend) {
             throw new \Exception('管理员还没配置参数');
         }

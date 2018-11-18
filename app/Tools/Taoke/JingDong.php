@@ -27,7 +27,7 @@ class JingDong implements TBKInterface
         }
         $userid = $this->getUserId ();
         $setting = setting ($userid);
-        $unionid = json_decode ($setting->unionid);
+        $unionid = $setting->unionid;
         if (!isset($unionid->jingdong)) {
             throw new \Exception('请先设置京东联盟id');
         }
@@ -299,7 +299,7 @@ class JingDong implements TBKInterface
     {
         $userid = $this->getUserId ();
         $setting = setting ($userid);
-        $unionid = json_decode ($setting->unionid);
+        $unionid = $setting->unionid;
         if (!isset($unionid->jingdong)) {
             throw new \Exception('请先设置京东联盟id');
         }

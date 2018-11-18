@@ -198,7 +198,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
                 return json(4001, '用户没有绑定微信');
             }
 
-            $app = Factory::payment(json_decode($setting->payment, true));
+            $app = Factory::payment($setting->payment);
 
             $merchantPayData = [
                 'partner_trade_no' => str_random(16),
