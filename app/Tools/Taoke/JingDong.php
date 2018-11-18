@@ -112,7 +112,7 @@ class JingDong implements TBKInterface
         $arr['title'] = $data->skuName; //标题
         $arr['item_id'] = $data->skuId; //商品id
         $arr['user_type'] = null; //京东  拼多多 null  1淘宝 2天猫
-        $arr['volume'] = null; //销量
+        $arr['volume'] = rand (1000,9999); //销量
         $arr['price'] = floatval ($data->wlPrice); //原价
         $arr['final_price'] = floatval ($data->wlPrice_after); //最终价
         $arr['coupon_price'] = floatval ($data->discount); //优惠价
@@ -244,7 +244,8 @@ class JingDong implements TBKInterface
             $temp['coupon_price'] = round ($datum->discount);
             $temp['commission_rate'] = round ($datum->wlCommissionShare);
             $temp['type'] = 2;
-            $temp['volume'] = null;
+            $temp['volume'] = rand (1000,9999);
+            $temp['finalCommission'] = 9.88;
             $data[] = $temp;
             $temp = [];
         }
