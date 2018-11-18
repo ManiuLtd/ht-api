@@ -61,14 +61,24 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
     public function getList()
     {
         $model = $this->paginate(request('limit',10));
-        foreach ($model['data'] as $k => $v){
+        foreach ($model['data'] as &$v){
             $tool = new Taobao();
-            $command = $tool->getDetail([
-                'itemid' => $v['itemid']
-            ]);
-            if (strpos($v['comment1'],'$淘口令$')){
-                $model['data'][$k]['comment1'] = str_replace('$淘口令$',$command['kouling'],$v['comment1']);
+            try{
+                //获取优惠券信息
+                $coupon = $tool->getCouponUrl([
+                    'item_id' => $v['itemid']
+                ]);
+                if (strpos($v['comment1'],'$淘口令$')){
+                    $kouling = $tool->taokouling ([
+                        'coupon_click_url' => $coupon->coupon_click_url,
+                        'pict_url' => $v['pic_url'][0],
+                        'title' => $v['title']
+                    ]);
+                    $v['comment1'] = str_replace('$淘口令$',$kouling,$v['comment1']);
+                }
+            }catch (\Exception $e){
             }
+
         }
 
         return $model;

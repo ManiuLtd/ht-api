@@ -149,7 +149,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
      * 粉丝
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function freinds()
+    public function friends()
     {
         return $this->hasMany ('App\Models\User\User','inviter_id');
     }
