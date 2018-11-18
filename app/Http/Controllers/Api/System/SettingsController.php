@@ -47,7 +47,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * 成长值途径列表
+     * 成长值途径列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function upgrade()

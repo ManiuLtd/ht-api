@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\User\User;
 
 class HomeController extends Controller
 {
@@ -20,9 +19,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dd (setting (1)->credit_order);
+        dd(setting(1)->credit_order);
+
         return view('home');
     }
-
-
 }

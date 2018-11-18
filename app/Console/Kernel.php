@@ -51,7 +51,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:tb kuaiqiang')->hourly();
         //定时拉取
         $schedule->command('spider:tb timingItems')->hourly();
-
     }
 
     /**

@@ -5,7 +5,6 @@ namespace App\Validators\User;
 use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
-
 /**
  * Class WithdrawValidator.
  */
@@ -42,6 +41,4 @@ class WithdrawValidator extends LaravelValidator
         'money.numeric' => '提现金额不合法',
         'money.required' => '提现金额不能为空',
     ];
-
-
 }

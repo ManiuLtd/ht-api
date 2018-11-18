@@ -29,7 +29,6 @@ return [
         'JDMEDIA_UNIONID' => '1000383879',
         'JD_HJK_APIKEY' => '8baf004e74c0b239',
 
-
         'access_token' => 'ae5971e5-50db-4699-9907-872b516d80fe',
         'refresh_token' => '57316424-4e6e-4bc2-95c0-1f1ff7c83b71',
     ],

@@ -90,7 +90,7 @@ class JingDong extends Command
     }
 
     /**
-     * 订单
+     * 订单.
      */
     public function order()
     {
@@ -102,7 +102,6 @@ class JingDong extends Command
                 //写入队列
 
                 if ($resp) {
-
                     SaveOrders::dispatch($resp->data, 'jingdong');
                 }
                 $bar->advance();

@@ -9,5 +9,4 @@ Route::namespace('Auth')
 
         //退出
         Route::get('logout', 'LogoutController@logout')->middleware('jwt.auth');
-
     });

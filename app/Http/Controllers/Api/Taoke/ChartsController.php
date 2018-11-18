@@ -63,8 +63,9 @@ class ChartsController extends Controller
             return json(4001, $e->getMessage());
         }
     }
+
     /**
-     * 会员收入信息
+     * 会员收入信息.
      * @return \Illuminate\Http\JsonResponse
      */
     public function member()
@@ -77,5 +78,4 @@ class ChartsController extends Controller
             return json(4001, $e->getMessage());
         }
     }
-
 }

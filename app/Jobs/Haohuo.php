@@ -37,19 +37,19 @@ class Haohuo implements ShouldQueue
             $items = [];
             foreach ($v->item_data as $key => $val) {
                 if ($val->product_id != 0) {
-                    $items[$key]['itemid']      = $val->itemid;
-                    $items[$key]['title']       = $val->itemtitle;
-                    $items[$key]['price']       = $val->itemprice; //在售价
+                    $items[$key]['itemid'] = $val->itemid;
+                    $items[$key]['title'] = $val->itemtitle;
+                    $items[$key]['price'] = $val->itemprice; //在售价
                     $items[$key]['final_price'] = $val->itemendprice; //券后价
-                    $items[$key]['pic_url']     = $val->itempic; //宝贝主图原始图像
-                    $items[$key]['type']        = 1; //宝贝主图原始图像
+                    $items[$key]['pic_url'] = $val->itempic; //宝贝主图原始图像
+                    $items[$key]['type'] = 1; //宝贝主图原始图像
                 }
             }
             $insert = [
                 'title'         => $v->name,
                 'app_hot_image' => $v->app_hot_image,
                 'shares'        => $v->share_times,
-                'text'          => str_replace ('<br>','<br/>',html_entity_decode($v->copy_text)),
+                'text'          => str_replace('<br>', '<br/>', html_entity_decode($v->copy_text)),
                 'start_time'    => date('Y-m-d H:i:s', $v->activity_start_time),
                 'end_time'      => date('Y-m-d H:i:s', $v->activity_end_time),
                 'items'         => json_encode(array_values($items)),

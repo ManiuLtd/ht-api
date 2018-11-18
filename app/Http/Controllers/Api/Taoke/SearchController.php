@@ -12,7 +12,6 @@ use App\Tools\Taoke\TBKInterface;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\SearchValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
 /**
@@ -59,7 +58,7 @@ class SearchController extends Controller
             $rest = $this->couponRepository->searchGoods();
 
             if (! is_array($rest)) {
-                $rest = $this->TBK->search(['q'=>$rest,'sort' => request('sort')]);
+                $rest = $this->TBK->search(['q'=>$rest, 'sort' => request('sort')]);
             }
 
             return json(1001, '获取成功', $rest);

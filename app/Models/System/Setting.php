@@ -36,7 +36,6 @@ class Setting extends Model implements Transformable
         'pinduouo',
     ];
 
-
     /**
      * @var array
      */
@@ -57,5 +56,4 @@ class Setting extends Model implements Transformable
         'jingdong' => 'array',
         'pinduouo' => 'array',
     ];
-
 }

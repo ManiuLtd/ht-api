@@ -29,7 +29,6 @@ class CreateTbkUserFavouritesTable extends Migration
             $table->decimal('final_price', 9, 2)->nullable(); //最终价
             $table->string('type', 20)->nullable(); //1淘宝2京东3拼多多
             $table->nullableTimestamps();
-
         });
     }
 

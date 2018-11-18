@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands\Spider;
 
-use App\Models\System\Setting;
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
 use App\Jobs\SaveOrders;
 use App\Jobs\Spider\DownItem;
 use App\Jobs\Spider\KuaiQiang;
+use App\Models\System\Setting;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
 
@@ -185,18 +185,17 @@ class Taobao extends Command
         try {
             foreach ($res->data as $re) {
                 $items = $this->tbk->zhuantiItem([
-                    'id' => $re->id
+                    'id' => $re->id,
                 ]);
                 $data = [];
-                foreach ($items->data as $k => $v){
-                    $data[$k]['title']        = $v->itemtitle;//标题
-                    $data[$k]['short_title']  = $v->itemshorttitle;//短标题
-                    $data[$k]['itemid']       = $v->itemid;
-                    $data[$k]['price']        = $v->itemprice;//在售价
-                    $data[$k]['coupon_price'] = $v->itemendprice;//卷后价
-                    $data[$k]['pic_url']      = $v->itempic;//图片
-                    $data[$k]['type']         = 1;
-
+                foreach ($items->data as $k => $v) {
+                    $data[$k]['title'] = $v->itemtitle; //标题
+                    $data[$k]['short_title'] = $v->itemshorttitle; //短标题
+                    $data[$k]['itemid'] = $v->itemid;
+                    $data[$k]['price'] = $v->itemprice; //在售价
+                    $data[$k]['coupon_price'] = $v->itemendprice; //卷后价
+                    $data[$k]['pic_url'] = $v->itempic; //图片
+                    $data[$k]['type'] = 1;
                 }
                 $insert = [
                     'special_id' => $re->id,
@@ -228,13 +227,13 @@ class Taobao extends Command
             $total = 5;
             $bar = $this->output->createProgressBar($total);
             $min_id = 1;
-            for ($j=1;$j<=15;$j++){
+            for ($j = 1; $j <= 15; $j++) {
                 for ($i = 1; $i <= $total; $i++) {
-                    $res = $this->tbk->kuaiQiang(['min_id' => $min_id,'hour_type'=>$j]);
+                    $res = $this->tbk->kuaiQiang(['min_id' => $min_id, 'hour_type'=>$j]);
                     $this->info($j);
                     if ($min_id != $res['min_id']) {
                         // 队列
-                        KuaiQiang::dispatch($res['data'],$j);
+                        KuaiQiang::dispatch($res['data'], $j);
                         $min_id = $res['min_id'];
                         $bar->advance();
                         $this->info(">>>已采集完第{$total}页 ");
@@ -343,7 +342,6 @@ class Taobao extends Command
                 $bar->advance();
                 $this->info(">>>已采集完第{$page}页 ");
             }
-
 
             $bar->finish();
         } catch (\Exception $e) {

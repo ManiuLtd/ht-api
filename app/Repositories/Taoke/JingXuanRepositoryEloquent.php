@@ -2,16 +2,12 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\User\Group;
-use App\Models\User\Level;
-use App\Models\User\User;
-use App\Models\Taoke\JingXuan;
 use App\Tools\Taoke\Taobao;
+use App\Models\Taoke\JingXuan;
 use App\Validators\Taoke\JingxuanDpValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\JingXuanRepository;
-use Ixudra\Curl\Facades\Curl;
 
 /**
  * Class JingXuanRepositoryEloquent.
@@ -60,26 +56,24 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
      */
     public function getList()
     {
-        $model = $this->paginate(request('limit',10));
-        foreach ($model['data'] as &$v){
+        $model = $this->paginate(request('limit', 10));
+        foreach ($model['data'] as &$v) {
             $tool = new Taobao();
-            try{
+            try {
                 //获取优惠券信息
                 $coupon = $tool->getCouponUrl([
-                    'item_id' => $v['itemid']
+                    'item_id' => $v['itemid'],
                 ]);
-                if (strpos($v['comment1'],'$淘口令$')){
-                    $kouling = $tool->taokouling ([
+                if (strpos($v['comment1'], '$淘口令$')) {
+                    $kouling = $tool->taokouling([
                         'coupon_click_url' => $coupon->coupon_click_url,
                         'pict_url' => $v['pic_url'][0],
-                        'title' => $v['title']
+                        'title' => $v['title'],
                     ]);
-                    $v['comment1'] = str_replace('$淘口令$',$kouling,$v['comment1']);
+                    $v['comment1'] = str_replace('$淘口令$', $kouling, $v['comment1']);
                 }
-            }catch (\Exception $e){
-
+            } catch (\Exception $e) {
             }
-
         }
 
         return $model;

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\User\UserRepository;
 
-
 /**
  * 会员管理
  * Class UserController.
@@ -54,14 +53,13 @@ class UsersController extends Controller
     }
 
     /**
-     * 根据邀请码查看用户信息
+     * 根据邀请码查看用户信息.
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function inviter()
     {
         try {
             return json(1001, '获取成功', $this->repository->getInviter());
-
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }

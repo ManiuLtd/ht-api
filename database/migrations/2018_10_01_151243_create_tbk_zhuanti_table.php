@@ -19,7 +19,7 @@ class CreateTbkZhuantiTable extends Migration
     {
         Schema::create('tbk_zhuanti', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('special_id')->nullable();//专题id
+            $table->integer('special_id')->nullable(); //专题id
             $table->string('title', 190)->nullable();  //专题的标题
             $table->string('thumb', 190)->nullable();  //专题banner长图
             $table->string('banner', 190)->nullable();  //专题banner（正方形图）

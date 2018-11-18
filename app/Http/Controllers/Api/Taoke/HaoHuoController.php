@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\HaoHuoValidator;
 use App\Repositories\Interfaces\Taoke\HaoHuoRepository;
 
 /**

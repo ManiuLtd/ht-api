@@ -19,5 +19,3 @@ Route::namespace('Auth')
         //重置密码
         Route::post('password/reset', 'ResetPasswordController@reset');
     });
-
-

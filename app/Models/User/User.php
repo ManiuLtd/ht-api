@@ -12,7 +12,6 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-
 class User extends Authenticatable implements JWTSubject, Transformable
 {
     use Notifiable,
@@ -74,10 +73,11 @@ class User extends Authenticatable implements JWTSubject, Transformable
     public function transform()
     {
         $data = $this->toArray();
-        $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
+        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
         //邀请码
         $hashids = $hashids->encode($data['id']);
         $data['hashid'] = $hashids;
+
         return $data;
     }
 
@@ -127,47 +127,49 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         $this->notify(new ResetUserPassword($token));
     }
+
     /**
-     * 等级
+     * 等级.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function level()
     {
-        return $this->belongsTo('App\Models\User\Level','level_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Level', 'level_id')->withDefault(null);
     }
 
     /**
-     * 邀请人
+     * 邀请人.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function inviter()
     {
-        return $this->belongsTo('App\Models\User\User','inviter_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\User', 'inviter_id')->withDefault(null);
     }
 
     /**
-     * 粉丝
+     * 粉丝.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function friends()
     {
-        return $this->hasMany ('App\Models\User\User','inviter_id');
+        return $this->hasMany('App\Models\User\User', 'inviter_id');
     }
+
     /**
-     * 组
+     * 组.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function group()
     {
-        return $this->belongsTo('App\Models\User\Group','group_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Group', 'group_id')->withDefault(null);
     }
 
     /**
-     * 组
+     * 组.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function oldGroup()
     {
-        return $this->belongsTo('App\Models\User\Group','oldgroup_id')->withDefault(null);
+        return $this->belongsTo('App\Models\User\Group', 'oldgroup_id')->withDefault(null);
     }
 }

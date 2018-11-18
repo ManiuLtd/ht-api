@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Backend\Auth;
 
-use App\Models\User\User;
 use Auth;
-use App\Http\Controllers\Controller;
+use App\Models\User\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\Auth\User\LoginRequest;
 
@@ -21,15 +21,14 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        switch (request('type')){
+        switch (request('type')) {
             case 1:
                 return $this->pwdLogin();
             case 2:
                 return $this->phoneLogin();
             default:
-                return json(4001,'login error type');
+                return json(4001, 'login error type');
         }
-
     }
 
     /**
@@ -39,35 +38,33 @@ class LoginController extends Controller
     {
         try {
             //验证字段
-            $validator = \Validator::make (request ()->all (), [
+            $validator = \Validator::make(request()->all(), [
                 'phone' => 'required',
                 'code' => 'required',
             ]);
             //字段验证失败
-            if ($validator->fails ()) {
-                return json (4001, $validator->errors ()->first ());
+            if ($validator->fails()) {
+                return json(4001, $validator->errors()->first());
             }
-            $phone = request ('phone');
-            $code = request ('code');
+            $phone = request('phone');
+            $code = request('code');
             //检查验证码
-            if (!checkSms ($phone, $code)) {
-                return json (4001, '验证码错误');
+            if (! checkSms($phone, $code)) {
+                return json(4001, '验证码错误');
             }
-            $user = User::query ()->where ([
+            $user = User::query()->where([
                 'phone' => $phone,
-            ])->first ();
+            ])->first();
             //TODO 判断权限
 
-            if (!$user) {
-                return json (4001, '用户不存在');
+            if (! $user) {
+                return json(4001, '用户不存在');
             }
-            $token = auth ()->login ($user);
+            $token = auth()->login($user);
 
-            return $this->respondWithToken ($token,$user);
-
+            return $this->respondWithToken($token, $user);
         } catch (\Exception $e) {
-
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 
@@ -90,16 +87,15 @@ class LoginController extends Controller
             $credentials = request()->only('phone', 'password');
 
             $token = Auth::attempt($credentials);
-            if (!$token) {
-                return josn(4001,'登陆失败');
+            if (! $token) {
+                return josn(4001, '登陆失败');
             }
             $user = Auth::user();
-            return $this->respondWithToken($token,$user);
-        }catch (JWTException $e){
-            return json(5001,$e->getMessage());
+
+            return $this->respondWithToken($token, $user);
+        } catch (JWTException $e) {
+            return json(5001, $e->getMessage());
         }
-
-
     }
 
     /**
@@ -113,10 +109,10 @@ class LoginController extends Controller
             'role' => 'admin',
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth ()->factory ()->getTTL () * 60,
+            'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => $user,
         ];
 
-        return json (1001, '登录成功', $data);
+        return json(1001, '登录成功', $data);
     }
 }

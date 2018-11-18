@@ -62,7 +62,7 @@ class CreditEventSubscriber
         DB::transaction(function () use ($event, $isIncrement) {
             if (! $isIncrement) {
                 $event->user->decrement($event->column, $event->credit);
-                if($event->column == 'credit3'){
+                if ($event->column == 'credit3') {
                     event(new MemberUpgrade($this));
                 }
             } else {

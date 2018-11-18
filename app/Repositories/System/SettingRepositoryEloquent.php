@@ -50,13 +50,13 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
     }
 
     /**
-     * 成长值途径列表
+     * 成长值途径列表.
      * @return array
      */
     public function upgrade()
     {
         $setting = \setting(1);
-        $data = array();
+        $data = [];
         //订单
         $path = $setting->credit_order;
         $data['order']['title'] = '新增订单奖';
@@ -104,6 +104,7 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
         $data['alipay']['title'] = '绑定支付宝';
         $data['alipay']['describe'] = '绑定支付宝成长值增加'.$path->alipay;
         $data['alipay']['credit'] = $path->alipay;
+
         return $data;
     }
 }

@@ -7,13 +7,11 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class UserCriteria.
- *
- * @package namespace App\Criteria;
  */
 class UserCriteria implements CriteriaInterface
 {
     /**
-     * Apply criteria in query repository
+     * Apply criteria in query repository.
      *
      * @param string              $model
      * @param RepositoryInterface $repository
@@ -28,6 +26,7 @@ class UserCriteria implements CriteriaInterface
         if ($userID) {
             return $model->where('user_id', $userID);
         }
+
         return $model;
     }
 }

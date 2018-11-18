@@ -39,7 +39,6 @@ class CreateTbkOrdersTable extends Migration
 
             $table->index('ordernum');
             $table->index('title');
-
         });
     }
 

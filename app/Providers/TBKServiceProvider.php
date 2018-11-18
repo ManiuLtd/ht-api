@@ -5,18 +5,8 @@ namespace App\Providers;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
-use App\Console\Commands\Spider\HaohuoZC;
 use App\Console\Commands\Spider\JingDong;
-use App\Console\Commands\Spider\DownItems;
 use App\Console\Commands\Spider\PinDuoDuo;
-use App\Console\Commands\Spider\JingxuanDP;
-use App\Console\Commands\Spider\JingxuanZT;
-use App\Console\Commands\Spider\UpdateItem;
-use App\Console\Commands\Spider\TaoBaoOrder;
-use App\Console\Commands\Spider\TimingItems;
-use App\Console\Commands\Spider\JingDongOrder;
-use App\Console\Commands\Spider\KuaiqiangShop;
-use App\Console\Commands\Spider\PinDuoDuoOrder;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Api\Taoke\SearchController;
 use App\Http\Controllers\Api\Taoke\CouponsController;
@@ -108,7 +98,6 @@ class TBKServiceProvider extends ServiceProvider
                 ->give(\App\Tools\Taoke\Taobao::class);
         }
         //订单
-
 
         //测试
 //        $this->app->when(HomeController::class)

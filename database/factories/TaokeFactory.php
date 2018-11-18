@@ -28,7 +28,7 @@ $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
         'user_id' => rand(1, 50),
         'group_id' => rand(1, 50),
         'title' => $faker->text(50),
-        'ordernum' => rand(1,9),
+        'ordernum' => rand(1, 9),
         'itemid' => rand(1, 100),
         'count' => rand(1, 10),
         'price' => $faker->numberBetween(2, 500),
@@ -41,7 +41,6 @@ $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
         'complete_at' => now(),
     ];
 });
-
 
 $factory->define(App\Models\Taoke\Favourite::class, function (Faker $faker) {
     return [
