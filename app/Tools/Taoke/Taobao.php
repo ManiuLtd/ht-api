@@ -59,8 +59,9 @@ class Taobao implements TBKInterface
 
 
     /**
-     * 获取详情.
-     * @return mixed
+     * 获取详情
+     * @param array $params
+     * @return array|mixed
      * @throws \Exception
      */
     public function getDetail(array $params = [])
@@ -77,8 +78,9 @@ class Taobao implements TBKInterface
         $req->setNumIids($itemID);
         $resp = $topclient->execute($req);
         if (! isset($resp->results->n_tbk_item)) {
-            throw new \Exception('淘宝客接口调用失败');
+            throw new \Exception("淘宝客接口调用失败：{$itemID}");
         }
+
         $data = $resp->results->n_tbk_item[0];
         $data->coupon = $this->getCouponUrl(['item_id' => $itemID]);
 

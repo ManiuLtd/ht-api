@@ -80,6 +80,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         //一级粉丝
         if ($level == 1) {
             return User::where ('inviter_id', $inviterId)
+                ->withCount('friends')
                 ->orderBy ('id', 'desc')
                 ->paginate (20);
         }
@@ -90,6 +91,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
                     ->from ('users')
                     ->where ('inviter_id', $inviterId);
             })->orderBy ('id', 'desc')
+                ->withCount('friends')
                 ->paginate (20);
         }
         //三级粉丝
@@ -103,6 +105,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
                             ->where ('inviter_id', $inviterId);
                     });
             })->orderBy ('id', 'desc')
+                ->withCount('friends')
                 ->paginate (20);
         }
     }
