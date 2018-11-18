@@ -128,6 +128,8 @@ class JingDong implements TBKInterface
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['is_favourites'] = $is_favourites; //是否收藏
         $arr['coupon_link'] = ['url' => $link]; //领劵地址
+        $arr['finalCommission'] = 8.88;
+
         return $arr;
     }
 

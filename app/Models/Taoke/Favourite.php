@@ -21,7 +21,16 @@ class Favourite extends Model implements Transformable
     /**
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'pic_url',
+        'item_id',
+        'volume',
+        'price',
+        'coupon_price',
+        'final_price',
+        'type',
+    ];
 
     /**
      * The "booting" method of the model.
@@ -29,7 +38,7 @@ class Favourite extends Model implements Transformable
     public static function boot()
     {
         parent::boot();
-        //创建之前 添加member_id
+
         self::creating(function ($model) {
             $model->user_id = getUserId();
         });

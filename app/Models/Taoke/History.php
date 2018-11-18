@@ -21,7 +21,16 @@ class History extends Model implements Transformable
     /**
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'pic_url',
+        'item_id',
+        'volume',
+        'price',
+        'coupon_price',
+        'final_price',
+        'type',
+    ];
 
     /**
      * The "booting" method of the model.

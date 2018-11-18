@@ -20,7 +20,7 @@ class FavouriteValidator extends LaravelValidator
             'title' => 'required',
             'pic_url' => 'required',
             'item_id' => 'required',
-            'volume' => 'required|int',
+            'volume' => 'required|numeric',
             'price' => 'required|numeric',
             'coupon_price' => 'required|numeric',
             'final_price' => 'required|numeric',
