@@ -64,7 +64,7 @@ class HistoriesController extends Controller
 
             return json(1001, '添加成功', $category);
         } catch (ValidatorException $e) {
-            return json(4001, $e->getMessageBag()->first());
+            return json(5001, $e->getMessage());
         }
     }
 
