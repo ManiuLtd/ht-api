@@ -127,6 +127,7 @@ class JingDong implements TBKInterface
         $arr['kouling'] = null; //淘口令
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['is_favourites'] = $is_favourites; //是否收藏
+        $arr['favourite_id'] = $favourites ? $favourites->id : null; //是否收藏
         $arr['coupon_link'] = ['url' => $link]; //领劵地址
         $arr['finalCommission'] = 8.88;
 
