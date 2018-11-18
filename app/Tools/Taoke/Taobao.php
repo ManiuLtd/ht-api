@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use Illuminate\Support\Carbon;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\Taoke\Favourite;
 use Illuminate\Support\Facades\DB;
@@ -121,12 +122,12 @@ class Taobao implements TBKInterface
         $arr['item_id'] = $data->num_iid; //商品id
         $arr['user_type'] = $data->user_type; //京东  拼多多 null  1淘宝 2天猫
         $arr['volume'] = $data->volume; //销量
-        $arr['price'] = $data->zk_final_price; //原价
-        $arr['final_price'] = $data->zk_final_price - $coupon_price; //最终价
-        $arr['coupon_price'] = $coupon_price; //优惠价
+        $arr['price'] = floatval($data->zk_final_price); //原价
+        $arr['final_price'] = floatval($data->zk_final_price - $coupon_price); //最终价
+        $arr['coupon_price'] = floatval($coupon_price); //优惠价
         $arr['commossion_rate'] = $data->coupon->max_commission_rate; //佣金比例
-        $arr['coupon_start_time'] = isset($data->coupon->coupon_start_time) ? $data->coupon->coupon_start_time : null; //优惠卷开始时间
-        $arr['coupon_end_time'] = isset($data->coupon->coupon_end_time) ? $data->coupon->coupon_end_time : null; //优惠卷结束时间
+        $arr['coupon_start_time'] = isset($data->coupon->coupon_start_time) ? Carbon::createFromTimeString ($data->coupon->coupon_start_time)->toDayDateTimeString () : Carbon::now ()->toDateString (); //优惠卷开始时间
+        $arr['coupon_end_time'] = isset($data->coupon->coupon_end_time) ? Carbon::createFromTimeString ($data->coupon->coupon_end_time)->toDayDateTimeString () : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
         $arr['coupon_remain_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_remain_count : null; //已使用优惠卷数量
         $arr['coupon_total_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_total_count : null; //优惠卷总数
         $arr['pic_url'] = $data->pict_url; //商品主图
