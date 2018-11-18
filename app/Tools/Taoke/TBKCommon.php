@@ -10,40 +10,30 @@ trait TBKCommon
      */
     public function getPids()
     {
-        $user = getUser();
-        $user_pid = db('tbk_pids')->where('user_id', $user->id)->first();
-
+        $user = getUser ();
+        $setting = setting (1); //应该是根据user或者user_id
+        //未登录 获取系统默认pid
+        if (!$user) {
+            return $setting->pid;
+        }
+        $user_pid = db ('tbk_pids')->where ('user_id', $user->id)->first ();
+        //自己
         if ($user_pid) {
             return $user_pid;
         }
-        $inviter_pid = db('tbk_pids')->where('user_id', $user->inviter_id)->first();
+        //邀请人
+        $inviter_pid = db ('tbk_pids')->where ('user_id', $user->inviter_id)->first ();
         if ($inviter_pid) {
             return $inviter_pid;
         }
-        $group = db('groups')->find($user->group_id);
-        $group_pid = db('tbk_pids')->where('user_id', $group->user_id)->first();
-        if (! $group_pid) {
-            $setting = setting($this->getUserId()); //应该是根据user或者user_id
+        //小组
+        $group = db ('groups')->find ($user->group_id);
+        $group_pid = db ('tbk_pids')->where ('user_id', $group->user_id)->first ();
+        if (!$group_pid) {
+            return $setting->pid;
 
-            $group_pid = $setting->pid;
         }
-
         return $group_pid;
     }
 
-    /**
-     * 获取当前用户对应的user.
-     * @return mixed
-     */
-    protected function getUserId()
-    {
-        $user = getUser();
-        $user = $user->user;
-
-        if (! $user) {
-            $user = \App\Models\User\User::query()->find(1);
-        }
-
-        return $user->id;
-    }
 }
