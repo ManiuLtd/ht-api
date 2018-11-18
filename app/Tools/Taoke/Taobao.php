@@ -30,7 +30,7 @@ class Taobao implements TBKInterface
         $setting = setting($userid); // 应该是根据user或者user_id
 
         $taobao = $setting->taobao;
-        if (! isset($taobao->sid)) {
+        if (! isset($taobao['sid'])) {
             throw new \Exception('请先授权淘宝联盟');
         }
 
@@ -38,7 +38,7 @@ class Taobao implements TBKInterface
         $params = [
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
-            'sid'       => $taobao->sid,  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
+            'sid'       => $taobao['sid'],  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
             'pid'       => $pids->taobao,
             'num_iid'   => $array['item_id'],
         ];
