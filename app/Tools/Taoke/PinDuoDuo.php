@@ -89,18 +89,19 @@ class PinDuoDuo implements TBKInterface
         $link = $this->getCouponUrl (['id' => $id]);
 
         //判断优惠卷是否被收藏
-        $user = getUser ();
-        $favourites = Favourite::query ()->where ([
-            'user_id' => $user->id,
-            'item_id' => $id,
-            'type' => 3,
-        ])->first ();
-        if ($favourites) {
-            $is_favourites = 1; //已收藏
-        } else {
-            $is_favourites = 2; //未收藏
+        $favourite = 0;
+        if (getUserId ()) {
+            $user = getUser ();
+            $favouritesModel = Favourite::query ()->where ([
+                'user_id' => $user->id,
+                'item_id' => $id,
+                'type' => 2,
+            ])->first ();
+            if ($favouritesModel) {
+                $favourite = $favouritesModel->id; //已收藏
+            }
         }
-        $data->is_favourites = $is_favourites;
+
         //重组字段
         $arr = [];
         $arr['title'] = $data->skuName; //标题
@@ -120,11 +121,10 @@ class PinDuoDuo implements TBKInterface
         $arr['images'] = [];//商品详情图
         $arr['kouling'] = null; //淘口令
         $arr['introduce'] = $data->skuDesc; //描述
-        $arr['is_favourites'] = $data->is_favourites; //是否收藏
-        $arr['favourite_id'] = $favourites ? $favourites->id : null; //是否收藏
+        $arr['favourite'] = $favourite;
         $arr['coupon_link'] = $link; //领劵地址
         $arr['finalCommission'] = 8.88;
-        $arr['favourite_id'] = $favourites ? $favourites->id : null; //是否收藏
+        $arr['favourite'] = $favourite;
 
         return $arr;
     }
