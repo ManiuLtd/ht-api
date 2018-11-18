@@ -4,6 +4,8 @@ Route::namespace('Taoke')
     ->group(function (){
         //优惠卷
         Route::get('coupon', 'CouponsController@index');
+        //优惠券详情
+
         Route::get('coupon/detail', 'CouponsController@detail');
 
         //搜索
@@ -26,8 +28,6 @@ Route::namespace('Taoke')
     ->group(function () {
         //订单列表
         Route::get('order', 'OrdersController@index');
-        //提交订单
-//        Route::post('order/submit', 'OrdersController@submit');
 
         //收藏
         Route::resource('favourite', 'FavouritesController');

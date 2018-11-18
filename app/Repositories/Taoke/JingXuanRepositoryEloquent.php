@@ -77,6 +77,7 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
                     $v['comment1'] = str_replace('$淘口令$',$kouling,$v['comment1']);
                 }
             }catch (\Exception $e){
+
             }
 
         }

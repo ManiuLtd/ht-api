@@ -102,7 +102,7 @@ if (! function_exists('getUserId')) {
      */
     function getUserId()
     {
-        return auth()->id();
+        return auth()->id ();
     }
 }
 if (! function_exists('getUser')) {
