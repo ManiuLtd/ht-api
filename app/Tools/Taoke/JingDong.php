@@ -88,18 +88,16 @@ class JingDong implements TBKInterface
             'url' => $response->data->couponList,
         ]);
         //判断优惠卷是否被收藏
-        $is_favourites = null;
+        $favourite = 0;
         if (getUserId ()) {
             $user = getUser ();
-            $favourites = Favourite::query ()->where ([
+            $favouritesModel = Favourite::query ()->where ([
                 'user_id' => $user->id,
                 'item_id' => $id,
                 'type' => 2,
             ])->first ();
-            if ($favourites) {
-                $is_favourites = 1; //已收藏
-            } else {
-                $is_favourites = 2; //未收藏
+            if ($favouritesModel) {
+                $favourite = $favouritesModel->id; //已收藏
             }
         }
 
@@ -126,8 +124,7 @@ class JingDong implements TBKInterface
         $arr['images'] = $images; //商品详情图
         $arr['kouling'] = null; //淘口令
         $arr['introduce'] = $data->skuDesc; //描述
-        $arr['is_favourites'] = $is_favourites; //是否收藏
-        $arr['favourite_id'] = $favourites ? $favourites->id : null; //是否收藏
+        $arr['favourite'] = $favourite; //0是没有收藏
         $arr['coupon_link'] = ['url' => $link]; //领劵地址
         $arr['finalCommission'] = 8.88;
 

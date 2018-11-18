@@ -99,23 +99,18 @@ class Taobao implements TBKInterface
         }
         $data->introduce = null;
         //判断优惠卷是否被收藏
-        $user = getUser();
-        if(!$user){
-            $favourites = false;
-        }else{
-            $favourites = Favourite::query()->where([
+        $favourite = 0;
+        if (getUserId ()) {
+            $user = getUser ();
+            $favouritesModel = Favourite::query ()->where ([
                 'user_id' => $user->id,
                 'item_id' => $itemID,
-                'type'    => 1,
-            ])->first();
+                'type' => 2,
+            ])->first ();
+            if ($favouritesModel) {
+                $favourite = $favouritesModel->id; //已收藏
+            }
         }
-
-        if ($favourites) {
-            $is_favourites = 1; //已收藏
-        } else {
-            $is_favourites = 2; //未收藏
-        }
-        $data->is_favourites = $is_favourites;
         //获取图文详情
         $images = $this->getDesc($itemID);
 
@@ -140,8 +135,7 @@ class Taobao implements TBKInterface
         $arr['images'] = $images; //商品详情图
         $arr['kouling'] = $data->kouling; //淘口令
         $arr['introduce'] = $data->introduce; //描述
-        $arr['is_favourites'] = $data->is_favourites; //是否收藏
-        $arr['favourite_id'] = $favourites ? $favourites->id : null; //是否收藏
+        $arr['favourite'] = $favourite ;
         $arr['coupon_link'] = ['url' => $data->coupon->coupon_click_url]; //领劵地址
         $arr['finalCommission'] = 8.88;
 
