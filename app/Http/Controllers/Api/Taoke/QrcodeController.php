@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
+use App\Tools\Taoke\JingDong;
+use App\Tools\Taoke\PinDuoDuo;
 use App\Tools\Taoke\Taobao;
 use Hashids\Hashids;
 use App\Tools\Qrcode\Qrcode;
@@ -42,7 +44,14 @@ class QrcodeController extends Controller
         try {
             $item_id = request('item_id');
             $type    = request('type');
-            $tool    = new Taobao();
+            if ($type == 1){
+                $tool    = new Taobao();
+            }elseif ($type == 2){
+                $tool    = new JingDong();
+            }elseif ($type == 3){
+                $tool    = new PinDuoDuo();
+            }
+
             $data    = $tool->getDetail([
                 'itemid' => $item_id
             ]);
