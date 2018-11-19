@@ -6,6 +6,7 @@ return [
         'DTK_API_URL' => env('DTK_API_URL', 'http://api.dataoke.com/index.php'), //大淘客接口地址
         'QTK_API_KEY' => env('QTK_API_KEY', 'NnLRzzZZ'), //轻淘客
         'QTK_API_URL' => env('QTK_API_URL', 'http://openapi.qingtaoke.com'), //轻淘客接口地址
+
         'TKJD_API_KEY' => env('TKJD_API_KEY', 'a702d09d248becb575dc798b6e432d88'), //淘客基地
         'TKJD_API_URL' => env('TKJD_API_URL', 'http://api.tkjidi.com'), //淘客基地接口地址
 
@@ -13,6 +14,7 @@ return [
         'HMTK_APP_SECRET' => env('HMTK_APP_SECRET', '33591f90704bcfc868871794c80ac185'), //黑马淘客appsecret
 
         'HDK_APIKEY' => env('HDK_APIKEY', 'poerjewnsjfhsd'), //好单库apikey
+
 
     ],
 

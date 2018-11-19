@@ -175,7 +175,7 @@ class PinDuoDuo implements TBKInterface
             'type' => 'pdd.ddk.goods.search',
 
         ];
-        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'keyword' . $q . 'page' . $page . 'page_size100' . 'sort_type' . $sort_type . 'timestamp' . $time . 'typepdd.ddk.goods.search';
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'keyword' . $q . 'page' . $page . 'page_size20' . 'sort_type' . $sort_type . 'timestamp' . $time . 'typepdd.ddk.goods.search';
 
         $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
@@ -242,7 +242,6 @@ class PinDuoDuo implements TBKInterface
                     'per_page' => 20,
                     'to' => 20 * $page,
                     'total' => $result->goods_search_response->total_count,
-                    'tb_p' => null,
                 ],
             ];
         }
