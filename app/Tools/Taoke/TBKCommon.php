@@ -22,21 +22,29 @@ trait TBKCommon
             return $user_pid;
         }
         //邀请人
-        $inviter_pid = db ('tbk_pids')->where ('user_id', $user->inviter_id)->first ();
+        if($user->inviter_id != null){
+            $inviter_pid = db ('tbk_pids')->where ('user_id', $user->inviter_id)->first ();
 
-        if ($inviter_pid) {
-            return $inviter_pid;
+            if ($inviter_pid) {
+                return $inviter_pid;
+            }
         }
+
         //小组
-        $group = db ('groups')->find ($user->group_id);
-        $group_pid = db ('tbk_pids')->where ('user_id', $group->user_id)->first ();
+        if($user->group_id != null){
 
-        if (!$group_pid) {
-            return $setting->pid;
+            $group = db ('groups')->find ($user->group_id);
+            $group_pid = db ('tbk_pids')->where ('user_id', $group->user_id)->first ();
 
+            if (!$group_pid) {
+                return $setting->pid;
+            }
+
+            return $group_pid;
         }
 
-        return $group_pid;
+
+        return $setting->pid;
     }
 
     /**

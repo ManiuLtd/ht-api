@@ -48,8 +48,8 @@ class JingXuanController extends Controller
      */
     public function kouLing()
     {
-        try{
-            $itemId = request('item_id');
+//        try{
+            $itemId = request('itemid');
             $tool = new Taobao();
             $coupon = $tool->getDetail([
                 'itemid' => $itemId,
@@ -58,8 +58,8 @@ class JingXuanController extends Controller
                 'kouLing'    => $coupon['kouling'],
                 'coupon_url' => $coupon['coupon_link']['url']
             ]);
-        }catch(\Exception $e){
-            return json('5001',$e->getMessage());
-        }
+//        }catch(\Exception $e){
+//            return json('5001',$e->getMessage());
+//        }
     }
 }
