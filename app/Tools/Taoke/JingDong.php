@@ -266,7 +266,6 @@ class JingDong implements TBKInterface
             $temp['commission_rate'] = round ($datum->wlCommissionShare);
             $temp['type'] = 2;
             $temp['volume'] = rand (1000,9999);
-            $temp['finalCommission'] = 9.88;
             $data[] = $temp;
             $temp = [];
         }

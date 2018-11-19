@@ -250,14 +250,13 @@ class Taobao implements TBKInterface
             $temp = [
                 'title'           => $list->goods_name,
                 'pic_url'         => $list->pic,
-                'item_id'         => $list->id,
+                'item_id'         => $list->goods_id,
                 'price'           => round($list->price),
                 'final_price'     => round($list->price_after_coupons),
                 'coupon_price'    => round($list->price_coupons),
                 'commission_rate' => round($list->rate),
                 'type'            => 1,
                 'volume'          => round($list->sales),
-                'finalCommission' => 8.88
             ];
             array_push($data, $temp);
         }
