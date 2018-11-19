@@ -40,9 +40,6 @@ class Order extends Model implements Transformable
                 event(new CreditOrder([
                     'user_id' => $model->user_id
                 ]));
-                $user = User::query()->find($model->user_id);
-                $user['message'] = '你有新的订单产生收益';
-                event(new SendNotification($user->toArray()));
             }
         });
         //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
@@ -51,9 +48,6 @@ class Order extends Model implements Transformable
                 event(new CreditOrder([
                     'user_id' => $model->user_id
                 ]));
-                $user = User::query()->find($model->user_id);
-                $user['message'] = '你有新的订单产生收益';
-                event(new SendNotification($user->toArray()));
             }
         });
 
