@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
+use App\Tools\Taoke\Taobao;
 use Hashids\Hashids;
 use App\Tools\Qrcode\Qrcode;
 use Illuminate\Http\Request;
@@ -39,8 +40,12 @@ class QrcodeController extends Controller
     public function share(Request $request)
     {
         try {
-            $data = $request->all();
-            $this->validator->with($data)->passesOrFail();
+            $item_id = request('item_id');
+            $type    = request('type');
+            $tool    = new Taobao();
+            $data    = $tool->getDetail([
+                'itemid' => $item_id
+            ]);
             $userid = getUserId();
             $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
             //邀请码
@@ -49,10 +54,10 @@ class QrcodeController extends Controller
             $qrcode = new Qrcode(public_path('images/share.png'));
             $qrcode->width = 564;
             $qrcode->height = 971;
-            $qrcode->savePath = 'images/cache/'.$hashids.'_'.$data['item_id'].'.jpg';
+            $qrcode->savePath = 'images/cache/'.$hashids.'_'.$item_id.'.jpg';
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
-                ->generate('http://lv5.vaiwan.com:8081/'.$data['item_id'].'?type'.$data['type']);
+                ->generate('http://v2.easytbk.com/api/taoke/coupon/detail'.'?type='.$type.'&item_id='.$item_id);
             $imgname = 'qrcodeImg'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
             $str1 = str_limit($data['title'], 50, '');
