@@ -215,8 +215,6 @@ class PinDuoDuo implements TBKInterface
                 $temp['commission_rate'] = $item->promotion_rate / 10;
                 $temp['type'] = 3;
                 $temp['volume'] = $item->sold_quantity;
-                $temp['finalCommission'] = 9.99;
-
                 $data[] = $temp;
                 $temp = [];
             }
