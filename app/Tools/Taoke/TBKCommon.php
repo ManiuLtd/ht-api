@@ -44,7 +44,7 @@ trait TBKCommon
         }
 
 
-        return $setting->pid;
+        return $this->arrayToObject($setting->pid);
     }
 
     /**
