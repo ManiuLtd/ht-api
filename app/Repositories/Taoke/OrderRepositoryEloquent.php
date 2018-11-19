@@ -67,7 +67,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     }
 
     /**
-     * TODO 后端可显示近一周、一月订单和佣金状态
+     * 后端可显示近一周、一月订单和佣金状态
      * 订单数据报表  可根据时间返回当前用户的佣金数或者订单数.
      * @param bool $isCommission 计算佣金或者订单数
      * @return float|\Illuminate\Database\Query\Builder|int|mixed

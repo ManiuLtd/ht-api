@@ -22,7 +22,7 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
-        if ($pids->taobao == "") {
+        if ($pids['taobao'] == "") {
             throw new \Exception('请先设置系统pid');
         }
         // todo
@@ -38,7 +38,7 @@ class Taobao implements TBKInterface
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
             'sid'       => $taobao['sid'],  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
-            'pid'       => $pids->taobao,
+            'pid'       => $pids['taobao'],
             'num_iid'   => $array['item_id'],
         ];
         $resp = Curl::to('https://www.heimataoke.com/api-zhuanlian')
@@ -136,7 +136,7 @@ class Taobao implements TBKInterface
         $arr['introduce'] = $data->introduce; //描述
         $arr['favourite'] = $favourite ;
         $arr['coupon_link'] = ['url' => $data->coupon->coupon_click_url]; //领劵地址
-        $arr['finalCommission'] = 8.88;
+        $arr['finalCommission'] = floatval(round($this->getFinalCommission( $arr['price'] *$arr['commossion_rate']/100 ),2));
 
         return $arr;
     }
@@ -631,5 +631,20 @@ class Taobao implements TBKInterface
         $taokouling = $resp->data->model;
 
         return $taokouling;
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function super_category()
+    {
+        $rest = Curl::to('http://v2.api.haodanku.com/super_classify/apikey/'.config('coupon.taobao.HDK_APIKEY'))
+            ->asJsonResponse()
+            ->get();
+        if ($rest->code != 1) {
+            throw new \Exception($rest->msg);
+        }
+        return $rest->general_classify;
     }
 }

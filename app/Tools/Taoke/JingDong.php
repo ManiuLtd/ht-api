@@ -131,7 +131,7 @@ class JingDong implements TBKInterface
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['favourite'] = $favourite; //0是没有收藏
         $arr['coupon_link'] = ['url' => $link]; //领劵地址
-        $arr['finalCommission'] = 8.88;
+        $arr['finalCommission'] =  floatval(round($this->getFinalCommission($data->wlCommission),2));
 
         return $arr;
     }
@@ -403,6 +403,14 @@ class JingDong implements TBKInterface
      * @return array|mixed
      */
     public function hotSearch()
+    {
+        return [];
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function super_category()
     {
         return [];
     }
