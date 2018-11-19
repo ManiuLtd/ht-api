@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Api\Taoke\CategoriesController;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
@@ -103,5 +104,9 @@ class TBKServiceProvider extends ServiceProvider
 //        $this->app->when(HomeController::class)
 //            ->needs(TBKInterface::class)
 //            ->give(\App\Tools\Taoke\Taobao::class);
+
+        $this->app->when(CategoriesController::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
     }
 }

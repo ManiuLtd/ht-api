@@ -18,7 +18,7 @@ class Commission
      * @param string $type
      * @return float|int
      */
-    public function getComminnsionByUser(int $userId, float $commission, string $type)
+    public function getCommissionByUser(int $userId, float $commission, string $type)
     {
         //检查会员
         $userModel = $this->checkUser($userId);
@@ -66,7 +66,7 @@ class Commission
 
         //是否只算出总佣金数
         if ($isCalculateTotalCommission) {
-            return $this->getComminnsionByUser($userId, $query->sum('commission_amount'), $type);
+            return $this->getCommissionByUser($userId, $query->sum('commission_amount'), $type);
         }
 
         return $query;

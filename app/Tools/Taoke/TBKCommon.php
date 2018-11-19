@@ -39,7 +39,10 @@ trait TBKCommon
         return $group_pid;
     }
 
-
+    /**
+     * @param $e
+     * @return object|void
+     */
     private function arrayToObject($e)
     {
 
@@ -49,5 +52,16 @@ trait TBKCommon
                 $e[$k] = (object)$this->arrayToObject($v);
         }
         return (object)$e;
+    }
+
+    /**
+     * @param $price
+     * @return float|int
+     */
+    public function getFinalCommission($price)
+    {
+        $id = getUserId();
+        $commission = new Commission();
+        return $commission->getCommissionByUser($id,$price,'commission_rate1');
     }
 }

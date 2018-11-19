@@ -41,4 +41,9 @@ interface TBKInterface
      * @return mixed
      */
     public function hotSearch();
+
+    /**
+     * @return mixed
+     */
+    public function super_category();
 }
