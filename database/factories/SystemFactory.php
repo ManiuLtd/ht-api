@@ -18,7 +18,7 @@ $factory->define(App\Models\System\Notification::class, function (Faker $faker) 
         'user_id' => rand(1, 50),
         'title' => $faker->title,
         'message' => $faker->text,
-        'type' => array_rand([1, 0]),
+        'type' => array_rand([1, 2]),
     ];
 });
 

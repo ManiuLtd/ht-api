@@ -162,7 +162,6 @@ if (! function_exists('creditAdd')) {
      * @param $column
      * @param $extra
      * @param $type
-     * @return \Illuminate\Http\JsonResponse
      * @throws Exception
      */
     function creditAdd($member, $credit, $column, $extra, $type)
