@@ -5,7 +5,6 @@ namespace App\Tools\Taoke;
 use Illuminate\Support\Carbon;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\Taoke\Favourite;
-use Illuminate\Support\Facades\DB;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkTpwdCreateRequest;
 use TopClient\request\TbkItemInfoGetRequest;

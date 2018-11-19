@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\SendOrder;
+use App\Events\CreditOrder;
 use App\Models\user\user;
 use App\Models\System\Setting;
 
-class SendOrderListener
+class CreditOrderListener
 {
     /**
      * Create the event listener.
@@ -19,10 +19,10 @@ class SendOrderListener
     }
 
     /**
-     * @param SendOrder $event
+     * @param CreditOrder $event
      * @throws \Exception
      */
-    public function handle(SendOrder $event)
+    public function handle(CreditOrder $event)
     {
         $params = $event->params;
         $setting = setting(1);

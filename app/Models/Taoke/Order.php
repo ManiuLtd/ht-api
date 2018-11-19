@@ -3,7 +3,7 @@
 namespace App\Models\Taoke;
 
 use App\Events\SendNotification;
-use App\Events\SendOrder;
+use App\Events\CreditOrder;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -34,29 +34,30 @@ class Order extends Model implements Transformable
     public static function boot()
     {
         parent::boot();
-        //TODO 这里代码是什么意思
         // 创建订单时候,根据订单状态调用事件
-        if (request('status') == 3 && request('user_id')) {
-            self::creating(function ($model) {
-                event(new SendOrder([
-                    'user_id' => request('user_id')
+        self::creating(function ($model) {
+            if ($model->status == 3 && $model->user_id){
+                event(new CreditOrder([
+                    'user_id' => $model->user_id
                 ]));
-            });
-            //TODO 发送推送
-        }
-
-        //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
-        if (request('status') == 3 && request('user_id')) {
-            self::updating(function ($model) {
-                event(new SendOrder([
-                    'user_id' => request('user_id')
-                ]));
-                $user =  User::query()->find(request('user_id'));
+                $user = User::query()->find($model->user_id);
                 $user['message'] = '你有新的订单产生收益';
                 event(new SendNotification($user->toArray()));
-            });
-            //TODO 发送推送
-        }
+            }
+        });
+        //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
+        self::updating(function ($model) {
+            if ($model->status == 3 && $model->user_id){
+                event(new CreditOrder([
+                    'user_id' => $model->user_id
+                ]));
+                $user = User::query()->find($model->user_id);
+                $user['message'] = '你有新的订单产生收益';
+                event(new SendNotification($user->toArray()));
+            }
+        });
+
+
     }
 
     /**
