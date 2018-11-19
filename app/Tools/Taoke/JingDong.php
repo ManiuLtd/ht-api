@@ -210,23 +210,39 @@ class JingDong implements TBKInterface
             'page' => $page,
 
         ];
+        //1.综合，2.销量（高到低），3.销量（低到高），4.价格(低到高)，5.价格（高到低），6.佣金比例（高到低） 7. 卷额(从高到低) 8.卷额(从低到高)
         switch ($sort) {
-            case 1: //最新
+            case 1: //
                 break;
-            case 2: //低价
+            case 2: //
+                $params['sort'] = 4;
+                $params['sortby'] = 'desc';
+                break;
+            case 3: //
+                $params['sort'] = 4;
+                $params['sortby'] = 'asc';
+                break;
+            case 4: //
                 $params['sort'] = 1;
                 $params['sortby'] = 'asc';
                 break;
-            case 3: //高价
+            case 5: //
                 $params['sort'] = 1;
                 $params['sortby'] = 'desc';
                 break;
-            case 4: //销量
+            case 6: //
+                $params['sort'] = 3;
+                $params['sortby'] = 'desc';
+                break;
+            case 7: //
                 $params['sort'] = 2;
+                $params['sortby'] = 'desc';
                 break;
-            case 5: //佣金
-                $params['sort'] = 4;
+            case 8: //
+                $params['sort'] = 2;
+                $params['sortby'] = 'asc';
                 break;
+
             default:
                 $params['sort'] = 0;
                 break;

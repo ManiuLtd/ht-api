@@ -143,25 +143,34 @@ class PinDuoDuo implements TBKInterface
 
         $time = time ();
 
-        //sort 1最新 2低价 3高价 4销量 5佣金 6综合
+        //1.综合，2.销量（高到低），3.销量（低到高），4.价格(低到高)，5.价格（高到低），6.佣金比例（高到低） 7. 卷额(从高到低) 8.卷额(从低到高)
         $sort_type = 0;
         switch ($sort) {
             case 1:
-                $sort_type = 12;
+                $sort_type = 0;
                 break;
             case 2:
-                $sort_type = 3;
-                break;
-            case 3:
-                $sort_type = 4;
-                break;
-            case 4:
                 $sort_type = 6;
                 break;
+            case 3:
+                $sort_type = 5;
+                break;
+            case 4:
+                $sort_type = 3;
+                break;
             case 5:
-                $sort_type = 2;
+                $sort_type = 4;
                 break;
             case 6:
+                $sort_type = 2;
+                break;
+            case 7:
+                $sort_type = 8;
+                break;
+            case 8:
+                $sort_type = 7;
+                break;
+            default:
                 $sort_type = 0;
                 break;
         }
