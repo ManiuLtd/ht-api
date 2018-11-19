@@ -58,9 +58,9 @@ class PinDuoDuo implements TBKInterface
      * @return array|mixed
      * @throws \Exception
      */
-    public function getDetail()
+    public function getDetail(array $params = [])
     {
-        $id = request ('itemid');
+        $id = $params['itemid'] ?? request('itemid');
         if (!is_numeric ($id)) {
             throw new \InvalidArgumentException('商品id类型错误');
         }

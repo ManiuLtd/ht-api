@@ -60,9 +60,9 @@ class JingDong implements TBKInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getDetail()
+    public function getDetail(array $params = [])
     {
-        $id = request ('itemid');
+        $id = $params['itemid'] ?? request('itemid');
 
         $params = [
             'type' => 'goodsdetail',
