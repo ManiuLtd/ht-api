@@ -34,11 +34,11 @@ class JingXuanController extends Controller
     public function index()
     {
         try {
-            $jingxuan = $this->repository->paginate(request('limit', 10));
+            $jingxuan = $this->repository->paginate (request ('limit', 10));
 
-            return json(1001, '获取成功', $jingxuan);
+            return json (1001, '获取成功', $jingxuan);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -48,18 +48,18 @@ class JingXuanController extends Controller
      */
     public function kouLing()
     {
-//        try{
-            $itemId = request('itemid');
+        try {
+            $itemId = request ('itemid');
             $tool = new Taobao();
-            $coupon = $tool->getDetail([
+            $coupon = $tool->getDetail ([
                 'itemid' => $itemId,
             ]);
-            return json('1001','获取成功',[
-                'kouLing'    => $coupon['kouling'],
+            return json ('1001', '获取成功', [
+                'kouling' => $coupon['kouling'],
                 'coupon_url' => $coupon['coupon_link']['url']
             ]);
-//        }catch(\Exception $e){
-//            return json('5001',$e->getMessage());
-//        }
+        } catch (\Exception $e) {
+            return json ('5001', $e->getMessage ());
+        }
     }
 }
