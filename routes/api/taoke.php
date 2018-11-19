@@ -12,6 +12,9 @@ Route::namespace('Taoke')
 
         //分类
         Route::get('category', 'CategoriesController@index');
+        //超级分类
+        Route::get('category/super', 'CategoriesController@super_category');
+
         //搜索
         Route::get('search', 'SearchController@index');
         Route::get('search/hot', 'SearchController@keywords');
@@ -54,4 +57,5 @@ Route::namespace('Taoke')
 
         //精选单品
         Route::get('jingxuan', 'JingXuanController@index');
+        Route::get('kouLing', 'JingXuanController@kouLing');
     });

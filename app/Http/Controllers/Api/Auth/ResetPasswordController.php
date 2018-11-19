@@ -43,10 +43,10 @@ class ResetPasswordController extends Controller
             if ($errorTime > 5) {
                 Cache::forget('password:phone:error:'.$request->phone);
 
-                return Password::MAX_ERROR;
+                return json(4001,'验证码错误次数过多');
             }
 
-            return PasswordBrokerContract::INVALID_TOKEN;
+            return json(4001,'验证码错误');
         }
 
         $this->resetPassword($user, $request->password);

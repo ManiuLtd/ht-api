@@ -22,12 +22,17 @@ class JingDong implements TBKInterface
         $coupon_url = $array['coupon_url'];
 
         $pids = $this->getPids ();
-        if (!isset($pids->jingdong)) {
+        if (!isset($pids['jingdong'])) {
             throw new \Exception('请先设置系统京东推广位id');
         }
-        $userid = $this->getUserId ();
+        $userid = getUserId();
+
         $setting = setting ($userid);
-        $unionid = $setting->unionid;
+        if (!$setting) {
+            throw new \Exception('请先完成设置');
+        }
+        $unionid = json_decode($setting->unionid);
+
         if (!isset($unionid->jingdong)) {
             throw new \Exception('请先设置京东联盟id');
         }
@@ -37,7 +42,7 @@ class JingDong implements TBKInterface
                 'appid' => data_get (config ('coupon'), 'jingdong.JD_APPID'),
                 'appkey' => data_get (config ('coupon'), 'jingdong.JD_APPKEY'),
                 'unionid' => $unionid->jingdong,
-                'positionid' => $pids->jingdong,
+                'positionid' => $pids['jingdong'],
                 'gid' => $itemID,
                 'coupon_url' => $coupon_url,
             ])
@@ -55,9 +60,9 @@ class JingDong implements TBKInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getDetail()
+    public function getDetail(array $params = [])
     {
-        $id = request ('itemid');
+        $id = $params['itemid'] ?? request('itemid');
 
         $params = [
             'type' => 'goodsdetail',
@@ -75,31 +80,31 @@ class JingDong implements TBKInterface
 
         //领券地址
         $link = null;
-        if (getUserId ()) {
-            try {
-                $link = $this->getCouponUrl ([
-                    'itemID' => $id,
-                    'coupon_url' => $response->data->couponList,
-                ]);
-            } catch (\Exception $e) {
-            }
+
+        $link = $this->getCouponUrl ([
+            'itemID' => $id,
+            'coupon_url' => $response->data->couponList,
+        ]);
+        if (!$link) {
+            $link = $response->data->couponList;
         }
+
         $resCoupon = $this->getCoupon ([
             'url' => $response->data->couponList,
         ]);
         //判断优惠卷是否被收藏
         $favourite = 0;
-        if (getUserId ()) {
-            $user = getUser ();
-            $favouritesModel = Favourite::query ()->where ([
-                'user_id' => $user->id,
-                'item_id' => $id,
-                'type' => 2,
-            ])->first ();
-            if ($favouritesModel) {
-                $favourite = $favouritesModel->id; //已收藏
-            }
+
+        $user = getUser ();
+        $favouritesModel = Favourite::query ()->where ([
+            'user_id' => $user->id,
+            'item_id' => $id,
+            'type' => 2,
+        ])->first ();
+        if ($favouritesModel) {
+            $favourite = $favouritesModel->id; //已收藏
         }
+
 
         $data = $response->data;
         //图文详情
@@ -126,7 +131,7 @@ class JingDong implements TBKInterface
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['favourite'] = $favourite; //0是没有收藏
         $arr['coupon_link'] = ['url' => $link]; //领劵地址
-        $arr['finalCommission'] = 8.88;
+        $arr['finalCommission'] =  floatval(round($this->getFinalCommission($data->wlCommission),2));
 
         return $arr;
     }
@@ -205,23 +210,39 @@ class JingDong implements TBKInterface
             'page' => $page,
 
         ];
+        //1.综合，2.销量（高到低），3.销量（低到高），4.价格(低到高)，5.价格（高到低），6.佣金比例（高到低） 7. 卷额(从高到低) 8.卷额(从低到高)
         switch ($sort) {
-            case 1: //最新
+            case 1: //
                 break;
-            case 2: //低价
+            case 2: //
+                $params['sort'] = 4;
+                $params['sortby'] = 'desc';
+                break;
+            case 3: //
+                $params['sort'] = 4;
+                $params['sortby'] = 'asc';
+                break;
+            case 4: //
                 $params['sort'] = 1;
                 $params['sortby'] = 'asc';
                 break;
-            case 3: //高价
+            case 5: //
                 $params['sort'] = 1;
                 $params['sortby'] = 'desc';
                 break;
-            case 4: //销量
+            case 6: //
+                $params['sort'] = 3;
+                $params['sortby'] = 'desc';
+                break;
+            case 7: //
                 $params['sort'] = 2;
+                $params['sortby'] = 'desc';
                 break;
-            case 5: //佣金
-                $params['sort'] = 4;
+            case 8: //
+                $params['sort'] = 2;
+                $params['sortby'] = 'asc';
                 break;
+
             default:
                 $params['sort'] = 0;
                 break;
@@ -282,7 +303,7 @@ class JingDong implements TBKInterface
                 'per_page' => 20,
                 'to' => 20 * $page,
                 'total' => count ($response->data),
-                'tb_p' => null,
+
             ],
         ];
     }
@@ -382,6 +403,14 @@ class JingDong implements TBKInterface
      * @return array|mixed
      */
     public function hotSearch()
+    {
+        return [];
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function super_category()
     {
         return [];
     }

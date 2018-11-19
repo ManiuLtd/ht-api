@@ -22,7 +22,7 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
-        if ($pids->taobao == "") {
+        if ($pids['taobao'] == "") {
             throw new \Exception('请先设置系统pid');
         }
         // todo
@@ -38,7 +38,7 @@ class Taobao implements TBKInterface
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
             'sid'       => $taobao['sid'],  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
-            'pid'       => $pids->taobao,
+            'pid'       => $pids['taobao'],
             'num_iid'   => $array['item_id'],
         ];
         $resp = Curl::to('https://www.heimataoke.com/api-zhuanlian')
@@ -136,7 +136,7 @@ class Taobao implements TBKInterface
         $arr['introduce'] = $data->introduce; //描述
         $arr['favourite'] = $favourite ;
         $arr['coupon_link'] = ['url' => $data->coupon->coupon_click_url]; //领劵地址
-        $arr['finalCommission'] = 8.88;
+        $arr['finalCommission'] = floatval(round($this->getFinalCommission( $arr['price'] *$arr['commossion_rate']/100 ),2));
 
         return $arr;
     }
@@ -181,62 +181,89 @@ class Taobao implements TBKInterface
     {
         //可根据商品ID搜索
         $page = request('page') ?? 1;
-        $tb_p = request('tb_p', 1);
         $limit = request('limit') ?? 20;
         $q = $array['q'] ?? request('q');
         $sort = $array['sort'] ?? request('sort');
 
+
         $params = [
-            'apikey' => config('coupon.taobao.HDK_APIKEY'),
-            'keyword' => $q,
-            'back' => $limit,
-            'min_id' => $page,
-            'tb_p' => $tb_p,
+            'appkey' => config('coupon.taobao.TKJD_API_KEY'),
+            'k' => $q,
+            'page_size' => $limit,
+            'page' => $page,
         ];
-        if ($sort != 7 || $sort != 8) {
-            $params['sort'] = $sort;
+        //1.综合  2销量（高到低) 3.销量（低到高），4.价格(低到高)，5.价格（高到低），6.佣金比例（高到低） 7. 卷额(从高到低) 8.卷额(从低到高)
+        switch ($sort){
+            case 2:
+                $params['sort'] = 'sales';
+                $params['sort_type'] = 'desc';
+                break;
+            case 3:
+                $params['sort'] = 'sales';
+                $params['sort_type'] = 'asc';
+                break;
+            case 4:
+                $params['sort'] = 'price';
+                $params['sort_type'] = 'asc';
+                break;
+            case 5:
+                $params['sort'] = 'price';
+                $params['sort_type'] = 'desc';
+                break;
+            case 6 :
+                $params['comm_rate'] = 'price';
+                $params['sort_type'] = 'desc';
+                break;
+            case 7 :
+                $params['comm_rate'] = 'coupon';
+                $params['sort_type'] = 'desc';
+                break;
+            case 8:
+                $params['comm_rate'] = 'coupon';
+                $params['sort_type'] = 'asc';
+                break;
+            case 1:
+                break;
+            default:
+                break;
+
         }
-        $response = Curl::to('http://v2.api.haodanku.com/supersearch')
+
+        $response = Curl::to('http://api.tkjidi.com/checkWhole')
             ->withData($params)
+            ->asJsonResponse()
             ->get();
 
-        $response = json_decode($response);
 
         //接口信息获取失败
-        if ($response->code != 1) {
-            throw new \Exception('淘客接口请求失败');
+        if ($response->status != 200) {
+            throw new \Exception($response->msg);
         }
         //当前页面地址
         $uri = \Request::url();
 
         //页码信息
-        $totalPage = intval(floor(count($response->data) / $limit) + 1);
+        $totalPage = intval(floor($response->data->total / $limit) + 1);
 
         //重组字段
         $data = [];
-        foreach ($response->data as $list) {
+        foreach ($response->data->data as $list) {
             $temp = [
-                'title'           => $list->itemtitle,
-                'pic_url'         => $list->itempic,
-                'item_id'         => $list->itemid,
-                'price'           => round($list->itemprice),
-                'final_price'     => round($list->itemendprice),
-                'coupon_price'    => round($list->couponmoney),
-                'commission_rate' => round($list->tkrates),
+                'title'           => $list->goods_name,
+                'pic_url'         => $list->pic,
+                'item_id'         => $list->id,
+                'price'           => round($list->price),
+                'final_price'     => round($list->price_after_coupons),
+                'coupon_price'    => round($list->price_coupons),
+                'commission_rate' => round($list->rate),
                 'type'            => 1,
-                'volume'          => round($list->itemsale),
+                'volume'          => round($list->sales),
                 'finalCommission' => 8.88
             ];
             array_push($data, $temp);
         }
-        foreach ($data as $key => $row) {
-            $coupon_price[$key] = $row['coupon_price'];
-        }
-        if ($sort == 7) {
-            array_multisort($coupon_price, SORT_DESC, $data);
-        } elseif ($sort == 8) {
-            array_multisort($coupon_price, SORT_ASC, $data);
-        }
+
+
 
         return [
             'data' => $data,
@@ -248,8 +275,7 @@ class Taobao implements TBKInterface
                 'current_page' => (int) $page,
                 'last_page' => $totalPage,
                 'per_page' => $limit,
-                'total'     => count($response->data),
-                'tb_p'      => $response->tb_p,
+                'total'     => $response->data->total,
             ],
         ];
     }
@@ -308,6 +334,7 @@ class Taobao implements TBKInterface
     {
         $params = [
             'apikey' => config('coupon.taobao.HDK_APIKEY'),
+
         ];
 
         $resp = Curl::to('http://v2.api.haodanku.com/hot_key')
@@ -318,8 +345,13 @@ class Taobao implements TBKInterface
         if ($resp->code != 1) {
             throw new \Exception($resp->msg);
         }
+        $data = $resp->data;
 
-        return $resp->data;
+        if (count($data) > 20 ){
+            $data = array_slice($data,0,20);
+        }
+
+        return $data;
     }
 
     /**
@@ -599,5 +631,20 @@ class Taobao implements TBKInterface
         $taokouling = $resp->data->model;
 
         return $taokouling;
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function super_category()
+    {
+        $rest = Curl::to('http://v2.api.haodanku.com/super_classify/apikey/'.config('coupon.taobao.HDK_APIKEY'))
+            ->asJsonResponse()
+            ->get();
+        if ($rest->code != 1) {
+            throw new \Exception($rest->msg);
+        }
+        return $rest->general_classify;
     }
 }

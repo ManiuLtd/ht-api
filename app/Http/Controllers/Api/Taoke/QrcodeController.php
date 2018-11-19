@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
+use App\Tools\Taoke\JingDong;
+use App\Tools\Taoke\PinDuoDuo;
+use App\Tools\Taoke\Taobao;
 use Hashids\Hashids;
 use App\Tools\Qrcode\Qrcode;
 use Illuminate\Http\Request;
@@ -39,8 +42,20 @@ class QrcodeController extends Controller
     public function share(Request $request)
     {
         try {
-            $data = $request->all();
-            $this->validator->with($data)->passesOrFail();
+            $item_id = request('item_id');
+            $type    = request('type');
+            $pic_url = request('pic_url');
+            if ($type == 1){
+                $tool    = new Taobao();
+            }elseif ($type == 2){
+                $tool    = new JingDong();
+            }elseif ($type == 3){
+                $tool    = new PinDuoDuo();
+            }
+
+            $data    = $tool->getDetail([
+                'itemid' => $item_id
+            ]);
             $userid = getUserId();
             $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
             //邀请码
@@ -49,17 +64,17 @@ class QrcodeController extends Controller
             $qrcode = new Qrcode(public_path('images/share.png'));
             $qrcode->width = 564;
             $qrcode->height = 971;
-            $qrcode->savePath = 'images/cache/'.$hashids.'_'.$data['item_id'].'.jpg';
+            $qrcode->savePath = 'images/cache/'.$hashids.'_'.$item_id.'.jpg';
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
-                ->generate('http://lv5.vaiwan.com:8081/'.$data['item_id'].'?type'.$data['type']);
+                ->generate('http://v2.easytbk.com/api/taoke/coupon/detail'.'?type='.$type.'&item_id='.$item_id);
             $imgname = 'qrcodeImg'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
             $str1 = str_limit($data['title'], 50, '');
             $str2 = str_replace($str1, '', $data['title']);
             $data['qrcode_img'] = public_path().'/images/qrcodeImg.png';
             $imageEnumArray = [
-                new ImageEnum($data['pic_url'], 565, 545, 'top', 0, 0),
+                new ImageEnum($pic_url, 565, 545, 'top', 0, 0),
                 new ImageEnum($data['qrcode_img'], 210, 210, 'left-top', 30, 750),
             ];
             $textEnumArray = [
