@@ -1,8 +1,9 @@
 <?php
-
 Route::namespace('Taoke')
     ->prefix('taoke')
+    ->middleware(['jwt.auth'])
     ->group(function () {
+
         //优惠卷
         Route::get('coupon', 'CouponsController@index');
         //优惠券详情
@@ -21,12 +22,7 @@ Route::namespace('Taoke')
         Route::resource('haohuo', 'HaoHuoController', [
             'only' => ['index'],
         ]);
-    });
 
-Route::namespace('Taoke')
-    ->prefix('taoke')
-    ->middleware(['jwt.auth'])
-    ->group(function () {
         //订单列表
         Route::get('order', 'OrdersController@index');
 
@@ -46,9 +42,7 @@ Route::namespace('Taoke')
         Route::resource('history', 'HistoriesController', [
             'only' => ['index', 'store', 'destory'],
         ]);
-
-
-
+        
         //详情分享二维码
         Route::get('qrcode/share', 'QrcodeController@share');
 
