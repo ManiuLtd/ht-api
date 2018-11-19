@@ -22,12 +22,17 @@ class JingDong implements TBKInterface
         $coupon_url = $array['coupon_url'];
 
         $pids = $this->getPids ();
-        if (!isset($pids->jingdong)) {
+        if (!isset($pids['jingdong'])) {
             throw new \Exception('请先设置系统京东推广位id');
         }
-        $userid = $this->getUserId ();
+        $userid = getUserId();
+
         $setting = setting ($userid);
-        $unionid = $setting->unionid;
+        if (!$setting) {
+            throw new \Exception('请先完成设置');
+        }
+        $unionid = json_decode($setting->unionid);
+
         if (!isset($unionid->jingdong)) {
             throw new \Exception('请先设置京东联盟id');
         }
@@ -37,7 +42,7 @@ class JingDong implements TBKInterface
                 'appid' => data_get (config ('coupon'), 'jingdong.JD_APPID'),
                 'appkey' => data_get (config ('coupon'), 'jingdong.JD_APPKEY'),
                 'unionid' => $unionid->jingdong,
-                'positionid' => $pids->jingdong,
+                'positionid' => $pids['jingdong'],
                 'gid' => $itemID,
                 'coupon_url' => $coupon_url,
             ])
@@ -75,31 +80,31 @@ class JingDong implements TBKInterface
 
         //领券地址
         $link = null;
-        if (getUserId ()) {
-            try {
-                $link = $this->getCouponUrl ([
-                    'itemID' => $id,
-                    'coupon_url' => $response->data->couponList,
-                ]);
-            } catch (\Exception $e) {
-            }
+
+        $link = $this->getCouponUrl ([
+            'itemID' => $id,
+            'coupon_url' => $response->data->couponList,
+        ]);
+        if (!$link) {
+            $link = $response->data->couponList;
         }
+
         $resCoupon = $this->getCoupon ([
             'url' => $response->data->couponList,
         ]);
         //判断优惠卷是否被收藏
         $favourite = 0;
-        if (getUserId ()) {
-            $user = getUser ();
-            $favouritesModel = Favourite::query ()->where ([
-                'user_id' => $user->id,
-                'item_id' => $id,
-                'type' => 2,
-            ])->first ();
-            if ($favouritesModel) {
-                $favourite = $favouritesModel->id; //已收藏
-            }
+
+        $user = getUser ();
+        $favouritesModel = Favourite::query ()->where ([
+            'user_id' => $user->id,
+            'item_id' => $id,
+            'type' => 2,
+        ])->first ();
+        if ($favouritesModel) {
+            $favourite = $favouritesModel->id; //已收藏
         }
+
 
         $data = $response->data;
         //图文详情
@@ -282,7 +287,7 @@ class JingDong implements TBKInterface
                 'per_page' => 20,
                 'to' => 20 * $page,
                 'total' => count ($response->data),
-                'tb_p' => null,
+
             ],
         ];
     }
