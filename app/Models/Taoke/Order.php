@@ -33,7 +33,7 @@ class Order extends Model implements Transformable
     {
         parent::boot();
         //TODO 这里代码是什么意思
-        //创建订单时候,根据订单状态调用事件
+//        //创建订单时候,根据订单状态调用事件
 //        if (request('status') == 3 && request('member_id')) {
 //            self::creating(function ($model) {
 //                event(new SendOrder([
