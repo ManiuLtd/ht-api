@@ -23,13 +23,13 @@ class PinDuoDuo implements TBKInterface
         $url = 'http://mobile.yangkeduo.com/goods2.html?goods_id=' . $id;
         $pids = $this->getPids ();
 
-        if (!isset($pids['pinduoduo'])) {
+        if (!isset($pids->pinduoduo)) {
             throw new \Exception('请先设置系统拼多多推广位id');
         }
         $time = time ();
         $params = [
             'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
-            'pid' => $pids['pinduoduo'],
+            'pid' => $pids->pinduoduo,
             'source_url' => "$url",
             'timestamp' => $time,
             'type' => 'pdd.ddk.goods.zs.unit.url.gen',
