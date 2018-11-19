@@ -44,6 +44,7 @@ class QrcodeController extends Controller
         try {
             $item_id = request('item_id');
             $type    = request('type');
+            $pic_url = request('pic_url');
             if ($type == 1){
                 $tool    = new Taobao();
             }elseif ($type == 2){
@@ -73,7 +74,7 @@ class QrcodeController extends Controller
             $str2 = str_replace($str1, '', $data['title']);
             $data['qrcode_img'] = public_path().'/images/qrcodeImg.png';
             $imageEnumArray = [
-                new ImageEnum($data['pic_url'], 565, 545, 'top', 0, 0),
+                new ImageEnum($pic_url, 565, 545, 'top', 0, 0),
                 new ImageEnum($data['qrcode_img'], 210, 210, 'left-top', 30, 750),
             ];
             $textEnumArray = [
