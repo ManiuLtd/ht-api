@@ -185,11 +185,15 @@ class Taobao implements TBKInterface
         $q = $array['q'] ?? request ('q');
         $sort = $array['sort'] ?? request ('sort');
 
-        if($itemID = $this->searchByTKL ($q)){
-            $q = "https://item.taobao.com/item.htm?id={$itemID}";
+        if($decode = $this->searchByTKL ($q)){
+            if(is_numeric ($decode)){
+                $q = "https://item.taobao.com/item.htm?id={$decode}";
+            }else{
+                $q = $decode;
+            }
+
         }
 
-        dd ($this->searchByTKL ($q));
         $params = [
             'appkey' => config ('coupon.taobao.TKJD_API_KEY'),
             'k' => $q,
@@ -238,7 +242,6 @@ class Taobao implements TBKInterface
             ->asJsonResponse ()
             ->get ();
 
-        dd ($response);
 
         //接口信息获取失败
         if ($response->status != 200) {
@@ -305,6 +308,9 @@ class Taobao implements TBKInterface
                 $str = str_replace (".htm", '', $str);
 
                 return $str;
+            }
+            if (str_contains ($response->url, 'uland.taobao.c')) {
+                return $response->content;
             }
             $pos = strpos ($response->url, '?');
             $query_string = substr ($response->url, $pos + 1, strlen ($response->url));

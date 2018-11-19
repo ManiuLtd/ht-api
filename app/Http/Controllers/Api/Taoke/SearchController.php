@@ -52,7 +52,7 @@ class SearchController extends Controller
      */
     public function index()
     {
-//        try {
+        try {
             $this->validator->with(request()->all())->passesOrFail();
 
             $rest = $this->couponRepository->searchGoods();
@@ -62,9 +62,9 @@ class SearchController extends Controller
             }
 
             return json(1001, '获取成功', $rest);
-//        } catch (\Exception $exception) {
-//            return json(5001, $exception->getMessage());
-//        }
+        } catch (\Exception $exception) {
+            return json(5001, $exception->getMessage());
+        }
     }
 
     /**
