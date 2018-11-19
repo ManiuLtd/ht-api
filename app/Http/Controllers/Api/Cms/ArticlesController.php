@@ -42,4 +42,15 @@ class ArticlesController extends Controller
             return json(5001, $e->getMessage());
         }
     }
+
+    /**
+     * 详情
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show()
+    {
+        $article = $this->repository->find(request('article_id'));
+
+        return json(1001, '获取成功', $article);
+    }
 }
