@@ -22,19 +22,20 @@ class PinDuoDuo implements TBKInterface
         // 返回拼多多领券地址
         $url = 'http://mobile.yangkeduo.com/goods2.html?goods_id=' . $id;
         $pids = $this->getPids ();
-        if (!isset($pids->pinduoduo)) {
+
+        if (!isset($pids['pinduoduo'])) {
             throw new \Exception('请先设置系统拼多多推广位id');
         }
         $time = time ();
         $params = [
             'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
-            'pid' => $pids->pinduoduo,
+            'pid' => $pids['pinduoduo'],
             'source_url' => "$url",
             'timestamp' => $time,
             'type' => 'pdd.ddk.goods.zs.unit.url.gen',
         ];
 
-        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'pid' . $pids->pinduoduo . 'source_url' . $url . 'timestamp' . $time . 'typepdd.ddk.goods.zs.unit.url.gen';
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'pid' . $pids['pinduoduo'] . 'source_url' . $url . 'timestamp' . $time . 'typepdd.ddk.goods.zs.unit.url.gen';
 
         $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
@@ -79,6 +80,7 @@ class PinDuoDuo implements TBKInterface
         if (!$result) {
             throw new \Exception('优惠券不存在');
         }
+
         if ($result->status_code != 200) {
             throw new \Exception($result->message);
         }
@@ -108,8 +110,8 @@ class PinDuoDuo implements TBKInterface
         $arr['item_id'] = $data->skuId; //商品id
         $arr['user_type'] = null; //京东  拼多多 null  1淘宝 2天猫
         $arr['volume'] = $data->sales; //销量
-        $arr['price'] = floatval ($data->wlPrice); //原价
-        $arr['final_price'] = floatval ($data->wlPrice_after); //最终价
+        $arr['price'] = floatval ($data->min_group_price) + floatval ($data->discount); //原价
+        $arr['final_price'] = floatval ($data->min_group_price); //最终价
         $arr['coupon_price'] = floatval ($data->discount); //优惠价
         $arr['commossion_rate'] = $data->wlCommissionShare; //佣金比例
         $arr['coupon_start_time'] = $data->beginTime ? Carbon::createFromTimestamp (intval ($data->beginTime))->toDateString () : Carbon::now ()->toDateString (); //优惠卷开始时间
@@ -123,7 +125,7 @@ class PinDuoDuo implements TBKInterface
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['favourite'] = $favourite;
         $arr['coupon_link'] = $link; //领劵地址
-        $arr['finalCommission'] = 8.88;
+        $arr['finalCommission'] = floatval(round($this->getFinalCommission($data->wlCommission),2));
         $arr['favourite'] = $favourite;
 
         return $arr;
@@ -143,25 +145,34 @@ class PinDuoDuo implements TBKInterface
 
         $time = time ();
 
-        //sort 1最新 2低价 3高价 4销量 5佣金 6综合
+        //1.综合，2.销量（高到低），3.销量（低到高），4.价格(低到高)，5.价格（高到低），6.佣金比例（高到低） 7. 卷额(从高到低) 8.卷额(从低到高)
         $sort_type = 0;
         switch ($sort) {
             case 1:
-                $sort_type = 12;
+                $sort_type = 0;
                 break;
             case 2:
-                $sort_type = 3;
-                break;
-            case 3:
-                $sort_type = 4;
-                break;
-            case 4:
                 $sort_type = 6;
                 break;
+            case 3:
+                $sort_type = 5;
+                break;
+            case 4:
+                $sort_type = 3;
+                break;
             case 5:
-                $sort_type = 2;
+                $sort_type = 4;
                 break;
             case 6:
+                $sort_type = 2;
+                break;
+            case 7:
+                $sort_type = 8;
+                break;
+            case 8:
+                $sort_type = 7;
+                break;
+            default:
                 $sort_type = 0;
                 break;
         }
@@ -332,6 +343,14 @@ class PinDuoDuo implements TBKInterface
      * @return array|mixed
      */
     public function hotSearch()
+    {
+        return [];
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function super_category()
     {
         return [];
     }

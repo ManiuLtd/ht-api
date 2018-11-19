@@ -58,7 +58,7 @@ class Coupon extends Model implements Transformable
         $user = getUser ();
         $data = new Commission();
         $array = $this->toArray ();
-        $finalCommission = $data->getComminnsionByUser ($user->id, $this->final_price * $this->commission_rate / 100, 'commission_rate1');
+        $finalCommission = $data->getCommissionByUser ($user->id, $this->final_price * $this->commission_rate / 100, 'commission_rate1');
         $array['price'] = floatval ($array['price']);
         $array['final_price'] = floatval ($array['final_price']);
         $array['coupon_price'] = floatval ($array['coupon_price']);
