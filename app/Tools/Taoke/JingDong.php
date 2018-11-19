@@ -27,7 +27,7 @@ class JingDong implements TBKInterface
         }
         $userid = getUserId();
 
-        $setting = setting ($userid);
+        $setting = setting (1);
         if (!$setting) {
             throw new \Exception('请先完成设置');
         }
