@@ -22,12 +22,11 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids();
-        if ($pids['taobao'] == "") {
+        if ($pids->taobao == "") {
             throw new \Exception('请先设置系统pid');
         }
         // todo
         $setting = setting(1); // 应该是根据user或者user_id
-
         $taobao = $setting->taobao;
         if (! isset($taobao['sid'])) {
             throw new \Exception('请先授权淘宝联盟');
@@ -38,7 +37,7 @@ class Taobao implements TBKInterface
             'appkey'    => config('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config('coupon.taobao.HMTK_APP_SECRET'),
             'sid'       => $taobao['sid'],  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
-            'pid'       => $pids['taobao'],
+            'pid'       => $pids->taobao,
             'num_iid'   => $array['item_id'],
         ];
         $resp = Curl::to('https://www.heimataoke.com/api-zhuanlian')
