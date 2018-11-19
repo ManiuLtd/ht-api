@@ -57,10 +57,6 @@ class User extends Authenticatable implements JWTSubject, Transformable
      * @var array
      */
     protected $hidden = [
-        'inviter_id',
-        'level_id',
-        'group_id',
-        'oldgroup_id',
         'wx_unionid',
         'wx_openid1',
         'wx_openid2',
