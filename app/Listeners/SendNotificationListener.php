@@ -44,7 +44,9 @@ class SendNotificationListener
 
         //判断是否为群发
         if (! $isAllAudience) {
-            $tag = Hashids::encode($messages['user_id']);
+            $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
+            //邀请码
+            $tag = $hashids->encode($messages['id']);
             $push->addTag($tag);
             $insert['type'] = 1;
         } else {
@@ -56,9 +58,8 @@ class SendNotificationListener
 
         try {
             $push->send();
-            $insert['user_id'] = $messages['user_id'];
-            $insert['user_id'] = $messages['user_id'];
-            $insert['title'] = $messages['title'];
+            $insert['user_id'] = $messages['id'];
+            $insert['title'] = $messages['title'] ?? '';
             $insert['message'] = $messages['message'];
             $insert['created_at'] = now()->toDateTimeString();
             $insert['updated_at'] = now()->toDateTimeString();

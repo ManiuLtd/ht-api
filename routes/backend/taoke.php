@@ -13,9 +13,7 @@ Route::namespace('Taoke')
         ]);
 
         //订单
-        Route::resource('order', 'OrdersController', [
-            'only' => ['index', 'show'],
-        ]);
+        Route::resource('order', 'OrdersController');
 
         //优惠卷
         Route::resource('coupon', 'CouponsController');

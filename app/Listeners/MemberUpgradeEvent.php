@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\MemberUpgrade;
+use App\Models\Taoke\Pid;
+use App\Models\User\Level;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,8 +27,13 @@ class MemberUpgradeEvent
     public function handle(MemberUpgrade $event)
     {
         $user = $event->user;
+
+        $user_level = Level::query()->where('user_id',$user->id)->first();
+        if (!$user_level){
+            throw new \Exception('用户等级错误');
+        }
         $level = db('user_levels')
-            ->where('level', '>', $user->level->level)
+            ->where('level', '>', $user_level->level)
             ->where('status', 1)
             ->orderBy('level', 'asc')
             ->first();
@@ -64,7 +71,9 @@ class MemberUpgradeEvent
                 'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
             ]);
             //TODO 推广位未分配   查询淘宝推广位不为空并且用户id为空的  分配给他，调用接口生成京东和拼多多推广位，
-            //淘宝推广位用完了，在pid表生成一条新数据，然后调用接口生成京东和拼多多推广位，让淘宝推广位为空
+            //TODO 淘宝推广位用完了，在pid表生成一条新数据，然后调用接口生成京东和拼多多推广位，让淘宝推广位为空
+            $pid = Pid::query()->where('user_id',null)->where('taobao','<>',null)->first();
+
         });
     }
 }
