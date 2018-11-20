@@ -33,4 +33,9 @@ Route::namespace('Taoke')
 
         //快抢商品
         Route::resource('kuaiqiang', 'KuaiQiangController');
+
+        //代理设置
+        Route::resource('setting', 'SettingsController', [
+            'only' => ['index', 'store'],
+        ]);
     });

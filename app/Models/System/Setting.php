@@ -37,6 +37,7 @@ class Setting extends Model implements Transformable
     ];
 
     /**
+     * 自动格式转换
      * @var array
      */
     protected $casts = [
