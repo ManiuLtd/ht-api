@@ -21,18 +21,19 @@ class Setting extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-            'pid',
-            'unionid',
-            'taobao',
-            'jingdong',
-            'pinduouo',
-            'user_id'
-        ];
+        'pid',
+        'unionid',
+        'taobao',
+        'jingdong',
+        'pinduouo',
+        'user_id'
+    ];
 
     /**
      * @var string
      */
-    protected $table = 'tbk_setting';
+    protected $table = 'tbk_settings';
+
     /**
      * 自动格式转换
      * @var array

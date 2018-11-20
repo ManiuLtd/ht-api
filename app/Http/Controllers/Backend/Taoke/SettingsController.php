@@ -39,7 +39,7 @@ class SettingsController extends Controller
     public function __construct(SettingRepository $repository, SettingValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -50,34 +50,35 @@ class SettingsController extends Controller
     public function index()
     {
 
-        $settings = $this->repository->findWhere([
-            'user_id' => getUserId(),
+        $settings = $this->repository->firstOrCreate ([
+            'user_id' => getUserId ()
+        ]);
 
-        ])->first();
-
-        return json(1001, '列表获取成功', $settings);
+        return json (1001, '列表获取成功', $settings);
     }
 
     /**
      * @param SettingUpdateRequest $request
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(SettingUpdateRequest $request)
+    public function update(SettingUpdateRequest $request, $id)
     {
-
         try {
-            $data = $request->except('token');
-            $data['user_id'] = getUserId();
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $settingModel = $this->repository->find ($id);
 
-            $setting = $this->repository->updateOrCreate([
-                'user_id' => getUserId()
-            ], $data);
+            if ($settingModel->user_id != getUserId ()) {
+                throw  new  \Exception("请勿恶意修改参数");
+            }
 
-            return json(1001,'更新成功', $setting);
-        } catch (ValidatorException $e) {
-            return json(5001,$e->getMessageBag()->first());
+            $setting = $this->repository->update ($request->all (), $id);
+
+
+            return json (1001, '更新成功', $setting);
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessageBag ()->first ());
         }
     }
 

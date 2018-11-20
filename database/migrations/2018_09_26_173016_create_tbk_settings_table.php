@@ -17,7 +17,7 @@ class CreateTbkSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbk_setting', function (Blueprint $table) {
+        Schema::create('tbk_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->string('pid')->nullable(); //淘宝、京东、拼多多的默认pid
