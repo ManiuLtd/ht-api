@@ -95,12 +95,13 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
     }
 
     /**
-     * 提现记录.
-     * @return array|mixed
+     * 提现记录
+     * @param null $param
+     * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
-    public function getWithdrawChart()
+    public function getWithdrawChart($param = null)
     {
-        $type = request('type', 1);
+        $type = $param == null ? request('type', 1) : $param;
         $user = getUser();
         $commission = new Commission();
 
@@ -132,6 +133,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
                 'type' => 12,
             ])->sum('credit');
         }
+        return 0;
     }
 
     /**

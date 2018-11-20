@@ -33,6 +33,7 @@ class UsersController extends Controller
     {
         $userId = getUserId();
         $users = $this->repository
+            ->withCount ('friends')
             ->with(['level', 'inviter', 'group'])
             ->find($userId);
 

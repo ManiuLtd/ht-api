@@ -178,6 +178,7 @@ if (! function_exists('creditAdd')) {
             throw new \Exception('管理员还没配置参数');
         }
 
+
         if ($column == 'credit1' && $credits < $credit_friend->friend_max_credit1) {
             event(new \App\Events\CreditIncrement($member, $column, $credit, $extra, $type)); //余额
             return true;

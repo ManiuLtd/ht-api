@@ -25,7 +25,7 @@ $factory->define(App\Models\Taoke\Pid::class, function (Faker $faker) {
 
 $factory->define(App\Models\Taoke\Order::class, function (Faker $faker) {
     return [
-        'user_id' => rand(1, 50),
+        'user_id' => 1,
         'group_id' => rand(1, 50),
         'title' => $faker->text(50),
         'ordernum' => rand(1, 9),
