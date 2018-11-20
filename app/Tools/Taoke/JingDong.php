@@ -205,7 +205,6 @@ class JingDong implements TBKInterface
         if($searchType == 1){
             return $this->localSearch ($q);
         }
-        
 
         $params = [
             'type' => 'goodslist',

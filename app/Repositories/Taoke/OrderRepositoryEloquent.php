@@ -95,7 +95,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         //计算订单数
         $group = $user->group;
         //如果用户是组长 直接返回小组订单数
-        if ($user->id == $group->user_id ?? null) {
+        if ($group && $user->id == $group->user_id ?? null) {
             return $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', false)->count();
         } else {
             $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', false);
