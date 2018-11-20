@@ -36,6 +36,7 @@ class CreditIncrement
      */
     public $extra;
 
+
     /**
      * CreditDecrement constructor.
      * @param User $user 需要操作的会员
@@ -43,13 +44,12 @@ class CreditIncrement
      * @param float $credit 改变的积分或者余额数量
      * @param array $extra 备注
      */
-    public function __construct(User $user, int $column, float $credit, array $extra, int $type)
+    public function __construct(User $user, int $column, float $credit, array $extra)
     {
         $this->user = $user;
         $this->column = $column;
         $this->credit = $credit;
         $this->extra = $extra;
-        $this->typr = $type;
     }
 
     /**

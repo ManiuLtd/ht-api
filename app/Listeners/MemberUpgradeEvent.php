@@ -36,8 +36,8 @@ class MemberUpgradeEvent
             return;
         }
 
-        if ($user->credit2 < $level->credit) {
-            //积分不够不能升级
+        if ($user->credit3 < $level->credit) {
+            //成长值不够不能升级
             return;
         }
         DB::transaction(function () use ($user,$level) {
@@ -52,20 +52,10 @@ class MemberUpgradeEvent
                 //不是组
                 return;
             }
-            //会员未绑定手机号
-            if ($user->phone == null) {
-                return;
-            }
-            $user = db('users')->insert([
-                'name' => $user->phone,
-                'password' => $user->password ?? Hash::make('123456'),
-                'status' => 1,
-            ]);
 
             //创建group
             $group = db('groups')->insert([
                 'user_id' => $user->id,
-                'user_id' => 1, //只有一个app
                 'status' => 1,
             ]);
             $user->update([
@@ -73,6 +63,8 @@ class MemberUpgradeEvent
                 'group_id' => $group->id,
                 'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
             ]);
+            //TODO 推广位未分配   查询淘宝推广位不为空并且用户id为空的  分配给他，调用接口生成京东和拼多多推广位，
+            //淘宝推广位用完了，在pid表生成一条新数据，然后调用接口生成京东和拼多多推广位，让淘宝推广位为空
         });
     }
 }

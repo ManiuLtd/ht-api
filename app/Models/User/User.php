@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Events\CreditIncrement;
+use App\Events\CreditDecrement;
 
 class User extends Authenticatable implements JWTSubject, Transformable
 {
@@ -123,6 +125,42 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         $this->notify(new ResetUserPassword($token));
     }
+
+
+
+    /**
+     * 增加字段数量.
+     * @param string $column
+     * @param int $amount
+     * @param array $extra
+     * @return int
+     */
+    protected function increment($column, $amount = 1, array $extra = [])
+    {
+        if (in_array($column, ['credit1', 'credit2','credit3'])) {
+            event(new CreditIncrement($this, $column, $amount, $extra));
+        }
+
+        return $this->incrementOrDecrement($column, $amount, $extra, 'increment');
+    }
+
+    /**
+     * 减少字段数值
+     * @param string $column
+     * @param int $amount
+     * @param array $extra
+     * @return int
+     */
+    protected function decrement($column, $amount = 1, array $extra = [])
+    {
+        if (in_array($column, ['credit1', 'credit2'])) {
+            event(new CreditDecrement($this, $column, -$amount, $extra));
+        }
+
+        return $this->incrementOrDecrement($column, $amount, $extra, 'decrement');
+    }
+
+
 
     /**
      * 等级.
