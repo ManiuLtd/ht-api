@@ -120,7 +120,7 @@ class PinDuoDuo implements TBKInterface
         $arr['coupon_total_count'] = $data->coupon_total_quantity; //优惠卷总数
         $arr['pic_url'] = $data->picUrl; //商品主图
         $arr['small_images'] = $data->picUrls; //商品图
-        $arr['images'] = [];//商品详情图
+        $arr['images'] = $data->picUrls;//商品详情图
         $arr['kouling'] = null; //淘口令
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['favourite'] = $favourite;
