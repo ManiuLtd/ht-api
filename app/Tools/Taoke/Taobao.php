@@ -23,7 +23,7 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids ();
-        if ($pids->taobao) {
+        if (!$pids->taobao) {
             throw new \Exception('请先设置系统pid');
         }
 
