@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Taoke;
 
+use App\Criteria\Taoke\CouponCriteria;
 use App\Models\Taoke\Coupon;
 use App\Criteria\RequestCriteria;
 use Orzcc\TopClient\Facades\TopClient;
@@ -61,8 +62,9 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    protected function searchByTKL($keywords)
+    protected function searchByTKL()
     {
+        $keywords = request('q');
         //验证淘口令
         if (substr_count($keywords, '￥') == 2 || substr_count($keywords, '《') == 2 || substr_count($keywords, '€') == 2) {
             $req = new WirelessShareTpwdQueryRequest();
@@ -136,23 +138,22 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         if (! $q) {
             throw new \Exception('请输入关键词');
         }
-        $rest = $this->searchByTKL($q);
+        $rest = $this->searchByTKL();
 
         if ($rest) {
-            $coupon = db('coupons')->where([
+            $coupon = db('tbk_coupons')->where([
                 'item_id' => $rest,
-            ])
-                ->orderBy($sort, $sort_a)
-                ->get()
-                ->toArray();
-
-            if ($coupon) {
-                return $coupon;
-            }
-
-            return $rest;
+            ])->get();
+        }else {
+            $coupon = $this->model->orderBy($sort, $sort_a)->where([
+                ['title', 'like', '%' . $q.'%'],
+                'type' => $type,
+                ['end_time', '>', now()->toDateTimeString()]
+            ])->paginate(20);
         }
 
-        return $q;
+        return $coupon;
+
+
     }
 }

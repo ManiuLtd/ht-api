@@ -23,12 +23,14 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids ();
-        if ($pids->taobao == "") {
+        if ($pids->taobao) {
             throw new \Exception('请先设置系统pid');
         }
 
-        $setting = setting (1); // 应该是根据user或者user_id
+        $setting = $this->getSettings(); // 应该是根据user或者user_id
+
         $taobao = $setting->taobao;
+
         if (!isset($taobao['sid'])) {
             throw new \Exception('请先授权淘宝联盟');
         }
@@ -182,8 +184,8 @@ class Taobao implements TBKInterface
         //可根据商品ID搜索
         $page = request ('page') ?? 1;
         $limit = request ('limit') ?? 20;
-        $q = $array['q'] ?? request ('q');
-        $sort = $array['sort'] ?? request ('sort');
+        $q =  request ('q');
+        $sort = request ('sort');
 
         if($decode = $this->searchByTKL ($q)){
             if(is_numeric ($decode)){
