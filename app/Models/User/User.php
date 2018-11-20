@@ -135,7 +135,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
      * @param array $extra
      * @return int
      */
-    protected function increment($column, $amount = 1, u = [])
+    protected function increment($column, $amount = 1, $extra = [])
     {
         if (in_array($column, ['credit1', 'credit2','credit3'])) {
             event(new CreditIncrement($this, $column, $amount, $extra));
