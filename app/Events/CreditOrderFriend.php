@@ -2,25 +2,31 @@
 
 namespace App\Events;
 
-use App\Models\User\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class CreditFriend
+class CreditOrderFriend
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $params;
 
     /**
-     * CreditFriend constructor.
-     * @param User $user
+     * @var int
      */
-    public function __construct(User $user)
+    public $type;
+
+    /**
+     * CreditOrderFriend constructor.
+     * @param array $params
+     * @param int $type   1.代表订单 2. 代表粉丝
+     */
+    public function __construct(array $params,int $type)
     {
-        $this->user = $user;
+        $this->params = $params;
+        $this->type   = $type;
     }
 
     /**

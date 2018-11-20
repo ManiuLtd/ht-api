@@ -181,7 +181,7 @@ if (! function_exists('creditAdd')) {
 
 
         if ($column == 'credit1' && $credits < $credit_friend->friend_max_credit1) {
-            event(new \App\Events\CreditIncrement($member, $column, $credit, $extra, $type)); //余额
+            //余额
             return true;
         } elseif ($column == 'credit2' && $credits < $credit_friend->friend_max_credit2) {
             event(new \App\Events\CreditIncrement($member, $column, $credit, $extra, $type)); //积分
