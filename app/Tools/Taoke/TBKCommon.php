@@ -153,7 +153,18 @@ trait TBKCommon
             $query = $query ->orWhere ('title', 'LIKE', "%{$q}%")
                 ->orWhere ('introduce', 'LIKE', "%{$q}%");
         }
-        return $query->paginate($limit);
 
+        $data = $query->paginate($limit)->toArray();
+
+        return [
+            'data' => $data['data'],
+            //分页信息只要这四个参数就够了
+            'meta' => [
+                'current_page' => (int)$data['current_page'],
+                'last_page' => $data['last_page'],
+                'per_page' => $limit,
+                'total' => $data['total'],
+            ],
+        ];
     }
 }
