@@ -151,7 +151,6 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
             'last_month' => $last_month,
             'month' => $month,
             'today' => $day,
-            'friends' => User::query()->where('inviter_id', getUserId())->count(),
         ];
     }
 }
