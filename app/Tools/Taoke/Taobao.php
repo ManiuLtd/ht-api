@@ -153,7 +153,15 @@ class Taobao implements TBKInterface
             ->asJsonResponse ()
             ->get ();
         if (isset($rest->data->pcDescContent)) {
-            return $rest->data->pcDescContent;
+//            dd($rest->data->pcDescContent);
+            preg_match_all('<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""\']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""\'<>]*)[^<>]*?/?[\s\t\r\n]*>', $rest->data->pcDescContent, $matches);
+            if (isset($matches['imgUrl'])) {
+                $images = [];
+                foreach ($matches['imgUrl'] as $key => $match) {
+                    $images[$key] = 'http:' . $match;
+                }
+                return $images;
+            }
         }
     }
 

@@ -83,6 +83,7 @@ class JingDong implements TBKInterface
             'itemID' => $id,
             'coupon_url' => $response->data->couponList,
         ]);
+
         if (!$link) {
             $link = $response->data->couponList;
         }
@@ -155,7 +156,12 @@ class JingDong implements TBKInterface
         }
         $rest = Curl::to ($resp->data)->asJsonResponse ()->get ();
         if (isset($rest->content)) {
-            return $rest->content;
+            preg_match_all('/<img\s+data-lazyload=["\']([^"\']+)["\']/i', $rest->content, $matches);//带引号
+            $images = [];
+            foreach ($matches[1] as $key => $match) {
+                $images[$key] = 'http:' . $match;
+            }
+            return $images;
         }
     }
 
