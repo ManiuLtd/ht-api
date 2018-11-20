@@ -29,8 +29,6 @@ class Kernel extends ConsoleKernel
 
         //淘宝  半小时执行
         $schedule->command('spider:tb ')->dailyAt('01:00');
-        //每十分钟执行一次任务  处理优惠券
-        $schedule->command('coupon-tool --type=2')->everyThirtyMinutes();
         //每小时第 n 分钟执行一次任务
         $schedule->command('spider:tb --type=1 --all=false')->hourlyAt(50);
         $schedule->command('spider:tb --type=2 --all=false')->hourlyAt(30);

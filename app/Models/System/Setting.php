@@ -56,5 +56,6 @@ class Setting extends Model implements Transformable
         'taobao' => 'array',
         'jingdong' => 'array',
         'pinduouo' => 'array',
+        'unionid' => 'array',
     ];
 }

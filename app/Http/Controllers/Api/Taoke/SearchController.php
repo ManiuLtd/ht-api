@@ -53,17 +53,13 @@ class SearchController extends Controller
     public function index()
     {
         try {
-            $this->validator->with(request()->all())->passesOrFail();
+            $this->validator->with (request ()->all ())->passesOrFail ();
 
-            $rest = $this->couponRepository->searchGoods();
+            $rest = $this->TBK->search ();
 
-            if (! is_array($rest)) {
-                $rest = $this->TBK->search(['q'=>$rest, 'sort' => request('sort')]);
-            }
-
-            return json(1001, '获取成功', $rest);
+            return json (1001, '获取成功', $rest);
         } catch (\Exception $exception) {
-            return json(5001, $exception->getMessage());
+            return json (5001, $exception->getMessage ());
         }
     }
 
@@ -73,13 +69,13 @@ class SearchController extends Controller
     public function keywords()
     {
         try {
-            $this->validator->with(request()->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with (request ()->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $resp = $this->TBK->hotSearch();
+            $resp = $this->TBK->hotSearch ();
 
-            return json(1001, '获取成功', $resp);
+            return json (1001, '获取成功', $resp);
         } catch (\Exception $exception) {
-            return json(5001, $exception->getMessage());
+            return json (5001, $exception->getMessage ());
         }
     }
 }

@@ -40,15 +40,14 @@ class ChartsController extends Controller
      */
     public function order()
     {
-        try {
-
+//        try {
             return json(1001, '获取成功', [
                 'order' => $this->orderRepository->getOrderChart(false),
                 'commission' => $this->orderRepository->getOrderChart()
             ]);
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
-        }
+//        } catch (\Exception $e) {
+//            return json(5001, $e->getMessage());
+//        }
     }
 
 

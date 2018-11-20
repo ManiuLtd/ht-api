@@ -143,6 +143,12 @@ class PinDuoDuo implements TBKInterface
         $q = $array['q'];
         $sort = request ('sort');
 
+
+        $searchType = request ('searchtype',2);
+        if($searchType == 1){
+            return $this->localSearch ($q);
+        }
+
         $time = time ();
 
         //1.综合，2.销量（高到低），3.销量（低到高），4.价格(低到高)，5.价格（高到低），6.佣金比例（高到低） 7. 卷额(从高到低) 8.卷额(从低到高)
