@@ -160,9 +160,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
                 'phone' => $phone,
                 'password' => bcrypt(request('password')),
             ]);
-            //增加积分
-            $data = new User();
-            $data->increment('credit2', 20, ['remark' => 131313, 'operaterId' => 1]);
+
+            //TODO  绑定手机号、订单变化、粉丝变化、增加积分、余额、成长值的地方写一个事件
 
             return json(1001, '手机号绑定成功');
         } catch (\Exception $e) {

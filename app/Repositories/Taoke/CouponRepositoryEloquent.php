@@ -23,6 +23,10 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         'introduce' => 'like',
         'item_id',
         'cat',
+        'shop_type',
+        'activity_type',
+        'status',
+        'is_recommend'
     ];
 
     /**

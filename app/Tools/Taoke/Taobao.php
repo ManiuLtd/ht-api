@@ -26,7 +26,7 @@ class Taobao implements TBKInterface
         if ($pids->taobao == "") {
             throw new \Exception('请先设置系统pid');
         }
-        // todo
+
         $setting = setting (1); // 应该是根据user或者user_id
         $taobao = $setting->taobao;
         if (!isset($taobao['sid'])) {
