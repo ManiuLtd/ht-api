@@ -70,6 +70,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      * 后端可显示近一周、一月订单和佣金状态
      * 订单数据报表  可根据时间返回当前用户的佣金数或者订单数.
      * @param bool $isCommission 计算佣金或者订单数
+     * @param array $params
      * @return float|\Illuminate\Database\Query\Builder|int|mixed
      */
     public function getOrderChart(bool $isCommission = true, array $params = [])
@@ -94,7 +95,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         //计算订单数
         $group = $user->group;
         //如果用户是组长 直接返回小组订单数
-        if ($user->id == $group->user_id ?? null) {
+        if ($group && $user->id == $group->user_id ?? null) {
             return $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', false)->count();
         } else {
             $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', false);
@@ -151,7 +152,6 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
             'last_month' => $last_month,
             'month' => $month,
             'today' => $day,
-            'friends' => User::query()->where('inviter_id', getUserId())->count(),
         ];
     }
 }

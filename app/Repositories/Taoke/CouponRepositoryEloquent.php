@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Taoke;
 
+use App\Criteria\Taoke\CouponCriteria;
 use App\Models\Taoke\Coupon;
 use App\Criteria\RequestCriteria;
 use Orzcc\TopClient\Facades\TopClient;
@@ -61,8 +62,9 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    protected function searchByTKL($keywords)
+    protected function searchByTKL()
     {
+        $keywords = request('q');
         //验证淘口令
         if (substr_count($keywords, '￥') == 2 || substr_count($keywords, '《') == 2 || substr_count($keywords, '€') == 2) {
             $req = new WirelessShareTpwdQueryRequest();
@@ -100,59 +102,4 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         return false;
     }
 
-    /**
-     * @return array|bool|mixed|string
-     * @throws \Exception
-     */
-    public function searchGoods()
-    {
-        $sort = request('sort');
-        if ($sort == 7) {
-            $sort = 'coupon_price';
-            $sort_a = 'desc'; //倒序
-        } elseif ($sort == 8) {
-            $sort = 'coupon_price';
-            $sort_a = 'asc'; //升序
-        } elseif ($sort == 4) {
-            $sort = 'price';
-            $sort_a = 'asc';
-        } elseif ($sort == 5) {
-            $sort = 'price';
-            $sort_a = 'desc';
-        } elseif ($sort == 2) {
-            $sort = 'volume';
-            $sort_a = 'asc';
-        } elseif ($sort == 6) {
-            $sort = 'commission_rate';
-            $sort_a = 'asc';
-        } else {
-            $sort = 'id';
-            $sort_a = 'asc';
-        }
-
-        $q = request('q');
-        $type = request('type');
-
-        if (! $q) {
-            throw new \Exception('请输入关键词');
-        }
-        $rest = $this->searchByTKL($q);
-
-        if ($rest) {
-            $coupon = db('coupons')->where([
-                'item_id' => $rest,
-            ])
-                ->orderBy($sort, $sort_a)
-                ->get()
-                ->toArray();
-
-            if ($coupon) {
-                return $coupon;
-            }
-
-            return $rest;
-        }
-
-        return $q;
-    }
 }

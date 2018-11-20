@@ -35,6 +35,7 @@ class Order extends Model implements Transformable
     {
         parent::boot();
         // 创建订单时候,根据订单状态调用事件
+
         self::creating(function ($model) {
             if ($model->status == 2 && $model->user_id){
                 event(new CreditOrderFriend([
@@ -50,7 +51,7 @@ class Order extends Model implements Transformable
                 ],1));
             }
         });
-
+        
 
     }
 

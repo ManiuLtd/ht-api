@@ -40,29 +40,16 @@ class ChartsController extends Controller
      */
     public function order()
     {
-        try {
-            $data = $this->orderRepository->getOrderChart();
-
-            return json(1001, '获取成功', $data);
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
-        }
+//        try {
+            return json(1001, '获取成功', [
+                'order' => $this->orderRepository->getOrderChart(false),
+                'commission' => $this->orderRepository->getOrderChart()
+            ]);
+//        } catch (\Exception $e) {
+//            return json(5001, $e->getMessage());
+//        }
     }
 
-    /**
-     * 提现报表.
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function withdraw()
-    {
-        try {
-            $withdraw = $this->withdrawRepository->getWithdrawChart();
-
-            return json(1001, '获取成功', $withdraw);
-        } catch (\Exception $e) {
-            return json(4001, $e->getMessage());
-        }
-    }
 
     /**
      * 会员收入信息.
@@ -75,7 +62,7 @@ class ChartsController extends Controller
 
             return json(1001, '获取成功', $withdraw);
         } catch (\Exception $e) {
-            return json(4001, $e->getMessage());
+            return json(5001, $e->getMessage());
         }
     }
 }

@@ -62,6 +62,7 @@ class SettingsController extends Controller
     public function update(SettingUpdateRequest $request, $id)
     {
         try {
+
             $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
             $settingModel = $this->repository->find ($id);
@@ -70,12 +71,12 @@ class SettingsController extends Controller
                 throw  new  \Exception("请勿恶意修改参数");
             }
 
-            $setting = $this->repository->update ($request->all (), $id);
+            $setting = $this->repository->update($request->all (), $id);
 
 
             return json (1001, '更新成功', $setting);
         } catch (\Exception $e) {
-            return json (5001, $e->getMessageBag ()->first ());
+            return json (5001, $e->getMessage());
         }
     }
 

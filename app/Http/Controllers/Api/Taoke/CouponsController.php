@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
+use App\Criteria\CouponPriceCriteria;
 use App\Tools\Taoke\TBKInterface;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
@@ -38,7 +39,9 @@ class CouponsController extends Controller
      */
     public function index()
     {
-        $coupons = $this->repository->paginate(request('limit', '10'));
+        $coupons = $this->repository
+            ->pushCriteria(new CouponPriceCriteria())
+            ->paginate(request('limit', '10'));
 
         return json('1001', '优惠卷列表', $coupons);
     }

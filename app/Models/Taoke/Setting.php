@@ -25,7 +25,7 @@ class Setting extends Model implements Transformable
         'unionid',
         'taobao',
         'jingdong',
-        'pinduouo',
+        'pinduoduo',
         'user_id'
     ];
 
@@ -43,7 +43,7 @@ class Setting extends Model implements Transformable
         'unionid' => 'array',
         'taobao' => 'array',
         'jingdong' => 'array',
-        'pinduouo' => 'array',
+        'pinduoduo' => 'array',
 
     ];
 }

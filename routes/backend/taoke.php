@@ -34,6 +34,6 @@ Route::namespace('Taoke')
 
         //代理设置
         Route::resource('setting', 'SettingsController', [
-            'only' => ['index', 'store'],
+            'only' => ['index', 'update'],
         ]);
     });

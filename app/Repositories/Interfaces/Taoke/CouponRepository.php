@@ -9,6 +9,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CouponRepository extends RepositoryInterface
 {
-    //
-    public function searchGoods();
+
 }

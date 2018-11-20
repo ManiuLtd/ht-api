@@ -23,8 +23,6 @@ class User extends Authenticatable implements JWTSubject, Transformable
         LaratrustUserTrait;
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [

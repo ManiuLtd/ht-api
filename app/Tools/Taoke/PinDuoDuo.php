@@ -140,8 +140,13 @@ class PinDuoDuo implements TBKInterface
     public function search(array $array = [])
     {
         $page = request ('page', 1);
-        $q = $array['q'];
+        $q = request('q');
         $sort = request ('sort');
+
+        $searchType = request ('searchtype',2);
+        if($searchType == 1){
+            return $this->localSearch ($q);
+        }
 
         $time = time ();
 
