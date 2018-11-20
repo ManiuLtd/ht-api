@@ -58,6 +58,21 @@ class Commission
         //订单
         $query = db('tbk_orders')->whereIn('status', $orderStatus);
 
+        if($type = request ('type')){
+          switch ($type){
+              case 1:
+                  $query = $query->where ('type',1);
+                  break;
+              case 2:
+                  $query = $query->where ('type',2);
+                  break;
+              case 3:
+                  $query = $query->where ('type',3);
+                  break;
+              default:
+                  break;
+          }
+        }
         //根据用户返佣层级筛选
         $query = $this->getQueryByType($userId, $type, $query, $userModel);
 
