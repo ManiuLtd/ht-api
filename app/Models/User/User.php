@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Events\CreditOrderFriend;
 use Hashids\Hashids;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\ResetUserPassword;
@@ -105,12 +106,31 @@ class User extends Authenticatable implements JWTSubject, Transformable
         parent::boot();
         //创建之前 加密密码
         self::creating(function ($model) {
+            if ($model->inviter_id != null){
+                event(new CreditOrderFriend([
+                    'user_id' => $model->user_id
+                ],2));
+            }
             $model->password = bcrypt(request('password'));
         });
         //编辑是如果设置了密码 则更新密码
         if (request('password') != '') {
             self::updating(function ($model) {
+                dd($model->inviter_id );
+                if ($model->inviter_id != null){
+                    event(new CreditOrderFriend([
+                        'user_id' => $model->inviter_id
+                    ],2));
+                }
                 $model->password = bcrypt(request('password'));
+            });
+        }else{
+            self::updating(function ($model) {
+                if ($model->inviter_id != null){
+                    event(new CreditOrderFriend([
+                        'user_id' => $model->inviter_id
+                    ],2));
+                }
             });
         }
     }
@@ -139,7 +159,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
             event(new CreditIncrement($this, $column, $amount, $extra));
         }
 
-        return $this->incrementOrDecrement($column, $amount, $extra, 'increment');
+        return $this->incrementOrDecrement($column, $amount, $extra = [], 'increment');
     }
 
     /**

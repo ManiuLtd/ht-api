@@ -3,7 +3,7 @@
 namespace App\Models\Taoke;
 
 use App\Events\SendNotification;
-use App\Events\CreditOrder;
+use App\Events\CreditOrderFriend;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -35,22 +35,23 @@ class Order extends Model implements Transformable
     {
         parent::boot();
         // 创建订单时候,根据订单状态调用事件
-//        self::creating(function ($model) {
-//            if ($model->status == 2 && $model->user_id){
-//                event(new CreditOrder([
-//                    'user_id' => $model->user_id
-//                ]));
-//            }
-//        });
-//        //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
-//        self::updating(function ($model) {
-//            if ($model->status == 2 && $model->user_id){
-//                event(new CreditOrder([
-//                    'user_id' => $model->user_id
-//                ]));
-//            }
-//        });
 
+        self::creating(function ($model) {
+            if ($model->status == 2 && $model->user_id){
+                event(new CreditOrderFriend([
+                    'user_id' => $model->user_id
+                ],1));
+            }
+        });
+        //更新订单的时候,如果状态有变化根据状态变化调用事件,对用户增减积分
+        self::updating(function ($model) {
+            if ($model->status == 2 && $model->user_id){
+                event(new CreditOrderFriend([
+                    'user_id' => $model->user_id
+                ],1));
+            }
+        });
+        
 
     }
 
