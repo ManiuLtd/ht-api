@@ -162,12 +162,13 @@ if (! function_exists('creditAdd')) {
      * @param $column
      * @param $extra
      * @param $type
+     * @return bool
      * @throws Exception
      */
     function creditAdd($member, $credit, $column, $extra, $type)
     {
         $today = \Carbon\Carbon::today()->toDateTimeString();
-        $credits = \App\Models\User\CreditLog::where(['member_id'=>$member->id, 'column'=>$credit])
+        $credits = \App\Models\User\CreditLog::query()->where(['user_id'=>$member->id, 'column'=>$credit])
             ->whereIn('type', [11, 13, 15, 21, 22, 23, 16, 17, 18, 19])
             ->whereDate('created_at', $today)
             ->sum('credit');
@@ -190,5 +191,38 @@ if (! function_exists('creditAdd')) {
         } else {
             return false;
         }
+    }
+}
+
+if (! function_exists('creditOrderAdd')) {
+    /**
+     * 积分、余额、成长值增加.
+     * @param $user
+     * @param $credit
+     * @param $column
+     * @param $extra
+     * @param $type
+     * @throws Exception
+     */
+    function creditOrderAdd($user, $credit, $column, $extra, $type)
+    {
+        //设置信息
+        $setting = setting(1);
+        $credit_friend = $setting->credit_friend;
+        if (! $credit_friend) {
+            throw new \Exception('管理员还没配置参数');
+        }
+        $insert = [
+            'user_id' => $user->id,
+            'operater_id' => null,
+            'credit' => $credit,
+            'column' => $column,
+            'type' => $type,
+            'remark' => $extra,
+            'created_at' => now()->toDateTimeString(),
+            'updated_at' => now()->toDateTimeString(),
+        ];
+
+        db('user_credit_logs')->insert($insert);
     }
 }
