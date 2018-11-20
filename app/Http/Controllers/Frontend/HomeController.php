@@ -19,7 +19,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dd(setting(1)->credit_order);
 
         return view('home');
     }
