@@ -28,14 +28,19 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         //淘宝  半小时执行
-        $schedule->command('spider:tb ')->everyThirtyMinutes();
+        $schedule->command('spider:tb ')->dailyAt('01:00');
         //每十分钟执行一次任务  处理优惠券
-        $schedule->command('coupon-tool --type=2')->everyTenMinutes();
+        $schedule->command('coupon-tool --type=2')->everyThirtyMinutes();
         //每小时第 n 分钟执行一次任务
         $schedule->command('spider:tb --type=1 --all=false')->hourlyAt(50);
-        $schedule->command('spider:tb --type=top100 --all=false')->hourlyAt(30);
-        //
-        $schedule->command('spider:tb --type=3 --all=false')->hourlyAt(9);
+        $schedule->command('spider:tb --type=2 --all=false')->hourlyAt(30);
+
+        //全部商品
+        $schedule->command('spider:tb --type=3 --all=false')->hourlyAt(40);
+
+
+        $schedule->command('spider:tb --type=4 --all=false')->hourlyAt(9);
+        $schedule->command('spider:tb --type=5 --all=false')->hourlyAt(9);
         //京东
         $schedule->command('spider:jd')->everyThirtyMinutes();
         $schedule->command('spider:jd order')->everyFiveMinutes();

@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\Taoke\SettingCreateRequest;
 use App\Http\Requests\Taoke\SettingUpdateRequest;
 use App\Repositories\Interfaces\Taoke\SettingRepository;
 use App\Validators\Taoke\SettingValidator;
@@ -49,7 +47,6 @@ class SettingsController extends Controller
      */
     public function index()
     {
-
         $settings = $this->repository->firstOrCreate ([
             'user_id' => getUserId ()
         ]);
