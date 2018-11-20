@@ -51,7 +51,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria (app (RequestCriteria::class));
     }
 
     /**
@@ -68,29 +68,29 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      */
     public function create(array $attributes)
     {
-        $user = getUser();
+        $user = getUser ();
 
         //验证金额
         $money = $attributes['money'];
         if ($money > $user->credit1) {
-            return json(4001, '可提现金额不足');
+            return json (4001, '可提现金额不足');
         }
-        $withdraw = db('user_withdraws')->orderBy('id', 'desc')->where([
+        $withdraw = db ('user_withdraws')->orderBy ('id', 'desc')->where ([
             'user_id' => $user->id,
             'status' => 0,
-        ])->first();
+        ])->first ();
 
         if ($withdraw) {
-            return json(4001, '已有在审核中的提现申请');
+            return json (4001, '已有在审核中的提现申请');
         }
         $attributes['status'] = 0;
         $attributes['user_id'] = $user->id;
         try {
-            db('user_withdraws')->insert($attributes);
+            db ('user_withdraws')->insert ($attributes);
 
-            return json(1001, '申请提现成功，请等待审核');
+            return json (1001, '申请提现成功，请等待审核');
         } catch (\Exception $e) {
-            return json(5001, '提现申请失败');
+            return json (5001, '提现申请失败');
         }
     }
 
@@ -101,37 +101,37 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      */
     public function getWithdrawChart($param = null)
     {
-        $type = $param == null ? request('type', 1) : $param;
-        $user = getUser();
+        $type = $param == null ? request ('type', 1) : $param;
+        $user = getUser ();
         $commission = new Commission();
 
         //待结算
         if ($type == 1) {
 
             //自推收益
-            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', true);
+            $commission1 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'commission_rate1', true);
             //下级收益
-            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', true);
+            $commission2 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'commission_rate2', true);
             //组长收益
-            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', true);
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'group_rate1', true);
             //补贴收益
-            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate2', true);
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate ($user->id, [1], 'group_rate2', true);
 
             return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
         }
         //累计结算
         if ($type == 2) {
-            return db('user_credit_logs')->where([
+            return db ('user_credit_logs')->where ([
                 'column' => 'credit1',
                 'type' => 11,
-            ])->sum('credit');
+            ])->sum ('credit');
         }
         // 累计提现
         if ($type == 3) {
-            return db('user_credit_logs')->where([
+            return db ('user_credit_logs')->where ([
                 'column' => 'credit1',
                 'type' => 12,
-            ])->sum('credit');
+            ])->sum ('credit');
         }
         return 0;
     }
@@ -143,51 +143,51 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      */
     public function mark()
     {
-        $id = request('id');
-        $status = request('status');
+        $id = request ('id');
+        $status = request ('status');
         //验证字段
-        $validator = \Validator::make(request()->all(), [
+        $validator = \Validator::make (request ()->all (), [
             'id' => 'required',
             'status' => [
                 'required',
-                Rule::in([1, 0, 2]),
+                Rule::in ([1, 0, 2]),
             ],
         ]);
         //字段验证失败
-        if ($validator->fails()) {
-            return json(4001, $validator->errors()->first());
+        if ($validator->fails ()) {
+            throw  new \Exception($validator->errors ()->first ());
         }
-        $withdraw = $this->model->newQuery()->find($id);
+        $withdraw = $this->model->newQuery ()->find ($id);
 
-        if (! $withdraw) {
-            return json(4001, '提现记录不存在');
+        if (!$withdraw) {
+            return json (4001, '提现记录不存在');
         }
         //不在审核中
         if ($withdraw->status != 1) {
-            return json(4001, '恶意提交');
+            return json (4001, '恶意提交');
         }
         // 拒绝提现
         if ($status == 0) {
-            $this->update([
+            $this->update ([
                 'status' => 2,
             ], $id);
 
-            return json(1001, '拒绝提现成功');
+            return json (1001, '拒绝提现成功');
         }
         //允许提现
         $user_member = $withdraw->user;
         //验证提现金额是否合法
         if ($user_member->credit1 < $withdraw->money) {
-            return json(4001, '提现失败,提现金额大于余额');
+            return json (4001, '提现失败,提现金额大于余额');
         }
 
-        $setting = setting(getUserId());
-        if (! $setting) {
-            return json(4001, '没有进行系统设置');
+        $setting = setting (getUserId ());
+        if (!$setting) {
+            return json (4001, '没有进行系统设置');
         }
-        $withdraw_set = data_get($setting, 'withdraw');
-        $withdraw_set = json_decode($withdraw_set);
-        $deduct_rate = data_get($withdraw_set, 'deduct_rate');
+        $withdraw_set = data_get ($setting, 'withdraw');
+        $withdraw_set = json_decode ($withdraw_set);
+        $deduct_rate = data_get ($withdraw_set, 'deduct_rate');
         // 扣除金额
         $deduct_money = $withdraw->money * $deduct_rate / 100;
 
@@ -195,30 +195,30 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         $pay_type = 3;
         //企业付款
         if ($status == 1) {
-            if (! $user_member->wx_openid1) {
-                return json(4001, '用户没有绑定微信');
+            if (!$user_member->wx_openid1) {
+                return json (4001, '用户没有绑定微信');
             }
 
-            $app = Factory::payment($setting->payment);
+            $app = Factory::payment ($setting->payment);
 
             $merchantPayData = [
-                'partner_trade_no' => str_random(16),
+                'partner_trade_no' => str_random (16),
                 'openid' => $user_member->wx_openid1,
                 'check_name' => 'NO_CHECK',
                 'amount' => $withdraw->money * 100,
                 'desc' => '淘宝返利提现',
-                'spbill_create_ip' => \EasyWeChat\Kernel\Support\get_client_ip(),
+                'spbill_create_ip' => \EasyWeChat\Kernel\Support\get_client_ip (),
             ];
-            $result = $app->transfer->toBalance($merchantPayData);
+            $result = $app->transfer->toBalance ($merchantPayData);
             //红包发送失败
             if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'FAIL') {
-                return json(4001, $result['err_code_des']);
+                return json (4001, $result['err_code_des']);
             }
             $pay_type = 1;
         }
 
         //修改订单状态
-        $this->model->newQuery()->where('id', $withdraw->id)->update([
+        $this->model->newQuery ()->where ('id', $withdraw->id)->update ([
             'status' => 3,
             'pay_type' => $pay_type,
             'real_money' => $withdraw->money - $deduct_money,
@@ -226,18 +226,18 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         ]);
 
         //减少余额
-        $user_member->decrement('credit1', $withdraw->money);
+        $user_member->decrement ('credit1', $withdraw->money);
 
         //写入日志
         $inster = [
             'user_id' => $user_member->id,
-            'operater_id' => getUserId(),
+            'operater_id' => getUserId (),
             'credit' => $withdraw->money,
             'type' => 12,
             'remark' => '用户提现',
         ];
-        db('user_credit_logs')->insert($inster);
+        db ('user_credit_logs')->insert ($inster);
 
-        return json(1001, '提现成功');
+        return json (1001, '提现成功');
     }
 }
