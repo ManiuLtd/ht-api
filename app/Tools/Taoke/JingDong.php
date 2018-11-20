@@ -201,6 +201,12 @@ class JingDong implements TBKInterface
         $q = request ('q');
         $sort = request ('sort');
 
+        $searchType = request ('searchtype',2);
+        if($searchType == 1){
+            return $this->localSearch ($q);
+        }
+        
+
         $params = [
             'type' => 'goodslist',
             'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),

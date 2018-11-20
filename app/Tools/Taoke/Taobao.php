@@ -196,6 +196,10 @@ class Taobao implements TBKInterface
 
         }
 
+        $searchType = request ('searchtype',2);
+        if($searchType == 1){
+            return $this->localSearch ($q);
+        }
         $params = [
             'appkey' => config ('coupon.taobao.TKJD_API_KEY'),
             'k' => $q,
