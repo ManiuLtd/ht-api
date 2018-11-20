@@ -53,12 +53,17 @@ class SearchController extends Controller
     public function index()
     {
         try {
+            $searchtype = request('searchtype', 1);
             $this->validator->with(request()->all())->passesOrFail();
 
-            $rest = $this->couponRepository->searchGoods();
+            if ($searchtype == 1){
 
-            if (! is_array($rest)) {
-                $rest = $this->TBK->search(['q'=>$rest, 'sort' => request('sort')]);
+                $rest = $this->couponRepository->searchGoods();
+
+            }else {
+
+                $rest = $this->TBK->search();
+
             }
 
             return json(1001, '获取成功', $rest);

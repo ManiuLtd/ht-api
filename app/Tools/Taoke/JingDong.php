@@ -25,15 +25,13 @@ class JingDong implements TBKInterface
         if (!isset($pids->jingdong)) {
             throw new \Exception('请先设置系统京东推广位id');
         }
-        $userid = getUserId();
+        $setting = $this->getSettings();
 
-        $setting = setting (1);
         if (!$setting) {
             throw new \Exception('请先完成设置');
         }
-        $unionid = json_decode($setting->unionid);
-
-        if (!isset($unionid->jingdong)) {
+        $unionid = $setting->unionid;
+        if (!isset($unionid['jingdong'])) {
             throw new \Exception('请先设置京东联盟id');
         }
         // 返回领券地址
@@ -41,7 +39,7 @@ class JingDong implements TBKInterface
             ->withData ([
                 'appid' => data_get (config ('coupon'), 'jingdong.JD_APPID'),
                 'appkey' => data_get (config ('coupon'), 'jingdong.JD_APPKEY'),
-                'unionid' => $unionid->jingdong,
+                'unionid' => $unionid['jingdong'],
                 'positionid' => $pids->jingdong,
                 'gid' => $itemID,
                 'coupon_url' => $coupon_url,

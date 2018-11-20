@@ -11,4 +11,5 @@ interface CouponRepository extends RepositoryInterface
 {
     //
     public function searchGoods();
+
 }

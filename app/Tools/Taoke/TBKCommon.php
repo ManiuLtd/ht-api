@@ -13,7 +13,7 @@ trait TBKCommon
         $user = getUser ();
         $setting = setting (1); //应该是根据user或者user_id
 
-        //未登录 获取系统默认pid
+        // 获取系统默认pid
 
         $user_pid = db ('tbk_pids')->where ('user_id', $user->id)->first ();
 
@@ -30,19 +30,21 @@ trait TBKCommon
             }
         }
 
-        //小组
         if($user->group_id != null){
-
             $group = db ('groups')->find ($user->group_id);
             $group_pid = db ('tbk_pids')->where ('user_id', $group->user_id)->first ();
-
-            if (!$group_pid) {
-                return $setting->pid;
+            //小组
+            if ($group_pid) {
+                return $group_pid;
             }
-
-            return $group_pid;
+            // 代理设置
+            $agent_setting = db('tbk_settings')->where([
+                'user_id' => $group->user_id
+            ])->first();
+            if ($agent_setting) {
+                return $agent_setting->pid;
+            }
         }
-
 
         return $this->arrayToObject($setting->pid);
     }
@@ -71,5 +73,29 @@ trait TBKCommon
         $id = getUserId();
         $commission = new Commission();
         return $commission->getCommissionByUser($id,$price,'commission_rate1');
+    }
+
+    /**
+     * 设置信息
+     * @return mixed
+     */
+    public function getSettings()
+    {
+        //读取代理设置
+        $user = getUser ();
+        $setting = setting (1); //应该是根据user或者user_id
+
+        if($user->group_id){
+            $group = db ('groups')->find ($user->group_id);
+            if ($group) {
+                $agent_setting = db('tbk_settings')->where([
+                    'user_id' => $group->user_id
+                ])->first();
+                if ($agent_setting) {
+                    return $agent_setting;
+                }
+            }
+        }
+        return $setting;
     }
 }
