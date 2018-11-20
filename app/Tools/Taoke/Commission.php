@@ -58,8 +58,8 @@ class Commission
         //订单
         $query = db('tbk_orders')->whereIn('status', $orderStatus);
 
-        if($type = request ('type')){
-          switch ($type){
+        if(request ('type')){
+          switch (request ('type')){
               case 1:
                   $query = $query->where ('type',1);
                   break;
