@@ -38,9 +38,6 @@ Route::namespace('Taoke')
         //用户收入信息
         Route::get('chart/member', 'ChartsController@member');
 
-        //提现报表
-        Route::get('chart/withdraw', 'ChartsController@withdraw');
-
         //浏览记录
         Route::resource('history', 'HistoriesController', [
             'only' => ['index', 'store', 'destory'],
