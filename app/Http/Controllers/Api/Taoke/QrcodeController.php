@@ -69,7 +69,7 @@ class QrcodeController extends Controller
             $qrcode->savePath = 'images/cache/'.$hashids.'_'.$item_id.'.jpg';
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
-                ->generate('http://v2.easytbk.com/api/taoke/coupon/detail'.'?type='.$type.'&item_id='.$item_id);
+                ->generate('http://v2.easytbk.com/official_account/login'.'?redirect_url=http://v2.easytbk.com/api/taoke/coupon/detail?type='.$type.'&itemid='.$item_id.'&inviter='.$hashids);
             $imgname = 'qrcodeImg'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
             $str1 = str_limit($data['title'], 23, '');
