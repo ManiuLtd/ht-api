@@ -54,9 +54,9 @@ class OrdersController extends Controller
                 foreach ($orders['data'] as $k => $v){
 
                     $detail = $tool->getDetail([
-                        'itemid' => $v['item_id'],
+                        'itemid' => $v['itemid'],
                     ]);
-                    $orders[$k]['pic_url'] = $detail['pic_url'];
+                    $orders['data'][$k]['pic_url'] = $detail['pic_url'];
                 }
             }
             return json(1001, '列表获取成功', $orders);
