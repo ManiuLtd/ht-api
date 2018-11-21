@@ -151,7 +151,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             throw  new \Exception('验证码不存在或者已过期');
         }
 
-        $user->update([
+        User::query()->where('id',$user->id)->update([
             'phone' => $phone,
             'password' => bcrypt (request ('password')),
         ]);
