@@ -321,7 +321,7 @@ class PinDuoDuo implements TBKInterface
             'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),
             'iscoupon' => 1,
             'page' => $page,
-            'pageSize' => 20,
+            'pageSize' => 100,
         ];
 
         $result = Curl::to ('http://api-gw.haojingke.com/index.php/api/pdd/myapi')

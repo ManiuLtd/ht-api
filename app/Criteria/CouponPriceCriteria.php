@@ -13,7 +13,7 @@ class CouponPriceCriteria implements CriteriaInterface
     /**
      * 根据时间筛选，需要传入开始时间和结束时间.
      * @param $model
-     * @param RepositoryInterface $repository
+     * @param RepositoryInterface $repositoryus
      * @return mixed
      */
     public function apply($model, RepositoryInterface $repository)
@@ -23,11 +23,11 @@ class CouponPriceCriteria implements CriteriaInterface
 
         $where = [];
         if ($min) {
-            $where[] = ['final_price', '<=', $min];
+            $where[] = ['final_price', '>=', $min];
 
         }
         if ($max) {
-            $where[] = ['final_price', '>=', $max];
+            $where[] = ['final_price', '<=', $max];
 
         }
         if ($min || $max) {

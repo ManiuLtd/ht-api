@@ -26,19 +26,57 @@ class OfficialAccountController extends Controller
      */
     public function serve()
     {
-        $app = Facade::officialAccount();
+        $app = Facade::officialAccount ();
 
-        $app->server->push(new TextMessageHandler($app), Message::TEXT);
-        $app->server->push(new ImageMessageHandler($app), Message::IMAGE);
-        $app->server->push(new EventMessageHandler($app), Message::EVENT);
-        $app->server->push(new MediaMessageHandler($app), Message::VOICE | Message::VIDEO | Message::SHORT_VIDEO);
+        $app->server->push (new TextMessageHandler($app), Message::TEXT);
+        $app->server->push (new ImageMessageHandler($app), Message::IMAGE);
+        $app->server->push (new EventMessageHandler($app), Message::EVENT);
+        $app->server->push (new MediaMessageHandler($app), Message::VOICE | Message::VIDEO | Message::SHORT_VIDEO);
 
-        return $app->server->serve();
+        return $app->server->serve ();
     }
 
-    //TODO 微信H5登录  redirect_url  inviter :hashid
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
+     */
     public function login()
     {
+        try {
+
+            $app = Facade::officialAccount ();
+
+            $redirectUrl = route('wechat.callback', [
+                'redirect_url' => request('redirect_url'),
+                'inviter' => request('inviter'),
+            ]);
+
+            $response = $app->oauth->scopes(['snsapi_userinfo'])
+                ->redirect($redirectUrl);
+
+            return $response;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage ());
+        }
+    }
+
+    /**
+     * 回调
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
+    public function callback()
+    {
+
+        $app = Facade::officialAccount ();
+
+        $user = $app->oauth->user();
+
+        $original = $user->getOriginal();
+        dd ($original);
+
+//        $res = $this->memberRepository->h5Login($original);
+//
+//        return redirect(route('mobile.download.index'));
 
     }
 }

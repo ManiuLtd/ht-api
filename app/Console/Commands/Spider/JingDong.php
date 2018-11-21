@@ -61,6 +61,9 @@ class JingDong extends Command
      */
     public function all()
     {
+        //是否爬取所有
+        $all = $this->option('all');
+
         try {
             // http://www.jingtuitui.com/  账号密码 15538762226  372945452zz
 
@@ -69,7 +72,10 @@ class JingDong extends Command
                 'page' => 1,
             ]);
 
-            $totalPage = data_get($result, 'data.totalPage', 1000);
+            $totalPage = data_get($result, 'totalPage', 1000);
+            if ($all == 'false') {
+                $totalPage = 3;
+            }
 
             $this->info("总页码:{$totalPage}");
             $bar = $this->output->createProgressBar($totalPage);
@@ -78,7 +84,7 @@ class JingDong extends Command
                 $response = $this->tbk->spider(['page'=>$page]);
 
                 if ($response) {
-                    SaveGoods::dispatch($response['data'], 'jingdong');
+                    SaveGoods::dispatch($response['data'], 'jingdong', '', $all);
                 }
                 $bar->advance();
                 $this->info(">>>已采集完第{$page}页 ");

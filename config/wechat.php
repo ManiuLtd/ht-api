@@ -59,8 +59,8 @@ return [
      */
     'official_account' => [
         'default' => [
-            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', 'wx522731ea9cff28b1'),         // AppID
-            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', '82b66ac96e19e703618c301656b5c5c3'),    // AppSecret
+            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', 'wx1d85f872660775ea'),         // AppID
+            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', 'c66184073534eee0bcf6a25ef6baad7b'),    // AppSecret
             'token' => env('WECHAT_OFFICIAL_ACCOUNT_TOKEN', '1234'),           // Token
             'aes_key' => env('WECHAT_OFFICIAL_ACCOUNT_AES_KEY', '12345'),                 // EncodingAESKey
 

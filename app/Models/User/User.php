@@ -28,6 +28,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
     protected $fillable = [
         'inviter_id',
         'group_id',
+        'level_id',
         'name',
         'email',
         'password',

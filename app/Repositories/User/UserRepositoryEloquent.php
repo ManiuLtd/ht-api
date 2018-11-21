@@ -194,10 +194,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
         }
 
-        if (!$inviterModel->group_id) {
-            throw  new \Exception('邀请人还没归属组');
-        }
-
 
         //查询用户
         $user->update([

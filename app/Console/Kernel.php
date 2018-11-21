@@ -28,22 +28,25 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         //淘宝  半小时执行
-        $schedule->command('spider:tb ')->dailyAt('01:00');
+        $schedule->command('spider:tb --type=3 --all=true')->dailyAt('12:00');
+        $schedule->command('spider:jd --all=true')->dailyAt('12:00');
+
+        $schedule->command('spider:pdd --all=true')->dailyAt('12:00');
+
+        $schedule->command('update_status ')->dailyAt('13:30');
+
         //每小时第 n 分钟执行一次任务
         $schedule->command('spider:tb --type=1 --all=false')->hourlyAt(50);
         $schedule->command('spider:tb --type=2 --all=false')->hourlyAt(30);
-
         //全部商品
         $schedule->command('spider:tb --type=3 --all=false')->hourlyAt(40);
-
-
         $schedule->command('spider:tb --type=4 --all=false')->hourlyAt(9);
         $schedule->command('spider:tb --type=5 --all=false')->hourlyAt(9);
         //京东
-        $schedule->command('spider:jd')->everyThirtyMinutes();
+        $schedule->command('spider:jd --all=false')->everyThirtyMinutes();
         $schedule->command('spider:jd order')->everyFiveMinutes();
 
-        $schedule->command('spider:pdd')->everyThirtyMinutes();
+        $schedule->command('spider:pdd --all=false')->everyThirtyMinutes();
         $schedule->command('spider:pdd order')->everyThirtyMinutes();
         //淘宝订单
         //以创建时间查询

@@ -19,7 +19,7 @@ class Taobao extends Command
      *
      * @var string
      */
-    protected $signature = 'spider:tb {name? : The name of the spider} {--type=3} {--all=true} {--h=1}';
+    protected $signature = 'spider:tb {name? : The name of the spider} {--type=3} {--all=false} {--h=1}';
 
     /**
      * The console command description.
@@ -93,7 +93,7 @@ class Taobao extends Command
         $this->info('正在爬取好单库优惠券');
         //开始爬取
         try {
-            $totalPage = 1000;
+            $totalPage = 6000;
             if ($all == 'false') {
                 $totalPage = 3;
             }
