@@ -28,7 +28,7 @@ class MemberUpgradeEvent
     {
         $user = $event->user;
 
-        $user_level = Level::query()->where('user_id',$user->id)->first();
+        $user_level = Level::query()->find($user->level_id);
         if (!$user_level){
             throw new \Exception('用户等级错误');
         }
