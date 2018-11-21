@@ -357,4 +357,38 @@ class PinDuoDuo implements TBKInterface
     {
         return [];
     }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function createPid()
+    {
+        $time = time ();
+        $params = [
+            'client_id' => data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID'),
+            'number' => '1',
+            'timestamp' => $time,
+            'type' => 'pdd.ddk.goods.pid.generate',
+        ];
+
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID').'number1' . 'timestamp' . $time . 'typepdd.ddk.goods.pid.generate';
+
+        $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
+
+        $params['sign'] = $sign;
+
+        $result = Curl::to ('http://gw-api.pinduoduo.com/api/router')
+            ->withData ($params)
+            ->post ();
+
+        $data = json_decode ($result);
+
+        if (isset($data->error_response)) {
+            throw new \Exception($data->error_response->error_msg);
+        }
+        if (isset($data->p_id_generate_response)) {
+            return $data->p_id_generate_response->p_id_list;
+        }
+    }
 }

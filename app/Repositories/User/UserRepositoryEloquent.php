@@ -151,12 +151,12 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             throw  new \Exception('验证码不存在或者已过期');
         }
 
-        User::query()->where('id',$user->id)->update([
+        User::query ()->where ('id', $user->id)->update ([
             'phone' => $phone,
             'password' => bcrypt (request ('password')),
         ]);
 
-        return json('1001','绑定成功');
+        return json ('1001', '绑定成功');
     }
 
     /**
@@ -169,7 +169,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $user = getUser ();
 
         $number = request ('number');
-        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
+        $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
         $decodeID = $hashids->decode ($number);
         if (!isset($decodeID[0])) {
             throw  new \Exception('邀请码错误');
@@ -196,13 +196,13 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
 
         //查询用户
-        $user->update([
+        $user->update ([
             'inviter_id' => $inviterModel->id,
             'group_id' => $inviterModel->group_id,
         ]);
 
 
-        return json('1001','绑定成功');
+        return json ('1001', '绑定成功');
     }
 
     /**
@@ -265,7 +265,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         if (!checkSms ($phone, request ('code'))) {
             return json (4001, '验证码不存在或者已过期');
         }
-        $level = Level::query()->where('default',1)->first();
+        $level = Level::query ()->where ('default', 1)->first ();
 
         //创建
         $user = $this->model->newQuery ()->create ([
@@ -292,12 +292,13 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     /**
      * @param $user
+     * @param null $inviter
      * @return bool
      * @throws \Exception
      */
-    protected function bindinviterRegister($user)
+    protected function bindinviterRegister($user, $inviter = null)
     {
-        $inviter_code = request ('inviter_code');
+        $inviter_code = $inviter != null ? $inviter : request ('inviter_code');
         $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
 
         $decodeID = $hashids->decode ($inviter_code);

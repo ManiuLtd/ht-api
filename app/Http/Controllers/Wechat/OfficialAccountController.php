@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Wechat;
 
+use App\Models\User\Level;
+use App\Models\User\User;
+use App\Repositories\Interfaces\User\UserRepository;
 use Overtrue\LaravelWeChat\Facade;
 use App\Handler\TextMessageHandler;
 use App\Handler\EventMessageHandler;
@@ -9,6 +12,7 @@ use App\Handler\ImageMessageHandler;
 use App\Handler\MediaMessageHandler;
 use App\Http\Controllers\Controller;
 use EasyWeChat\Kernel\Messages\Message;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 /**
  * 微信公众号开发请搭配内网穿透工具，这样方便本地调试
@@ -17,6 +21,22 @@ use EasyWeChat\Kernel\Messages\Message;
  */
 class OfficialAccountController extends Controller
 {
+
+    /**
+     * @var UserRepository
+     */
+    protected $repository;
+
+
+    /**
+     * OfficialAccountController constructor.
+     * @param UserRepository $repository
+     */
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \EasyWeChat\Kernel\Exceptions\BadRequestException
@@ -46,13 +66,13 @@ class OfficialAccountController extends Controller
 
             $app = Facade::officialAccount ();
 
-            $redirectUrl = route('wechat.callback', [
-                'redirect_url' => request('redirect_url'),
-                'inviter' => request('inviter'),
+            $redirectUrl = route ('wechat.callback', [
+                'redirect_url' => request ('redirect_url'),
+                'inviter' => request ('inviter'),
             ]);
 
-            $response = $app->oauth->scopes(['snsapi_userinfo'])
-                ->redirect($redirectUrl);
+            $response = $app->oauth->scopes (['snsapi_userinfo'])
+                ->redirect ($redirectUrl);
 
             return $response;
         } catch (\Exception $e) {
@@ -61,22 +81,50 @@ class OfficialAccountController extends Controller
     }
 
     /**
-     * 回调
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     * @return mixed
+     * @throws \Exception
      */
     public function callback()
     {
+        try {
+            $app = Facade::officialAccount ();
 
-        $app = Facade::officialAccount ();
+            $user = $app->oauth->user ();
 
-        $user = $app->oauth->user();
+            $original = $user->getOriginal ();
 
-        $original = $user->getOriginal();
-        dd ($original);
+            $user = User::query ()->where ([
+                'wx_unionid' => $original['unionid'],
+            ])->first ();
 
-//        $res = $this->memberRepository->h5Login($original);
-//
-//        return redirect(route('mobile.download.index'));
+            // 用户存在， 登陆
+            if ($user) {
+                //TODO request('inviter') 如果存在绑定上级  bindinviterRegister
+                $user->update ([
+                    'headimgurl' => $original['headimgurl'],
+                    'nickname' => $original['nickname'],
+                ]);
 
+                //TODO 重定向
+            }
+            $level = Level::query ()->where ('default', 1)->first ();
+            // 用户不存在，注册
+            $insert = [
+                'wx_unionid' => $original['unionid'],
+                'headimgurl' => $original['headimgurl'],
+                'nickname' => $original['nickname'],
+                'level_id' => $level->id,
+            ];
+
+            $user = User::query ()->create ($insert);
+                //  TODO  bindinviterRegister
+            //TODO 重定向
+
+        } catch (JWTException $e) {
+            throw  new \Exception($e->getMessage ());
+        }
     }
+
+
+
 }

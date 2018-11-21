@@ -13,6 +13,7 @@ use App\Criteria\OrderTypeCriteria;
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
+use App\Tools\Taoke\Taobao;
 
 /**
  * 订单管理
@@ -47,7 +48,15 @@ class OrdersController extends Controller
                 ->pushCriteria(new OrderTypeCriteria())
                 ->pushCriteria(new UserCriteria())
                 ->paginate(request('limit', 10));
-
+            if (count($orders)){
+                $tool = new  Taobao();
+                foreach ($orders as $k => $v){
+                    $detail = $tool->getDetail([
+                        'itemid' => $v['item_id'],
+                    ]);
+                    $orders[$k]['pic_url'] = $detail['pic_url'];
+                }
+            }
             return json(1001, '列表获取成功', $orders);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
