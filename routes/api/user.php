@@ -31,6 +31,5 @@ Route::namespace('User')
 
         //绑定手机号
         Route::get('bind/mobile', 'UsersController@bindMobile');
-        Route::get('bind/inviter', 'UsersController@bindInviter');
-        Route::get('group', 'UsersController@group');//组信息
+        Route::get('bind/inviter', 'UsersController@bindInviter.');
     });

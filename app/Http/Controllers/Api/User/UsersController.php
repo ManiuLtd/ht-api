@@ -93,21 +93,5 @@ class UsersController extends Controller
         }
     }
 
-    /**
-     * 获取组信息
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function group()
-    {
-        try {
-            $user = getUser();
-            if (!$user->group_id){
-                throw new \Exception('用户没有所属组');
-            }
-            $group = Group::query()->find($user->group_id);
-            return json('1001','小组信息',$group);
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
-        }
-    }
+   
 }
