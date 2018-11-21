@@ -66,11 +66,10 @@ class OfficialAccountController extends Controller
 
             $app = Facade::officialAccount ();
 
-            $redirectUrl = route ('wechat.callback', [
-                'redirect_url' => request ('redirect_url'),
-                'inviter' => request ('inviter'),
-            ]);
+            $redirectUrl = route ('wechat.callback');
 
+            request()->session()->put('redirect_url', request ('redirect_url'));
+            request()->session()->put('inviter', request ('inviter'));
             $response = $app->oauth->scopes (['snsapi_userinfo'])
                 ->redirect ($redirectUrl);
 
@@ -91,7 +90,6 @@ class OfficialAccountController extends Controller
 
             $user = $app->oauth->user ();
 
-            dd (request ('redirect_url'));
             $original = $user->getOriginal ();
 
             $user = User::query ()->where ([
@@ -100,10 +98,10 @@ class OfficialAccountController extends Controller
 
             // 用户存在， 登陆
             if ($user) {
-                if (request ('inviter')) {
+                if (session ('inviter')) {
                     try {
 
-                        $this->repository->bindinviterRegister ($user, request ('inviter'));
+                        $this->repository->bindinviterRegister ($user, session ('inviter'));
                     } catch (\Exception $exception) {
                     }
                 }
@@ -113,7 +111,7 @@ class OfficialAccountController extends Controller
                 ]);
 
                 // 重定向
-                return redirect (request ('redirect_url'));
+                return redirect (session ('redirect_url'));
             }
             $level = Level::query ()->where ('default', 1)->first ();
             // 用户不存在，注册
@@ -125,14 +123,14 @@ class OfficialAccountController extends Controller
             ];
 
             $user = User::query ()->create ($insert);
-            if (request ('inviter')) {
+            if (session ('inviter')) {
                 try {
-                    $this->repository->bindinviterRegister ($user, request ('inviter'));
+                    $this->repository->bindinviterRegister ($user, session ('inviter'));
                 } catch (\Exception $exception) {
                 }
             }
             // 重定向
-            return redirect (request ('redirect_url'));
+            return redirect (session ('redirect_url'));
         } catch (JWTException $e) {
             throw  new \Exception($e->getMessage ());
         }
