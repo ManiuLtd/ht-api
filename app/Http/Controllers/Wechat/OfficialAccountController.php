@@ -72,6 +72,7 @@ class OfficialAccountController extends Controller
         $user = $app->oauth->user();
 
         $original = $user->getOriginal();
+        dd ($original);
 
 //        $res = $this->memberRepository->h5Login($original);
 //
