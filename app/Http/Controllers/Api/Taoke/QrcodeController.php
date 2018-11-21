@@ -76,7 +76,7 @@ class QrcodeController extends Controller
                 ->generate('http://v2.easytbk.com/wechat/official_account/login'.$redirectUrl);
             $imgname = 'qrcodeImg'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
-            $str1 = str_limit($data['title'], 23, '');
+            $str1 = str_limit($data['title'], 20, '');
             $str2 = str_replace($str1, '', $data['title']);
             $str3 = str_limit($str2, 27, '');
             $str4 = str_replace($str3, '', $str2);
