@@ -137,7 +137,6 @@ $factory->define(App\Models\User\Address::class, function (Faker $faker) {
 $factory->define(App\Models\User\Level::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'level' => $faker->numberBetween(1, 100),
         'name' => $faker->name,
         'logo' => $faker->imageUrl(100, 100),
         'group_rate1' => rand(10, 99),

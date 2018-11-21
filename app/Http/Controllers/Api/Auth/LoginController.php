@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Models\User\Level;
 use App\Models\User\User;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -60,10 +61,7 @@ class LoginController extends Controller
         ]);
         //字段验证失败
         if ($validator->fails()) {
-            return response()->json([
-                'code' => 4061,
-                'message' => $validator->errors()->first(),
-            ]);
+            throw  new \Exception($validator->errors()->first());
         }
 
         try {
@@ -73,6 +71,7 @@ class LoginController extends Controller
 
             // 用户存在， 登陆
             if ($user) {
+                //TODO request('inviter') 如果存在绑定上级
                 $user->update([
                     'headimgurl' => request('headimgurl'),
                     'nickname' => request('nickname'),
@@ -81,13 +80,14 @@ class LoginController extends Controller
 
                 return $this->respondWithToken($token, $user);
             }
-
+            $level = Level::query()->where('default',1)->first();
             // 用户不存在，注册
             $insert = [
                 'wx_unionid' => request('unionid'),
                 'wx_openid1' => request('openid'),
                 'headimgurl' => request('headimgurl'),
                 'nickname' => request('nickname'),
+                'level_id' => $level->id,
             ];
 
             $user = User::query()->create($insert);
@@ -95,7 +95,7 @@ class LoginController extends Controller
 
             return $this->respondWithToken($token, $user);
         } catch (JWTException $e) {
-            return json(5001, $e->getMessage());
+            throw  new \Exception($e->getMessage());
         }
     }
 
