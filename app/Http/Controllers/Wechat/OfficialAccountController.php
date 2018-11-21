@@ -37,23 +37,46 @@ class OfficialAccountController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
     public function login()
     {
         try {
-            $prepayId = request ('prepayId');
-            if (!$prepayId) {
-                throw  new \InvalidArgumentException('支付失败，缺少prepayId');
-            }
 
             $app = Facade::officialAccount ();
-            $config = $app->jssdk->sdkConfig ($prepayId);
 
-            return response (1001, '支付参数获取成功', $config);
+            $redirectUrl = route('wechat.callback', [
+                'redirect_url' => request('redirect_url'),
+                'inviter' => request('inviter'),
+            ]);
+
+            $response = $app->oauth->scopes(['snsapi_userinfo'])
+                ->redirect($redirectUrl);
+
+            return $response;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage ());
         }
+    }
+
+    /**
+     * 回调
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
+    public function callback()
+    {
+
+        $app = Facade::officialAccount ();
+
+        $user = $app->oauth->user();
+
+        $original = $user->getOriginal();
+        dd ($original);
+
+//        $res = $this->memberRepository->h5Login($original);
+//
+//        return redirect(route('mobile.download.index'));
+
     }
 }
