@@ -38,16 +38,17 @@ class UpdateStatus extends Command
      */
     public function handle()
     {
+
+
         db('tbk_coupons')
-            ->where('status', '0')
+            ->where('status', 1)
+            ->delete();
+
+        db('tbk_coupons')
+            ->where('status', 0)
             ->update([
                 'status' => 1,
                 'updated_at' => now()->toDateTimeString()
             ]);
-
-        db('tbk_coupons')
-            ->where('created_at', '<', Carbon::parse("12:00")->toDateTimeString())
-            ->delete();
-
     }
 }
