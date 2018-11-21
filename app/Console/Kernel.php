@@ -41,6 +41,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:tb --type=2 --all=false')->hourlyAt(30);
         //全部商品
         $schedule->command('spider:tb --type=3 --all=false')->hourlyAt(40);
+
         $schedule->command('spider:tb --type=4 --all=false')->hourlyAt(9);
         $schedule->command('spider:tb --type=5 --all=false')->hourlyAt(9);
         //京东
