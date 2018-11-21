@@ -153,4 +153,17 @@ if (! function_exists('setting')) {
         return $setting;
     }
 }
+if (! function_exists('tbksetting')) {
+    /**
+     * 获取设置信息.
+     * @param $userID
+     * @return mixed
+     */
+    function tbksetting($userID)
+    {
+        $setting = \App\Models\Taoke\Setting::where('user_id', $userID)->first();
+
+        return $setting;
+    }
+}
 

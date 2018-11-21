@@ -324,10 +324,10 @@ class JingDong implements TBKInterface
      */
     public function getOrders(array $array = [])
     {
-        $userid = $this->getUserId ();
-        $setting = setting ($userid);
+        $setting = setting (1);
         $unionid = $setting->unionid;
-        if (!isset($unionid->jingdong)) {
+
+        if (!isset($unionid['jingdong'])) {
             throw new \Exception('请先设置京东联盟id');
         }
 
@@ -342,7 +342,7 @@ class JingDong implements TBKInterface
         ];
 
         $urlparams = [
-            'unionId' => $unionid->jingdong,
+            'unionId' => $unionid['jingdong'],
             'key' => data_get (config ('coupon'), 'jingdong.JDMEDIA_APPKEY'),
             'time' => date ('YmdH', time ()),
             'pageIndex' => $page,
@@ -421,5 +421,43 @@ class JingDong implements TBKInterface
     public function super_category()
     {
         return [];
+    }
+
+    /**
+     * 创建推广位
+     * @param array $array
+     * @return mixed
+     * @throws \Exception
+     */
+    public function createPid(array $array = [])
+    {
+        $spaceName = rand(1,999999);
+        $group_id = $array['group_id'];
+        $setting = $this->getSettings($group_id);
+        if (!$setting) {
+            throw new \Exception('请联系管理员设置系统');
+        }
+        $unionid = $setting->unionid;
+        $jingdong = $setting->jingdong;
+        if (!isset($unionid['jingdong']) || !isset($jingdong['apikey']) || !isset($jingdong['key'])) {
+            throw new \Exception('请先设置京东信息');
+        }
+
+        $params = [
+            'type' => 'createjdpid',
+            'apikey' => $jingdong['apikey'],
+            'unionId' => $unionid['jingdong'],
+            'key' => $jingdong['key'],
+            'pidtype' => 4,
+            'spaceName' => $spaceName,
+        ];
+        $rest = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
+            ->withData($params)
+            ->asJsonResponse()
+            ->post();
+        if ($rest->status_code != 200) {
+            throw new \Exception($rest->message);
+        }
+        return $rest->data->resultList;
     }
 }

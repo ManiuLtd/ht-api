@@ -33,6 +33,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('spider:pdd --all=true')->dailyAt('12:00');
 
+        //更新优惠券状态
         $schedule->command('update_status ')->dailyAt('13:30');
 
         //每小时第 n 分钟执行一次任务
