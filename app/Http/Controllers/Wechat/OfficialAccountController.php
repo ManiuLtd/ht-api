@@ -91,7 +91,7 @@ class OfficialAccountController extends Controller
 
             $user = $app->oauth->user ();
 
-            dd ($user,request ('reditect_url'));
+            dd (request ('redirect_url'));
             $original = $user->getOriginal ();
 
             $user = User::query ()->where ([
