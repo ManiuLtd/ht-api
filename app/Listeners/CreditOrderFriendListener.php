@@ -47,7 +47,7 @@ class CreditOrderFriendListener
         if (! $credit) {
             throw new \Exception('管理员还没配置参数');
         }
-        $today = Carbon::today()->toDateTimeString();
+        $today = now ()->toDateTimeString();
 
         if ($credit) {
             $user = User::query()->find($params['user_id']); //直推
