@@ -49,6 +49,7 @@ class LoginController extends Controller
 
     /**
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     protected function wechatLogin()
     {
