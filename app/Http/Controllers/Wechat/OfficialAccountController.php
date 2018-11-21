@@ -69,10 +69,9 @@ class OfficialAccountController extends Controller
             $encode = base64_encode (request ('redirect_url', 'sb') . '!' . request ('inviter', 'sb'));
 
 
-            $redirectUrl = route ('wechat.callback');
+            $redirectUrl = route ('wechat.callback') . "/" . $encode;
 
-            $response = $app->oauth->scopes (['snsapi_userinfo'])
-                ->redirect ($redirectUrl);
+            $response = $app->oauth->scopes (['snsapi_userinfo'])->redirect ($redirectUrl);
 
             return $response;
         } catch (\Exception $e) {
