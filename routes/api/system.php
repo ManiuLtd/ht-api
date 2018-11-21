@@ -18,5 +18,5 @@ Route::namespace('System')
         //获取配置信息
         Route::get('setting', 'SettingsController@index');
         //成长值途径列表
-        Route::get('upgrade', 'SettingsController@upgrade');
+        Route::get('setting/upgrade', 'SettingsController@upgrade');
     });
