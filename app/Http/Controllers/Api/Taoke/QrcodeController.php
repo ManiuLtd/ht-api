@@ -120,24 +120,21 @@ class QrcodeController extends Controller
             //邀请码
             $hashids = $hashids->encode($userid);
             //海报
-            $qrcode->savePath = "images/cache/{$hashids}_{$templateName}.jpg";
+            $qrcode->savePath = public_path("images/cache/{$hashids}_{$templateName}.jpg");
             //二维码
-            $cacheImage = public_path('images/cache/').$hashids.'.png';
+            $cacheImage = public_path('images/cache/').$hashids.'_invite.png';
             //生成二维码
             $redirectUrl = route ('wechat.login', [
                 'redirect_url' => 'http://www.baidu.com',
                 'inviter'      => $hashids,
             ]);
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
-            $cache = Image::make($cacheImage)->resize(156, 141);
+
             $imageEnumArray = [
                 new ImageEnum($cacheImage, 330, 330, 'bottom', 100, 140),
             ];
-            $textEnumArray = [
-//                new TextEnum($hashids, 350, 1400, 50),
-            ];
+
             $qrcode->setImageEnumArray($imageEnumArray);
-//            $qrcode->setTextEnumArray($textEnumArray);
             $res[] = $qrcode->make();
         }
 
