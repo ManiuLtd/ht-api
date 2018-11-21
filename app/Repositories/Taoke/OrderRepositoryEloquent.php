@@ -144,12 +144,12 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function getMember()
     {
-        $last_month = $this->getOrderChart(true, ['date_type' => 'lastMonth']);
+        $yestday = $this->getOrderChart(true, ['date_type' => 'yestday']);
         $month = $this->getOrderChart(true, ['date_type' => 'month']);
         $day = $this->getOrderChart(true, ['date_type' => 'day']);
 
         return [
-            'last_month' => $last_month,
+            'yestday' => $yestday,
             'month' => $month,
             'today' => $day,
         ];

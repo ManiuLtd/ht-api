@@ -49,9 +49,13 @@ class OfficialAccountController extends Controller
             }
 
             $app = Facade::officialAccount ();
-            $config = $app->jssdk->sdkConfig ($prepayId);
 
-            return response (1001, '支付参数获取成功', $config);
+            $redirectUrl = route('mobile.login.callback', ['unionid' => request('unionid')]);
+
+            $response = $app->oauth->scopes(['snsapi_userinfo'])
+                ->redirect($redirectUrl);
+
+            return $response;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage ());
         }
