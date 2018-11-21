@@ -107,7 +107,7 @@ class QrcodeController extends Controller
     public function invite()
     {
         $userid = getUserId();
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $templateName = "template{$i}";
             $qrcode = new Qrcode(public_path("images/{$templateName}.jpg"));
             $qrcode->width = 928;
@@ -123,13 +123,13 @@ class QrcodeController extends Controller
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
             $cache = Image::make($cacheImage)->resize(156, 141);
             $imageEnumArray = [
-                new ImageEnum($cacheImage, 300, 300, 'bottom', 100, 140),
+                new ImageEnum($cacheImage, 330, 330, 'bottom', 100, 140),
             ];
             $textEnumArray = [
-                new TextEnum($hashids, 350, 1400, 50),
+//                new TextEnum($hashids, 350, 1400, 50),
             ];
             $qrcode->setImageEnumArray($imageEnumArray);
-            $qrcode->setTextEnumArray($textEnumArray);
+//            $qrcode->setTextEnumArray($textEnumArray);
             $res[] = $qrcode->make();
         }
 

@@ -97,7 +97,7 @@ class PinDuoDuo implements TBKInterface
             $favouritesModel = Favourite::query ()->where ([
                 'user_id' => $user->id,
                 'item_id' => $id,
-                'type' => 2,
+                'type' => 3,
             ])->first ();
             if ($favouritesModel) {
                 $favourite = $favouritesModel->id; //已收藏

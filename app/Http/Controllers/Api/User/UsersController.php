@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User\Group;
 use App\Repositories\Interfaces\User\UserRepository;
 
 /**
@@ -91,4 +92,6 @@ class UsersController extends Controller
             return json(5001, $e->getMessage());
         }
     }
+
+
 }
