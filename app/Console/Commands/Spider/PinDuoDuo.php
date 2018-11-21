@@ -61,6 +61,9 @@ class PinDuoDuo extends Command
      */
     public function all()
     {
+        //是否爬取所有
+        $all = $this->option('all');
+
         try {
             // 拼多多怕爬虫 爬取多多进宝 http://jinbao.pinduoduo.com
 
@@ -70,7 +73,13 @@ class PinDuoDuo extends Command
             ]);
 
             $total = data_get($result, 'data.total_count', 0);
+
             $totalPage = (int) ceil($total / 100) > 600 ? 600 : (int) ceil($total / 100);
+
+            if ($all == 'false') {
+                $totalPage = 3;
+                $total = $totalPage * 100;
+            }
 
             $this->info("优惠券总数:{$total}");
             $bar = $this->output->createProgressBar($totalPage);
@@ -81,7 +90,7 @@ class PinDuoDuo extends Command
                 $goods_list = data_get($response, 'data.goods_list', 0);
 
                 if ($goods_list) {
-                    SaveGoods::dispatch($goods_list, 'pinduoduo');
+                    SaveGoods::dispatch($goods_list, 'pinduoduo', '', $all);
                 }
 
                 $bar->advance();
