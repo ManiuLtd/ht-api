@@ -66,10 +66,11 @@ class OfficialAccountController extends Controller
 
             $app = Facade::officialAccount ();
 
+            $encode = base64_encode (request ('redirect_url').'!'.request ('inviter'));
+
+
             $redirectUrl = route ('wechat.callback');
 
-            request()->session()->put('redirect_url', request ('redirect_url'));
-            request()->session()->put('inviter', request ('inviter'));
             $response = $app->oauth->scopes (['snsapi_userinfo'])
                 ->redirect ($redirectUrl);
 
@@ -83,8 +84,12 @@ class OfficialAccountController extends Controller
      * @return mixed
      * @throws \Exception
      */
-    public function callback()
+    public function callback($encode)
     {
+        dd ($encode);
+
+
+
         try {
             $app = Facade::officialAccount ();
 
