@@ -73,7 +73,7 @@ class QrcodeController extends Controller
             ]);
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
-                ->generate('http://v2.easytbk.com/wechat/official_account/login'.$redirectUrl);
+                ->generate($redirectUrl);
             $imgname = 'qrcodeImg'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
             $str1 = str_limit($data['title'], 20, '');
