@@ -152,13 +152,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         }
 
         //验证手机号是否存在
-
-        //查询用户
-        $userModel = db ('users')->find ($user->id);
-        if (!$userModel) {
-            throw  new \Exception('用户不存在');
-        }
-        $userModel->update([
+        $user->update([
             'phone' => $phone,
             'password' => bcrypt (request ('password')),
         ]);
