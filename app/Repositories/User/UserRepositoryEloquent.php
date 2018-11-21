@@ -176,8 +176,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $user = getUser ();
 
         $number = request ('number');
-
-        $decodeID = Hashids::decode ($number);
+        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
+        $decodeID = $hashids->decode ($number);
         if (!isset($decodeID[0])) {
             throw  new \Exception('邀请码错误');
 
