@@ -48,17 +48,6 @@ class OrdersController extends Controller
                 ->pushCriteria(new OrderTypeCriteria())
                 ->pushCriteria(new UserCriteria())
                 ->paginate(request('limit', 10));
-
-            if (count($orders['data'])){
-                $tool = new  Taobao();
-                foreach ($orders['data'] as $k => $v){
-
-                    $detail = $tool->getDetail([
-                        'itemid' => $v['itemid'],
-                    ]);
-                    $orders['data'][$k]['pic_url'] = $detail['pic_url'];
-                }
-            }
             return json(1001, '列表获取成功', $orders);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
