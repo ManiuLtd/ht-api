@@ -47,20 +47,22 @@ class QrcodeController extends Controller
             $pic_url = request('pic_url');
             if ($type == 1){
                 $tool    = new Taobao();
+                $mes = ' 淘 宝';
             }elseif ($type == 2){
                 $tool    = new JingDong();
+                $mes = ' 京 东';
             }elseif ($type == 3){
                 $tool    = new PinDuoDuo();
+                $mes = '拼多多';
             }
 
-            $data    = $tool->getDetail([
+            $data  = $tool->getDetail([
                 'itemid' => $item_id
             ]);
             $userid = getUserId();
             $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
             //邀请码
             $hashids = $hashids->encode($userid);
-            $couponPrice = intval($data['coupon_price']).'元';
             $qrcode = new Qrcode(public_path('images/share.png'));
             $qrcode->width = 564;
             $qrcode->height = 971;
@@ -70,19 +72,23 @@ class QrcodeController extends Controller
                 ->generate('http://v2.easytbk.com/api/taoke/coupon/detail'.'?type='.$type.'&item_id='.$item_id);
             $imgname = 'qrcodeImg'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
-            $str1 = str_limit($data['title'], 50, '');
+            $str1 = str_limit($data['title'], 23, '');
             $str2 = str_replace($str1, '', $data['title']);
+            $str3 = str_limit($str2, 27, '');
+            $str4 = str_replace($str3, '', $str2);
             $data['qrcode_img'] = public_path().'/images/qrcodeImg.png';
             $imageEnumArray = [
-                new ImageEnum($pic_url, 565, 545, 'top', 0, 0),
-                new ImageEnum($data['qrcode_img'], 210, 210, 'left-top', 30, 750),
+                new ImageEnum($pic_url, 650, 678, 'top', 0, 0),
+                    new ImageEnum($data['qrcode_img'], 200, 200, 'right-top', 0, 690),
             ];
             $textEnumArray = [
-                new TextEnum($data['final_price'], 140, 575, 20),
-                new TextEnum($str1, 20, 605, 20),
-                new TextEnum($str2, 30, 630, 20),
-                new TextEnum($couponPrice, 47, 690, 20),
-                new TextEnum('销量:'.$data['volume'], 180, 690, 20, '#9b9b9b'),
+                new TextEnum($data['final_price'], 160, 838, 35,'#DD6470'),
+                new TextEnum($data['price'], 185, 895, 32,'#6A6A6A'),
+                new TextEnum($mes, 20, 725, 25,'#FFE3EA'),
+                new TextEnum($str1, 100, 725, 25,'#4C4C4C'),
+                new TextEnum($str3, 20, 760, 25,'#4C4C4C'),
+                new TextEnum($str4, 20, 795, 25,'#4C4C4C'),
+                new TextEnum(intval($data['coupon_price']), 70, 895, 32,'#D4A5B2'),
             ];
             $qrcode->setImageEnumArray($imageEnumArray);
             $qrcode->setTextEnumArray($textEnumArray);
