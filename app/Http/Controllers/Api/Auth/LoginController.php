@@ -73,6 +73,7 @@ class LoginController extends Controller
 
             // 用户存在， 登陆
             if ($user) {
+                //TODO request('inviter') 如果存在绑定上级
                 $user->update([
                     'headimgurl' => request('headimgurl'),
                     'nickname' => request('nickname'),
