@@ -19,7 +19,7 @@ Route::namespace('User')
         Route::get('inviter', 'UsersController@inviter');
 
         //分销等级列表
-        Route::get('commission-level', 'LevelsController@index');
+        Route::get('level', 'LevelsController@index');
 
         //积分余额日志列表
         Route::get('credit-log', 'CreditLogsController@index');
