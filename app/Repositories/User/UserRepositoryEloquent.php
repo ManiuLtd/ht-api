@@ -158,7 +158,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         if (!$userModel) {
             throw  new \Exception('用户不存在');
         }
-        $userModel->update ([
+        $userModel->update([
             'phone' => $phone,
             'password' => bcrypt (request ('password')),
         ]);
@@ -207,7 +207,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
 
         //查询用户
-        $user->update ([
+        $user->update([
             'inviter_id' => $inviterModel->id,
             'group_id' => $inviterModel->group_id,
         ]);
