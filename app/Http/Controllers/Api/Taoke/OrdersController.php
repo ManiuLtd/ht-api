@@ -48,6 +48,10 @@ class OrdersController extends Controller
                 ->pushCriteria(new OrderTypeCriteria())
                 ->pushCriteria(new UserCriteria())
                 ->paginate(request('limit', 10));
+<<<<<<< HEAD
+
+=======
+>>>>>>> 8a626c51434bbebf2c6b8d5ea20f34de3e31ace2
             return json(1001, '列表获取成功', $orders);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
