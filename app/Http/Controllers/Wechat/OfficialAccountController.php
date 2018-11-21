@@ -43,10 +43,6 @@ class OfficialAccountController extends Controller
     public function login()
     {
         try {
-            $prepayId = request ('prepayId');
-            if (!$prepayId) {
-                throw  new \InvalidArgumentException('支付失败，缺少prepayId');
-            }
 
             $app = Facade::officialAccount ();
 
