@@ -19,7 +19,6 @@ class CreateUserLevelsTable extends Migration
     {
         Schema::create('user_levels', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->nullable();
             $table->integer('level')->nullable(); //等级大小
             $table->string('name', 100)->nullable(); //等级名
             $table->string('logo', 191)->nullable();  //等级图标
@@ -33,7 +32,8 @@ class CreateUserLevelsTable extends Migration
             $table->string('description', 191)->nullable(); //等级描述
             $table->tinyInteger('is_commission')->default(0)->comment('0无返佣权限，1有'); //
             $table->tinyInteger('is_group')->default(0)->comment('0不是组，1 组'); //
-            $table->tinyInteger('default')->default(0)->comment('1不是默认 0默认'); //0默认1不是默认
+            $table->tinyInteger('is_pid')->default(0)->comment('0可设置pid，1可设置pid'); //
+            $table->tinyInteger('default')->default(0)->comment('0不是默认 1默认'); //0默认1不是默认
             $table->tinyInteger('status')->default(1)->comment('0禁用，1正常'); //0禁用，1正常
 
             $table->nullableTimestamps();

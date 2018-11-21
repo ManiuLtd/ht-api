@@ -61,10 +61,7 @@ class LoginController extends Controller
         ]);
         //字段验证失败
         if ($validator->fails()) {
-            return response()->json([
-                'code' => 4061,
-                'message' => $validator->errors()->first(),
-            ]);
+            throw  new \Exception($validator->errors()->first());
         }
 
         try {
@@ -98,7 +95,7 @@ class LoginController extends Controller
 
             return $this->respondWithToken($token, $user);
         } catch (JWTException $e) {
-            return json(5001, $e->getMessage());
+            throw  new \Exception($e->getMessage());
         }
     }
 

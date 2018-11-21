@@ -35,4 +35,10 @@ class OfficialAccountController extends Controller
 
         return $app->server->serve();
     }
+
+    //TODO 微信H5登录  redirect_url  inviter :hashid
+    public function login()
+    {
+
+    }
 }
