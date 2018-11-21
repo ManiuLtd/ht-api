@@ -73,7 +73,8 @@ class UsersController extends Controller
     public function bindMobile()
     {
         try {
-            return json(1001, '获取成功', $this->repository->bindMobile());
+            $this->repository->bindMobile();
+            return json(1001, '绑定成功');
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
@@ -86,7 +87,8 @@ class UsersController extends Controller
     public function bindInviter()
     {
         try {
-            return json(1001, '获取成功', $this->repository->bindInviter());
+            $this->repository->bindInviter();
+            return json(1001, '绑定成功');
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
