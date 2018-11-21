@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\CreditOrderFriend;
 use App\Events\SendNotification;
 use App\Models\User\CreditLog;
+use App\Models\User\Group;
 use App\Models\user\user;
 use App\Models\System\Setting;
 use Carbon\Carbon;
@@ -138,7 +139,8 @@ class CreditOrderFriendListener
                 event(new SendNotification($user_inviter->toArray()));
             }
             if ($user && $user['group_id'] != null) {
-                $user_group_id = User::query()->find($user['group_id']); //当前组长
+                $group = Group::query()->find($user['group_id']);
+                $user_group_id = User::query()->find($group['id']); //当前组长
                 if ($event->type == 1){
                     $credit1 = $credit['order_group1_credit1'];
                     $credit2 = $credit['order_group1_credit2'];
@@ -181,7 +183,8 @@ class CreditOrderFriendListener
                 event(new SendNotification($user_group_id->toArray()));
             }
             if ($user && $user['oldgroup_id'] != null) {
-                $user_oldgroup_id = User::query()->find($user['oldgroup_id']); //原组长
+                $oldgroup = Group::query()->find($user['oldgroup_id']);
+                $user_oldgroup_id = User::query()->find($oldgroup['id']); //原组长
                 if ($event->type == 1){
                     $credit1 = $credit['order_group2_credit1'];
                     $credit2 = $credit['order_group2_credit2'];

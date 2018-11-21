@@ -2,6 +2,8 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\Taoke\Setting;
+
 trait TBKCommon
 {
     /**
@@ -93,7 +95,7 @@ trait TBKCommon
         if ($group_id) {
             $group = db ('groups')->find ($group_id);
             if ($group) {
-                $agent_setting = db ('tbk_settings')->where ([
+                $agent_setting = Setting::query()->where ([
                     'user_id' => $group->user_id
                 ])->first ();
                 if ($agent_setting) {
