@@ -296,7 +296,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      * @return bool
      * @throws \Exception
      */
-    protected function bindinviterRegister($user, $inviter = null)
+    public function bindinviterRegister($user, $inviter = null)
     {
         $inviter_code = $inviter != null ? $inviter : request ('inviter_code');
         $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
