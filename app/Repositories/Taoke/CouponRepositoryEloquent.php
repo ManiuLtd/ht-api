@@ -27,7 +27,8 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         'shop_type',
         'activity_type',
         'status',
-        'is_recommend'
+        'is_recommend',
+        'tag'
     ];
 
     /**
