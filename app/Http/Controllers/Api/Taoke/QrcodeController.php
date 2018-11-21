@@ -119,9 +119,10 @@ class QrcodeController extends Controller
             $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
             //邀请码
             $hashids = $hashids->encode($userid);
-            $qrcode->savePath = "images/invite{$i}.jpg";
-            $fileName = $hashids.'_'.$templateName.'.png';
-            $cacheImage = public_path('images/cache/').$fileName;
+            //海报
+            $qrcode->savePath = "images/cache/{$hashids}_{$templateName}.jpg";
+            //二维码
+            $cacheImage = public_path('images/cache/').$hashids.'.png';
             //生成二维码
             $redirectUrl = url('http://www.baidu.com?inviter='.$hashids);
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
