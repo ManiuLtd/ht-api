@@ -106,7 +106,7 @@ class Taobao implements TBKInterface
             $favouritesModel = Favourite::query ()->where ([
                 'user_id' => $user->id,
                 'item_id' => $itemID,
-                'type' => 2,
+                'type' => 1 ,
             ])->first ();
             if ($favouritesModel) {
                 $favourite = $favouritesModel->id; //已收藏
