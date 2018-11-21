@@ -85,8 +85,8 @@ class SaveGoods implements ShouldQueue
      */
     protected function saveDTKGoods($results, $tag)
     {
-        $coupon = new Coupon();
-        $inserts = [];
+
+
         foreach ($results as $result) {
             $data['title'] = $result->itemtitle;
 //            $data['short_title'] = $result->D_title;
@@ -114,20 +114,19 @@ class SaveGoods implements ShouldQueue
 
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
-            $inserts[] = $data;
-            //不是全部抓取 更新单条产品
-            if ($this->all == 'false') {
-                $data['status'] = 1;
-                $coupon->updateOrCreate(
-                    ['item_id' => $data['item_id'], 'type' => 'total'],
-                    $data
-                );
-            }
+
+            $data['status'] = 1;
+
+            db('tbk_coupons')->updateOrInsert(
+                ['item_id' => $data['item_id'], 'type' => 1],
+                $data
+            );
+
         }
-        //批量插入
-        if ($this->all == 'true') {
-            DB::table('tbk_coupons')->insert($inserts);
-        }
+//        //批量插入
+//        if ($this->all == 'true') {
+//            DB::table('tbk_coupons')->insert($inserts);
+//        }
     }
 
     /**
@@ -156,18 +155,17 @@ class SaveGoods implements ShouldQueue
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $inserts[] = $data;
-            //不是全部抓取 更新单条产品
-            if ($this->all == 'false') {
-                db('tbk_coupons')->updateOrInsert(
-                    ['item_id' => $data['item_id']],
-                    $data
-                );
-            }
+
+            db('tbk_coupons')->updateOrInsert(
+                ['item_id' => $data['item_id'], 'type' => 1],
+                $data
+            );
+
         }
-        //批量插入
-        if ($this->all == 'true') {
-            DB::table('tbk_coupons')->insert($inserts);
-        }
+//        //批量插入
+//        if ($this->all == 'true') {
+//            DB::table('tbk_coupons')->insert($inserts);
+//        }
     }
 
     /**
@@ -198,18 +196,18 @@ class SaveGoods implements ShouldQueue
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $inserts[] = $data;
-            //不是全部抓取 更新单条产品
-            if ($this->all == 'false') {
-                db('tbk_coupons')->updateOrInsert(
-                    ['item_id' => $data['item_id']],
-                    $data
-                );
-            }
+
+
+            db('tbk_coupons')->updateOrInsert(
+                ['item_id' => $data['item_id'], 'type' => 1],
+                $data
+            );
+
         }
-        //批量插入
-        if ($this->all == 'true') {
-            DB::table('tbk_coupons')->insert($inserts);
-        }
+//        //批量插入
+//        if ($this->all == 'true') {
+//            DB::table('tbk_coupons')->insert($inserts);
+//        }
     }
 
     /**
@@ -385,7 +383,7 @@ class SaveGoods implements ShouldQueue
             case '食品饮料':
                 return 27;
             default:
-                return;
+                return ;
         }
     }
 
@@ -428,7 +426,7 @@ class SaveGoods implements ShouldQueue
             case '家装':
                 return 1917;
             default:
-                return;
+                return ;
         }
     }
 }
