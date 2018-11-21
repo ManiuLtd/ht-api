@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\MemberUpgrade;
 use App\Models\Taoke\Pid;
 use App\Models\User\Level;
+use App\Models\User\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -49,7 +50,7 @@ class MemberUpgradeEvent
         }
         DB::transaction(function () use ($user,$level) {
             //可以升级
-            $user = db('users')->find($user->id);
+            $user = User::query ()->find($user->id);
             $user->update([
                 'level_id' => $level->id,
             ]);

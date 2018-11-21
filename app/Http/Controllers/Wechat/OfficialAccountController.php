@@ -26,19 +26,34 @@ class OfficialAccountController extends Controller
      */
     public function serve()
     {
-        $app = Facade::officialAccount();
+        $app = Facade::officialAccount ();
 
-        $app->server->push(new TextMessageHandler($app), Message::TEXT);
-        $app->server->push(new ImageMessageHandler($app), Message::IMAGE);
-        $app->server->push(new EventMessageHandler($app), Message::EVENT);
-        $app->server->push(new MediaMessageHandler($app), Message::VOICE | Message::VIDEO | Message::SHORT_VIDEO);
+        $app->server->push (new TextMessageHandler($app), Message::TEXT);
+        $app->server->push (new ImageMessageHandler($app), Message::IMAGE);
+        $app->server->push (new EventMessageHandler($app), Message::EVENT);
+        $app->server->push (new MediaMessageHandler($app), Message::VOICE | Message::VIDEO | Message::SHORT_VIDEO);
 
-        return $app->server->serve();
+        return $app->server->serve ();
     }
 
-    //TODO 微信H5登录  redirect_url  inviter :hashid
+    /**
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
+     */
     public function login()
     {
+        try {
+            $prepayId = request ('prepayId');
+            if (!$prepayId) {
+                throw  new \InvalidArgumentException('支付失败，缺少prepayId');
+            }
 
+            $app = Facade::officialAccount ();
+            $config = $app->jssdk->sdkConfig ($prepayId);
+
+            return response (1001, '支付参数获取成功', $config);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage ());
+        }
     }
 }
