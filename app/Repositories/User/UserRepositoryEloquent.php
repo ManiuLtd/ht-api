@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Models\User\Level;
 use Hashids\Hashids;
 use App\Models\User\User;
 use App\Criteria\RequestCriteria;
@@ -275,10 +276,13 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         if (!checkSms ($phone, request ('code'))) {
             return json (4001, '验证码不存在或者已过期');
         }
+        $level = Level::query()->where('default',1)->first();
+
         //创建
         $user = $this->model->newQuery ()->create ([
             'phone' => $phone,
             'password' => Hash::make (request ('password')),
+            'level_id' => $level->id,
         ]);
         //判断是否有邀请码
         if ($inviter_code = request ('inviter_code')) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Models\User\Level;
 use App\Models\User\User;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -82,13 +83,14 @@ class LoginController extends Controller
 
                 return $this->respondWithToken($token, $user);
             }
-
+            $level = Level::query()->where('default',1)->first();
             // 用户不存在，注册
             $insert = [
                 'wx_unionid' => request('unionid'),
                 'wx_openid1' => request('openid'),
                 'headimgurl' => request('headimgurl'),
                 'nickname' => request('nickname'),
+                'level_id' => $level->id,
             ];
 
             $user = User::query()->create($insert);
