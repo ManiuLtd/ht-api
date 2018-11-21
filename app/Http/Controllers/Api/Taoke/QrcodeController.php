@@ -67,9 +67,13 @@ class QrcodeController extends Controller
             $qrcode->width = 564;
             $qrcode->height = 971;
             $qrcode->savePath = 'images/cache/'.$hashids.'_'.$item_id.'.jpg';
+            $redirectUrl = route ('wechat.login', [
+                'redirect_url' => $data['coupon_link']['url'],
+                'inviter'      => $hashids,
+            ]);
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
-                ->generate('http://v2.easytbk.com/api/taoke/coupon/detail'.'?type='.$type.'&item_id='.$item_id);
+                ->generate('http://v2.easytbk.com/wechat/official_account/login'.$redirectUrl);
             $imgname = 'qrcodeImg'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
             $str1 = str_limit($data['title'], 23, '');
@@ -119,7 +123,7 @@ class QrcodeController extends Controller
             $fileName = $hashids.'_'.$templateName.'.png';
             $cacheImage = public_path('images/cache/').$fileName;
             //生成二维码
-            $redirectUrl = url('http://www.baidu.com?unionid='.$userid);
+            $redirectUrl = url('http://www.baidu.com?inviter='.$hashids);
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
             $cache = Image::make($cacheImage)->resize(156, 141);
             $imageEnumArray = [

@@ -353,7 +353,7 @@ class Taobao implements TBKInterface
     {
         //  Implement getOrders() method.
         $type = data_get ($array, 'type');
-
+        $setting = $array['setting'];
         $order_query_type = 'create_time';
 
         if ($type == 2) {
@@ -362,7 +362,7 @@ class Taobao implements TBKInterface
         $params = [
             'appkey' => config ('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config ('coupon.taobao.HMTK_APP_SECRET'),
-            'sid' => data_get ($array, 'sid', 1942),
+            'sid' => $setting->taobao['sid'] ?? 1942,
             'start_time' => now ()->subMinutes (9)->toDateTimeString (),
 //            'start_time' => '2018-11-01 15:45:02',
             'span' => 600,

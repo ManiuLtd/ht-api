@@ -6,6 +6,8 @@ use App\Events\MemberUpgrade;
 use App\Models\Taoke\Pid;
 use App\Models\User\Level;
 use App\Models\User\User;
+use App\Tools\Taoke\JingDong;
+use App\Tools\Taoke\PinDuoDuo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -73,7 +75,28 @@ class MemberUpgradeEvent
             ]);
             //TODO 推广位未分配   查询淘宝推广位不为空并且用户id为空的  分配给他，调用接口生成京东和拼多多推广位，
             //TODO 淘宝推广位用完了，在pid表生成一条新数据，然后调用接口生成京东和拼多多推广位，让淘宝推广位为空
-            $pid = Pid::query()->where('user_id',null)->where('taobao','<>',null)->first();
+            //查看是否已经有推广位
+            $user_pid = Pid::query()->where('user_id',$user->id)->first();
+            if (!$user_pid){
+                $pid = Pid::query()->where('user_id',null)->where('taobao','<>',null)->first();
+                $jingdong = new JingDong();
+                $jingdong_pid = $jingdong->createPid(['group_id' => $group->id]);
+                $pinduoduo = new PinDuoDuo();
+                $pinduoduo_pid = $pinduoduo->createPid();
+                if ($pid){
+                    $pid->update([
+                        'user_id'   => $user->id,
+                        'jingdong'  => $jingdong_pid,
+                        'pinduoduo' => $pinduoduo_pid
+                    ]);
+                }else{
+                    Pid::query()->create([
+                        'user_id'   => $user->id,
+                        'jingdong'  => $jingdong_pid,
+                        'pinduoduo' => $pinduoduo_pid
+                    ]);
+                }
+            }
 
         });
     }
