@@ -74,16 +74,16 @@ class QrcodeController extends Controller
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
                 ->generate($redirectUrl);
-            $imgname = 'qrcodeImg'.'.png';
+            $imgname = $hashids.'_'.$item_id.'_qrcode'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
             $str1 = str_limit($data['title'], 20, '');
             $str2 = str_replace($str1, '', $data['title']);
             $str3 = str_limit($str2, 27, '');
             $str4 = str_replace($str3, '', $str2);
-            $data['qrcode_img'] = public_path().'/images/qrcodeImg.png';
+            $data['qrcode_img'] = public_path().'/images/cache/'.$hashids.'_'.$item_id.'_qrcode.png';
             $imageEnumArray = [
                 new ImageEnum($pic_url, 650, 678, 'top', 0, 0),
-                    new ImageEnum($data['qrcode_img'], 200, 200, 'right-top', 0, 690),
+                new ImageEnum($data['qrcode_img'], 200, 200, 'right-top', 0, 690),
             ];
             $textEnumArray = [
                 new TextEnum($data['final_price'], 160, 838, 35,'#DD6470'),
@@ -119,24 +119,22 @@ class QrcodeController extends Controller
             $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
             //邀请码
             $hashids = $hashids->encode($userid);
-            $qrcode->savePath = "images/invite{$i}.jpg";
-            $fileName = $hashids.'_'.$templateName.'.png';
-            $cacheImage = public_path('images/cache/').$fileName;
+            //海报
+            $qrcode->savePath = public_path("images/cache/{$hashids}_{$templateName}.jpg");
+            //二维码
+            $cacheImage = public_path('images/cache/').$hashids.'_invite.png';
             //生成二维码
             $redirectUrl = route ('wechat.login', [
                 'redirect_url' => 'http://www.baidu.com',
                 'inviter'      => $hashids,
             ]);
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
-            $cache = Image::make($cacheImage)->resize(156, 141);
+
             $imageEnumArray = [
                 new ImageEnum($cacheImage, 330, 330, 'bottom', 100, 140),
             ];
-            $textEnumArray = [
-//                new TextEnum($hashids, 350, 1400, 50),
-            ];
+
             $qrcode->setImageEnumArray($imageEnumArray);
-//            $qrcode->setTextEnumArray($textEnumArray);
             $res[] = $qrcode->make();
         }
 
