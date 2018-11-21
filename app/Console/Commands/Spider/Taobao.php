@@ -8,7 +8,7 @@ use App\Jobs\SaveGoods;
 use App\Jobs\SaveOrders;
 use App\Jobs\Spider\DownItem;
 use App\Jobs\Spider\KuaiQiang;
-use App\Models\System\Setting;
+use App\Models\Taoke\Setting;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
 
@@ -325,23 +325,26 @@ class Taobao extends Command
     protected function getOrders()
     {
         try {
-            $setting = setting(1);
-            $sid = $setting->taobao->sid ?? 1942;
+            $settings = Setting::query()->get();
+            $bar = $this->output->createProgressBar(10* $settings->count());
             $type = $this->option('type');
-            $bar = $this->output->createProgressBar(4);
-            //循环所有页码查出数据
-            for ($page = 1; $page <= 4; $page++) {
-                $resp = $this->tbk->getOrders([
-                    'page' => $page,
-                    'sid' => $sid,
-                    'type' => $type,
-                ]);
+            foreach ($settings as $setting){
+                //循环所有页码查出数据
 
-                //写入队列
-                SaveOrders::dispatch($resp, 'taobao');
-                $bar->advance();
-                $this->info(">>>已采集完第{$page}页 ");
+                for ($page = 1; $page <= 4; $page++) {
+                    $resp = $this->tbk->getOrders([
+                        'page' => $page,
+                        'setting' => $setting,
+                        'type' => $type,
+                    ]);
+
+                    //写入队列
+                    SaveOrders::dispatch($resp, 'taobao');
+                    $bar->advance();
+                    $this->info(">>>已采集完第{$page}页 ");
+                }
             }
+            $bar = $this->output->createProgressBar(4);
 
             $bar->finish();
         } catch (\Exception $e) {
