@@ -9,6 +9,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Orzcc\TopClient\Facades\TopClient;
+use TopClient\request\TbkItemInfoGetRequest;
 
 class SaveOrders implements ShouldQueue
 {
@@ -83,6 +85,7 @@ class SaveOrders implements ShouldQueue
                 'title'             => $result->item_title,
                 'itemid'            => $result->num_iid,
                 'count'             => $result->item_num,
+                'pic_url'           => $this->getPicUrl($result->num_iid),
                 'price'             => $result->price,
                 'final_price'       => $result->alipay_total_price,
                 'commission_rate'   => $result->total_commission_rate,
@@ -103,6 +106,25 @@ class SaveOrders implements ShouldQueue
         }
     }
 
+    /**
+     * @param $itemID
+     * @return null
+     */
+    protected function getPicUrl($itemID)
+    {
+        //通过转链接口获取券额
+        $topclient = TopClient::connection ();
+        $req = new TbkItemInfoGetRequest();
+        $req->setFields ('title,small_images,pict_url,zk_final_price,user_type,volume');
+        $req->setNumIids ($itemID);
+        $resp = $topclient->execute ($req);
+        if (!isset($resp->results->n_tbk_item)) {
+            return null;
+        }
+
+        $data = $resp->results->n_tbk_item[0];
+        return $data->pict_url;
+    }
     /**
      * 淘客订单状态
      * @param $status
