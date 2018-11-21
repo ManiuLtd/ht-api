@@ -101,6 +101,7 @@ class OfficialAccountController extends Controller
                 'wx_unionid' => $original['unionid'],
             ])->first ();
 
+            dd ($user);
             // 用户存在， 登陆
             if ($user) {
                 if ($decode[1] != 'sb') {
