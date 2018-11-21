@@ -65,4 +65,30 @@ class UsersController extends Controller
             return json(5001, $e->getMessage());
         }
     }
+
+    /**
+     * 绑定手机号
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function bindMobile()
+    {
+        try {
+            return $this->repository->bindMobile();
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
+    }
+
+    /**
+     * 绑定邀请人
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function bindInviter()
+    {
+        try {
+            return $this->repository->bindInviter();
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
+    }
 }

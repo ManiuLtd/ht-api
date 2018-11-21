@@ -151,19 +151,12 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             throw  new \Exception('验证码不存在或者已过期');
         }
 
-        //验证手机号是否存在
-
-        //查询用户
-        $userModel = db ('users')->find ($user->id);
-        if (!$userModel) {
-            throw  new \Exception('用户不存在');
-        }
-        $userModel->update ([
+        User::query()->where('id',$user->id)->update([
             'phone' => $phone,
             'password' => bcrypt (request ('password')),
         ]);
 
-        return true;
+        return json('1001','绑定成功');
     }
 
     /**
@@ -176,8 +169,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $user = getUser ();
 
         $number = request ('number');
-
-        $decodeID = Hashids::decode ($number);
+        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
+        $decodeID = $hashids->decode ($number);
         if (!isset($decodeID[0])) {
             throw  new \Exception('邀请码错误');
 
@@ -207,13 +200,13 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
 
         //查询用户
-        $user->update ([
+        $user->update([
             'inviter_id' => $inviterModel->id,
             'group_id' => $inviterModel->group_id,
         ]);
 
 
-        return true;
+        return json('1001','绑定成功');
     }
 
     /**
