@@ -55,64 +55,65 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
      */
     public function upgrade()
     {
-        $setting = \setting (1);
+        $setting = setting (1);
         $data = [];
         //订单
-        $path = $setting->credit_order;
+        $path =(object)  $setting->credit_order;
+        $path2 =(object)  $setting->credit_friend;
 
-        $order_commission1 = [
+
+        $data[] = [
             'title' => '直属订单',
             'describe' => '新增直属订单，奖励成长值',
             'credit' => $path->order_commission1_credit3
         ];
 
-        $order_commission2 = [
+        $data[] = [
             'title' => '下级订单',
             'describe' => '新增下级订单，奖励成长值',
             'credit' => $path->order_commission2_credit3
         ];
 
 
-        $order_group1 = [
+        $data[] = [
             'title' => '团队订单',
             'describe' => '新增团队订单，奖励成长值',
             'credit' => $path->order_group1_credit3
         ];
 
 
-        $order_group2 = [
+        $data[] = [
             'title' => '补贴订单',
             'describe' => '下级团队新增订单，奖励成长值',
             'credit' => $path->order_group2_credit3
         ];
 
-        $friend_commission1 = [
+        $data[] = [
             'title' => '新增粉丝',
             'describe' => '新增粉丝，奖励成长值',
-            'credit' => $path->friend_commission1_credit3
+            'credit' => $path2->friend_commission1_credit3
         ];
 
 
-        $friend_commission2 = [
+        $data[] = [
             'title' => '新增下级粉丝',
             'describe' => '新增下级粉丝，奖励成长值',
-            'credit' => $path->friend_commission2_credit3
+            'credit' => $path2->friend_commission2_credit3
         ];
 
 
-        $friend_group1_credit3 = [
+        $data[] = [
             'title' => '团队新增粉丝',
             'describe' => '团队新增粉丝，奖励成长值',
-            'credit' => $path->friend_group1_credit3
+            'credit' => $path2->friend_group1_credit3
         ];
 
-        $friend_group2_credit3 = [
+        $data[] = [
             'title' => '补贴团队新增粉丝',
             'describe' => '下级团队新增粉丝，奖励成长值',
-            'credit' => $path->friend_group2_credit3
+            'credit' => $path2->friend_group2_credit3
         ];
 
-        array_merge ($order_commission1, $order_commission2, $order_group1, $order_group2, $friend_commission1, $friend_commission2, $friend_group1_credit3, $friend_group2_credit3);
         return $data;
     }
 }
