@@ -77,16 +77,21 @@ trait TBKCommon
 
     /**
      * 设置信息
-     * @return mixed
+     * @param null $group_id
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|mixed|null|object
      */
-    public function getSettings()
+    public function getSettings($group_id = null)
     {
         //读取代理设置
         $user = getUser ();
         $setting = setting (1); //应该是根据user或者user_id
 
-        if ($user->group_id) {
-            $group = db ('groups')->find ($user->group_id);
+        if (!$group_id) {
+            $group_id = $user->group_id;
+        }
+
+        if ($group_id) {
+            $group = db ('groups')->find ($group_id);
             if ($group) {
                 $agent_setting = db ('tbk_settings')->where ([
                     'user_id' => $group->user_id

@@ -20,7 +20,14 @@ Route::namespace('System')
 
         //授权相关
         Route::get('auth', 'AuthorizationsController@index');
+
+//        Route::get('authcode','AuthorizationsController@code');
+    });
+
+Route::namespace('System')
+    ->prefix('system')
+    ->group(function () {
+
         //设置增加 淘宝 京东 拼多多  授权信息
         Route::get('callback', 'AuthorizationsController@callback');
-//        Route::get('authcode','AuthorizationsController@code');
     });
