@@ -64,7 +64,7 @@ class SaveOrders implements ShouldQueue
     protected function saveTBKOrder($results)
     {
         foreach ($results as $result) {
-            $pid = Pid::query()->where('taobao', $result->adzone_id)->first();
+            $pid = Pid::query()->where('taobao','like', '%'.$result->adzone_id)->first();
             if ($pid) {
                 $user = User::query()->find($pid->user_id);
                 $group_id = $user->group_id;
