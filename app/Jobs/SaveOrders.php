@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
+use Illuminate\Support\Facades\Cache;
 
 class SaveOrders implements ShouldQueue
 {
@@ -62,6 +63,7 @@ class SaveOrders implements ShouldQueue
     /**
      * 淘宝客订单.
      * @param $results
+     * @throws \Exception
      */
     protected function saveTBKOrder($results)
     {
@@ -108,22 +110,32 @@ class SaveOrders implements ShouldQueue
 
     /**
      * @param $itemID
-     * @return null
+     * @return \Illuminate\Cache\CacheManager|mixed|void
+     * @throws \Exception
      */
     protected function getPicUrl($itemID)
     {
-        //通过转链接口获取券额
-        $topclient = TopClient::connection ();
-        $req = new TbkItemInfoGetRequest();
-        $req->setFields ('title,small_images,pict_url,zk_final_price,user_type,volume');
-        $req->setNumIids ($itemID);
-        $resp = $topclient->execute ($req);
-        if (!isset($resp->results->n_tbk_item)) {
-            return null;
+        //缓存
+        $expiresAt = now()->addHour(24 * 7);
+        $cacheKey = 'goods_picurl_' . $itemID;
+        $picCache = cache($cacheKey);
+        //获取详情
+        if ($picCache != null) {
+            return $picCache;
         }
+        $topclient = TopClient::connection();
+        $req = new TbkItemInfoGetRequest();
+        $req->setFields('title,pict_url');
+        $req->setNumIids($itemID);
+        $resp = $topclient->execute($req);
+        if (!isset($resp->results->n_tbk_item)) {
+            return;
+        }
+        $tbkItem = (array)$resp->results->n_tbk_item[0];
 
-        $data = $resp->results->n_tbk_item[0];
-        return $data->pict_url;
+        Cache::put($cacheKey, $tbkItem['pict_url'], $expiresAt);
+
+        return $tbkItem['pict_url'];
     }
     /**
      * 淘客订单状态
