@@ -53,7 +53,7 @@ class SettingsController extends Controller
     public function upgrade()
     {
         try {
-            return $this->repository->upgrade();
+            return json(1001,'获取成功',$this->repository->upgrade());
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }

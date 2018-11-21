@@ -66,13 +66,12 @@ class OfficialAccountController extends Controller
 
             $app = Facade::officialAccount ();
 
-            $redirectUrl = route ('wechat.callback', [
-                'redirect_url' => request ('redirect_url'),
-                'inviter' => request ('inviter'),
-            ]);
+            $encode = base64_encode (request ('redirect_url', 'sb') . '!' . request ('inviter', 'sb'));
 
-            $response = $app->oauth->scopes (['snsapi_userinfo'])
-                ->redirect ($redirectUrl);
+
+            $redirectUrl = route ('wechat.callback',[$encode]);
+
+            $response = $app->oauth->scopes (['snsapi_userinfo'])->redirect ($redirectUrl);
 
             return $response;
         } catch (\Exception $e) {
@@ -81,17 +80,21 @@ class OfficialAccountController extends Controller
     }
 
     /**
-     * @return mixed
+     * @param $encode
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
      * @throws \Exception
      */
-    public function callback()
+    public function callback($encode)
     {
+
+        $str = base64_decode ($encode);
+
+        $decode = explode ('!', $str);
         try {
             $app = Facade::officialAccount ();
 
             $user = $app->oauth->user ();
 
-            dd ($user,request ('reditect_url'));
             $original = $user->getOriginal ();
 
             $user = User::query ()->where ([
@@ -100,10 +103,9 @@ class OfficialAccountController extends Controller
 
             // 用户存在， 登陆
             if ($user) {
-                if (request ('inviter')) {
+                if ($decode[1] != 'sb') {
                     try {
-
-                        $this->repository->bindinviterRegister ($user, request ('inviter'));
+                        $this->repository->bindinviterRegister ($user, $decode[1]);
                     } catch (\Exception $exception) {
                     }
                 }
@@ -112,27 +114,30 @@ class OfficialAccountController extends Controller
                     'nickname' => $original['nickname'],
                 ]);
 
-                // 重定向
-                return redirect (request ('redirect_url'));
-            }
-            $level = Level::query ()->where ('default', 1)->first ();
-            // 用户不存在，注册
-            $insert = [
-                'wx_unionid' => $original['unionid'],
-                'headimgurl' => $original['headimgurl'],
-                'nickname' => $original['nickname'],
-                'level_id' => $level->id,
-            ];
+            } else {
+                $level = Level::query ()->where ('default', 1)->first ();
+                // 用户不存在，注册
+                $insert = [
+                    'wx_unionid' => $original['unionid'],
+                    'headimgurl' => $original['headimgurl'],
+                    'nickname' => $original['nickname'],
+                    'level_id' => $level->id,
+                ];
 
-            $user = User::query ()->create ($insert);
-            if (request ('inviter')) {
-                try {
-                    $this->repository->bindinviterRegister ($user, request ('inviter'));
-                } catch (\Exception $exception) {
+                $user = User::query ()->create ($insert);
+                if ($decode[1] != 'sb') {
+                    try {
+                        $this->repository->bindinviterRegister ($user, $decode[1]);
+                    } catch (\Exception $exception) {
+                    }
                 }
             }
-            // 重定向
-            return redirect (request ('redirect_url'));
+
+            if ($decode[0] != 'sb') {
+                return redirect ($decode[0]);
+
+            }
+            return "未指定重定向地址";
         } catch (JWTException $e) {
             throw  new \Exception($e->getMessage ());
         }
