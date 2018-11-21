@@ -11,10 +11,9 @@ use App\Http\Requests\Auth\User\LoginRequest;
 class LoginController extends Controller
 {
     /**
-     * 用户登录.
-     *
      * @param LoginRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function login(LoginRequest $request)
     {
