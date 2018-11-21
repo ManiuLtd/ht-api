@@ -66,10 +66,7 @@ class OfficialAccountController extends Controller
 
             $app = Facade::officialAccount ();
 
-            $redirectUrl = route ('wechat.callback', [
-                'redirect_url' => request ('redirect_url'),
-                'inviter' => request ('inviter'),
-            ]);
+            $redirectUrl = route ('wechat.callback');
 
             $response = $app->oauth->scopes (['snsapi_userinfo'])
                 ->redirect ($redirectUrl);
