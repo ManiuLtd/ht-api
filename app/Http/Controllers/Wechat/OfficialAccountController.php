@@ -101,7 +101,6 @@ class OfficialAccountController extends Controller
                 'wx_unionid' => $original['unionid'],
             ])->first ();
 
-            dd ($user);
             // 用户存在， 登陆
             if ($user) {
                 if ($decode[1] != 'sb') {
@@ -110,6 +109,7 @@ class OfficialAccountController extends Controller
                     } catch (\Exception $exception) {
                     }
                 }
+                dd (111);
                 $user->update ([
                     'headimgurl' => $original['headimgurl'],
                     'nickname' => $original['nickname'],
