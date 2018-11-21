@@ -48,9 +48,11 @@ class OrdersController extends Controller
                 ->pushCriteria(new OrderTypeCriteria())
                 ->pushCriteria(new UserCriteria())
                 ->paginate(request('limit', 10));
-            if (count($orders)){
+
+            if (count($orders['data'])){
                 $tool = new  Taobao();
-                foreach ($orders as $k => $v){
+                foreach ($orders['data'] as $k => $v){
+
                     $detail = $tool->getDetail([
                         'itemid' => $v['item_id'],
                     ]);
