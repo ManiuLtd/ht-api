@@ -304,7 +304,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $decodeID = $hashids->decode ($inviter_code);
 
         if (!isset($decodeID[0])) {
-            db ('users')->delete ($user->id);
             throw new \Exception('邀请码不存在');
         }
         $inviterId = $decodeID[0];
@@ -313,17 +312,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $inviterModel = db ('users')->find ($inviterId);
 
         if (!$inviterModel) {
-            db ('users')->delete ($user->id);
-            throw new \Exception('邀请码不存在');
+            throw new \Exception('邀请人不存在');
         }
-        if (!$inviterModel->inviter_id) {
-            db ('users')->delete ($user->id);
-            throw new \Exception('邀请人还没归属客户');
-        }
-        if (!$inviterModel->group_id) {
-            db ('users')->delete ($user->id);
-            throw new \Exception('邀请人还没归属组');
-        }
+
         $user->update ([
             'inviter_id' => $inviterModel->id,
             'group_id' => $inviterModel->group_id,

@@ -109,7 +109,6 @@ class OfficialAccountController extends Controller
                     } catch (\Exception $exception) {
                     }
                 }
-                dd (111);
                 $user->update ([
                     'headimgurl' => $original['headimgurl'],
                     'nickname' => $original['nickname'],
