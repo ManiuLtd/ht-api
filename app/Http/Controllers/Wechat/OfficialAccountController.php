@@ -97,6 +97,7 @@ class OfficialAccountController extends Controller
             ])->first ();
 
             // 用户存在， 登陆
+            dd (session ('redirect_url'));
             if ($user) {
                 if (session ('inviter')) {
                     try {
