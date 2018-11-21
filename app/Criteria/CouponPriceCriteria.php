@@ -23,11 +23,11 @@ class CouponPriceCriteria implements CriteriaInterface
 
         $where = [];
         if ($min) {
-            $where[] = ['final_price', '<=', $min];
+            $where[] = ['final_price', '>=', $min];
 
         }
         if ($max) {
-            $where[] = ['final_price', '>=', $max];
+            $where[] = ['final_price', '<=', $max];
 
         }
         if ($min || $max) {
