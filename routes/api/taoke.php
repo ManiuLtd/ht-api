@@ -39,9 +39,7 @@ Route::namespace('Taoke')
         Route::get('chart/member', 'ChartsController@member');
 
         //浏览记录
-        Route::resource('history', 'HistoriesController', [
-            'only' => ['index', 'store', 'destory'],
-        ]);
+        Route::resource('history', 'HistoriesController');
         
         //详情分享二维码
         Route::get('qrcode/share', 'QrcodeController@share');
