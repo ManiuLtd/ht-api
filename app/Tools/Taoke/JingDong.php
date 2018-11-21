@@ -108,7 +108,7 @@ class JingDong implements TBKInterface
         $data = $response->data;
         //图文详情
         $images = $this->Graphic ($id);
-
+dd($data);
         //获取优惠卷信息
         $arr = [];
         $arr['title'] = $data->skuName; //标题
