@@ -156,7 +156,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             'password' => bcrypt (request ('password')),
         ]);
 
-        return true;
+        return json('1001','绑定成功');
     }
 
     /**
@@ -206,7 +206,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         ]);
 
 
-        return true;
+        return json('1001','绑定成功');
     }
 
     /**
