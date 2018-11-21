@@ -28,13 +28,13 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         //淘宝  半小时执行
-        $schedule->command('spider:tb --type=3 --all=true')->dailyAt('12:00');
-        $schedule->command('spider:jd --all=true')->dailyAt('12:00');
+        $schedule->command('spider:tb --type=3 --all=true')->dailyAt('20:30');
+        $schedule->command('spider:jd --all=true')->dailyAt('20:30');
 
-        $schedule->command('spider:pdd --all=true')->dailyAt('12:00');
+        $schedule->command('spider:pdd --all=true')->dailyAt('20:30');
 
         //更新优惠券状态
-        $schedule->command('update_status ')->dailyAt('13:30');
+        $schedule->command('update_status')->dailyAt('21:30');
 
         //每小时第 n 分钟执行一次任务
         $schedule->command('spider:tb --type=1 --all=false')->hourlyAt(50);
