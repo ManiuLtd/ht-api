@@ -4,6 +4,7 @@ namespace App\Console\Commands\Spider;
 
 use App\Jobs\SaveGoods;
 use App\Jobs\SaveOrders;
+use App\Models\Taoke\Setting;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
 
@@ -101,17 +102,26 @@ class JingDong extends Command
     public function order()
     {
         try {
-            $bar = $this->output->createProgressBar(10);
-            //循环所有页码查出数据
-            for ($page = 1; $page <= 10; $page++) {
-                $resp = $this->tbk->getOrders(['page'=>$page]);
-                //写入队列
+            $settings = Setting::query()->get();
 
-                if ($resp) {
-                    SaveOrders::dispatch($resp->data, 'jingdong');
+            $bar = $this->output->createProgressBar(10* $settings->count());
+            foreach ($settings as $setting){
+                //循环所有页码查出数据
+                for ($page = 1; $page <= 10; $page++) {
+                    try {
+                        $resp = $this->tbk->getOrders(['page' => $page, 'setting' => $setting]);
+                    }catch (\Exception $e){
+                        $this->warn($e->getMessage());
+                        break;
+                    }
+                    //写入队列
+                    if ($resp) {
+                        SaveOrders::dispatch($resp->data, 'jingdong');
+                    }
+                    $bar->advance();
+                    $this->info(">>>已采集完第{$page}页 ");
                 }
-                $bar->advance();
-                $this->info(">>>已采集完第{$page}页 ");
+
             }
             $bar->finish();
         } catch (\Exception $e) {

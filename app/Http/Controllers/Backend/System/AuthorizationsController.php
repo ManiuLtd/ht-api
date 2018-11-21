@@ -37,12 +37,12 @@ class AuthorizationsController extends Controller
 //        $tburi = 'https://oauth.taobao.com/authorize?response_type=code&client_id=23205020&redirect_uri=https%3A%2F%2Fwww.heimataoke.com%2Fuser-authback%3Fbackurl%3D'.$tbbackurl.'%26bind%3DUW&state=1';
 //        //京东
         $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
-        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=FF9C22E43E001C10A5C1B807C220A67A&redirect_uri='.$jdbackurl;
+        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
 //        //多多客
 //        $ddkbackurl = env('APP_URL').'/api/admin/system/callback';
 //        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=3';
         $setting = setting(getUserId());
-//dd($jduri);
+
         return json(1001, '获取成功', [
 //            'ddkuri' => $ddkuri,
             'taobao'    => $setting->taobao,
@@ -71,9 +71,9 @@ class AuthorizationsController extends Controller
                         'type'        => 1,
                     ];
                     break;
-//                case 2:
-//                    $create = $this->getJDToken();
-//                    break;
+                case 2:
+                    $create = $this->getJDToken();
+                    break;
                 case 3:
                     $create = $this->getDDKToekn();
                     break;
@@ -118,8 +118,8 @@ class AuthorizationsController extends Controller
                 'grant_type' => 'authorization_code',
                 'code' => request('code'),
                 'redirect_uri' => 'http://htapi.cc/api/admin/system/callback?type=2',
-                'client_id' => 'FF9C22E43E001C10A5C1B807C220A67A',
-                'client_secret' => 'f4ba07253d2a4855820c71490d1a766c',
+                'client_id' => '57116DD1E5EDBA11B73A251A0BEB739E',
+                'client_secret' => 'dfe23c330ca54ab787e9c5dc699caeaf',
             ])
             ->post();
         $resp = iconv('GBK', 'UTF-8', $resp);

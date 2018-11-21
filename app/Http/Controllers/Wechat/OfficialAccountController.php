@@ -99,13 +99,15 @@ class OfficialAccountController extends Controller
 
             // 用户存在， 登陆
             if ($user) {
-                //TODO request('inviter') 如果存在绑定上级  bindinviterRegister
+                // request('inviter') 如果存在绑定上级  bindinviterRegister
+                $this->repository->bindinviterRegister($user, request('inviter'));
                 $user->update ([
                     'headimgurl' => $original['headimgurl'],
                     'nickname' => $original['nickname'],
                 ]);
 
-                //TODO 重定向
+                // 重定向
+                return redirect(request('redirect_url'));
             }
             $level = Level::query ()->where ('default', 1)->first ();
             // 用户不存在，注册
@@ -117,9 +119,10 @@ class OfficialAccountController extends Controller
             ];
 
             $user = User::query ()->create ($insert);
-                //  TODO  bindinviterRegister
-            //TODO 重定向
-
+                //   bindinviterRegister
+            $this->repository->bindinviterRegister($user, request('inviter'));
+            // 重定向
+            return redirect(request('redirect_url'));
         } catch (JWTException $e) {
             throw  new \Exception($e->getMessage ());
         }
