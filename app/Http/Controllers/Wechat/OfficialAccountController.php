@@ -37,7 +37,7 @@ class OfficialAccountController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
     public function login()
@@ -50,7 +50,10 @@ class OfficialAccountController extends Controller
 
             $app = Facade::officialAccount ();
 
-            $redirectUrl = route('mobile.login.callback', ['unionid' => request('unionid')]);
+            $redirectUrl = route('wechat.callback', [
+                'redirect_url' => request('redirect_url'),
+                'inviter' => request('inviter'),
+            ]);
 
             $response = $app->oauth->scopes(['snsapi_userinfo'])
                 ->redirect($redirectUrl);
@@ -59,5 +62,24 @@ class OfficialAccountController extends Controller
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage ());
         }
+    }
+
+    /**
+     * 回调
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
+    public function callback()
+    {
+
+        $app = Facade::officialAccount ();
+
+        $user = $app->oauth->user();
+
+        $original = $user->getOriginal();
+
+//        $res = $this->memberRepository->h5Login($original);
+//
+//        return redirect(route('mobile.download.index'));
+
     }
 }
