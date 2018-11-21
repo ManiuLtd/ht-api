@@ -41,4 +41,11 @@ interface UserRepository extends RepositoryInterface
      * @return mixed
      */
     public function getInviter();
+
+    /**
+     * @param $user
+     * @param $inviter
+     * @return mixed
+     */
+    public function bindinviterRegister($user, $inviter);
 }
