@@ -74,16 +74,16 @@ class QrcodeController extends Controller
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->encoding('UTF-8')
                 ->generate($redirectUrl);
-            $imgname = 'qrcodeImg'.'.png';
+            $imgname = $hashids.'_'.$item_id.'_qrcode'.'.png';
             Storage::disk('public')->put($imgname, $couponQrcode);
             $str1 = str_limit($data['title'], 20, '');
             $str2 = str_replace($str1, '', $data['title']);
             $str3 = str_limit($str2, 27, '');
             $str4 = str_replace($str3, '', $str2);
-            $data['qrcode_img'] = public_path().'/images/qrcodeImg.png';
+            $data['qrcode_img'] = public_path().'/images/cache/'.$hashids.'_'.$item_id.'_qrcode.png';
             $imageEnumArray = [
                 new ImageEnum($pic_url, 650, 678, 'top', 0, 0),
-                    new ImageEnum($data['qrcode_img'], 200, 200, 'right-top', 0, 690),
+                new ImageEnum($data['qrcode_img'], 200, 200, 'right-top', 0, 690),
             ];
             $textEnumArray = [
                 new TextEnum($data['final_price'], 160, 838, 35,'#DD6470'),
