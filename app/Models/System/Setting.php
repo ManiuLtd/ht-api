@@ -34,6 +34,8 @@ class Setting extends Model implements Transformable
         'taobao',
         'jingdong',
         'pinduouo',
+        'level_desc',
+        'download',
     ];
 
     /**
@@ -57,5 +59,6 @@ class Setting extends Model implements Transformable
         'jingdong' => 'array',
         'pinduouo' => 'array',
         'unionid' => 'array',
+        'download' => 'array',
     ];
 }

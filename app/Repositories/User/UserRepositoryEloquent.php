@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Models\User\Group;
 use App\Models\User\Level;
 use Hashids\Hashids;
 use App\Models\User\User;
@@ -9,7 +10,12 @@ use App\Criteria\RequestCriteria;
 use Illuminate\Support\Facades\Hash;
 use App\Validators\User\UserValidator;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Stmt\DeclareDeclare;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Models\Taoke\Pid;
+use App\Tools\Taoke\JingDong;
+use App\Tools\Taoke\PinDuoDuo;
+use Illuminate\Support\Facades\DB;
 use App\Repositories\Interfaces\User\UserRepository;
 use Prettus\Repository\Generators\ModelGenerator;
 
@@ -355,8 +361,90 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         return true;
     }
 
+    /**
+     * 手动升级
+     * @return \Illuminate\Http\JsonResponse|mixed
+     * @throws \Exception
+     */
     public function checkUpgrade()
     {
-        $user = getUserId ();
+        $user = getUser();
+        $user_level = Level::query()->find($user->level_id);
+        if (!$user_level){
+            throw new \Exception('用户等级信息错误');
+        }
+        $level = db('user_levels')
+            ->where('level', '>', $user_level->level)
+            ->where('status', 1)
+            ->orderBy('level', 'asc')
+            ->first();
+
+        if (! $level) {
+            return json('4001','等级已最高');
+        }
+
+        if ($user->credit3 < $level->credit) {
+            return json('4001','成长值不够不能升级');
+        }
+        DB::transaction(function () use ($user,$level) {
+            //可以升级
+            $user->update([
+                'level_id' => $level->id,
+            ]);
+            //升级等级是否是组等级
+            if ($level->is_group == 1) {
+                //创建group
+                $group = Group::query()->create([
+                    'user_id' => $user->id,
+                    'status' => 1,
+                ]);
+                $user->update([
+                    'user_id' => $user->id,
+                    'group_id' => $group->id,
+                    'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
+                ]);
+                //升级为组长之前，用的其他的推广位，先取消之前的推广位
+                $pid_group = Pid::query()->where('agent_id',$user->id)->first();
+                if ($pid_group){
+                    $pid_group->update([
+                        'agent_id' => null
+                    ]);
+                }
+            }
+            //判断这个等级是否拥有返佣
+            if($level->is_commission == 1) {
+                //查看是否已经有推广位
+                $user_pid = Pid::query ()->where ('agent_id', $user->id)->first ();
+                if (!$user_pid) {
+                    $pid = Pid::query ()->where ('agent_id', null)->where ('taobao', '<>', null)->first ();
+                    //获取我组长的id
+                    $group_id = Group::query()->find($user->group_id);
+                    if (!$group_id){
+                        throw new \Exception('小组不存在');
+                    }
+                    $jingdong = new JingDong();
+                    $jingdong_pid = $jingdong->createPid (['group_id' => $group_id->id]);
+                    $pinduoduo = new PinDuoDuo();
+                    $pinduoduo_pid = $pinduoduo->createPid ();
+                    foreach ($jingdong_pid as $v){
+                        $str = $v;
+                    }
+                    if ($pid) {
+                        $pid->update ([
+                            'user_id' => $user->id,
+                            'jingdong' => $str,
+                            'pinduoduo' => $pinduoduo_pid[0]->p_id
+                        ]);
+                    } else {
+                        Pid::query ()->create ([
+                            'user_id'   => $user->id,
+                            'agent_id'  => $user->id,
+                            'jingdong'  => $str,
+                            'pinduoduo' => $pinduoduo_pid[0]->p_id
+                        ]);
+                    }
+                }
+            }
+        });
     }
 }
