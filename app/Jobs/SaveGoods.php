@@ -90,7 +90,7 @@ class SaveGoods implements ShouldQueue
         foreach ($results as $result) {
             $data['title'] = $result->itemtitle;
 //            $data['short_title'] = $result->D_title;
-            $data['cat'] = $result->fqcat;
+            $data['cat'] = $this->setTBCat($result->fqcat);
             $data['shop_type'] = $result->shoptype == 'B' ? 2 : 1;
             $data['pic_url'] = $result->itempic;
             $data['item_id'] = $result->itemid;
@@ -330,6 +330,51 @@ class SaveGoods implements ShouldQueue
     }
 
     /**
+     * @param $cat
+     * @return int
+     */
+    protected function setTBCat($cat)
+    {
+        switch ($cat){
+            case 1:
+                return 43;
+            case 2:
+                return 44;
+            case 3:
+                return 45;
+            case 4:
+                return 45;
+            case 5:
+                return 47;
+            case 6:
+                return 48;
+            case 7:
+                return 49;
+            case 8:
+                return 50;
+            case 9:
+                return 51;
+            case 10:
+                return 52;
+            case 11:
+                return 53;
+            case 12:
+                return 54;
+            case 13:
+                return 55;
+            case 15:
+                return 56;
+            case 16:
+                return 57;
+            case 17:
+                return 58;
+            case 14:
+                return 59;
+            default:
+                return;
+        }
+    }
+    /**
      * 设置好京客京东分类ID.
      * @param $cat
      * @return int
@@ -406,35 +451,35 @@ class SaveGoods implements ShouldQueue
     {
         switch ($cat) {
             case '美食':
-                return 1;
+                return 28;
             case '母婴':
-                return 4;
+                return 29;
             case '水果':
-                return 13;
+                return 30;
             case '服饰':
-                return 14;
+                return 31;
             case '百货':
-                return 15;
+                return 32;
             case '美妆':
-                return 16;
+                return 33;
             case '电器':
-                return 18;
+                return 34;
             case '男装':
-                return 743;
+                return 35;
             case '家纺':
-                return 818;
+                return 36;
             case '鞋包':
-                return 1281;
+                return 37;
             case '运动':
-                return 1451;
+                return 38;
             case '手机':
-                return 1543;
+                return 39;
             case '汽车':
-                return 2408;
+                return 42;
             case '内衣':
-                return 1282;
+                return 40;
             case '家装':
-                return 1917;
+                return 41;
             default:
                 return;
         }
