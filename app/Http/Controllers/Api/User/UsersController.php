@@ -93,5 +93,19 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * 手动升级
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function checkUpgrade()
+    {
+        try {
+            $this->repository->checkUpgrade();
+            return json('1001','升级成功');
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
+    }
+
 
 }
