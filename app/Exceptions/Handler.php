@@ -53,22 +53,22 @@ class Handler extends ExceptionHandler
 
             //判断token是否存在
             if (! auth()->guard()->parser()->setRequest($request)->hasToken()) {
-                return json(4002, 'Token not provided');
+                return json(4002, 'Token not provided',null,401);
             }
 
             //判断token是否正常
             try {
                 if (! auth()->guard()->parseToken()->authenticate()) {
-                    return json(4002, 'User not found');
+                    return json(4002, 'User not found',null,401);
                 }
             } catch (Exception $e) {
-                return json(4002, 'Token is error');
+                return json(4002, 'Token is error',null,401);
             }
         }
         if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
             //判断token 是否注销或者过期
             if (! \auth()->guard('api')->user()) {
-                return json(4002, 'The token has been blacklisted');
+                return json(4002, 'The token has been blacklisted',null,401);
             }
         }
 
