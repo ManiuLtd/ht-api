@@ -153,8 +153,8 @@ class SaveGoods implements ShouldQueue
             $data['introduce'] = $result->skuDesc;
             $data['type'] = 2;
             $data['status'] = 0;
-            $data['start_time'] = isset($result->beginTime) ? Carbon::createFromTimestamp(intval($result->beginTime))->toDateTimeString() : null;
-            $data['end_time'] = isset($result->endTime) ? Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString() : null;
+            $data['start_time'] = isset($result->beginTime) ? Carbon::createFromTimestamp(intval($result->beginTime+1))->toDateTimeString() : null;
+            $data['end_time'] = isset($result->endTime) ? Carbon::createFromTimestamp(intval($result->endTime+1))->toDateTimeString() : null;
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $data['status'] = 0;
