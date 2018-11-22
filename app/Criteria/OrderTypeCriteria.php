@@ -19,7 +19,7 @@ class OrderTypeCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         //根据type判断  1直推订单 2下下级订单 3团队订单 4补贴订单
-        $type = request('type') ?? 1;
+        $type = request('classify') ?? 1;
         //判断类型是否正确
         if (! in_array($type, [1, 2, 3, 4])) {
             throw new \Exception('订单类型错误');
@@ -33,7 +33,7 @@ class OrderTypeCriteria implements CriteriaInterface
         if ($type == 2) {
             return $model->whereIn('user_id', function ($query) use ($member) {
                 $query->select('id')
-                    ->from('members')
+                    ->from('users')
                     ->where([
                         'inviter_id' => $member->id,
                     ]);
@@ -42,6 +42,9 @@ class OrderTypeCriteria implements CriteriaInterface
         //团队订单
         if ($type == 3) {
             $group = db('groups')->find($member->group_id);
+            if (!$group) {
+                throw new \Exception('该用户无团队订单');
+            }
             if ($group->user_id != $member->id) {
                 throw new \Exception('该用户无团队订单');
             }
@@ -51,6 +54,9 @@ class OrderTypeCriteria implements CriteriaInterface
         //补贴订单
         if ($type == 4) {
             $group = db('groups')->find($member->group_id);
+            if (!$group) {
+                throw new \Exception('该用户无团队订单');
+            }
             if ($group->user_id != $member->id) {
                 throw new \Exception('该用户无补贴订单');
             }

@@ -68,7 +68,7 @@ class QrcodeController extends Controller
             $qrcode->height = 971;
             $qrcode->savePath = 'images/cache/'.$hashids.'_'.$item_id.'.jpg';
             $redirectUrl = route ('wechat.login', [
-                'redirect_url' => $data['coupon_link']['url'],
+                'redirect_url' => data_get($data, 'coupon_link.url'),
                 'inviter'      => $hashids,
             ]);
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')

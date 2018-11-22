@@ -163,7 +163,7 @@ class SaveGoods implements ShouldQueue
             if ($this->all == 'false') {
                 $data['status'] = 1;
                 db('tbk_coupons')->updateOrInsert(
-                    ['item_id' => $data['item_id'], 'type' => 1],
+                    ['item_id' => $data['item_id'], 'type' => 2],
                     $data
                 );
             }
@@ -208,7 +208,7 @@ class SaveGoods implements ShouldQueue
             if ($this->all == 'false') {
                 $data['status'] = 1;
                 db('tbk_coupons')->updateOrInsert(
-                    ['item_id' => $data['item_id'], 'type' => 1],
+                    ['item_id' => $data['item_id'], 'type' => 3],
                     $data
                 );
             }
