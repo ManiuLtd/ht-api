@@ -11,6 +11,7 @@ use App\Validators\User\UserValidator;
 use Illuminate\Support\Facades\Validator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\User\UserRepository;
+use Prettus\Repository\Generators\ModelGenerator;
 
 /**
  * Class UserRepositoryEloquent.
@@ -72,43 +73,62 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     /**
      * 获取三级粉丝.
-     * @param int $level
      * @return mixed
      */
-    public function getFrineds($level = 1)
+    public function getFrineds()
     {
+        //直属还是推荐
+        $level = request ('level', 1);
+        //分页数
+        $limit = request ('limit', 20);
+        //上级邀请人
         $inviterId = request ('inviter_id') ? request ('inviter_id') : getUserId ();
+        //手机号
+        $phone = request ('phone');
+        //查询条件
+        $query = User::query ();
         //一级粉丝
         if ($level == 1) {
-            return User::where ('inviter_id', $inviterId)
-                ->withCount ('friends')
-                ->orderBy ('id', 'desc')
-                ->paginate (20);
+            $query = $query->where ('inviter_id', $inviterId)->withCount ('friends');
         }
         //二级粉丝
         if ($level == 2) {
-            return User::whereIn ('inviter_id', function ($query) use ($inviterId) {
+            $query = $query->whereIn ('inviter_id', function ($query) use ($inviterId) {
                 $query->select ('id')
                     ->from ('users')
                     ->where ('inviter_id', $inviterId);
-            })->orderBy ('id', 'desc')
-                ->withCount ('friends')
-                ->paginate (20);
+            })->withCount ('friends');
         }
         //三级粉丝
         if ($level == 3) {
-            return User::whereIn ('inviter_id', function ($query) use ($inviterId) {
+            $query = $query->whereIn ('inviter_id', function ($query) use ($inviterId) {
                 $query->select ('id')
                     ->from ('users')
-                    ->whereIn ('inviter_id', function ($query2) use ($inviterId) {
-                        $query2->select ('id')
+                    ->whereIn ('inviter_id', function ($query) use ($inviterId) {
+                        $query->select ('id')
                             ->from ('users')
                             ->where ('inviter_id', $inviterId);
                     });
-            })->orderBy ('id', 'desc')
-                ->withCount ('friends')
-                ->paginate (20);
+            })->withCount ('friends');
         }
+
+        //团队粉丝
+        if ($level == 4) {
+            $user = getUser ();
+            $group = db ('groups')->where ('user_id',$user->id)->first ();
+            if(!$group){
+                return null;
+            }
+            $query = $query->where ([
+                'group_id' => $group->id
+            ])->withCount ('friends');
+        }
+        //根据手机号查询
+        if ($phone) {
+            $query = $query->where ('phone', $phone);
+        }
+
+        return $query->orderBy ('id', 'desc')->paginate ($limit);
     }
 
     /**
