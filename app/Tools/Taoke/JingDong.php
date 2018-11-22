@@ -406,7 +406,7 @@ class JingDong implements TBKInterface
         $params = [
             'type' => 'goodslist',
             'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),
-            'pageSize' => 20,
+            'pageSize' => 100,
             'page' => $page,
         ];
         $response = Curl::to ('http://api-gw.haojingke.com/index.php/api/index/myapi')
