@@ -211,8 +211,9 @@ class PinDuoDuo implements TBKInterface
         if (isset($result->goods_search_response)) {
             $data = [];
             foreach ($result->goods_search_response->goods_list as $item) {
+
                 $temp['title'] = $item->goods_name;
-                $temp['pic_url'] = $item->goods_image_url;
+                $temp['pic_url'] = $item->goods_thumbnail_url;
                 $temp['item_id'] = $item->goods_id;
                 $temp['price'] = $item->min_group_price / 100;
                 $temp['final_price'] = round ($item->min_group_price / 100 - $item->coupon_discount / 100, 2);
