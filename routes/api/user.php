@@ -31,5 +31,9 @@ Route::namespace('User')
 
         //绑定手机号
         Route::get('bind/mobile', 'UsersController@bindMobile');
+        //绑定上级
         Route::get('bind/inviter', 'UsersController@bindInviter');
+        //手动升级
+        Route::get('checkUpgrade', 'UsersController@checkUpgrade');
+
     });

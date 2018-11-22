@@ -36,6 +36,12 @@ interface UserRepository extends RepositoryInterface
     public function register();
 
     /**
+     * 手动升级
+     * @return mixed
+     */
+    public function checkUpgrade();
+
+    /**
      * 根据邀请码查看用户信息.
      * @return mixed
      */
