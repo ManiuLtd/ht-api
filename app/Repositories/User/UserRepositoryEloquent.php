@@ -354,4 +354,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
         return true;
     }
+
+    public function checkUpgrade()
+    {
+        $user = getUserId ();
+    }
 }

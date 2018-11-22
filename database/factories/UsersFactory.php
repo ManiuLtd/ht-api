@@ -106,7 +106,6 @@ $factory->define(App\Models\User\Withdraw::class, function (Faker $faker) {
         'user_id' => rand(1, 50),
         'money' => rand(1, 999),
         'real_money' => rand(1, 999),
-        'deduct_money' => rand(1, 999),
         'realname' => $faker->name,
         'alipay' => $faker->email,
         'reason' => $faker->text,

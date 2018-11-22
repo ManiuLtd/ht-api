@@ -109,7 +109,7 @@ class OfficialAccountController extends Controller
                     } catch (\Exception $exception) {
                     }
                 }
-                if (isset($original['headimgurl'])) {
+                if ($original['unionid'] != null) {
                     $user->update ([
                         'headimgurl' => $original['headimgurl'],
                         'nickname' => $original['nickname'],
@@ -120,7 +120,7 @@ class OfficialAccountController extends Controller
             } else {
                 $level = Level::query ()->where ('default', 1)->first ();
                 // 用户不存在，注册
-                if (isset($original['headimgurl'])) {
+                if ($original['unionid'] != null) {
                     $insert = [
                         'wx_unionid' => $original['unionid'],
                         'headimgurl' => $original['headimgurl'],
