@@ -380,11 +380,11 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             ->first();
 
         if (! $level) {
-            return json('4001','等级已最高');
+            throw new \Exception('等级已最高');
         }
 
         if ($user->credit3 < $level->credit) {
-            return json('4001','成长值不够不能升级');
+            throw new \Exception('成长值不够不能升级');
         }
         DB::transaction(function () use ($user,$level) {
             //可以升级
