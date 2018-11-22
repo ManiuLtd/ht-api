@@ -48,7 +48,7 @@ class UsersController extends Controller
     public function friends()
     {
         try {
-            return $this->repository->getFrineds();
+            return json(1001, '获取成功', $this->repository->getFrineds());
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
