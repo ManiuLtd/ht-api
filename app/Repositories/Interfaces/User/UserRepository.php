@@ -11,10 +11,9 @@ interface UserRepository extends RepositoryInterface
 {
     /**
      * 粉丝.
-     * @param int $level
      * @return mixed
      */
-    public function getFrineds($level = 1);
+    public function getFrineds();
 
     /**
      * 会员报表.
