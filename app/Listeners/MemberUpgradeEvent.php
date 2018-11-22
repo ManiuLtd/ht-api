@@ -58,43 +58,42 @@ class MemberUpgradeEvent
             ]);
 
             //升级等级是否是组等级
-            if ($level->is_group != 1) {
-                //不是组
-                return;
+            if ($level->is_group == 1) {
+                //创建group
+                $group = db('groups')->insert([
+                    'user_id' => $user->id,
+                    'status' => 1,
+                ]);
+                $user->update([
+                    'user_id' => $user->id,
+                    'group_id' => $group->id,
+                    'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
+                ]);
+                //TODO 设计为组长之前，用的其他的推广位，先取消之前的推广位
             }
 
-            //创建group
-            $group = db('groups')->insert([
-                'user_id' => $user->id,
-                'status' => 1,
-            ]);
-            $user->update([
-                'user_id' => $user->id,
-                'group_id' => $group->id,
-                'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
-            ]);
-            //TODO 推广位未分配   查询淘宝推广位不为空并且用户id为空的  分配给他，调用接口生成京东和拼多多推广位，
-            //TODO 淘宝推广位用完了，在pid表生成一条新数据，然后调用接口生成京东和拼多多推广位，让淘宝推广位为空
-            //查看是否已经有推广位
-            $user_pid = Pid::query()->where('agent_id',$user->id)->first();
-            if (!$user_pid){
-                $pid = Pid::query()->where('agent_id',null)->where('taobao','<>',null)->first();
-                $jingdong = new JingDong();
-                $jingdong_pid = $jingdong->createPid(['group_id' => $group->id]);
-                $pinduoduo = new PinDuoDuo();
-                $pinduoduo_pid = $pinduoduo->createPid();
-                if ($pid){
-                    $pid->update([
-                        'user_id'   => $user->id,
-                        'jingdong'  => $jingdong_pid,
-                        'pinduoduo' => $pinduoduo_pid
-                    ]);
-                }else{
-                    Pid::query()->create([
-                        'user_id'   => $user->id,
-                        'jingdong'  => $jingdong_pid,
-                        'pinduoduo' => $pinduoduo_pid
-                    ]);
+            if($level->is_commission == 1) {
+                //查看是否已经有推广位
+                $user_pid = Pid::query ()->where ('agent_id', $user->id)->first ();
+                if (!$user_pid) {
+                    $pid = Pid::query ()->where ('agent_id', null)->where ('taobao', '<>', null)->first ();
+                    $jingdong = new JingDong();
+                    $jingdong_pid = $jingdong->createPid (['group_id' => $group->id]);
+                    $pinduoduo = new PinDuoDuo();
+                    $pinduoduo_pid = $pinduoduo->createPid ();
+                    if ($pid) {
+                        $pid->update ([
+                            'user_id' => $user->id,
+                            'jingdong' => $jingdong_pid,
+                            'pinduoduo' => $pinduoduo_pid
+                        ]);
+                    } else {
+                        Pid::query ()->create ([
+                            'user_id' => $user->id,
+                            'jingdong' => $jingdong_pid,
+                            'pinduoduo' => $pinduoduo_pid
+                        ]);
+                    }
                 }
             }
 
