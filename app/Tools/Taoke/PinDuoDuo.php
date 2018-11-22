@@ -211,7 +211,6 @@ class PinDuoDuo implements TBKInterface
         if (isset($result->goods_search_response)) {
             $data = [];
             foreach ($result->goods_search_response->goods_list as $item) {
-
                 $temp['title'] = $item->goods_name;
                 $temp['pic_url'] = $item->goods_thumbnail_url;
                 $temp['item_id'] = $item->goods_id;

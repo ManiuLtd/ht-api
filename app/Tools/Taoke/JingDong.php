@@ -26,7 +26,6 @@ class JingDong implements TBKInterface
             throw new \Exception('请先设置系统京东推广位id');
         }
         $setting = $this->getSettings();
-
         if (!$setting) {
             throw new \Exception('请先完成设置');
         }
@@ -50,7 +49,6 @@ class JingDong implements TBKInterface
         if ($result->return != 0) {
             throw new \Exception($result->result);
         }
-
         return $result->result->link;
     }
 
@@ -381,14 +379,17 @@ class JingDong implements TBKInterface
         $page = $array['page'] ?? 1;
         $setting = $array['setting'];
         $jingdong = $setting->jingdong;
+        $begintime = Carbon::parse('2018-11-22 19:10:00')->timestamp;
 
         $params = [
-            'type' => 'getordertoday',
-            'apikey' => $jingdong['apikey'],
+            'type' => 'order',
+            'apikey' => '1895f66dffd43f94',
+            'begintime' => $begintime,
+            'endtime' => time(),
         ];
-        $rest = Curl::to(' http://api-gw.haojingke.com/index.php/api/index/myapi')
+        $rest = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
             ->withData($params)
-            ->asJsonResponse()
+
             ->post();
         dd($rest);
     }

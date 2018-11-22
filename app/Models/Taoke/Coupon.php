@@ -3,6 +3,7 @@
 namespace App\Models\Taoke;
 
 use App\Tools\Taoke\Commission;
+use App\Tools\Taoke\TBKCommon;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -12,7 +13,8 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Coupon extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait,
+        TBKCommon;
 
     /**
      * @var string
@@ -62,7 +64,7 @@ class Coupon extends Model implements Transformable
         $array['price'] = floatval ($this->price);
         $array['final_price'] = floatval ($this->final_price);
         $array['coupon_price'] = floatval ($this->coupon_price);
-        $array['finalCommission'] = floatval (round ($finalCommission, 2));
+        $array['finalCommission'] = floatval (round ($this->getFinalCommission ( floatval ($this->final_price) * $this->commission_rate / 100), 2));
         $array['title'] = $this->title;
         $array['pic_url'] = $this->pic_url;
         $array['item_id'] = $this->item_id;

@@ -23,12 +23,12 @@ return [
         'JD_APPKEY' => env('JD_APPKEY', 'fac805ea86063176c9369905a8a6fe47'),
         'JD_LIST_APPURL' => env('JD_LIST_APPURL', 'http://japi.jingtuitui.com/api/get_goods_list'),
 
-        'JDM_APP_KEY' => 'B9251FE6BA6189C4138006EDC5617BE9',
-        'JDM_APP_SECRET' => '000ec965811641c080e596fab555a32d',
+        'JDM_APP_KEY' => 'C9C03414D454AC7D7496198D184C93F0',
+        'JDM_APP_SECRET' => '1e22d32fc23a45758f1fde4e539a3477',
 
         'JDMEDIA_APPKEY' => '9357e9ece6b6476db183967e7ea5e892',
         'JDMEDIA_SECRETKEY' => '27ed5eb361184677b14e3075a01e1d88',
-        'JDMEDIA_UNIONID' => '1000383879',
+        'JDMEDIA_UNIONID' => '1001218212',
         'JD_HJK_APIKEY' => '8baf004e74c0b239',
 
         'access_token' => 'ae5971e5-50db-4699-9907-872b516d80fe',

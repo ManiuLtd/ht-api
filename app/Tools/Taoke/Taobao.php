@@ -117,7 +117,7 @@ class Taobao implements TBKInterface
         $images = $this->getDesc ($itemID);
 
         //重组字段
-        $coupon_price = isset($data->coupon->coupon_info) ? $this->getCouponPrice ($data->coupon->coupon_info) : 0;
+        $coupon_price = isset($couponUrl->coupon_info) ? $this->getCouponPrice ($couponUrl->coupon_info) : 0;
         $arr = [];
         $arr['title'] = $data->title; //标题
         $arr['item_id'] = $data->num_iid; //商品id
@@ -139,7 +139,7 @@ class Taobao implements TBKInterface
         $arr['introduce'] = $data->introduce; //描述
         $arr['favourite'] = $favourite;
         $arr['coupon_link'] = ['url' => $couponUrl->coupon_click_url]; //领劵地址
-        $arr['finalCommission'] = floatval (round ($this->getFinalCommission ($arr['price'] * $arr['commossion_rate'] / 100), 2));
+        $arr['finalCommission'] = floatval (round ($this->getFinalCommission ($arr['final_price'] * $arr['commossion_rate'] / 100), 2));
 
         return $arr;
     }
