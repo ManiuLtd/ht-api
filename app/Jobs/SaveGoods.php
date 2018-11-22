@@ -109,8 +109,8 @@ class SaveGoods implements ShouldQueue
             $data['status'] = 0;
             $data['videoid'] = $result->videoid;
             $data['activity_type'] = $this->GetactivityType($result->activity_type);
-            $data['start_time'] = date('Y-m-d H:i:s', $result->couponstarttime);
-            $data['end_time'] = date('Y-m-d H:i:s', $result->couponendtime);
+            $data['start_time'] = isset($result->couponstarttime) ?  date('Y-m-d H:i:s', $result->couponstarttime) : null;
+            $data['end_time'] = isset($result->couponendtime) ? date('Y-m-d H:i:s', $result->couponendtime) : null;
 
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
@@ -153,8 +153,8 @@ class SaveGoods implements ShouldQueue
             $data['introduce'] = $result->skuDesc;
             $data['type'] = 2;
             $data['status'] = 0;
-            $data['start_time'] = Carbon::createFromTimestamp(intval($result->beginTime))->toDateTimeString();
-            $data['end_time'] = Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString();
+            $data['start_time'] = isset($result->beginTime) ? Carbon::createFromTimestamp(intval($result->beginTime))->toDateTimeString() : null;
+            $data['end_time'] = isset($result->endTime) ? Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString() : null;
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $data['status'] = 0;
@@ -198,8 +198,8 @@ class SaveGoods implements ShouldQueue
             $data['receive_num'] = $result->coupon_total_quantity - $result->coupon_remain_quantity;
             $data['type'] = 3;
             $data['status'] = 0;
-            $data['start_time'] = Carbon::createFromTimestamp(intval($result->beginTime))->toDateTimeString();
-            $data['end_time'] = Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString();
+            $data['start_time'] = isset($result->beginTime) ? Carbon::createFromTimestamp(intval($result->beginTime))->toDateTimeString() : null;
+            $data['end_time'] = isset($result->endTime) ? Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString() : null;
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $data['status'] = 0;
