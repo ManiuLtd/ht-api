@@ -23,7 +23,8 @@ class Taobao implements TBKInterface
     public function getCouponUrl(array $array = [])
     {
         $pids = $this->getPids ();
-        if (!$pids->taobao) {
+
+        if (!isset($pids['taobao'])) {
             throw new \Exception('请先设置系统pid');
         }
 
@@ -40,7 +41,7 @@ class Taobao implements TBKInterface
             'appkey' => config ('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config ('coupon.taobao.HMTK_APP_SECRET'),
             'sid' => $taobao['sid'],  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
-            'pid' => $pids->taobao,
+            'pid' => $pids['taobao'],
             'num_iid' => $array['item_id'],
         ];
         $resp = Curl::to ('https://www.heimataoke.com/api-zhuanlian')
@@ -81,10 +82,10 @@ class Taobao implements TBKInterface
         }
 
         $data = $resp->results->n_tbk_item[0];
-        $data->coupon = $this->getCouponUrl (['item_id' => $itemID]);
+        $couponUrl = $this->getCouponUrl (['item_id' => $itemID]);
 
         $kouling = $this->taokouling ([
-            'coupon_click_url' => $data->coupon->coupon_click_url,
+            'coupon_click_url' => $couponUrl->coupon_click_url,
             'pict_url' => $data->pict_url,
             'title' => $data->title,
         ]);
@@ -125,19 +126,19 @@ class Taobao implements TBKInterface
         $arr['price'] = floatval ($data->zk_final_price); //原价
         $arr['final_price'] = floatval ($data->zk_final_price - $coupon_price); //最终价
         $arr['coupon_price'] = floatval ($coupon_price); //优惠价
-        $arr['commossion_rate'] = $data->coupon->max_commission_rate; //佣金比例
+        $arr['commossion_rate'] = $couponUrl->max_commission_rate; //佣金比例
 
-        $arr['coupon_start_time'] = isset($data->coupon->coupon_start_time) ? Carbon::createFromTimestamp (strtotime ($data->coupon->coupon_start_time))->toDateString () : Carbon::now ()->toDateString (); //优惠卷开始时间
-        $arr['coupon_end_time'] = isset($data->coupon->coupon_end_time) ? Carbon::createFromTimestamp (strtotime ($data->coupon->coupon_end_time))->toDateString () : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
-        $arr['coupon_remain_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_remain_count : null; //已使用优惠卷数量
-        $arr['coupon_total_count'] = isset($data->coupon->coupon_remain_count) ? $data->coupon->coupon_total_count : null; //优惠卷总数
+        $arr['coupon_start_time'] = isset($couponUrl->coupon_start_time) ? Carbon::createFromTimestamp (strtotime ($couponUrl->coupon_start_time))->toDateString () : Carbon::now ()->toDateString (); //优惠卷开始时间
+        $arr['coupon_end_time'] = isset($couponUrl->coupon_end_time) ? Carbon::createFromTimestamp (strtotime ($couponUrl->coupon_end_time))->toDateString () : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
+        $arr['coupon_remain_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_remain_count : null; //已使用优惠卷数量
+        $arr['coupon_total_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_total_count : null; //优惠卷总数
         $arr['pic_url'] = $data->pict_url; //商品主图
         $arr['small_images'] = $data->small_images->string; //商品图
         $arr['images'] = $images; //商品详情图
         $arr['kouling'] = $data->kouling; //淘口令
         $arr['introduce'] = $data->introduce; //描述
         $arr['favourite'] = $favourite;
-        $arr['coupon_link'] = ['url' => $data->coupon->coupon_click_url]; //领劵地址
+        $arr['coupon_link'] = ['url' => $couponUrl->coupon_click_url]; //领劵地址
         $arr['finalCommission'] = floatval (round ($this->getFinalCommission ($arr['price'] * $arr['commossion_rate'] / 100), 2));
 
         return $arr;
@@ -149,20 +150,22 @@ class Taobao implements TBKInterface
      */
     protected function getDesc($id)
     {
-        $rest = Curl::to ('http://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"' . $id . '"}')
-            ->asJsonResponse ()
+        $rest = Curl::to ('https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22'.$id.'%22%7D')
+            ->asJsonResponse()
             ->get ();
-        if (isset($rest->data->pcDescContent)) {
-//            dd($rest->data->pcDescContent);
-            preg_match_all('<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""\']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""\'<>]*)[^<>]*?/?[\s\t\r\n]*>', $rest->data->pcDescContent, $matches);
-            if (isset($matches['imgUrl'])) {
-                $images = [];
-                foreach ($matches['imgUrl'] as $key => $match) {
-                    $images[$key] = 'http:' . $match;
-                }
-                return $images;
-            }
+
+        $imgUrl = data_get($rest,'data.item.images');
+
+        if (!$imgUrl) {
+            return null;
         }
+//            preg_match_all('<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""\']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""\'<>]*)[^<>]*?/?[\s\t\r\n]*>', $rest->data->pcDescContent, $matches);
+
+        foreach ($imgUrl as $key => $value) {
+            $images[$key] = 'http:' . $value;
+        }
+        return $images;
+
     }
 
     /**

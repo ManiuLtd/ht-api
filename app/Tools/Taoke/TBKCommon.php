@@ -2,6 +2,7 @@
 
 namespace App\Tools\Taoke;
 
+use App\Models\Taoke\Pid;
 use App\Models\Taoke\Setting;
 
 trait TBKCommon
@@ -17,7 +18,7 @@ trait TBKCommon
 
         // 获取系统默认pid
 
-        $user_pid = db ('tbk_pids')->where ('user_id', $user->id)->first ();
+        $user_pid = Pid::query()->where ('user_id', $user->id)->first ();
 
         //自己
         if ($user_pid) {
@@ -25,7 +26,7 @@ trait TBKCommon
         }
         //邀请人
         if ($user->inviter_id != null) {
-            $inviter_pid = db ('tbk_pids')->where ('user_id', $user->inviter_id)->first ();
+            $inviter_pid = Pid::query()->where ('user_id', $user->inviter_id)->first ();
 
             if ($inviter_pid) {
                 return $inviter_pid;
@@ -34,13 +35,13 @@ trait TBKCommon
 
         if ($user->group_id != null) {
             $group = db ('groups')->find ($user->group_id);
-            $group_pid = db ('tbk_pids')->where ('user_id', $group->user_id)->first ();
+            $group_pid = Pid::query()->where ('user_id', $group->user_id)->first ();
             //小组
             if ($group_pid) {
                 return $group_pid;
             }
             // 代理设置
-            $agent_setting = db ('tbk_settings')->where ([
+            $agent_setting = Setting::query()->where ([
                 'user_id' => $group->user_id
             ])->first ();
             if ($agent_setting) {
@@ -48,7 +49,7 @@ trait TBKCommon
             }
         }
 
-        return $this->arrayToObject ($setting->pid);
+        return $setting->pid;
     }
 
     /**

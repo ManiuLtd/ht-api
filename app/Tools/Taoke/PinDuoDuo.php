@@ -328,7 +328,9 @@ class PinDuoDuo implements TBKInterface
             ->withData ($params)
             ->post ();
         $result = json_decode ($result);
-
+        if (!$result) {
+            throw new \Exception('接口返回数据为空');
+        }
         if ($result->status_code != 200) {
             throw new \Exception($result->message);
         }
