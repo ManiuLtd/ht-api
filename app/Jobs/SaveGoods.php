@@ -371,7 +371,7 @@ class SaveGoods implements ShouldQueue
             case 14:
                 return 59;
             default:
-                return;
+                return 59;
         }
     }
     /**
@@ -438,7 +438,7 @@ class SaveGoods implements ShouldQueue
             case '食品饮料':
                 return 27;
             default:
-                return;
+                return 60;
         }
     }
 
@@ -481,7 +481,7 @@ class SaveGoods implements ShouldQueue
             case '家装':
                 return 41;
             default:
-                return;
+                return 61;
         }
     }
 }
