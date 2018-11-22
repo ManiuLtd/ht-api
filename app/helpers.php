@@ -54,9 +54,10 @@ if (! function_exists('json')) {
      * @param int $code 状态码
      * @param string $message 状态描述
      * @param null $data 返回数据
+     * @param int $statusCode
      * @return \Illuminate\Http\JsonResponse
      */
-    function json(int $code, string $message, $data = null)
+    function json(int $code, string $message, $data = null,$statusCode =200)
     {
         $array = [
             'code' => $code,
@@ -67,7 +68,7 @@ if (! function_exists('json')) {
             $array['data'] = $data;
         }
 
-        return response()->json($array);
+        return response()->json($array,$statusCode);
     }
 }
 
