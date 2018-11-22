@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Tools\Taoke\JingDong;
 
 class HomeController extends Controller
 {
@@ -19,7 +20,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         return view('home');
     }
 }
