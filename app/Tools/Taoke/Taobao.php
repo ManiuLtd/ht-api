@@ -435,8 +435,16 @@ class Taobao implements TBKInterface
         if (!in_array ($type, [1, 2, 3, 4, 5])) {
             throw new \InvalidArgumentException('type不合法');
         }
+        $apikey = [
+            '773477d6b009b1a0',
+            '8baf004e74c0b239',
+            '1895f66dffd43f94',
+        ];
+        shuffle($apikey);
+        shuffle($apikey);
+        shuffle($apikey);
         $params = [
-            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
+            'apikey' => $apikey[0],
             'nav' => $type,
             'cid' => 0,
             'back' => 100,
