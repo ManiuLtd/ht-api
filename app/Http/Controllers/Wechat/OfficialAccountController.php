@@ -80,7 +80,7 @@ class OfficialAccountController extends Controller
     }
 
     /**
-     * @param $encode
+     * @param $encode  http://htapi.vaiwan.com/wechat/official_account/login?redirect_url=http://www.baidu.com&inviter=0v07r6
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
      * @throws \Exception
      */
@@ -109,22 +109,27 @@ class OfficialAccountController extends Controller
                     } catch (\Exception $exception) {
                     }
                 }
-                $user->update ([
-                    'headimgurl' => $original['headimgurl'],
-                    'nickname' => $original['nickname'],
-                ]);
+                if (isset($original['headimgurl'])) {
+                    $user->update ([
+                        'headimgurl' => $original['headimgurl'],
+                        'nickname' => $original['nickname'],
+                    ]);
+                }
+
 
             } else {
                 $level = Level::query ()->where ('default', 1)->first ();
                 // 用户不存在，注册
-                $insert = [
-                    'wx_unionid' => $original['unionid'],
-                    'headimgurl' => $original['headimgurl'],
-                    'nickname' => $original['nickname'],
-                    'level_id' => $level->id,
-                ];
+                if (isset($original['headimgurl'])) {
+                    $insert = [
+                        'wx_unionid' => $original['unionid'],
+                        'headimgurl' => $original['headimgurl'],
+                        'nickname' => $original['nickname'],
+                        'level_id' => $level->id,
+                    ];
 
-                $user = User::query ()->create ($insert);
+                    $user = User::query()->create($insert);
+                }
                 if ($decode[1] != 'sb') {
                     try {
                         $this->repository->bindinviterRegister ($user, $decode[1]);
