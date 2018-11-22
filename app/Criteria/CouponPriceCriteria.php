@@ -21,7 +21,9 @@ class CouponPriceCriteria implements CriteriaInterface
         $min = request ('min_price');
         $max = request ('max_price');
 
-        $where = [];
+        $where = [
+            'status'=>1
+        ];
         if ($min) {
             $where[] = ['final_price', '>=', $min];
 
