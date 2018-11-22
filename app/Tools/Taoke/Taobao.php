@@ -364,7 +364,7 @@ class Taobao implements TBKInterface
             'appsecret' => config ('coupon.taobao.HMTK_APP_SECRET'),
             'sid' => $setting->taobao['sid'] ?? 1942,
             'start_time' => now ()->subMinutes (9)->toDateTimeString (),
-//            'start_time' => '2018-11-01 15:45:02',
+//            'start_time' => '2018-11-21 20:20:00',
             'span' => 600,
             'signurl' => 0,
             'page_no' => data_get ($array, 'page', 1),

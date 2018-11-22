@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
 use Illuminate\Support\Facades\Cache;
@@ -99,6 +100,7 @@ class SaveOrders implements ShouldQueue
                 'created_at'       => $result->create_time,
                 'updated_at'       => now()->toDateTimeString(),
             ];
+
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
                 'itemid' => $item['itemid'],
@@ -110,30 +112,20 @@ class SaveOrders implements ShouldQueue
 
     /**
      * @param $itemID
-     * @return \Illuminate\Cache\CacheManager|mixed|void
-     * @throws \Exception
+     * @return mixed|void
      */
-    protected function getPicUrl($itemID)
+    public function getPicUrl($itemID)
     {
-        //缓存
-        $expiresAt = now()->addHour(24 * 7);
-        $cacheKey = 'goods_picurl_' . $itemID;
-        $picCache = cache($cacheKey);
-        //获取详情
-        if ($picCache != null) {
-            return $picCache;
-        }
-        $topclient = TopClient::connection();
+        $topclient = TopClient::connection ();
         $req = new TbkItemInfoGetRequest();
-        $req->setFields('title,pict_url');
-        $req->setNumIids($itemID);
-        $resp = $topclient->execute($req);
+        $req->setFields ('title,pict_url');
+        $req->setNumIids ("$itemID");
+        $resp = $topclient->execute ($req);
+
         if (!isset($resp->results->n_tbk_item)) {
             return;
         }
         $tbkItem = (array)$resp->results->n_tbk_item[0];
-
-        Cache::put($cacheKey, $tbkItem['pict_url'], $expiresAt);
 
         return $tbkItem['pict_url'];
     }
