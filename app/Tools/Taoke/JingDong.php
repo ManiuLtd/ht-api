@@ -420,6 +420,9 @@ class JingDong implements TBKInterface
             ->withData ($params)
             ->post ();
         $response = json_decode ($response);
+        if (!$response) {
+            throw new \Exception('接口没有数据');
+        }
         if ($response->status_code != 200) {
             throw new \Exception($response->message);
         }
