@@ -128,7 +128,19 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             $query = $query->where ('phone', $phone);
         }
 
-        return $query->orderBy ('id', 'desc')->paginate ($limit);
+        $data = (object) $query->orderBy ('id', 'desc')->paginate ($limit)->toArray();
+
+        return [
+            'data' => $data->data,
+            'meta' => [
+                'current_page' => $data->current_page,
+                'from' => $data->from,
+                'last_page' => $data->last_page,
+                'per_page' => $data->per_page,
+                'to' => $data->to,
+                'total' => $data->total,
+            ]
+        ];
     }
 
     /**
