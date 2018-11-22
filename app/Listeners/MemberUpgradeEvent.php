@@ -70,6 +70,12 @@ class MemberUpgradeEvent
                     'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
                 ]);
                 //TODO 设计为组长之前，用的其他的推广位，先取消之前的推广位
+                $pid_group = Pid::query()->where('agent_id',$user->id)->first();
+                if ($pid_group){
+                    $pid_group->update([
+                        'agent_id' => null
+                    ]);
+                }
             }
 
             if($level->is_commission == 1) {
