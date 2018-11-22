@@ -402,10 +402,17 @@ class JingDong implements TBKInterface
     public function spider(array $params)
     {
         $page = $params['page'] ?? 1;
-
+        $apikey = [
+            '773477d6b009b1a0',
+            '8baf004e74c0b239',
+            '1895f66dffd43f94',
+        ];
+        shuffle($apikey);
+        shuffle($apikey);
+        shuffle($apikey);
         $params = [
             'type' => 'goodslist',
-            'apikey' => data_get (config ('coupon'), 'jingdong.JD_HJK_APIKEY'),
+            'apikey' => $apikey[0],
             'pageSize' => 100,
             'page' => $page,
         ];
@@ -413,7 +420,6 @@ class JingDong implements TBKInterface
             ->withData ($params)
             ->post ();
         $response = json_decode ($response);
-
         if ($response->status_code != 200) {
             throw new \Exception($response->message);
         }
