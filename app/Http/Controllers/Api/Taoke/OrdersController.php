@@ -47,7 +47,7 @@ class OrdersController extends Controller
                 ->pushCriteria(new DatePickerCriteria())
                 ->pushCriteria(new OrderTypeCriteria())
                 ->pushCriteria(new UserCriteria())
-                ->paginate(request('limit', 10));
+                ->paginate(request('limit', 20));
 
             return json(1001, '列表获取成功', $orders);
         } catch (\Exception $e) {

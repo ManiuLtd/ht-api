@@ -22,7 +22,10 @@ class UserCriteria implements CriteriaInterface
     {
         //获取userid
         $userID = getUserId();
-
+        $type = request('type');
+        if (in_array($type,[3,4])) {
+            return $model;
+        }
         if ($userID) {
             return $model->where('user_id', $userID);
         }
