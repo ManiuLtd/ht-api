@@ -78,17 +78,18 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         $user = getUser();
         $commission = new Commission();
         $dateType = $params['date_type'] ?? request('date_type', 'month');
+        $status = $params['status'] ?? 1;
 
         //计算佣金
         if ($isCommission) {
             //自推佣金
-            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', $isCommission, $dateType);
+            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate1', $isCommission, $dateType);
             //下级佣金
-            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', $isCommission, $dateType);
+            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate2', $isCommission, $dateType);
             //组长佣金
-            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', $isCommission, $dateType);
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'group_rate1', $isCommission, $dateType);
             //补贴佣金
-            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate2', $isCommission, $dateType);
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'group_rate2', $isCommission, $dateType);
 
             return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
         }
@@ -98,8 +99,8 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         if ($group && $user->id == $group->user_id ?? null) {
             return $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', false)->count();
         } else {
-            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate1', false);
-            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [1], 'commission_rate2', false);
+            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate1', false);
+            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate2', false);
 
             return $commissionOrder1->count() + $commissionOrder2->count();
         }
@@ -144,12 +145,12 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function getMember()
     {
-        $yestday = $this->getOrderChart(true, ['date_type' => 'yestday']);
-        $month = $this->getOrderChart(true, ['date_type' => 'month']);
-        $day = $this->getOrderChart(true, ['date_type' => 'today']);
+        $lastMonth = $this->getOrderChart(true, ['date_type' => 'lastMonth','status' => 2]);//上月结算
+        $month = $this->getOrderChart(true, ['date_type' => 'month','status' => 1]);//本月预估
+        $day = $this->getOrderChart(true, ['date_type' => 'today','status' => 1]);//今日收益
 
         return [
-            'yestday' => $yestday,
+            'lastMonth' => $lastMonth,
             'month' => $month,
             'today' => $day,
         ];
