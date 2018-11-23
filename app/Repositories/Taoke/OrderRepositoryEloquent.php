@@ -91,7 +91,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
             //补贴佣金
             $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'group_rate2', $isCommission, $dateType);
 
-            return $commission1 + $commission2 + $groupCommission1 + $groupCommission2;
+            return floatval(round($commission1 + $commission2 + $groupCommission1 + $groupCommission2, 2));
         }
         //计算订单数
         $group = $user->group;
@@ -102,7 +102,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
             $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate1', false);
             $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate2', false);
 
-            return $commissionOrder1->count() + $commissionOrder2->count();
+            return floatval(round($commissionOrder1->count() + $commissionOrder2->count(), 2));
         }
     }
 
