@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Models\User\Level;
 use App\Models\User\User;
 use App\Http\Controllers\Controller;
+use Hashids\Hashids;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\Auth\User\LoginRequest;
 
@@ -36,7 +37,10 @@ class LoginController extends Controller
      */
     protected function respondWithToken($token, $user)
     {
+        $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
+
         $data = [
+            'tag' => $hashids->encode ($user->id),
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
