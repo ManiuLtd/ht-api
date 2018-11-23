@@ -108,7 +108,7 @@ class JingDong implements TBKInterface
 
         $data = $response->data;
         //图文详情
-        $images = $this->Graphic ($id);
+//        $images = $this->Graphic ($id);
 
         //获取优惠卷信息
         $arr = [];
@@ -126,7 +126,7 @@ class JingDong implements TBKInterface
         $arr['coupon_total_count'] = isset($resCoupon->num) ? $resCoupon->num : 0; //优惠卷总数
         $arr['pic_url'] = $data->picUrl; //商品主图
         $arr['small_images'] = [$data->picUrl]; //商品图
-        $arr['images'] = $images; //商品详情图
+        $arr['images'] = null; //商品详情图
         $arr['kouling'] = null; //淘口令
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['favourite'] = $favourite; //0是没有收藏

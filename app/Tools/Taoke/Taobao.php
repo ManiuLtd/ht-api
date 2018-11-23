@@ -114,7 +114,7 @@ class Taobao implements TBKInterface
             }
         }
         //获取图文详情
-        $images = $this->getDesc ($itemID);
+//        $images = $this->getDesc ($itemID);
 
         //重组字段
         $coupon_price = isset($couponUrl->coupon_info) ? $this->getCouponPrice ($couponUrl->coupon_info) : 0;
@@ -134,7 +134,7 @@ class Taobao implements TBKInterface
         $arr['coupon_total_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_total_count : null; //优惠卷总数
         $arr['pic_url'] = $data->pict_url; //商品主图
         $arr['small_images'] = $data->small_images->string; //商品图
-        $arr['images'] = $images; //商品详情图
+        $arr['images'] = null; //商品详情图
         $arr['kouling'] = $data->kouling; //淘口令
         $arr['introduce'] = $data->introduce; //描述
         $arr['favourite'] = $favourite;

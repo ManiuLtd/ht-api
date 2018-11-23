@@ -78,6 +78,10 @@ class PinDuoDuo implements TBKInterface
             ->post ();
         $result = json_decode ($result);
         if (!$result) {
+            db('tbk_coupons')->where([
+                'type' => 3,
+                'item_id' => $id,
+            ])->delete();
             throw new \Exception('优惠券不存在');
         }
 
