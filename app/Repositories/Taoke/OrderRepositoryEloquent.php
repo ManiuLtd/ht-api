@@ -146,7 +146,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     {
         $yestday = $this->getOrderChart(true, ['date_type' => 'yestday']);
         $month = $this->getOrderChart(true, ['date_type' => 'month']);
-        $day = $this->getOrderChart(true, ['date_type' => 'day']);
+        $day = $this->getOrderChart(true, ['date_type' => 'today']);
 
         return [
             'yestday' => $yestday,
