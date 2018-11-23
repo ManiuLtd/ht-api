@@ -201,10 +201,11 @@ class Taobao implements TBKInterface
         //可根据商品ID搜索
         $page = request ('page') ?? 1;
         $limit = request ('limit') ?? 20;
-        $q =  request ('q');
+        $q = $keyword =  request ('q');
         $sort = request ('sort');
 
         if($decode = $this->searchByTKL ($q)){
+            $keyword = $decode;
             if(is_numeric ($decode)){
                 $q = "https://item.taobao.com/item.htm?id={$decode}";
             }else{
@@ -212,11 +213,12 @@ class Taobao implements TBKInterface
             }
 
         }
-
+        //本地搜索
         $searchType = request ('searchtype',2);
         if($searchType == 1){
-            return $this->localSearch ($q);
+            return $this->localSearch ($keyword);
         }
+
         $params = [
             'appkey' => config ('coupon.taobao.TKJD_API_KEY'),
             'k' => $q,

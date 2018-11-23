@@ -152,13 +152,13 @@ trait TBKCommon
             default:
                 break;
         }
+
         $query = db ('tbk_coupons')->where ('type', $type)
             ->orderBy ($orderBy['column'], $orderBy['orderBy']);
         if(is_numeric ($q)){
             $query = $query->where('item_id',$q);
         }else{
-            $query = $query ->orWhere ('title', 'LIKE', "%{$q}%")
-                ->orWhere ('introduce', 'LIKE', "%{$q}%");
+            $query = $query->whereRaw("(title like '%{$q}%' or introduce like '%{$q}%')");
         }
 
         $data = $query->paginate($limit)->toArray();
