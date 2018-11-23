@@ -228,6 +228,7 @@ class Taobao extends Command
             $bar = $this->output->createProgressBar($total);
             $min_id = 1;
             for ($j = 1; $j <= 15; $j++) {
+
                 for ($i = 1; $i <= $total; $i++) {
                     $res = $this->tbk->kuaiQiang(['min_id' => $min_id, 'hour_type'=>$j]);
                     $this->info($j);
