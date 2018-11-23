@@ -74,7 +74,9 @@ class Coupon extends Model implements Transformable
         $array['commission_rate'] = $this->commission_rate;
         $array['type'] = $this->type;
         $array['volume'] = $this->volume;
-
+        if ($this->type == 2) {
+            $array['volume'] = rand(100,9999);
+        }
         return $array;
     }
 }
