@@ -29,27 +29,30 @@ class JingDong implements TBKInterface
         if (!$setting) {
             throw new \Exception('请先完成设置');
         }
-        $unionid = $setting->unionid;
-        if (!isset($unionid['jingdong'])) {
-            throw new \Exception('请先设置京东联盟id');
+        $jingdong = $setting->jingdong;
+
+        if (!isset($jingdong['apikey'])) {
+            throw new \Exception('请先设置好京客apikey');
         }
         // 返回领券地址
-        $result = Curl::to ('http://japi.jingtuitui.com/api/get_goods_link')
+        $result = Curl::to ('http://api-gw.haojingke.com/index.php/api/index/myapi')
             ->withData ([
-                'appid' => data_get (config ('coupon'), 'jingdong.JD_APPID'),
-                'appkey' => data_get (config ('coupon'), 'jingdong.JD_APPKEY'),
-                'unionid' => $unionid['jingdong'],
-                'positionid' => $pids->jingdong,
-                'gid' => $itemID,
-                'coupon_url' => $coupon_url,
+                'type' => 'unionurl',
+                'apikey' => $jingdong['apikey'],
+                'materialIds' => $itemID,
+                'couponUrl' => $coupon_url,
+                'positionId' => $pids->jingdong,
             ])
             ->asJsonResponse ()
             ->post ();
 
-        if ($result->return != 0) {
-            throw new \Exception($result->result);
+        if (!$result) {
+            return null;
         }
-        return $result->result->link;
+        if ($result->status_code != 200) {
+            throw new \Exception($result->message);
+        }
+        return $result->data;
     }
 
     /**
@@ -185,6 +188,7 @@ class JingDong implements TBKInterface
             ->post ();
 
         $response = json_decode ($response);
+
         if ($response->return != 0) {
             throw new \Exception($response->result);
         }
@@ -379,7 +383,7 @@ class JingDong implements TBKInterface
         $page = $array['page'] ?? 1;
         $setting = $array['setting'];
         $jingdong = $setting->jingdong;
-        $begintime = Carbon::parse('2018-11-22 19:10:00')->timestamp;
+        $begintime = Carbon::parse('2018-11-22 19:00:00')->timestamp;
 
         $params = [
             'type' => 'order',
@@ -387,9 +391,10 @@ class JingDong implements TBKInterface
             'begintime' => $begintime,
             'endtime' => time(),
         ];
+
         $rest = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
             ->withData($params)
-
+            ->asJsonResponse()
             ->post();
         dd($rest);
     }
