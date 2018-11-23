@@ -146,25 +146,31 @@ class Taobao implements TBKInterface
 
     /**
      * @param $id
-     * @return null
+     * @return array|\Illuminate\Cache\CacheManager|mixed
+     * @throws \Exception
      */
     protected function getDesc($id)
     {
-        $rest = Curl::to ('https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22'.$id.'%22%7D')
-            ->asJsonResponse()
+        $images = cache('getDesc_'.$id);
+        if ($images) {
+            return $images;
+        }
+
+        $rest = Curl::to ('http://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"' . $id . '"}')
+            ->asJsonResponse ()
             ->get ();
-
-        $imgUrl = data_get($rest,'data.item.images');
-
-        if (!$imgUrl) {
-            return null;
+        if (isset($rest->data->pcDescContent)) {
+//            dd($rest->data->pcDescContent);
+            preg_match_all('<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""\']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""\'<>]*)[^<>]*?/?[\s\t\r\n]*>', $rest->data->pcDescContent, $matches);
+            if (isset($matches['imgUrl'])) {
+                $images = [];
+                foreach ($matches['imgUrl'] as $key => $match) {
+                    $images[$key] = 'http:' . $match;
+                }
+                cache(['getDesc_'.$id=>$images],now()->addMinute(10));
+                return $images;
+            }
         }
-//            preg_match_all('<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""\']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""\'<>]*)[^<>]*?/?[\s\t\r\n]*>', $rest->data->pcDescContent, $matches);
-
-        foreach ($imgUrl as $key => $value) {
-            $images[$key] = 'http:' . $value;
-        }
-        return $images;
 
     }
 
