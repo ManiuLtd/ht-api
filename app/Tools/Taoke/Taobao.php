@@ -151,14 +151,15 @@ class Taobao implements TBKInterface
      */
     protected function getDesc($id)
     {
-        $images = cache('getDesc_'.$id);
-        if ($images) {
-            return $images;
-        }
+//        $images = cache('getDesc_'.$id);
+//        if ($images) {
+//            return $images;
+//        }
 
         $rest = Curl::to ('http://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"' . $id . '"}')
             ->asJsonResponse ()
             ->get ();
+
         if (isset($rest->data->pcDescContent)) {
 //            dd($rest->data->pcDescContent);
             preg_match_all('<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""\']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""\'<>]*)[^<>]*?/?[\s\t\r\n]*>', $rest->data->pcDescContent, $matches);
