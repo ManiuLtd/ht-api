@@ -121,7 +121,7 @@ class PinDuoDuo implements TBKInterface
         $arr['coupon_start_time'] = $data->beginTime ? Carbon::createFromTimestamp (intval ($data->beginTime))->toDateString () : Carbon::now ()->toDateString (); //优惠卷开始时间
         $arr['coupon_end_time'] = $data->endTime ? Carbon::createFromTimestamp (intval ($data->endTime))->toDateString () : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
         $arr['coupon_remain_count'] = $data->coupon_total_quantity - $data->coupon_remain_quantity; //已使用优惠卷数量
-        $arr['coupon_total_count'] = $data->coupon_total_quantity; //优惠卷总数
+        $arr['coupon_total_count'] = $data->coupon_total_quantity ?? 1000; //优惠卷总数
         $arr['pic_url'] = $data->picUrl; //商品主图
         $arr['small_images'] = $data->picUrls; //商品图
         $arr['images'] = $data->picUrls;//商品详情图

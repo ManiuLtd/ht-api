@@ -35,7 +35,7 @@ class CreateTbkCouponsTable extends Migration
             $table->string('introduce', 190)->nullable(); //介绍
             $table->integer('total_num')->nullable();  // 优惠券总数
             $table->integer('receive_num')->nullable();  // 领取数量
-            $table->string('tag', 50)->nullable(); //标识(主要淘宝用，total、top100等)
+            $table->string('tag', 50)->nullable(); //标识(主要淘宝用，total、top100等)  1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区
             $table->tinyInteger('is_recommend')->default(0); //是否首页推荐显示
             $table->integer('sort')->default(0); //排序
             $table->string('videoid', 191)->default(0); //商品视频ID（id大于0的为有视频单，视频拼接地址  http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/+videoid+.mp4）

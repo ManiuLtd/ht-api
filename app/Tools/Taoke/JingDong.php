@@ -76,7 +76,9 @@ class JingDong implements TBKInterface
         if ($response->status_code != 200) {
             throw new \Exception($response->message);
         }
-
+        if (!$response->data) {
+            throw new \Exception($response->message);
+        }
         //领券地址
         $link = null;
 
@@ -123,7 +125,7 @@ class JingDong implements TBKInterface
         $arr['coupon_start_time'] = isset($data->beginTime) ? Carbon::createFromTimestamp ($data->beginTime)->toDateString () : Carbon::now ()->toDateString (); //优惠卷开始时间
         $arr['coupon_end_time'] = isset($data->endTime) ? Carbon::createFromTimestamp ($data->endTime)->toDateString () : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
         $arr['coupon_remain_count'] = isset($resCoupon->remainnum) ? $resCoupon->remainnum : 0; //已使用优惠卷数量
-        $arr['coupon_total_count'] = isset($resCoupon->num) ? $resCoupon->num : 0; //优惠卷总数
+        $arr['coupon_total_count'] = isset($resCoupon->num) ? $resCoupon->num : 10000; //优惠卷总数
         $arr['pic_url'] = $data->picUrl; //商品主图
         $arr['small_images'] = [$data->picUrl]; //商品图
         $arr['images'] = null; //商品详情图

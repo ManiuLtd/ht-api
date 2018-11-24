@@ -130,8 +130,8 @@ class Taobao implements TBKInterface
 
         $arr['coupon_start_time'] = isset($couponUrl->coupon_start_time) ? Carbon::createFromTimestamp (strtotime ($couponUrl->coupon_start_time))->toDateString () : Carbon::now ()->toDateString (); //优惠卷开始时间
         $arr['coupon_end_time'] = isset($couponUrl->coupon_end_time) ? Carbon::createFromTimestamp (strtotime ($couponUrl->coupon_end_time))->toDateString () : Carbon::now ()->addDay (3)->toDateString (); //优惠卷结束时间
-        $arr['coupon_remain_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_remain_count : null; //已使用优惠卷数量
-        $arr['coupon_total_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_total_count : null; //优惠卷总数
+        $arr['coupon_remain_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_remain_count : 0; //已使用优惠卷数量
+        $arr['coupon_total_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_total_count : 10000; //优惠卷总数
         $arr['pic_url'] = $data->pict_url; //商品主图
         $arr['small_images'] = $data->small_images->string; //商品图
         $arr['images'] = null; //商品详情图
