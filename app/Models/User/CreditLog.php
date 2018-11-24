@@ -41,4 +41,21 @@ class CreditLog extends Model implements Transformable
     {
         return $this->belongsTo('App\Models\User\User')->withDefault(null);
     }
+    public function transform()
+    {
+
+        if (!$type = request('type')){
+            $type = $this->type;
+        }
+        return [
+            'user_id' => $this->user_id,
+            'credit' => $this->credit,
+            'column' => $this->column,
+            'remark' => $this->remark,
+            'type' => $type,
+            'current_credit' => $this->current_credit,
+        ];
+
+
+    }
 }

@@ -29,8 +29,8 @@ class CreditLogsCriteria implements CriteriaInterface
             $model = $model->whereIn('type',[12,14]);
         }
         //收入
-        if ($type = 2) {
-            $model = $model->whereIn('type',[11,13,15,22]);
+        if ($type == 2) {
+            $model = $model->whereIn('type',[11,13,15,22,18]);
         }
         if ($userID) {
             $model = $model->where('user_id', $userID);

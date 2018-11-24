@@ -441,7 +441,7 @@ class Taobao implements TBKInterface
         $type = $array['type'] ?? 3;
 
         $min_id = $array['min_id'] ?? 1;
-
+        //1实时跑单商品，2爆单榜商品，3全部商品，4纯视频单，5聚淘专区
         if (!in_array ($type, [1, 2, 3, 4, 5])) {
             throw new \InvalidArgumentException('type不合法');
         }

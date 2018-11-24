@@ -28,21 +28,23 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         //淘宝  半小时执行
-        $schedule->command('spider:tb --type=3 --all=true')->dailyAt('20:30');
-        $schedule->command('spider:jd --all=true')->dailyAt('20:30');
+        $schedule->command('spider:tb --type=3 --all=true')->dailyAt('01:30');
+        $schedule->command('spider:jd --all=true')->dailyAt('01:30');
 
-        $schedule->command('spider:pdd --all=true')->dailyAt('20:30');
+        $schedule->command('spider:pdd --all=true')->dailyAt('01:30');
 
         //更新优惠券状态
-        $schedule->command('update_status')->dailyAt('21:30');
+        $schedule->command('update_status')->dailyAt('2:30');
 
-        //每小时第 n 分钟执行一次任务
+        //实时跑单商品
         $schedule->command('spider:tb --type=1 --all=false')->hourlyAt(50);
+        //爆单榜商品
         $schedule->command('spider:tb --type=2 --all=false')->hourlyAt(30);
         //全部商品
-        $schedule->command('spider:tb --type=3 --all=false')->hourlyAt(40);
-
+        $schedule->command('spider:tb --type=3 --all=false')->everyFiveMinutes();
+        //纯视频单
         $schedule->command('spider:tb --type=4 --all=false')->hourlyAt(9);
+        //聚淘专区
         $schedule->command('spider:tb --type=5 --all=false')->hourlyAt(9);
         //京东
         $schedule->command('spider:jd --all=false')->everyThirtyMinutes();
