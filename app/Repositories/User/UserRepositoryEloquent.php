@@ -447,4 +447,58 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             }
         });
     }
+
+    /**
+     * 绑定支付宝
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function bindAlipay()
+    {
+        $user = getUser();
+        $phone = request ('phone');
+        //验证字段
+        $rules = [
+            'phone' => 'required',
+            'code' => 'required',
+            'realname' => 'required',
+            'alipay' => 'required',
+        ];
+
+        $validator = \Validator::make (request ()->all (), $rules);
+        //字段验证失败
+        if ($validator->fails ()) {
+            return json (4061, $validator->errors ()->first ());
+        }
+        //验证手机号
+        if (!preg_match ("/^1[3456789]{1}\d{9}$/", $phone)) {
+            return json (4001, '手机号格式不正确');
+        }
+        if (!$user->phone) {
+            throw new \Exception('请先绑定手机号');
+        }
+        if ($user->phone != $phone) {
+            throw new \Exception('手机号与绑定的手机号不一致');
+        }
+        if (!checkSms($phone,request('code'))) {
+            throw new \Exception('验证码不正确');
+        }
+        $user->update([
+            'realname' => request('realname'),
+            'alipay' => request('alipay'),
+        ]);
+        return json(1001,'支付宝绑定成功');
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+

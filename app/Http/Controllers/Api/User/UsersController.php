@@ -107,7 +107,18 @@ class UsersController extends Controller
         }
     }
 
-
+    /**
+     * 绑定支付宝
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function bindAlipay()
+    {
+        try {
+            return $this->repository->bindAlipay();
+        }catch (\Exception $e){
+            return json(5001,$e->getMessage());
+        }
+    }
 
 
 }
