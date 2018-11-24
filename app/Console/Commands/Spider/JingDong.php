@@ -75,7 +75,7 @@ class JingDong extends Command
 
             $totalPage = data_get($result, 'totalPage', 1000);
             if ($all == 'false') {
-                $totalPage = 3;
+                $totalPage = 20;
             }
 
             $this->info("总页码:{$totalPage}");

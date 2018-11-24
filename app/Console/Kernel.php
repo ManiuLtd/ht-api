@@ -40,17 +40,20 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:tb --type=1 --all=false')->hourlyAt(50);
         //爆单榜商品
         $schedule->command('spider:tb --type=2 --all=false')->hourlyAt(30);
-        //全部商品
-        $schedule->command('spider:tb --type=3 --all=false')->everyFiveMinutes();
         //纯视频单
         $schedule->command('spider:tb --type=4 --all=false')->hourlyAt(9);
         //聚淘专区
         $schedule->command('spider:tb --type=5 --all=false')->hourlyAt(9);
-        //京东
-        $schedule->command('spider:jd --all=false')->everyThirtyMinutes();
-        $schedule->command('spider:jd order')->everyFiveMinutes();
 
-        $schedule->command('spider:pdd --all=false')->everyThirtyMinutes();
+        // 淘宝 全部商品
+        $schedule->command('spider:tb --type=3 --all=false')->everyFiveMinutes();
+        //京东
+        $schedule->command('spider:jd --all=false')->everyFiveMinutes();
+        //京东订单
+        $schedule->command('spider:jd order')->everyFiveMinutes();
+        //拼多多
+        $schedule->command('spider:pdd --all=false')->everyFiveMinutes();
+        
         $schedule->command('spider:pdd order')->everyThirtyMinutes();
         //淘宝订单
         //以创建时间查询

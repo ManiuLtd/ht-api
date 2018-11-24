@@ -95,7 +95,7 @@ class Taobao extends Command
         try {
             $totalPage = 6000;
             if ($all == 'false') {
-                $totalPage = 3;
+                $totalPage = 20;
             }
 
             $this->info("总页码:{$totalPage}");

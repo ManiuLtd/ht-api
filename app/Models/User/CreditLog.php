@@ -54,6 +54,8 @@ class CreditLog extends Model implements Transformable
             'remark' => $this->remark,
             'type' => $type,
             'current_credit' => $this->current_credit,
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
 
 

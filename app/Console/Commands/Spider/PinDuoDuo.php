@@ -77,7 +77,7 @@ class PinDuoDuo extends Command
             $totalPage = (int) ceil($total / 100) > 600 ? 600 : (int) ceil($total / 100);
 
             if ($all == 'false') {
-                $totalPage = 3;
+                $totalPage = 20;
                 $total = $totalPage * 100;
             }
 
