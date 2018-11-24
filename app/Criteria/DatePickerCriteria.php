@@ -28,6 +28,8 @@ class DatePickerCriteria implements CriteriaInterface
             ]);
         }
 
+
+
         return $model;
     }
 }

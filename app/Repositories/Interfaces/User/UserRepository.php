@@ -53,4 +53,6 @@ interface UserRepository extends RepositoryInterface
      * @return mixed
      */
     public function bindinviterRegister($user, $inviter);
+
+    public function bindAlipay();
 }

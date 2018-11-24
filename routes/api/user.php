@@ -35,5 +35,8 @@ Route::namespace('User')
         Route::get('bind/inviter', 'UsersController@bindInviter');
         //手动升级
         Route::get('checkUpgrade', 'UsersController@checkUpgrade');
+        //绑定支付宝
+        Route::post('bind/alipay', 'UsersController@bindAlipay');
+
 
     });

@@ -41,6 +41,8 @@ class User extends Authenticatable implements JWTSubject, Transformable
         'wx_unionid',
         'wx_openid1',
         'wx_openid2',
+        'realname',
+        'alipay',
     ];
 
     /**

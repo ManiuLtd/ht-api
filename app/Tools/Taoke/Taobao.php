@@ -226,6 +226,7 @@ class Taobao implements TBKInterface
             'page_size' => $limit,
             'page' => $page,
         ];
+
         //1.综合  2销量（高到低) 3.销量（低到高），4.价格(低到高)，5.价格（高到低），6.佣金比例（高到低） 7. 卷额(从高到低) 8.卷额(从低到高)
         switch ($sort) {
             case 2:
@@ -267,7 +268,6 @@ class Taobao implements TBKInterface
             ->withData ($params)
             ->asJsonResponse ()
             ->get ();
-
 
         //接口信息获取失败
         if ($response->status != 200) {
@@ -351,6 +351,7 @@ class Taobao implements TBKInterface
 
             return $arr['id'];
         }
+
         return false;
     }
 

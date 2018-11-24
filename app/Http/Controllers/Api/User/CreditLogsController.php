@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Criteria\User\CreditLogsCriteria;
 use App\Criteria\UserCriteria;
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
@@ -36,7 +37,7 @@ class CreditLogsController extends Controller
         try {
             $userCreditLogs = $this->repository
                 ->pushCriteria(new DatePickerCriteria())
-                ->pushCriteria(new UserCriteria())
+                ->pushCriteria(new CreditLogsCriteria())
                 ->paginate(request('limit', 10));
 
             return json(1001, '列表获取成功', $userCreditLogs);
