@@ -70,15 +70,16 @@ class SaveOrders implements ShouldQueue
     {
         foreach ($results as $result) {
             $pid = Pid::query()->where('taobao','like', '%'.$result->adzone_id)->first();
+            $group_id = null;
+            $oldgroup_id = null;
+            $user_id = null;
             if ($pid) {
                 $user = User::query()->find($pid->user_id);
-                $group_id = $user->group_id;
-                $oldgroup_id = $user->oldgroup_id;
-                $user_id = $user->id;
-            } else {
-                $group_id = null;
-                $oldgroup_id = null;
-                $user_id = null;
+                if ($user) {
+                    $group_id = $user->group_id;
+                    $oldgroup_id = $user->oldgroup_id;
+                    $user_id = $user->id;
+                }
             }
             $item = [
                 'user_id'           => $user_id,
@@ -158,15 +159,16 @@ class SaveOrders implements ShouldQueue
     {
         foreach ($results as $result) {
             $pid = Pid::query()->where('pinduoduo', $result->p_id)->first();
+            $user_id = null;
+            $group_id = null;
+            $oldgroup_id = null;
             if ($pid) {
                 $user = User::query()->find($pid->user_id);
-                $user_id = $user->id;
-                $group_id = $user->group_id;
-                $oldgroup_id = $user->oldgroup_id;
-            } else {
-                $user_id = null;
-                $group_id = null;
-                $oldgroup_id = null;
+                if ($user) {
+                    $user_id = $user->id;
+                    $group_id = $user->group_id;
+                    $oldgroup_id = $user->oldgroup_id;
+                }
             }
             $item = [
                 'user_id'         => $user_id,
@@ -243,15 +245,16 @@ class SaveOrders implements ShouldQueue
             $p_id = $result->unionId.'_0_'.$result->skuList[0]->spId;
 
             $pid = Pid::query()->where('jingdong', $p_id)->first();
+            $user_id = null;
+            $group_id = null;
+            $oldgroup_id = null;
             if ($pid) {
                 $user = User::query()->find($pid->user_id);
-                $user_id = $user->id;
-                $group_id = $user->group_id;
-                $oldgroup_id = $user->oldgroup_id;
-            } else {
-                $user_id = null;
-                $group_id = null;
-                $oldgroup_id = null;
+                if ($user) {
+                    $user_id = $user->id;
+                    $group_id = $user->group_id;
+                    $oldgroup_id = $user->oldgroup_id;
+                }
             }
             $item = [
                 'user_id'         => $user_id,

@@ -74,6 +74,9 @@ class Taobao extends Command
             case 'order':
                 $this->getOrders();
                 break;
+            case 'updateOrder':
+                $this->updateOrder();
+                break;
             default:
                 $this->all();
                 break;
@@ -343,6 +346,45 @@ class Taobao extends Command
                     SaveOrders::dispatch($resp, 'taobao');
                     $bar->advance();
                     $this->info(">>>已采集完第{$page}页 ");
+                }
+            }
+            $bar = $this->output->createProgressBar(4);
+
+            $bar->finish();
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
+        }
+    }
+
+    protected function updateOrder()
+    {
+        try {
+            $carbon = new Carbon();
+            $settings = Setting::query()->get();
+            $bar = $this->output->createProgressBar(10* $settings->count());
+            $type = $this->option('type');
+            $orders = db('tbk_orders')->select(['created_at'])->where([
+                'status' => 1,
+                'type' => 1,
+            ])->get();
+            foreach ($settings as $setting){
+                //循环所有订单
+                foreach ($orders as $order){
+                    try {
+                        $resp = $this->tbk->getOrders([
+                            'page' => 1,
+                            'setting' => $setting,
+                            'type' => $type,
+                            'start_time' => $carbon->parse($order->created_at)->subMinute(5)->toDateTimeString(),
+                        ]);
+                    }catch (\Exception $e){
+                        $this->warn($e->getMessage());
+                        continue;
+                    }
+
+                    //写入队列
+                    SaveOrders::dispatch($resp, 'taobao');
+                    $bar->advance();
                 }
             }
             $bar = $this->output->createProgressBar(4);

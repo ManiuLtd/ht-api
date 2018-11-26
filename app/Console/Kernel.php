@@ -60,6 +60,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:tb order --type=1')->everyMinute();
         //以结算时间查询
         $schedule->command('spider:tb order --type=2')->everyMinute();
+        //更新所有订单状态
+        $schedule->command('spider:tb updateOrder')->everyFifteenMinutes();
         //快抢
         $schedule->command('spider:tb kuaiqiang')->everyFiveMinutes();
         //定时拉取

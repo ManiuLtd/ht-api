@@ -372,11 +372,13 @@ class Taobao implements TBKInterface
         if ($type == 2) {
             $order_query_type = 'settle_time';
         }
+
+        $start_time = data_get($array, 'start_time',now ()->subMinutes (9)->toDateTimeString ());
         $params = [
             'appkey' => config ('coupon.taobao.HMTK_APP_KEY'),
             'appsecret' => config ('coupon.taobao.HMTK_APP_SECRET'),
             'sid' => $setting->taobao['sid'] ?? 1942,
-            'start_time' => now ()->subMinutes (9)->toDateTimeString (),
+            'start_time' => $start_time,
 //            'start_time' => '2018-11-21 20:20:00',
             'span' => 600,
             'signurl' => 0,
