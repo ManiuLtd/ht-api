@@ -52,7 +52,7 @@ return [
          | Enable or disable cache
          |
          */
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          |--------------------------------------------------------------------------
@@ -138,7 +138,7 @@ return [
        | 'except'  =>['find'],
        */
         'allowed' => [
-            'only' => null,
+            'only' => ['all', 'paginate', 'find', 'findByField', 'findWhere', 'getByCriteria'],
             'except' => null,
         ],
     ],

@@ -7,6 +7,7 @@ use App\Models\Taoke\Coupon;
 use App\Criteria\RequestCriteria;
 use Orzcc\TopClient\Facades\TopClient;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Prettus\Repository\Traits\CacheableRepository;
 use TopClient\request\WirelessShareTpwdQueryRequest;
 use App\Repositories\Interfaces\Taoke\CouponRepository;
 
@@ -15,6 +16,7 @@ use App\Repositories\Interfaces\Taoke\CouponRepository;
  */
 class CouponRepositoryEloquent extends BaseRepository implements CouponRepository
 {
+    use CacheableRepository;
     /**
      * @var array
      */

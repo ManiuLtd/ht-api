@@ -74,6 +74,7 @@ trait TBKCommon
     {
         $id = getUserId ();
         $commission = new Commission();
+
         return $commission->getCommissionByUser ($id, $price, 'commission_rate1');
     }
 

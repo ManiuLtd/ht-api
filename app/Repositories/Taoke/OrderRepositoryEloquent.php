@@ -93,16 +93,17 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 
             return floatval(round($commission1 + $commission2 + $groupCommission1 + $groupCommission2, 2));
         }
+
         //计算订单数
         $group = $user->group;
         //如果用户是组长 直接返回小组订单数
         if ($group && $user->id == $group->user_id ?? null) {
-            return $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', false)->count();
+            return $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', $isCommission, $dateType)->count();
         } else {
-            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate1', false);
-            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate2', false);
+            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate1', $isCommission, $dateType);
+            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate2', $isCommission, $dateType);
 
-            return floatval(round($commissionOrder1->count() + $commissionOrder2->count(), 2));
+            return $commissionOrder1->count() + $commissionOrder2->count();
         }
     }
 

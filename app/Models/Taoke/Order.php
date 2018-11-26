@@ -5,6 +5,7 @@ namespace App\Models\Taoke;
 use App\Events\SendNotification;
 use App\Events\CreditOrderFriend;
 use App\Models\User\User;
+use App\Tools\Taoke\TBKCommon;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -14,7 +15,8 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Order extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait,
+        TBKCommon;
 
     /**
      * @var string
@@ -78,4 +80,16 @@ class Order extends Model implements Transformable
     {
         return $this->belongsTo('App\Models\User\Group', 'oldgroup_id')->withDefault(null);
     }
+
+
+    /**
+     * @return array
+     */
+    public function transform()
+    {
+        $data = $this->toArray();
+        $data['commission_amount'] = floatval (round ($this->getFinalCommission (floatval($this->commission_amount)), 2));
+        return $data;
+    }
+
 }
