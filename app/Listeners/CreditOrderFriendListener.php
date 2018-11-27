@@ -138,7 +138,7 @@ class CreditOrderFriendListener
                 $user_inviter->increment('credit2',$credit2,['remark' => '上级'.$messageCredit2, 'type' => 17]); //积分
                 $user_inviter->increment('credit3',$credit3,['remark' => '上级'.$messageCredit3,'type' => 19]); //成长值
                 //推送
-                $user['title']   = $title;
+                $user_inviter['title']   = $title;
                 $user_inviter['message'] = '上级'.$messageCredit1.$credit1;
                 event(new SendNotification($user_inviter->toArray()));
             }
@@ -183,7 +183,7 @@ class CreditOrderFriendListener
                 $user_group_id->increment('credit2',$credit2,['remark' => '组长'.$messageCredit2, 'type' => 17]); //积分
                 $user_group_id->increment('credit3',$credit3,['remark' => '组长'.$messageCredit3,'type' => 19]); //成长值
                 //推送
-                $user['title']   = $title;
+                $user_group_id['title']   = $title;
                 $user_group_id['message'] = '组长'.$messageCredit1.$credit1;
                 event(new SendNotification($user_group_id->toArray()));
             }
@@ -228,7 +228,7 @@ class CreditOrderFriendListener
                 $user_oldgroup_id->increment('credit2',$credit2,['remark' => '原组长'.$messageCredit2, 'type' => 17]); //积分
                 $user_oldgroup_id->increment('credit3',$credit3,['remark' => '原组长'.$messageCredit3,'type' => 19]); //成长值
                 //推送
-                $user['title']   = $title;
+                $user_oldgroup_id['title']   = $title;
                 $user_oldgroup_id['message'] = '原组长'.$messageCredit1.$credit1;
                 event(new SendNotification($user_oldgroup_id->toArray()));
             }
