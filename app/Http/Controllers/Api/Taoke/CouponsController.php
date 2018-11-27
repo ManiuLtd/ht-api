@@ -41,7 +41,6 @@ class CouponsController extends Controller
     {
         $coupons = $this->repository
             ->pushCriteria(new CouponPriceCriteria())
-            ->orderBy('id','desc')
             ->paginate(request('limit', '10'));
 
         return json('1001', '优惠卷列表', $coupons);
