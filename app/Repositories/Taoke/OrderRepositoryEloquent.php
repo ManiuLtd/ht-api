@@ -7,6 +7,7 @@ use App\Models\Taoke\Order;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\OrderValidator;
+use mysql_xdevapi\Exception;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
 
@@ -69,27 +70,32 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     /**
      * 后端可显示近一周、一月订单和佣金状态
      * 订单数据报表  可根据时间返回当前用户的佣金数或者订单数.
-     * @param bool $isCommission 计算佣金或者订单数
+     *
+     * @param bool $isCommission
      * @param array $params
-     * @return float|\Illuminate\Database\Query\Builder|int|mixed
+     * @return float|int|mixed
+     * @throws \Exception
      */
     public function getOrderChart(bool $isCommission = true, array $params = [])
     {
         $user = getUser();
         $commission = new Commission();
         $dateType = $params['date_type'] ?? request('date_type', 'month');
-        $status = $params['status'] ?? request('status', 1);
+        $status = $params['status'] ?? request('status', [1]);
+        if (!is_array($status)) {
+            throw new \Exception('status error');
+        }
 
         //计算佣金
         if ($isCommission) {
             //自推佣金
-            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate1', $isCommission, $dateType);
+            $commission1 = $commission->getOrdersOrCommissionByDate($user->id, $status, 'commission_rate1', $isCommission, $dateType);
             //下级佣金
-            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate2', $isCommission, $dateType);
+            $commission2 = $commission->getOrdersOrCommissionByDate($user->id, $status, 'commission_rate2', $isCommission, $dateType);
             //组长佣金
-            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'group_rate1', $isCommission, $dateType);
+            $groupCommission1 = $commission->getOrdersOrCommissionByDate($user->id, $status, 'group_rate1', $isCommission, $dateType);
             //补贴佣金
-            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'group_rate2', $isCommission, $dateType);
+            $groupCommission2 = $commission->getOrdersOrCommissionByDate($user->id, $status, 'group_rate2', $isCommission, $dateType);
 
             return floatval(round($commission1 + $commission2 + $groupCommission1 + $groupCommission2, 2));
         }
@@ -98,10 +104,10 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         $group = $user->group;
         //如果用户是组长 直接返回小组订单数
         if ($group && $user->id == $group->user_id ?? null) {
-            return $commission->getOrdersOrCommissionByDate($user->id, [1], 'group_rate1', $isCommission, $dateType)->count();
+            return $commission->getOrdersOrCommissionByDate($user->id, $status, 'group_rate1', $isCommission, $dateType)->count();
         } else {
-            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate1', $isCommission, $dateType);
-            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, [$status], 'commission_rate2', $isCommission, $dateType);
+            $commissionOrder1 = $commission->getOrdersOrCommissionByDate($user->id, $status, 'commission_rate1', $isCommission, $dateType);
+            $commissionOrder2 = $commission->getOrdersOrCommissionByDate($user->id, $status, 'commission_rate2', $isCommission, $dateType);
 
             return $commissionOrder1->count() + $commissionOrder2->count();
         }
