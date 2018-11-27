@@ -58,17 +58,17 @@ class AuthorizationsController extends Controller
     public function TBCallback()
     {
 
+
         try {
-<<<<<<< Updated upstream
+
             $id = getUserId();
             if (!$id) {
                 throw new \Exception('用户不存在');
             }
-=======
 
 
-            dd(auth ()->setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC92Mi5lYXN5dGJrLmNvbVwvYXBpXC9hZG1pblwvYXV0aFwvbG9naW4iLCJpYXQiOjE1NDMzMTQyOTksImV4cCI6MTkwMzMxNDI5OSwibmJmIjoxNTQzMzE0Mjk5LCJqdGkiOiJ2RnFITTkydG5sSVkxdnBkIiwic3ViIjoxLCJwcnYiOiJiOTEyNzk5NzhmMTFhYTdiYzU2NzA0ODdmZmYwMWUyMjgyNTNmZTQ4In0.GJUTShuNrKRHIwXkMuLWIuJXfa1IcBV2u1Sr_gfwC9Y')->user());
->>>>>>> Stashed changes
+
+
             $create = [
                 'sid'         => request('sid'),
                 'taoid'       => request('tao_id'),
