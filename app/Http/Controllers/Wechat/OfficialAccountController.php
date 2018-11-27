@@ -66,7 +66,7 @@ class OfficialAccountController extends Controller
 
             $app = Facade::officialAccount ();
 
-            $encode = base64_encode (request ('redirect_url', 'sb') . '!' . request ('inviter', 'sb'));
+            $encode = encrypt (request ('redirect_url', 'sb') . '!' . request ('inviter', 'sb'));
 
 
             $redirectUrl = route ('wechat.callback',[$encode]);
@@ -87,7 +87,7 @@ class OfficialAccountController extends Controller
     public function callback($encode)
     {
 
-        $str = base64_decode ($encode);
+        $str = bcrypt ($encode);
 
         $decode = explode ('!', $str);
         try {
