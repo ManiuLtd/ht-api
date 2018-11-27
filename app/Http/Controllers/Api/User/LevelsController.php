@@ -43,21 +43,4 @@ class LevelsController extends Controller
         return json(1001, '列表获取成功', $levels);
     }
 
-    /**
-     * 付费升级
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function payment()
-    {
-        //检查是否符合升级条件：当前等级是否大于要升级的等级
-        //如果付款成功，price1 2 3,4  level_id,
-        //根据price1字段对应金额和实际付款金额对比，如果一样升级成功 ，修改用户的level_id和到期时间
-        try{
-            $this->repository->payment();
-            return json('1001','升级成功');
-        }catch(\Exception $e){
-            return json('5001',$e->getMessage());
-        }
-
-    }
 }
