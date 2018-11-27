@@ -353,6 +353,10 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             throw new \Exception('邀请人不存在');
         }
 
+        if ($user->id == $inviterId){
+            throw new \Exception('不能绑定自己');
+        }
+
         $user->update ([
             'inviter_id' => $inviterModel->id,
             'group_id' => $inviterModel->group_id,

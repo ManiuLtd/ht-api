@@ -119,7 +119,6 @@ class User extends Authenticatable implements JWTSubject, Transformable
         //编辑是如果设置了密码 则更新密码
         if (request('password') != '') {
             self::updating(function ($model) {
-                dd($model->inviter_id );
                 if ($model->inviter_id != null){
                     event(new CreditOrderFriend([
                         'user_id' => $model->inviter_id
