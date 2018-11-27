@@ -57,7 +57,7 @@ class AuthorizationsController extends Controller
     public function TBCallback()
     {
 
-        try {
+//        try {
 
             $create = [
                 'sid'         => request('sid'),
@@ -68,15 +68,15 @@ class AuthorizationsController extends Controller
                 'type'        => 1,
             ];
             $tbksetting = tbksetting(getUserId());
-
+dd($tbksetting);
             \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
                 'taobao' => json_encode($create),
             ]);
 
             return json('1001', 'OK');
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
-        }
+//        } catch (\Exception $e) {
+//            return json(5001, $e->getMessage());
+//        }
     }
 
     /**
