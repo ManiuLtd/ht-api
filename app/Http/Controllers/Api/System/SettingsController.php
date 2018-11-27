@@ -46,16 +46,4 @@ class SettingsController extends Controller
         return json('1001', '设置信息', $setting);
     }
 
-    /**
-     * 成长值途径列表.
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function upgrade()
-    {
-        try {
-            return json(1001,'获取成功',$this->repository->upgrade());
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
-        }
-    }
 }
