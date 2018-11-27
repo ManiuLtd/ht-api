@@ -55,10 +55,17 @@ class QrcodeController extends Controller
                 $tool    = new PinDuoDuo();
                 $mes = '拼多多';
             }
-
             $data  = $tool->getDetail([
                 'itemid' => $item_id
             ]);
+            if ($type == 1){
+                //获取设置信息
+                $setting = setting(1);
+                $kuaizhan = $setting->kuaizhan;
+                $url = $kuaizhan.'/?kf=('.$data['kouling'].')&zr='.$data['kouling'].'&base=enI=&sku='.$data['item_id'].'&rand=3';
+            }else{
+                $url = data_get($data, 'coupon_link.url');
+            }
             $userid = getUserId();
             $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
             //邀请码
@@ -68,7 +75,7 @@ class QrcodeController extends Controller
             $qrcode->height = 971;
             $qrcode->savePath = 'images/cache/'.$hashids.'_'.$item_id.'.jpg';
             $redirectUrl = route ('wechat.login', [
-                'redirect_url' => data_get($data, 'coupon_link.url'),
+                'redirect_url' => $url,
                 'inviter'      => $hashids,
             ]);
             $couponQrcode = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
@@ -111,6 +118,8 @@ class QrcodeController extends Controller
     public function invite()
     {
         $userid = getUserId();
+        //获取设置信息
+        $setting = setting(1);
         for ($i = 1; $i <= 5; $i++) {
             $templateName = "template{$i}";
             $qrcode = new Qrcode(public_path("images/{$templateName}.jpg"));
@@ -125,7 +134,7 @@ class QrcodeController extends Controller
             $cacheImage = public_path('images/cache/').$hashids.'_invite'.'.png';
             //生成二维码
             $redirectUrl = route ('wechat.login', [
-                'redirect_url' => 'http://www.baidu.com',
+                'redirect_url' => $setting->download,
                 'inviter'      => $hashids,
             ]);
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->generate($redirectUrl, $cacheImage);
