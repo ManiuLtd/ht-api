@@ -363,8 +363,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     /**
      * 手动升级
-     * @return \Illuminate\Http\JsonResponse|mixed
-     * @throws \Exception
+     * @return mixed|void
+     * @throws \Throwable
      */
     public function checkUpgrade()
     {
