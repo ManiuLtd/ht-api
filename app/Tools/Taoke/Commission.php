@@ -35,8 +35,9 @@ class Commission
         if ($userModel->level->$type < 0) {
             return 0;
         }
+        $setting_commission_rate = 1 - data_get(setting(1),'commission_rate',0) / 100;
 
-        return $commission * $userModel->level->$type / 100;
+        return $commission * $setting_commission_rate * $userModel->level->$type / 100;
     }
 
     /**

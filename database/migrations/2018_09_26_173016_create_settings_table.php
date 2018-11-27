@@ -39,6 +39,7 @@ class CreateSettingsTable extends Migration
             $table->text('level_desc')->nullable(); //等级描述
             $table->text('download')->nullable(); //下载地址
             $table->text('kuaizhan')->nullable(); //下载地址
+            $table->string('commission_rate', 190)->nullable()->comment('扣税比例');
             $table->nullableTimestamps();
 
             $table->index('user_id', 'settings_user_id_index');
