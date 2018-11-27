@@ -26,9 +26,11 @@ class CreateUserLevelsTable extends Migration
             $table->decimal('group_rate2', 4, 2)->nullable(); //团队某个人升级为组长后，老组长拿的新组长团队的佣金比例
             $table->decimal('commission_rate1', 4, 2)->nullable();  //自购佣金比例
             $table->decimal('commission_rate2', 4, 2)->nullable();  //拿下级的佣金比例
-            $table->decimal('credit', 8, 2)->nullable();  //升级所需积分
-            $table->decimal('price', 9, 2)->nullable(); //升级所需支付金额
-            $table->integer('duration')->nullable(); // 等级有效时长 按天计算
+            $table->decimal('credit', 8, 2)->default(0);  //升级所需积分
+            $table->decimal('price1', 9, 2)->default(0); //升级所需支付金额  每月
+            $table->decimal('price2', 9, 2)->default(0); //升级所需支付金额  每季度
+            $table->decimal('price3', 9, 2)->default(0); //升级所需支付金额  每年
+            $table->decimal('price4', 9, 2)->default(0); //升级所需支付金额  永久
             $table->string('description', 191)->nullable(); //等级描述
             $table->tinyInteger('is_commission')->default(0)->comment('0无返佣权限，1有'); //
             $table->tinyInteger('is_group')->default(0)->comment('0不是组，1 组'); //
