@@ -134,7 +134,7 @@ class Commission
             case 'today':
                 $query = $query->whereDate('created_at', now()->toDateString());
                 break;
-            case 'yestday':
+            case 'yesterday':
                 $query = $query->whereDate('created_at', now()->addDay(-1)->toDateString());
                 break;
             case 'week':
