@@ -29,5 +29,8 @@ Route::namespace('System')
     ->group(function () {
 
         //设置增加 淘宝 京东 拼多多  授权信息
-        Route::get('callback', 'AuthorizationsController@callback');
+        //拼多多回调
+        Route::get('pddcallback', 'AuthorizationsController@PDDCallback');
+        //淘宝回调
+        Route::get('tbcallback', 'AuthorizationsController@TBCallback');
     });
