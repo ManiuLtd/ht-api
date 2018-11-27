@@ -57,14 +57,13 @@ class AuthorizationsController extends Controller
      */
     public function TBCallback()
     {
-        
+
         try {
 
             $id = getUserId();
             if (!$id) {
                 throw new \Exception('用户不存在');
             }
-
 
             $create = [
                 'sid'         => request('sid'),
