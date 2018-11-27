@@ -6,6 +6,7 @@ use Ixudra\Curl\Facades\Curl;
 use App\Models\System\Setting;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\System\SettingRepository;
+use mysql_xdevapi\Exception;
 
 /**
  * Class FeedbacksController.
@@ -57,8 +58,11 @@ class AuthorizationsController extends Controller
     public function TBCallback()
     {
 
-//        try {
-
+        try {
+            $id = getUserId();
+            if (!$id) {
+                throw new \Exception('用户不存在');
+            }
             $create = [
                 'sid'         => request('sid'),
                 'taoid'       => request('tao_id'),
@@ -67,16 +71,17 @@ class AuthorizationsController extends Controller
                 'expire_time' => now()->timestamp(request('expire_time'))->toDateTimeString(),
                 'type'        => 1,
             ];
+
             $tbksetting = tbksetting(getUserId());
-dd($tbksetting);
+
             \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
                 'taobao' => json_encode($create),
             ]);
 
             return json('1001', 'OK');
-//        } catch (\Exception $e) {
-//            return json(5001, $e->getMessage());
-//        }
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
     }
 
     /**
@@ -122,6 +127,9 @@ dd($tbksetting);
     {
         try {
             $id = auth()->setToken(request('state'))->id();
+            if (!$id) {
+                throw new \Exception('用户不存在');
+            }
             $resp = Curl::to('http://open-api.pinduoduo.com/oauth/token')
                 ->withHeader('Content-Type: application/json')
                 ->withData(json_encode([
