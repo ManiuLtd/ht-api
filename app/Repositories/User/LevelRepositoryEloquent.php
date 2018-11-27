@@ -85,17 +85,32 @@ class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
             if ($level[$price] == $money){
             if ($type == 1){
                 $time = Carbon::now()->addDays(30);
+                $mon = '一月';
             }elseif ($type == 2){
                 $time = Carbon::now()->addMonths(3);
+                $mon = '一季';
             }elseif ($type == 3){
                 $time = Carbon::now()->addYears(1);
+                $mon = '一年';
             }else{
                 $time = null;
+                $mon = '永久';
             }
             User::query()->where('id',$user->id)->update([
                 'level_id'     => $level->id,
                 'expired_time' => $time
             ]);
+            $insert = [
+                'user_id'     => $user->id,
+                'operater_id' => null,
+                'credit'      => $money,
+                'column'      => 'credit1',
+                'type'        => 16,
+                'remark'      => '付费升级'.$mon,
+                'created_at'  => now()->toDateTimeString(),
+                'updated_at'  => now()->toDateTimeString(),
+            ];
+            db('user_credit_logs')->insert($insert);
         }else{
             throw new \Exception('升级失败');
         }
