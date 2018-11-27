@@ -32,17 +32,17 @@ class AuthorizationsController extends Controller
     public function index()
     {
 //        //淘宝
-//        $tbbackurl = urlencode(env('APP_URL').'/api/admin/system/callback?type=1');
+//        $tbbackurl = urlencode('http://v2.easytbk.com/api/admin/system/tbcallback?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93d3cuaHRhcGkuY25cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE1NDMzMDAzOTUsImV4cCI6MTkwMzMwMDM5NSwibmJmIjoxNTQzMzAwMzk1LCJqdGkiOiIzYkdpTGNsQ0RNd2NzYXVyIiwic3ViIjoxLCJwcnYiOiJiOTEyNzk5NzhmMTFhYTdiYzU2NzA0ODdmZmYwMWUyMjgyNTNmZTQ4In0.si4RM9YFx8woIE9ntzp5DfaPeVeJ3fIAxDcbUAKNAqc');
 //
 //        $tburi = 'https://oauth.taobao.com/authorize?response_type=code&client_id=23205020&redirect_uri=https%3A%2F%2Fwww.heimataoke.com%2Fuser-authback%3Fbackurl%3D'.$tbbackurl.'%26bind%3DUW&state=1';
 //        //京东
-        $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
-        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
+//        $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
+//        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
 //        //多多客
-//        $ddkbackurl = env('APP_URL').'/api/admin/system/callback';
-//        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=3';
+//        $ddkbackurl = 'http://v2.easytbk.com/api/admin/system/pddcallback';
+//        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93d3cuaHRhcGkuY25cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE1NDMzMDAzOTUsImV4cCI6MTkwMzMwMDM5NSwibmJmIjoxNTQzMzAwMzk1LCJqdGkiOiIzYkdpTGNsQ0RNd2NzYXVyIiwic3ViIjoxLCJwcnYiOiJiOTEyNzk5NzhmMTFhYTdiYzU2NzA0ODdmZmYwMWUyMjgyNTNmZTQ4In0.si4RM9YFx8woIE9ntzp5DfaPeVeJ3fIAxDcbUAKNAqc';
         $setting = setting(getUserId());
-
+//        dd($tburi,$ddkuri);
         return json(1001, '获取成功', [
 //            'ddkuri' => $ddkuri,
             'taobao'    => $setting->taobao,
@@ -54,51 +54,24 @@ class AuthorizationsController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function callback()
+    public function TBCallback()
     {
-        $type = request('type', request('state'));
 
-        $create = [];
         try {
-            switch ($type) {
-                case 1:
-                    $create = [
-                        'sid'         => request('sid'),
-                        'taoid'       => request('tao_id'),
-                        'name'        => request('tao_name'),
-                        'auth_time'   => now()->timestamp(request('auth_time'))->toDateTimeString(),
-                        'expire_time' => now()->timestamp(request('expire_time'))->toDateTimeString(),
-                        'type'        => 1,
-                    ];
-                    break;
-                case 2:
-                    $create = $this->getJDToken();
-                    break;
-                case 3:
-                    $create = $this->getDDKToekn();
-                    break;
 
-                default:
-                    break;
-            }
-            $setting = setting(getUserId());
+            $create = [
+                'sid'         => request('sid'),
+                'taoid'       => request('tao_id'),
+                'name'        => request('tao_name'),
+                'auth_time'   => now()->timestamp(request('auth_time'))->toDateTimeString(),
+                'expire_time' => now()->timestamp(request('expire_time'))->toDateTimeString(),
+                'type'        => 1,
+            ];
             $tbksetting = tbksetting(getUserId());
-            if ($type == 3) {
-                Setting::query()->where('id', $setting->id)->update([
-                    'pinduouo' => $create,
-                ]);
-                \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
-                    'pinduouo' => $create,
-                ]);
 
-            } else {
-                Setting::query()->where('id', $setting->id)->update([
-                    'taobao' => $create,
-                ]);
-                \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
-                    'taobao' => $create,
-                ]);
-            }
+            \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
+                'taobao' => json_encode($create),
+            ]);
 
             return json('1001', 'OK');
         } catch (\Exception $e) {
@@ -113,6 +86,7 @@ class AuthorizationsController extends Controller
      */
     protected function getJDToken()
     {
+
         $resp = Curl::to('https://oauth.jd.com/oauth/token')
             ->withData([
                 'grant_type' => 'authorization_code',
@@ -141,32 +115,43 @@ class AuthorizationsController extends Controller
     }
 
     /**
-     * @return array
-     * @throws \Exception
+     * 拼多多授权回调
+     * @return \Illuminate\Http\JsonResponse
      */
-    protected function getDDKToekn()
+    public function PDDCallback()
     {
-        $resp = Curl::to('http://open-api.pinduoduo.com/oauth/token')
-            ->withHeader('Content-Type: application/json')
-            ->withData(json_encode([
-                'grant_type' => 'authorization_code',
-                'code' => request('code'),
-                'client_id' => 'cdd7fdd7c6164e96b9525f8a9d2d7ddf',
-                'client_secret' => '6896f97f33c5836f96bc663a708cf85cbde6ee86',
-            ]))
-            ->post();
-        $resp = json_decode($resp);
-        if (! $resp) {
-            throw new \Exception('请重新授权');
-        }
+        try {
+            $id = auth()->setToken(request('state'))->id();
+            $resp = Curl::to('http://open-api.pinduoduo.com/oauth/token')
+                ->withHeader('Content-Type: application/json')
+                ->withData(json_encode([
+                    'grant_type' => 'authorization_code',
+                    'code' => request('code'),
+                    'client_id' => 'cdd7fdd7c6164e96b9525f8a9d2d7ddf',
+                    'client_secret' => '6896f97f33c5836f96bc663a708cf85cbde6ee86',
+                ]))
+                ->post();
+            $resp = json_decode($resp);
+            if (!$resp) {
+                throw new \Exception('请重新授权');
+            }
 
-        return [
-            'token' => $resp->access_token,
-            'refresh_token' => $resp->refresh_token,
-            'taoid' => $resp->owner_id,
-            'name' => $resp->owner_name,
-            'expire_time' => now()->addSeconds($resp->expires_in)->toDateTimeString(),
-            'type' => 3,
-        ];
+            $pinduoduo = [
+                'token' => $resp->access_token,
+                'refresh_token' => $resp->refresh_token,
+                'taoid' => $resp->owner_id,
+                'name' => $resp->owner_name,
+                'expire_time' => now()->addSeconds($resp->expires_in)->toDateTimeString(),
+                'type' => 3,
+            ];
+            $tbksetting = tbksetting($id);
+
+            \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
+                'pinduouo' => json_encode($pinduoduo),
+            ]);
+            return json('1001', 'OK');
+        }catch (\Exception $e){
+            return json(5001,$e->getMessage());
+        }
     }
 }

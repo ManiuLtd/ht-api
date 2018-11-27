@@ -87,7 +87,7 @@ class OfficialAccountController extends Controller
     public function callback($encode)
     {
 
-        $str = bcrypt ($encode);
+        $str = decrypt ($encode);
 
         $decode = explode ('!', $str);
         try {
