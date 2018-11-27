@@ -54,7 +54,7 @@ class SendNotificationListener
             $insert['type'] = 2;
         }
         //推送消息
-        $push->setMessage($messages['message'],$messages['title']);
+        $push->setNotificationAlert($messages['message']);
 
         try {
             $push->send();
