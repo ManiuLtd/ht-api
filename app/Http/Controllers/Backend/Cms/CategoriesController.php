@@ -86,6 +86,20 @@ class CategoriesController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $coupon = $this->repository->find($id);
+
+        return json(1001, '获取成功', $coupon);
+    }
+
+    /**
      * 删除分类.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
