@@ -78,7 +78,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         $user = getUser();
         $commission = new Commission();
         $dateType = $params['date_type'] ?? request('date_type', 'month');
-        $status = $params['status'] ?? 1;
+        $status = $params['status'] ?? request('status', 1);
 
         //计算佣金
         if ($isCommission) {
