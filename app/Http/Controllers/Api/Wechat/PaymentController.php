@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\OfficialAccount\Wechat;
+namespace App\Http\Controllers\Api\Wechat;
 
 use App\Events\SendNotification;
 use App\Models\User\User;
@@ -68,7 +68,7 @@ class PaymentController extends Controller
                 'body' => $title,
                 'out_trade_no' => $number,
                 'total_fee' => $totaFee,
-                'notify_url' => 'http://v2.easytbk.com/api/payment/wechatNotify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'notify_url' => 'http://v2.easytbk.com/api/wechat/payment/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'trade_type' => 'APP', // 请对应换成你的支付方式对应的值类型
                 'openid' => $user->wx_openid1,
             ]);
@@ -131,9 +131,6 @@ class PaymentController extends Controller
                     if (!$level) {
                         throw new \Exception('等级不存在');
                     }
-                    Log::info (json_encode ($level));
-                    Log::info (json_encode ($column));
-                    Log::info (json_encode ($message['total_fee'] / 100));
 
                     if ($level->$column == $message['total_fee'] / 100) {
                         if ($type == 1) {

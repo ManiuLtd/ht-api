@@ -5,19 +5,19 @@
  * Date: 2018/9/19
  * Time: 22:25
  */
-Route::namespace('OfficialAccount')
-    ->prefix('payment')
+Route::namespace('Wechat')
+    ->prefix('wechat')
     ->middleware(['jwt.auth'])
     ->group(function () {
         //支付
-        Route::get('app', 'Wechat\PaymentController@app');
+        Route::get('payment/app', 'PaymentController@app');
     });
 
-Route::namespace('OfficialAccount')
-    ->prefix('payment')
+Route::namespace('Wechat')
+    ->prefix('wechat')
     ->group(function () {
         //支付
-        Route::any('wechatNotify', 'Wechat\PaymentController@notify');
+        Route::any('notify', 'PaymentController@notify');
     });
         //h5支付回调
 
