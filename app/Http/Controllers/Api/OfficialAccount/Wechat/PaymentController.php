@@ -133,9 +133,9 @@ class PaymentController extends Controller
                     }
                     Log::info (json_encode ($level));
                     Log::info (json_encode ($column));
-                    Log::info (json_encode ($payment->price));
+                    Log::info (json_encode ($message['total_fee'] / 100));
 
-                    if ($level->$column == $payment->price) {
+                    if ($level->$column == $message['total_fee'] / 100) {
                         if ($type == 1) {
                             $min = '一月'.$level->name;
                             $time = now ()->addDays (30);//月
