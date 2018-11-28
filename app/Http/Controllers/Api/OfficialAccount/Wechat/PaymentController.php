@@ -102,10 +102,8 @@ class PaymentController extends Controller
     public function notify()
     {
         $app = Facade::payment ();
-        Log::info (111);
         $response = $app->handlePaidNotify(function ($message, $fail) {
             Log::info (json_encode ($message));
-
             $payment = db('user_payments')->where('out_trade_no',$message['out_trade_no'])->first();
             if (!$payment || $payment->status == 1) { // 如果订单不存在 或者 订单已经支付过了
                 return true;      // 告诉微信，我已经处理完了，订单没找到，别再通知我了
@@ -113,7 +111,7 @@ class PaymentController extends Controller
             if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
                 // 用户是否支付成功
                 if ($message['result_code'] === 'SUCCESS') {
-                    $payment->update([
+                    db('user_payments')->where('out_trade_no',$message['out_trade_no'])->update([
                         'transaction_id' => $message['transaction_id'],
                         'price'          => $message['total_fee'] / 100,
                         'status'         => 1,
@@ -159,7 +157,7 @@ class PaymentController extends Controller
                     }
                     // 用户支付失败
                 } elseif ($message['result_code'] === 'FAIL') {
-                    $payment->update([
+                    db('user_payments')->where('out_trade_no',$message['out_trade_no'])->update([
                         'transaction_id' => $message['transaction_id'],
                         'price'          => $message['total_fee'] / 100,
                         'status'         => 2,
