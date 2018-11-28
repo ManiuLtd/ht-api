@@ -11,9 +11,14 @@ Route::namespace('OfficialAccount')
     ->group(function () {
         //支付
         Route::get('app', 'Wechat\PaymentController@app');
-        Route::get('success', 'Wechat\PaymentController@success');
+    });
+
+Route::namespace('OfficialAccount')
+    ->prefix('payment')
+    ->group(function () {
+        //支付
+        Route::any('wechatNotify', 'Wechat\PaymentController@notify');
     });
         //h5支付回调
-        Route::any('payment/wechatNotify', 'OfficialAccount\Wechat\PaymentController@notify');
 
 

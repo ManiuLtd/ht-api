@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\OfficialAccount\Wechat;
 use App\Events\SendNotification;
 use App\Models\User\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Overtrue\LaravelWeChat\Facade;
 use App\Http\Controllers\Controller;
 
@@ -101,7 +102,10 @@ class PaymentController extends Controller
     public function notify()
     {
         $app = Facade::payment ();
+        Log::info (111);
         $response = $app->handlePaidNotify(function ($message, $fail) {
+            Log::info (json_encode ($message));
+
             $payment = db('user_payments')->where('out_trade_no',$message['out_trade_no'])->first();
             if (!$payment || $payment->status == 1) { // 如果订单不存在 或者 订单已经支付过了
                 return true;      // 告诉微信，我已经处理完了，订单没找到，别再通知我了
