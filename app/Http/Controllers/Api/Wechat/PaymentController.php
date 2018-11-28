@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Wechat;
 
 use App\Events\SendNotification;
+use App\Models\User\Payment;
 use App\Models\User\User;
+use App\Repositories\Interfaces\User\PaymentRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Overtrue\LaravelWeChat\Facade;
@@ -14,6 +16,22 @@ use App\Http\Controllers\Controller;
  */
 class PaymentController extends Controller
 {
+
+    /**
+     * @var PaymentRepository
+     */
+    protected $repository;
+
+    /**
+     * PaymentController constructor.
+     * @param PaymentRepository $repository
+     */
+    public function __construct(PaymentRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+
     /**
      * 微信H5支付.
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
@@ -63,7 +81,7 @@ class PaymentController extends Controller
             if ($user->wx_openid1 == null) {
                 throw  new \Exception('请先授权app微信登录');
             }
-            $number = date ("YmdHis").rand(10000, 99999);
+            $number = date ("YmdHis") . rand (10000, 99999);
             $result = $app->order->unify ([
                 'body' => $title,
                 'out_trade_no' => $number,
@@ -73,20 +91,24 @@ class PaymentController extends Controller
                 'openid' => $user->wx_openid1,
             ]);
 
-            if( $result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS'){
-                db('user_payments')->insert([
-                    'user_id'      => $user->id,
+            if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS') {
+                $other = [
+                    'level_id' => request ('level_id'), //TODO 存入原有等级id
+                    'type' => request ('type'),
+                ];
+                $insert = [
+                    'user_id' => $user->id,
                     'out_trade_no' => $number,
-                    'type'         => 1,
-                    'status'       => 2,
-                    'other'        => json_encode([
-                        'level_id' => request('level_id'),
-                        'type'     => request('type'),
-                    ]),
-                ]);
-                $result = $app->jssdk->appConfig($result['prepay_id']);//第二次签名
+                    'type' => 1,
+                    'status' => 2,
+                    'other' => json_encode ($other)
+                ];
+
+                $this->repository->create ($insert);
+
+                $result = $app->jssdk->appConfig ($result['prepay_id']);//第二次签名
                 return json (1001, "支付信息请求成功", $result);
-            }else{
+            } else {
                 throw new \Exception('微信支付签名失败');
             }
         } catch (\Exception $e) {
@@ -102,22 +124,26 @@ class PaymentController extends Controller
     public function notify()
     {
         $app = Facade::payment ();
-        $response = $app->handlePaidNotify(function ($message, $fail) {
+        $response = $app->handlePaidNotify (function ($message, $fail) {
+
             Log::info (json_encode ($message));
-            $payment = db('user_payments')->where('out_trade_no',$message['out_trade_no'])->first();
+
+            $payment = Payment::query ()->where ('out_trade_no', $message['out_trade_no'])->first ();
+
+
             if (!$payment || $payment->status == 1) { // 如果订单不存在 或者 订单已经支付过了
-                return true;      // 告诉微信，我已经处理完了，订单没找到，别再通知我了
+                return true;      // 告诉微信，我已经处理完了，订单没找到，别再通知我了 //TODO  需要考虑退款情况
             }
             if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
                 // 用户是否支付成功
                 if ($message['result_code'] === 'SUCCESS') {
-                    db('user_payments')->where('out_trade_no',$message['out_trade_no'])->update([
+                    $payment->update ([
                         'transaction_id' => $message['transaction_id'],
-                        'price'          => $message['total_fee'] / 100,
-                        'status'         => 1,
-                        'payment_at'     => Carbon::now()->toDateTimeString()
+                        'price' => $message['total_fee'] / 100,
+                        'status' => 1,
+                        'payment_at' => Carbon::now ()->toDateTimeString ()
                     ]);
-                    $other = json_decode($payment->other);
+                    $other = json_decode ($payment->other);
                     $level_id = $other->level_id;
                     $type = $other->type;//1月2季3年4永久
 
@@ -134,34 +160,37 @@ class PaymentController extends Controller
 
                     if ($level->$column == $message['total_fee'] / 100) {
                         if ($type == 1) {
-                            $min = '一月'.$level->name;
+                            $min = '一月' . $level->name;
                             $time = now ()->addDays (30);//月
                         } elseif ($type == 2) {
-                            $min = '一季'.$level->name;
+                            $min = '一季' . $level->name;
                             $time = now ()->addMonths (3);//季
                         } elseif ($type == 3) {
-                            $min = '一年'.$level->name;
+                            $min = '一年' . $level->name;
                             $time = now ()->addYears (1);//年
                         } else {
-                            $min = '永久'.$level->name;
+                            $min = '永久' . $level->name;
                             $time = null;//永久
                         }
-                        db ('users')->where ('id', $payment->user_id)->update ([
+                       
+                        $user = User::query ()->find ($payment->user_id);
+
+                        $user->update ([
                             'level_id' => $level->id,
                             'expired_time' => $time
                         ]);
-                        $user = User::query()->find($payment->user_id);
-                        $user['message'] = '你购买的'.$min.'升级成功';
-                        event(new SendNotification($user->toArray()));
+
+                        $user['message'] = '你购买的' . $min . '升级成功';
+                        event (new SendNotification($user->toArray ()));
                     } else {
                         throw new \Exception('升级失败');
                     }
                     // 用户支付失败
                 } elseif ($message['result_code'] === 'FAIL') {
-                    db('user_payments')->where('out_trade_no',$message['out_trade_no'])->update([
+                    $payment->update ([
                         'transaction_id' => $message['transaction_id'],
-                        'price'          => $message['total_fee'] / 100,
-                        'status'         => 2,
+                        'price' => $message['total_fee'] / 100,
+                        'status' => 2,
                     ]);
                 }
             } else {
@@ -172,7 +201,6 @@ class PaymentController extends Controller
 
         return $response;
     }
-
 
 
     /**

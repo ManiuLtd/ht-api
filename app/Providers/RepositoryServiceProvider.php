@@ -24,7 +24,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(\App\Repositories\Interfaces\Image\BannerRepository::class, \App\Repositories\Image\BannerRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\UserRepository::class, \App\Repositories\User\UserRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\CouponRepository::class, \App\Repositories\Shop\CouponRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\CouponCategoryRepository::class, \App\Repositories\Shop\CouponCategoryRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Shop\CouponLogRepository::class, \App\Repositories\Shop\CouponLogRepositoryEloquent::class);
@@ -39,12 +38,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\User\UserRepository::class, \App\Repositories\User\UserRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\User\LevelRepository::class, \App\Repositories\User\LevelRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\User\AddressRepository::class, \App\Repositories\User\AddressRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\User\FavouriteRepository::class, \App\Repositories\User\FavouriteRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\User\HistoryRepository::class, \App\Repositories\User\HistoryRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\User\CreditLogRepository::class, \App\Repositories\User\CreditLogRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\User\AddressRepository::class, \App\Repositories\User\AddressRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\User\FavouriteRepository::class, \App\Repositories\User\FavouriteRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\User\GroupRepository::class, \App\Repositories\User\GroupRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\User\PaymentRepository::class, \App\Repositories\User\PaymentRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\SettingRepository::class, \App\Repositories\System\SettingRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\NotificationRepository::class, \App\Repositories\System\NotificationRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\System\FeedbackRepository::class, \App\Repositories\System\FeedbackRepositoryEloquent::class);
@@ -53,7 +52,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Cms\ProjectRepository::class, \App\Repositories\Cms\ProjectRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Cms\ArticleRepository::class, \App\Repositories\Cms\ArticleRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\CategoryRepository::class, \App\Repositories\Taoke\CategoryRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\Taoke\QuanRepository::class, \App\Repositories\Taoke\QuanRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\CouponRepository::class, \App\Repositories\Taoke\CouponRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\PidRepository::class, \App\Repositories\Taoke\PidRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\OrderRepository::class, \App\Repositories\Taoke\OrderRepositoryEloquent::class);
@@ -61,7 +59,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Taoke\HistoryRepository::class, \App\Repositories\Taoke\HistoryRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\UserOrderRepository::class, \App\Repositories\Taoke\UserOrderRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\HaoHuoRepository::class, \App\Repositories\Taoke\HaoHuoRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Interfaces\User\CommissionLevelRepository::class, \App\Repositories\User\CommissionLevelRepositoryEloquent::class);
 
         $this->app->bind(\App\Repositories\Interfaces\Taoke\ZhuanTiRepository::class, \App\Repositories\Taoke\ZhuanTiRepositoryEloquent::class);
 
