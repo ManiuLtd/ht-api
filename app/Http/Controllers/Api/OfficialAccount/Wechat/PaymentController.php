@@ -131,7 +131,9 @@ class PaymentController extends Controller
                     if (!$level) {
                         throw new \Exception('等级不存在');
                     }
-                    Log::info ($level->$column,$payment->price);
+                    Log::info (json_encode ($level));
+                    Log::info (json_encode ($column));
+                    Log::info (json_encode ($payment->price));
 
                     if ($level->$column == $payment->price) {
                         if ($type == 1) {
