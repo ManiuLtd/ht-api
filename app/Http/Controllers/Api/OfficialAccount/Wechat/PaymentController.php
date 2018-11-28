@@ -32,6 +32,10 @@ class PaymentController extends Controller
     }
 
 
+    /**
+     * 支付
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function app()
     {
         //APP支付  https://www.easywechat.com/docs/master/payment/order
@@ -47,6 +51,7 @@ class PaymentController extends Controller
             if ($payType == "level") {
                 $totaFee = $this->getLevelPrice ();
             }
+
             if ($totaFee == 0) {
                 throw  new \Exception('付款金额不能为0');
             }
@@ -58,28 +63,79 @@ class PaymentController extends Controller
                 'body' => $title,
                 'out_trade_no' => date ("YmdHis") . range (10000, 99999),
                 'total_fee' => $totaFee,
-//                'notify_url' => 'https://pay.weixin.qq.com/wxpay/pay.action', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'notify_url' => 'http://v2.easytbk.com/api/payment/wechatNotify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'trade_type' => 'APP', // 请对应换成你的支付方式对应的值类型
                 'openid' => $user->wx_openid1,
             ]);
 
-            return json (1001, "支付信息请求成功", $result);
-
-
+            if( $result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS'){
+                $result = $app->jssdk->appConfig($result['prepay_id']);//第二次签名
+                return json (1001, "支付信息请求成功", $result);
+            }else{
+                throw new \Exception('微信支付签名失败');
+            }
         } catch (\Exception $e) {
             return json (5001, $e->getMessage ());
         }
     }
 
 
+    /**
+     * 回调获取支付后的金额
+     * @throws \Exception
+     */
     public function notify()
     {
+        $app = Facade::payment ();
+        $response = $app->handlePaidNotify(function ($message, $fail) {
+            return $message['total_fee'] / 100;
+        });
+    }
+
+    /**
+     * 支付成功后升级
+     * @throws \Exception
+     */
+    public function success()
+    {
+        $user = getUser();
+        $level_id = request ('level_id');
+        $type = request ('type');//1月2季3年4永久
+
+        if (!in_array ($type, [1, 2, 3, 4])) {
+            throw new \Exception('传参错误');
+        } else {
+            $column = 'price' . $type;
+        }
+
+        $level = db ('user_levels')->find ($level_id);
+        if (!$level) {
+            throw new \Exception('等级不存在');
+        }
+        $money = $this->notify();
         //判断支付是否成功  然后升级等等
+        if ($level->$column == $money) {
+            if ($type == 1) {
+                $time = now ()->addDays (30);//月
+            } elseif ($type == 2) {
+                $time = now ()->addMonths (3);//季
+            } elseif ($type == 3) {
+                $time = now ()->addYears (1);//年
+            } else {
+                $time = null;//永久
+            }
+            db ('users')->where ('id', $user->id)->update ([
+                'level_id' => $level->id,
+                'expired_time' => $time
+            ]);
+        } else {
+            throw new \Exception('升级失败');
+        }
     }
 
 
     /**
-     * 付费升级
+     * 获取升级金额
      * @return \Illuminate\Database\Query\Builder|mixed
      * @throws \Exception
      */
@@ -95,32 +151,15 @@ class PaymentController extends Controller
             $column = 'price' . $type;
         }
 
-        $level = db ('levels')->find ($level_id);
+        $level = db ('user_levels')->find ($level_id);
         if (!$level) {
             throw new \Exception('等级不存在');
         }
-        $level_user = db ('levels')->find ($user->level_id);
+        $level_user = db ('user_levels')->find ($user->level_id);
         if ($level_user->level > $level->level) {
             throw new \Exception('当前等级大于所要升级的等级');
         }
 
         return $level->$column * 100;
-//        if ($level[$column] == $money) {
-//            if ($type == 1) {
-//                $time = now ()->addDays (30);
-//            } elseif ($type == 2) {
-//                $time = now ()->addMonths (3);
-//            } elseif ($type == 3) {
-//                $time = now ()->addYears (1);
-//            } else {
-//                $time = null;
-//            }
-//            db ('users')->where ('id', $user->id)->update ([
-//                'level_id' => $level->id,
-//                'expired_time' => $time
-//            ]);
-//        } else {
-//            throw new \Exception('升级失败');
-//        }
     }
 }
