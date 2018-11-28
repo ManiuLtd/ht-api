@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\OfficialAccount\Wechat;
 
+use Carbon\Carbon;
 use Overtrue\LaravelWeChat\Facade;
 use App\Http\Controllers\Controller;
 
@@ -59,9 +60,10 @@ class PaymentController extends Controller
             if ($user->wx_openid1 == null) {
                 throw  new \Exception('请先授权app微信登录');
             }
+            $number = date ("YmdHis").rand(10000, 99999);
             $result = $app->order->unify ([
                 'body' => $title,
-                'out_trade_no' => date ("YmdHis").rand(10000, 99999),
+                'out_trade_no' => $number,
                 'total_fee' => $totaFee,
                 'notify_url' => 'http://v2.easytbk.com/api/payment/wechatNotify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'trade_type' => 'APP', // 请对应换成你的支付方式对应的值类型
@@ -69,9 +71,17 @@ class PaymentController extends Controller
             ]);
 
             if( $result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS'){
+                db('user_payments')->insert([
+                    'user_id'      => $user->id,
+                    'out_trade_no' => $number,
+                    'type'         => 1,
+                    'status'       => 2,
+                    'other'        => json_encode([
+                        'level_id' => request('level_id'),
+                        'type'     => request('type'),
+                    ]),
+                ]);
                 $result = $app->jssdk->appConfig($result['prepay_id']);//第二次签名
-                $result['level_id'] = request('level_id');
-                $result['type']     = request('type');
                 return json (1001, "支付信息请求成功", $result);
             }else{
                 throw new \Exception('微信支付签名失败');
@@ -90,50 +100,60 @@ class PaymentController extends Controller
     {
         $app = Facade::payment ();
         $response = $app->handlePaidNotify(function ($message, $fail) {
-            $user = request('user_id');
-            $level_id = request ('level_id');
-            $type = request ('type');//1月2季3年4永久
-
-            if (!in_array ($type, [1, 2, 3, 4])) {
-                throw new \Exception('传参错误');
-            } else {
-                $column = 'price' . $type;
+            $payment = db('user_payments')->where('out_trade_no',$message['out_trade_no'])->first();
+            if (!$payment || $payment->status == 1) { // 如果订单不存在 或者 订单已经支付过了
+                return true;      // 告诉微信，我已经处理完了，订单没找到，别再通知我了
             }
+            if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
+                // 用户是否支付成功
+                if (array_get($message, 'result_code') === 'SUCCESS') {
+                    $payment->update([
+                        'transaction_id' => $message['transaction_id'],
+                        'price'          => $message['total_fee'] / 100,
+                        'status'         => 1,
+                        'payment_at'     => Carbon::now()->toDateTimeString()
+                    ]);
+                    $other = json_decode($payment->other);
+                    $level_id = $other->level_id;
+                    $type = $other->type;//1月2季3年4永久
 
-            $level = db ('user_levels')->find ($level_id);
-            if (!$level) {
-                throw new \Exception('等级不存在');
-            }
-            $money = $this->notify();
-            //判断支付是否成功  然后升级等等
-            if ($level->$column == $money) {
-                if ($type == 1) {
-                    $time = now ()->addDays (30);//月
-                } elseif ($type == 2) {
-                    $time = now ()->addMonths (3);//季
-                } elseif ($type == 3) {
-                    $time = now ()->addYears (1);//年
-                } else {
-                    $time = null;//永久
+                    if (!in_array ($type, [1, 2, 3, 4])) {
+                        throw new \Exception('传参错误');
+                    } else {
+                        $column = 'price' . $type;
+                    }
+
+                    $level = db ('user_levels')->find ($level_id);
+                    if (!$level) {
+                        throw new \Exception('等级不存在');
+                    }
+                    if ($level->$column == $payment->price) {
+                        if ($type == 1) {
+                            $time = now ()->addDays (30);//月
+                        } elseif ($type == 2) {
+                            $time = now ()->addMonths (3);//季
+                        } elseif ($type == 3) {
+                            $time = now ()->addYears (1);//年
+                        } else {
+                            $time = null;//永久
+                        }
+                        db ('users')->where ('id', $payment->user_id)->update ([
+                            'level_id' => $level->id,
+                            'expired_time' => $time
+                        ]);
+                    } else {
+                        throw new \Exception('升级失败');
+                    }
+                    // 用户支付失败
+                } elseif (array_get($message, 'result_code') === 'FAIL') {
+                    $payment->update([
+                        'transaction_id' => $message['transaction_id'],
+                        'price'          => $message['total_fee'] / 100,
+                        'status'         => 2,
+                    ]);
                 }
-                db ('users')->where ('id', $user->id)->update ([
-                    'level_id' => $level->id,
-                    'expired_time' => $time
-                ]);
-                $insert = [
-                    'user_id' => $user->id,
-                    'operater_id' => null,
-                    'credit' => $money,
-                    'column' => 'credit1',
-                    'type' => 13,
-                    'remark' => '充值',
-                    'created_at' => now()->toDateTimeString(),
-                    'updated_at' => now()->toDateTimeString(),
-                ];
-
-                db('user_credit_logs')->insert($insert);
             } else {
-                throw new \Exception('升级失败');
+                return $fail('通信失败，请稍后再通知我');
             }
             return true;
         });
