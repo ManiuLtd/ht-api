@@ -9,9 +9,4 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface LevelRepository extends RepositoryInterface
 {
-    /**
-     * 付费升级
-     * @return mixed
-     */
-    public function payment();
 }

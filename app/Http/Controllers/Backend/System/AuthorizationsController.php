@@ -59,11 +59,14 @@ class AuthorizationsController extends Controller
     {
 
         try {
+
             $id = getUserId();
             dd($id);
             if (!$id) {
                 throw new \Exception('用户不存在');
             }
+
+
             $create = [
                 'sid'         => request('sid'),
                 'taoid'       => request('tao_id'),
