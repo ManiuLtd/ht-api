@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\OfficialAccount\Wechat;
 
+use App\Events\SendNotification;
+use App\Models\User\User;
 use Carbon\Carbon;
 use Overtrue\LaravelWeChat\Facade;
 use App\Http\Controllers\Controller;
@@ -129,18 +131,25 @@ class PaymentController extends Controller
                     }
                     if ($level->$column == $payment->price) {
                         if ($type == 1) {
+                            $min = '一月';
                             $time = now ()->addDays (30);//月
                         } elseif ($type == 2) {
+                            $min = '一季';
                             $time = now ()->addMonths (3);//季
                         } elseif ($type == 3) {
+                            $min = '一年';
                             $time = now ()->addYears (1);//年
                         } else {
+                            $min = '永久';
                             $time = null;//永久
                         }
                         db ('users')->where ('id', $payment->user_id)->update ([
                             'level_id' => $level->id,
                             'expired_time' => $time
                         ]);
+                        $user = User::query()->find($payment->user_id);
+                        $user['message'] = '你购买的'.$min.'会员升级成功';
+                        event(new SendNotification($user->toArray()));
                     } else {
                         throw new \Exception('升级失败');
                     }
