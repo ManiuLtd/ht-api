@@ -108,7 +108,7 @@ class PaymentController extends Controller
             }
             if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
                 // 用户是否支付成功
-                if (array_get($message, 'result_code') === 'SUCCESS') {
+                if ($message['result_code'] === 'SUCCESS') {
                     $payment->update([
                         'transaction_id' => $message['transaction_id'],
                         'price'          => $message['total_fee'] / 100,
@@ -131,16 +131,16 @@ class PaymentController extends Controller
                     }
                     if ($level->$column == $payment->price) {
                         if ($type == 1) {
-                            $min = '一月';
+                            $min = '一月'.$level->name;
                             $time = now ()->addDays (30);//月
                         } elseif ($type == 2) {
-                            $min = '一季';
+                            $min = '一季'.$level->name;
                             $time = now ()->addMonths (3);//季
                         } elseif ($type == 3) {
-                            $min = '一年';
+                            $min = '一年'.$level->name;
                             $time = now ()->addYears (1);//年
                         } else {
-                            $min = '永久';
+                            $min = '永久'.$level->name;
                             $time = null;//永久
                         }
                         db ('users')->where ('id', $payment->user_id)->update ([
@@ -148,13 +148,13 @@ class PaymentController extends Controller
                             'expired_time' => $time
                         ]);
                         $user = User::query()->find($payment->user_id);
-                        $user['message'] = '你购买的'.$min.'会员升级成功';
+                        $user['message'] = '你购买的'.$min.'升级成功';
                         event(new SendNotification($user->toArray()));
                     } else {
                         throw new \Exception('升级失败');
                     }
                     // 用户支付失败
-                } elseif (array_get($message, 'result_code') === 'FAIL') {
+                } elseif ($message['result_code'] === 'FAIL') {
                     $payment->update([
                         'transaction_id' => $message['transaction_id'],
                         'price'          => $message['total_fee'] / 100,
