@@ -129,6 +129,18 @@ class PaymentController extends Controller
                     'level_id' => $level->id,
                     'expired_time' => $time
                 ]);
+                $insert = [
+                    'user_id' => $user->id,
+                    'operater_id' => null,
+                    'credit' => $money,
+                    'column' => 'credit1',
+                    'type' => 13,
+                    'remark' => '充值',
+                    'created_at' => now()->toDateTimeString(),
+                    'updated_at' => now()->toDateTimeString(),
+                ];
+
+                db('user_credit_logs')->insert($insert);
             } else {
                 throw new \Exception('升级失败');
             }
