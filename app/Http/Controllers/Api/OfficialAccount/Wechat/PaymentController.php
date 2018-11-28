@@ -70,6 +70,8 @@ class PaymentController extends Controller
 
             if( $result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS'){
                 $result = $app->jssdk->appConfig($result['prepay_id']);//第二次签名
+                $result['level_id'] = request('level_id');
+                $result['type']     = request('type');
                 return json (1001, "支付信息请求成功", $result);
             }else{
                 throw new \Exception('微信支付签名失败');
@@ -88,17 +90,6 @@ class PaymentController extends Controller
     {
         $app = Facade::payment ();
         $response = $app->handlePaidNotify(function ($message, $fail) {
-            return $message['total_fee'] / 100;
-        });
-    }
-
-    /**
-     * 支付成功后升级
-     * @throws \Exception
-     */
-    public function success()
-    {
-        try{
             $user = getUser();
             $level_id = request ('level_id');
             $type = request ('type');//1月2季3年4永久
@@ -144,11 +135,12 @@ class PaymentController extends Controller
             } else {
                 throw new \Exception('升级失败');
             }
-        }catch(\Exception $e){
-            return json('5001',$e->getMessage());
-        }
+            return true;
+        });
 
+        return $response;
     }
+
 
 
     /**

@@ -20,14 +20,14 @@ trait TBKCommon
         $user_pid = db ('tbk_pids')->where ('user_id', $user->id)->first ();
 
         //自己
-        if ($user_pid) {
+        if ($user_pid->taobao != null) {
             return $user_pid;
         }
         //邀请人
         if ($user->inviter_id != null) {
             $inviter_pid = db ('tbk_pids')->where ('user_id', $user->inviter_id)->first ();
 
-            if ($inviter_pid) {
+            if ($inviter_pid->taobao != null) {
                 return $inviter_pid;
             }
         }
@@ -36,7 +36,7 @@ trait TBKCommon
             $group = db ('groups')->find ($user->group_id);
             $group_pid = db ('tbk_pids')->where ('user_id', $group->user_id)->first ();
             //小组
-            if ($group_pid) {
+            if ($group_pid->taobao != null) {
                 return $group_pid;
             }
             // 代理设置
