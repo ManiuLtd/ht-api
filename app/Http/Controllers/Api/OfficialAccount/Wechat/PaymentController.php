@@ -46,7 +46,7 @@ class PaymentController extends Controller
             $user = getUser ();
 
             $payType = request ('pay_type');
-            $title = "微信支付";
+            $title = '微信支付';
             $totaFee = 0;
             if ($payType == "level") {
                 $totaFee = $this->getLevelPrice ();
@@ -61,7 +61,7 @@ class PaymentController extends Controller
             }
             $result = $app->order->unify ([
                 'body' => $title,
-                'out_trade_no' => date ("YmdHis") . range (10000, 99999),
+                'out_trade_no' => date ("YmdHis").rand(10000, 99999),
                 'total_fee' => $totaFee,
                 'notify_url' => 'http://v2.easytbk.com/api/payment/wechatNotify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'trade_type' => 'APP', // 请对应换成你的支付方式对应的值类型
