@@ -10,7 +10,8 @@ Route::namespace('OfficialAccount')
     ->middleware(['jwt.auth'])
     ->group(function () {
         //支付
-        Route::any('appPayment', 'Wechat\PaymentController@app');
+        Route::post('appPayment', 'Wechat\PaymentController@app');
+        Route::get('success', 'Wechat\PaymentController@success');
     });
         //h5支付回调
         Route::any('payment/wechatNotify', 'OfficialAccount\Wechat\PaymentController@notify');

@@ -98,39 +98,44 @@ class PaymentController extends Controller
      */
     public function success()
     {
-        $user = getUser();
-        $level_id = request ('level_id');
-        $type = request ('type');//1月2季3年4永久
+        try{
+            $user = getUser();
+            $level_id = request ('level_id');
+            $type = request ('type');//1月2季3年4永久
 
-        if (!in_array ($type, [1, 2, 3, 4])) {
-            throw new \Exception('传参错误');
-        } else {
-            $column = 'price' . $type;
-        }
-
-        $level = db ('user_levels')->find ($level_id);
-        if (!$level) {
-            throw new \Exception('等级不存在');
-        }
-        $money = $this->notify();
-        //判断支付是否成功  然后升级等等
-        if ($level->$column == $money) {
-            if ($type == 1) {
-                $time = now ()->addDays (30);//月
-            } elseif ($type == 2) {
-                $time = now ()->addMonths (3);//季
-            } elseif ($type == 3) {
-                $time = now ()->addYears (1);//年
+            if (!in_array ($type, [1, 2, 3, 4])) {
+                throw new \Exception('传参错误');
             } else {
-                $time = null;//永久
+                $column = 'price' . $type;
             }
-            db ('users')->where ('id', $user->id)->update ([
-                'level_id' => $level->id,
-                'expired_time' => $time
-            ]);
-        } else {
-            throw new \Exception('升级失败');
+
+            $level = db ('user_levels')->find ($level_id);
+            if (!$level) {
+                throw new \Exception('等级不存在');
+            }
+            $money = $this->notify();
+            //判断支付是否成功  然后升级等等
+            if ($level->$column == $money) {
+                if ($type == 1) {
+                    $time = now ()->addDays (30);//月
+                } elseif ($type == 2) {
+                    $time = now ()->addMonths (3);//季
+                } elseif ($type == 3) {
+                    $time = now ()->addYears (1);//年
+                } else {
+                    $time = null;//永久
+                }
+                db ('users')->where ('id', $user->id)->update ([
+                    'level_id' => $level->id,
+                    'expired_time' => $time
+                ]);
+            } else {
+                throw new \Exception('升级失败');
+            }
+        }catch(\Exception $e){
+            return json('5001',$e->getMessage());
         }
+
     }
 
 
