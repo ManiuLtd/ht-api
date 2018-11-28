@@ -90,7 +90,7 @@ class PaymentController extends Controller
     {
         $app = Facade::payment ();
         $response = $app->handlePaidNotify(function ($message, $fail) {
-            $user = getUser();
+            $user = request('user_id');
             $level_id = request ('level_id');
             $type = request ('type');//1月2季3年4永久
 
