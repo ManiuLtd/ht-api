@@ -172,7 +172,7 @@ class PaymentController extends Controller
                             $min = '永久' . $level->name;
                             $time = null;//永久
                         }
-                       
+
                         $user = User::query ()->find ($payment->user_id);
 
                         $user->update ([

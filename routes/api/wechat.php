@@ -17,7 +17,7 @@ Route::namespace('Wechat')
     ->prefix('wechat')
     ->group(function () {
         //支付
-        Route::any('notify', 'PaymentController@notify');
+        Route::any('payment/notify', 'PaymentController@notify');
     });
         //h5支付回调
 
