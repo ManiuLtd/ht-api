@@ -179,7 +179,7 @@ class PaymentController extends Controller
                             'level_id' => $level->id,
                             'expired_time' => $time
                         ]);
-
+                        $user['title']   = '购买升级';
                         $user['message'] = '你购买的' . $min . '升级成功';
                         event (new SendNotification($user->toArray ()));
                     } else {
