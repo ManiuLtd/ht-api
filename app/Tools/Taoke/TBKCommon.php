@@ -193,7 +193,7 @@ trait TBKCommon
         $badword1 = array_combine($word,array_fill(0,count($word),'*'));
 
         $string = strtr($str, $badword1);
-        dd($string);
+//        dd($string);
         return $string;
 
     }

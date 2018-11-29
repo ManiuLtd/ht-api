@@ -210,11 +210,11 @@ class Taobao implements TBKInterface
             if(is_numeric ($decode)){
                 $q = "https://item.taobao.com/item.htm?id={$decode}";
             }else{
-                $q = $decode;
+                $q = $this->sensitiveWordFilter($decode);
+//                $q = $decode;
             }
-
         }
-        dd($decode);
+
         //本地搜索
         $searchType = request ('searchtype',2);
         if($searchType == 1){
