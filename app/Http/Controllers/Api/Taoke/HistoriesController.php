@@ -10,6 +10,9 @@ use App\Http\Requests\Taoke\HistoryCreateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\HistoryRepository;
+use App\Tools\Taoke\JingDong;
+use App\Tools\Taoke\PinDuoDuo;
+use App\Tools\Taoke\Taobao;
 
 /**
  * Class HistoriesController.
@@ -62,11 +65,33 @@ class HistoriesController extends Controller
     public function store(HistoryCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $re = $request->all();
+            if ($re['type'] == 1){
+                $tool    = new Taobao();
+            }elseif ($re['type'] == 2){
+                $tool    = new JingDong();
+            }elseif ($re['type'] == 3){
+                $tool    = new PinDuoDuo();
+            }
+            $detail = $tool->getDetail([
+                'itemid' => $re['item_id']
+            ]);
+            $user = getUser();
+            $data = [
+                'title'        => $detail['title'] ?? '',
+                'pic_url'      => $detail['pic_url'] ?? '',
+                'item_id'      => $detail['item_id'] ?? '',
+                'volume'       => $detail['volume'] ?? '',
+                'coupon_price' => $detail['coupon_price'] ?? '',
+                'final_price'  => $detail['final_price'] ?? '',
+                'price'        => $detail['price'] ?? '',
+                'type'         => $re['type'] ?? '',
+                'user_id'      => $user->id ?? '',
+            ];
+            $histories = $this->repository->create($data);
 
-            $category = $this->repository->create($request->all());
 
-            return json(1001, '添加成功', $category);
+            return json(1001, '添加成功', $histories);
         } catch (ValidatorException $e) {
             return json(5001, $e->getMessage());
         }
