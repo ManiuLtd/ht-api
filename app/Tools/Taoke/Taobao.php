@@ -116,8 +116,12 @@ class Taobao implements TBKInterface
         //获取图文详情
 //        $images = $this->getDesc ($itemID);
 
+        $small_images = [$data->pict_url];
         //在商品图前加上商品主图
-        array_unshift($data->small_images->string,$data->pict_url);
+        if (isset($data->small_images->string)){
+            $small_images = $data->small_images->string;
+            array_unshift($small_images,$data->pict_url);
+        }
 
         //重组字段
         $coupon_price = isset($couponUrl->coupon_info) ? $this->getCouponPrice ($couponUrl->coupon_info) : 0;
@@ -136,7 +140,7 @@ class Taobao implements TBKInterface
         $arr['coupon_remain_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_remain_count : 0; //已使用优惠卷数量
         $arr['coupon_total_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_total_count : 10000; //优惠卷总数
         $arr['pic_url'] = $data->pict_url; //商品主图
-        $arr['small_images'] = $data->small_images->string; //商品图
+        $arr['small_images'] = $small_images; //商品图
         $arr['images'] = null; //商品详情图
         $arr['kouling'] = $data->kouling; //淘口令
         $arr['introduce'] = $data->introduce; //描述

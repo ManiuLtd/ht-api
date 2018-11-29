@@ -107,8 +107,13 @@ class PinDuoDuo implements TBKInterface
                 $favourite = $favouritesModel->id; //已收藏
             }
         }
+        $small_images = [$data->picUrl];
+        //在商品图前加上商品主图
+        if (isset($data->picUrls)){
+            $small_images = $data->picUrls;
+            array_unshift($small_images,$data->picUrl);
+        }
 
-        array_unshift($data->picUrls, $data->picUrl);
         //重组字段
         $arr = [];
         $arr['title'] = $data->skuName; //标题
@@ -124,7 +129,7 @@ class PinDuoDuo implements TBKInterface
         $arr['coupon_remain_count'] = $data->coupon_total_quantity - $data->coupon_remain_quantity; //已使用优惠卷数量
         $arr['coupon_total_count'] = $data->coupon_total_quantity ?? 1000; //优惠卷总数
         $arr['pic_url'] = $data->picUrl; //商品主图
-        $arr['small_images'] = $data->picUrls; //商品图
+        $arr['small_images'] = $small_images; //商品图
         $arr['images'] = $data->picUrls;//商品详情图
         $arr['kouling'] = null; //淘口令
         $arr['introduce'] = $data->skuDesc; //描述
