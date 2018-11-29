@@ -33,9 +33,9 @@ class AuthorizationsController extends Controller
     public function index()
     {
 //        //淘宝
-        $tbbackurl = urlencode('http://v2.easytbk.com/api/admin/system/tbcallback?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC92Mi5lYXN5dGJrLmNvbVwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTU0MzMxNTEyMCwiZXhwIjoxOTAzMzE1MTIwLCJuYmYiOjE1NDMzMTUxMjAsImp0aSI6InpyM2JOdFRUaTRXT3E0Rk4iLCJzdWIiOjEsInBydiI6ImI5MTI3OTk3OGYxMWFhN2JjNTY3MDQ4N2ZmZjAxZTIyODI1M2ZlNDgifQ.jtpmkIM94E8ZOZ-jt7EzRNlEOLKKp1sSe8pKI3Ro1n0');
+//        $tbbackurl = urlencode('http://v2.easytbk.com/api/admin/system/tbcallback?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC92Mi5lYXN5dGJrLmNvbVwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTU0MzMxNTEyMCwiZXhwIjoxOTAzMzE1MTIwLCJuYmYiOjE1NDMzMTUxMjAsImp0aSI6InpyM2JOdFRUaTRXT3E0Rk4iLCJzdWIiOjEsInBydiI6ImI5MTI3OTk3OGYxMWFhN2JjNTY3MDQ4N2ZmZjAxZTIyODI1M2ZlNDgifQ.jtpmkIM94E8ZOZ-jt7EzRNlEOLKKp1sSe8pKI3Ro1n0');
 
-        $tburi = 'https://oauth.taobao.com/authorize?response_type=code&client_id=23205020&redirect_uri=https%3A%2F%2Fwww.heimataoke.com%2Fuser-authback%3Fbackurl%3D'.$tbbackurl.'%26bind%3DUW&state=1';
+//        $tburi = 'https://oauth.taobao.com/authorize?response_type=code&client_id=23205020&redirect_uri=https%3A%2F%2Fwww.heimataoke.com%2Fuser-authback%3Fbackurl%3D'.$tbbackurl.'%26bind%3DUW&state=1';
 //        //京东
 //        $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
 //        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
@@ -43,7 +43,7 @@ class AuthorizationsController extends Controller
 //        $ddkbackurl = 'http://v2.easytbk.com/api/admin/system/pddcallback';
 //        $ddkuri = 'http://jinbao.pinduoduo.com/open.html?client_id=cdd7fdd7c6164e96b9525f8a9d2d7ddf&response_type=code&redirect_uri='.$ddkbackurl.'&state=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93d3cuaHRhcGkuY25cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE1NDMzMDAzOTUsImV4cCI6MTkwMzMwMDM5NSwibmJmIjoxNTQzMzAwMzk1LCJqdGkiOiIzYkdpTGNsQ0RNd2NzYXVyIiwic3ViIjoxLCJwcnYiOiJiOTEyNzk5NzhmMTFhYTdiYzU2NzA0ODdmZmYwMWUyMjgyNTNmZTQ4In0.si4RM9YFx8woIE9ntzp5DfaPeVeJ3fIAxDcbUAKNAqc';
         $setting = setting(getUserId());
-        dd($tburi);
+
         return json(1001, '获取成功', [
 //            'ddkuri' => $ddkuri,
             'taobao'    => $setting->taobao,
@@ -61,7 +61,7 @@ class AuthorizationsController extends Controller
         try {
 
             $id = getUserId();
-            dd($id);
+
             if (!$id) {
                 throw new \Exception('用户不存在');
             }

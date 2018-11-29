@@ -214,6 +214,7 @@ class Taobao implements TBKInterface
             }
 
         }
+        dd($decode);
         //本地搜索
         $searchType = request ('searchtype',2);
         if($searchType == 1){

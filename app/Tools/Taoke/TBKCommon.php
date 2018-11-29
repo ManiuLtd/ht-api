@@ -107,6 +107,10 @@ trait TBKCommon
         return $setting;
     }
 
+    /**
+     * @param $q
+     * @return array
+     */
     public function localSearch($q)
     {
         $limit = request ('limit', 10);
@@ -174,5 +178,14 @@ trait TBKCommon
                 'total' => $data['total'],
             ],
         ];
+    }
+
+    public function sensitiveWordFilter()
+    {
+        $word = [
+            '【包邮】',
+            '【不包邮】',
+        ];
+
     }
 }
