@@ -108,6 +108,7 @@ class PinDuoDuo implements TBKInterface
             }
         }
 
+        array_unshift($data->picUrls, $data->picUrl);
         //重组字段
         $arr = [];
         $arr['title'] = $data->skuName; //标题

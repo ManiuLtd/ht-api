@@ -116,6 +116,9 @@ class Taobao implements TBKInterface
         //获取图文详情
 //        $images = $this->getDesc ($itemID);
 
+        //在商品图前加上商品主图
+        array_unshift($data->small_images->string,$data->pict_url);
+
         //重组字段
         $coupon_price = isset($couponUrl->coupon_info) ? $this->getCouponPrice ($couponUrl->coupon_info) : 0;
         $arr = [];

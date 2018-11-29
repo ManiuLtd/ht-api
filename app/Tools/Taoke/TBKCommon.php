@@ -181,6 +181,7 @@ trait TBKCommon
     }
 
     /**
+     * 字符串过滤
      * @param $str
      * @return string
      */
