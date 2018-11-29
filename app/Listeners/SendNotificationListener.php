@@ -59,7 +59,7 @@ class SendNotificationListener
         try {
             $push->send();
             $insert['user_id'] = $messages['id'];
-            $insert['title'] = $messages['title'];
+            $insert['title'] = $messages['title'] ?? '';
             $insert['message'] = $messages['message'];
             $insert['created_at'] = now()->toDateTimeString();
             $insert['updated_at'] = now()->toDateTimeString();
