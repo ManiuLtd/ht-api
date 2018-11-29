@@ -180,8 +180,8 @@ class PaymentController extends Controller
                             'expired_time' => $time
                         ]);
                         $user['title']   = '购买升级';
-                        $user['message'] = '你购买的' . $min . '升级成功';
-                        event (new SendNotification($user->toArray ()));
+                        $user['message'] = '恭喜你成功升级为' . $min . ',到期时间为'.$time != null ? $time : '永久' ;
+                        event (new SendNotification($user->toArray ()),true);
                     } else {
                         throw new \Exception('升级失败');
                     }
