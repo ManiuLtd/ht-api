@@ -181,7 +181,7 @@ class PaymentController extends Controller
                         ]);
                         $user['title']   = '购买升级';
                         $user['message'] = '恭喜你成功升级为' . $min . ',到期时间为'.$time != null ? $time : '永久' ;
-                        event (new SendNotification($user->toArray ()),true);
+                        event (new SendNotification($user->toArray ()));
                     } else {
                         throw new \Exception('升级失败');
                     }
