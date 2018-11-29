@@ -87,7 +87,7 @@ class Qrcode
             }
         }
         //生成文字
-        if (count($this->textEnumArray) > 0) {
+        if (isset($this->textEnumArray) &&  count($this->textEnumArray) > 0) {
             foreach ($this->textEnumArray as $textEnum) {
                 if (! $textEnum instanceof TextEnum) {
                     throw new \InvalidArgumentException('数组元素为App\Tools\Qrcode\TextEnum实例');
