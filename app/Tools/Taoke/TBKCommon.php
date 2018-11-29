@@ -180,12 +180,21 @@ trait TBKCommon
         ];
     }
 
-    public function sensitiveWordFilter()
+    /**
+     * @param $str
+     * @return string
+     */
+    public function sensitiveWordFilter($str)
     {
         $word = [
             '【包邮】',
             '【不包邮】',
         ];
+        $badword1 = array_combine($word,array_fill(0,count($word),'*'));
+
+        $string = strtr($str, $badword1);
+        dd($string);
+        return $string;
 
     }
 }
