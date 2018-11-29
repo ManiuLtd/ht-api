@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Criteria\UserCriteria;
 use App\Http\Controllers\Controller;
+use App\Models\Taoke\History;
 use App\Validators\Taoke\HistoryValidator;
 use App\Http\Requests\Taoke\HistoryCreateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -43,9 +44,12 @@ class HistoriesController extends Controller
      */
     public function index()
     {
-        $histories = $this->repository
-            ->pushCriteria(new UserCriteria())
+        $user = getUser();
+        $histories = History::query()
+            ->where('user_id',$user->id)
+            ->orderBy('id','desc')
             ->paginate(request('limit', 10));
+
 
         return json(1001, '列表获取成功', $histories);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Criteria\UserCriteria;
+use App\Models\Taoke\Favourite;
 use App\Tools\Taoke\JingDong;
 use App\Tools\Taoke\PinDuoDuo;
 use App\Tools\Taoke\Taobao;
@@ -47,8 +48,10 @@ class FavouritesController extends Controller
      */
     public function index()
     {
-        $favourites = $this->repository
-            ->pushCriteria(new UserCriteria())
+        $user = getUser();
+        $favourites = Favourite::query()
+            ->where('user_id',$user->id)
+            ->orderBy('id','desc')
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $favourites);
