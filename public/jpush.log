@@ -424,3 +424,6 @@ Send POST https://api.jpush.cn/v3/push, body:{"platform":"all","audience":{"tag"
 =======
 >>>>>>> 6e3c416f21dbf9171413a07e6433dcb158036afe
 >>>>>>> 883081dee386c5a1bd582ffb810d25029596cf94
+Send POST https://api.jpush.cn/v3/push, body:{"platform":"all","audience":{"tag":["pvw120"]},"notification":{"alert":"\u589e\u52a0\u7c89\u4e1d\u4f59\u989d\u6536\u76ca\u589e\u52a041"},"options":{"sendno":781410551,"time_to_live":6000,"apns_production":false}}, times:1
+Send POST https://api.jpush.cn/v3/push, body:{"platform":"all","audience":{"tag":["pvw120"]},"notification":{"alert":"\u4e0a\u7ea7\u589e\u52a0\u7c89\u4e1d\u4f59\u989d\u6536\u76ca\u589e\u52a041"},"options":{"sendno":2057951050,"time_to_live":6000,"apns_production":false}}, times:1
+Send POST https://api.jpush.cn/v3/push, body:{"platform":"all","audience":{"tag":["pvw120"]},"notification":{"alert":"\u7ec4\u957f\u589e\u52a0\u7c89\u4e1d\u4f59\u989d\u6536\u76ca\u589e\u52a041"},"options":{"sendno":897255896,"time_to_live":6000,"apns_production":false}}, times:1
