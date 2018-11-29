@@ -179,8 +179,8 @@ class PaymentController extends Controller
                             'level_id' => $level->id,
                             'expired_time' => $time
                         ]);
-
-                        $user['message'] = '你购买的' . $min . '升级成功';
+                        $user['title']   = '购买升级';
+                        $user['message'] = '恭喜你成功升级为' . $min . ',到期时间为'.$time != null ? $time : '永久' ;
                         event (new SendNotification($user->toArray ()));
                     } else {
                         throw new \Exception('升级失败');
