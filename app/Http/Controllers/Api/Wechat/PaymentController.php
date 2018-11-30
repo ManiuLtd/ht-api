@@ -187,7 +187,7 @@ class PaymentController extends Controller
                     }
                     // 用户支付失败
                 } elseif ($message['result_code'] === 'FAIL') {
-                    $payment->update ([
+                    $payment->update ([c
                         'transaction_id' => $message['transaction_id'],
                         'price' => $message['total_fee'] / 100,
                         'status' => 2,
