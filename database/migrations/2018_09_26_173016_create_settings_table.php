@@ -36,6 +36,7 @@ class CreateSettingsTable extends Migration
             $table->text('jingdong')->nullable(); //京东
             $table->text('pinduoduo')->nullable(); //拼多多
             $table->string('unionid', 190)->nullable(); //京东联盟id  {"jingdong":"1000383879"} json格式
+            $table->text('filter')->nullable();//搜索过滤词汇
             $table->text('level_desc')->nullable(); //等级描述
             $table->text('download')->nullable(); //下载地址
             $table->text('kuaizhan')->nullable(); //下载地址
