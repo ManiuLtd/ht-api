@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Wechat;
 
 use App\Events\SendNotification;
+use App\Events\Upgrade;
 use App\Models\User\Payment;
 use App\Models\User\User;
 use App\Repositories\Interfaces\User\PaymentRepository;
@@ -174,7 +175,7 @@ class PaymentController extends Controller
                         }
 
                         $user = User::query ()->find ($payment->user_id);
-
+                        event(new Upgrade($user, $level));
                         $user->update ([
                             'level_id' => $level->id,
                             'expired_time' => $time
