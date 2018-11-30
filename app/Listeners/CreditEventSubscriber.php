@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Events\MemberUpgrade;
 use InvalidArgumentException;
 use App\Events\CreditDecrement;
 use App\Events\CreditIncrement;
@@ -61,9 +60,7 @@ class CreditEventSubscriber
 
         //修改积分并添加操作日志
         DB::transaction(function () use ($event, $isIncrement) {
-//            if ($isIncrement && $event->column == 'credit3') {
-//                event(new MemberUpgrade($event->user));
-//            }
+
             //需要插入的日志
             $insert = [
                 'user_id' => $event->user->id,
