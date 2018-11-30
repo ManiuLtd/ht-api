@@ -517,6 +517,7 @@ class Taobao implements TBKInterface
             ->withData ($params)
             ->get ();
         $resp = json_decode ($resp);
+
         if ($resp->code != 1) {
             throw new \Exception($resp->msg);
         }

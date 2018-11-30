@@ -37,7 +37,7 @@ class AuthorizationsController extends Controller
 
 //        $tburi = 'https://oauth.taobao.com/authorize?response_type=code&client_id=23205020&redirect_uri=https%3A%2F%2Fwww.heimataoke.com%2Fuser-authback%3Fbackurl%3D'.$tbbackurl.'%26bind%3DUW&state=1';
 //        //京东
-//        $jdbackurl = env('APP_URL').'/api/admin/system/callback?type=2';
+//        $jdbackurl = env('APP_URL').'/api/admin/system/jdcallback';
 //        $jduri = 'https://oauth.jd.com/oauth/authorize?response_type=code&client_id=57116DD1E5EDBA11B73A251A0BEB739E&redirect_uri='.$jdbackurl;
 //        //多多客
 //        $ddkbackurl = 'http://v2.easytbk.com/api/admin/system/pddcallback';
@@ -93,18 +93,20 @@ class AuthorizationsController extends Controller
      * @return array
      * @throws \Exception
      */
-    protected function getJDToken()
+    public function JDCallback()
     {
 
         $resp = Curl::to('https://oauth.jd.com/oauth/token')
             ->withData([
                 'grant_type' => 'authorization_code',
                 'code' => request('code'),
-                'redirect_uri' => 'http://htapi.cc/api/admin/system/callback?type=2',
+                'redirect_uri' => 'http://www.htapi.cn/api/admin/system/jdcallback',
                 'client_id' => '57116DD1E5EDBA11B73A251A0BEB739E',
                 'client_secret' => 'dfe23c330ca54ab787e9c5dc699caeaf',
             ])
             ->post();
+
+
         $resp = iconv('GBK', 'UTF-8', $resp);
 
         $resp = json_decode($resp);

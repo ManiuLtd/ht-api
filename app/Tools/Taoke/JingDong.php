@@ -320,86 +320,67 @@ class JingDong implements TBKInterface
         ];
     }
 
-//    /**
-//     * 获取订单.
-//     * @param array $array
-//     * @return mixed
-//     * @throws \Exception
-//     */
-//    public function getOrders(array $array = [])
-//    {
-//        $setting = setting (1);
-//        $unionid = $setting->unionid;
-//
-//        if (!isset($unionid['jingdong'])) {
-//            throw new \Exception('请先设置京东联盟id');
-//        }
-//
-//        $page = $array['page'] ?? 1;
-//        $time = now ()->toDateTimeString ();
-//        $params = [
-//            'method' => 'jingdong.UnionService.queryOrderList',
-//            'access_token' => data_get (config ('coupon'), 'jingdong.access_token'),
-//            'app_key' => data_get (config ('coupon'), 'jingdong.JDM_APP_KEY'),
-//            'timestamp' => $time,
-//            'v' => '2.0',
-//        ];
-//
-//        $urlparams = [
-//            'unionId' => $unionid['jingdong'],
-//            'key' => data_get (config ('coupon'), 'jingdong.JDMEDIA_APPKEY'),
-//            'time' => date ('YmdH', time ()),
-//            'pageIndex' => $page,
-//            'pageSize' => 500,
-//        ];
-//
-//        $signparams = array_merge ($params, $urlparams);
-//        ksort ($signparams);
-//        $sign = http_build_query ($signparams);
-//        $sign = strtoupper (md5 (data_get (config ('coupon'), 'jingdong.JDM_APP_SECRET') . $sign . data_get (config ('coupon'), 'jingdong.JDM_APP_SECRET')));
-//        $params['sign'] = $sign;
-//        $params['360buy_param_json'] = json_encode ($urlparams);
-//        $response = Curl::to ('https://api.jd.com/routerjson')
-//            ->withData ($params)
-//            ->get ();
-//        $response = json_decode ($response);
-//
-//        if (isset($response->error_response)) {
-//            throw new \Exception($response->error_response->zh_desc);
-//        }
-//        $result = json_decode ($response->jingdong_UnionService_queryOrderList_responce->result);
-//
-//        if ($result->success != 1) {
-//            throw new \Exception($result->msg);
-//        }
-//
-//        if (!isset($result->data)) {
-//            throw new \Exception('没有订单数据');
-//        }
-//
-//        return $result;
-//    }
-
+    /**
+     * 获取订单.
+     * @param array $array
+     * @return mixed
+     * @throws \Exception
+     */
     public function getOrders(array $array = [])
     {
-        $page = $array['page'] ?? 1;
-        $setting = $array['setting'];
-        $jingdong = $setting->jingdong;
-        $begintime = Carbon::parse('2018-11-22 19:00:00')->timestamp;
+        $setting = setting (1);
+        $unionid = $setting->unionid;
 
+        if (!isset($unionid['jingdong'])) {
+            throw new \Exception('请先设置京东联盟id');
+        }
+
+        $page = $array['page'] ?? 1;
+        $time = now ()->toDateTimeString ();
         $params = [
-            'type' => 'order',
-            'apikey' => '1895f66dffd43f94',
-            'begintime' => $begintime,
-            'endtime' => time(),
+            'method' => 'jingdong.UnionService.queryOrderList',
+            'access_token' => data_get (config ('coupon'), 'jingdong.access_token'),
+            'app_key' => data_get (config ('coupon'), 'jingdong.JDM_APP_KEY'),
+            'timestamp' => $time,
+            'v' => '2.0',
         ];
 
-        $rest = Curl::to('http://api-gw.haojingke.com/index.php/api/index/myapi')
-            ->withData($params)
-            ->asJsonResponse()
-            ->post();
-        dd($rest);
+        $urlparams = [
+            'unionId' => $unionid['jingdong'],
+            'key' => data_get (config ('coupon'), 'jingdong.JDMEDIA_APPKEY'),
+            'time' => date ('YmdH', time ()),
+            'pageIndex' => $page,
+            'pageSize' => 500,
+        ];
+
+        $signparams = array_merge ($params, $urlparams);
+        ksort ($signparams);
+        $sign = http_build_query ($signparams);
+        $sign = strtoupper (md5 (data_get (config ('coupon'), 'jingdong.JDM_APP_SECRET') . $sign . data_get (config ('coupon'), 'jingdong.JDM_APP_SECRET')));
+        $params['sign'] = $sign;
+        $params['360buy_param_json'] = json_encode ($urlparams);
+        $response = Curl::to ('https://api.jd.com/routerjson')
+            ->withData ($params)
+            ->get ();
+        $response = json_decode ($response);
+
+        if (isset($response->error_response)) {
+            throw new \Exception($response->error_response->zh_desc);
+        }
+        $result = json_decode ($response->jingdong_UnionService_queryOrderList_responce->result);
+
+        if ($result->success != 1) {
+            throw new \Exception($result->msg);
+        }
+
+        if (!isset($result->data)) {
+            throw new \Exception('没有订单数据');
+        }
+
+        return $result;
     }
+
+
 
     /**
      * 爬虫.好京客.

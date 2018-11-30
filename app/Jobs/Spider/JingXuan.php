@@ -56,7 +56,7 @@ class JingXuan implements ShouldQueue
             ];
 
             DB::table('tbk_jingxuan')->updateOrInsert([
-                'title' => $item['title'],
+                'itemid' => $item['itemid'],
             ], $item);
         }
     }
