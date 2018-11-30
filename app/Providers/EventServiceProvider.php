@@ -21,9 +21,6 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SendNotification' => [
             'App\Listeners\SendNotificationListener',
         ],
-        'App\Events\MemberUpgrade' => [
-            'App\Listeners\MemberUpgradeEvent',
-        ],
         'App\Events\CreditOrderFriend' => [
             'App\Listeners\CreditOrderFriendListener',
         ],
