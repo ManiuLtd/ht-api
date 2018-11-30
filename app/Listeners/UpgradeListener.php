@@ -2,16 +2,16 @@
 
 namespace App\Listeners;
 
-use App\Events\MemberUpgrade;
+use App\Events\Upgrade;
 use App\Models\Taoke\Pid;
-use App\Models\User\Level;
+use App\Models\User\Group;
 use App\Models\User\User;
 use App\Tools\Taoke\JingDong;
 use App\Tools\Taoke\PinDuoDuo;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
-class MemberUpgradeEvent
+
+class UpgradeListener
 {
     /**
      * Create the event listener.
@@ -24,32 +24,13 @@ class MemberUpgradeEvent
     }
 
     /**
-     * @param MemberUpgrade $event
-     * @throws \Throwable
+     * @param Upgrade $event
      */
-    public function handle(MemberUpgrade $event)
+    public function handle(Upgrade $event)
     {
         $user = $event->user;
+        $level = $event->level;
 
-        $user_level = Level::query()->find($user->level_id);
-        if (!$user_level){
-            return;
-        }
-        $level = db('user_levels')
-            ->where('level', '>', $user_level->level)
-            ->where('status', 1)
-            ->orderBy('level', 'asc')
-            ->first();
-
-        if (! $level) {
-            //等级已最高
-            return;
-        }
-
-        if ($user->credit3 < $level->credit) {
-            //成长值不够不能升级
-            return;
-        }
         DB::transaction(function () use ($user,$level) {
             //可以升级
             $user = User::query ()->find($user->id);
@@ -70,7 +51,7 @@ class MemberUpgradeEvent
                     'group_id' => $group->id,
                     'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
                 ]);
-                //TODO 设计为组长之前，用的其他的推广位，先取消之前的推广位
+                //设计为组长之前，用的其他的推广位，先取消之前的推广位
                 $pid_group = Pid::query()->where('agent_id',$user->id)->first();
                 if ($pid_group){
                     $pid_group->update([
@@ -84,6 +65,11 @@ class MemberUpgradeEvent
                 $user_pid = Pid::query ()->where ('agent_id', $user->id)->first ();
                 if (!$user_pid) {
                     $pid = Pid::query ()->whereNull('agent_id')->where('user_id',$group->user_id)->whereNotNull('taobao')->first ();
+                    //获取我组长的id
+                    $group_id = Group::query()->find($user->group_id);
+                    if (!$group_id){
+                        throw new \Exception('小组不存在');
+                    }
                     $jingdong = new JingDong();
                     $jingdong_pid = $jingdong->createPid (['group_id' => $group->id]);
                     $pinduoduo = new PinDuoDuo();
@@ -92,14 +78,14 @@ class MemberUpgradeEvent
                         $pid->update ([
                             'agent_id' => $user->id,
                             'jingdong' => $jingdong_pid,
-                            'pinduoduo' => $pinduoduo_pid
+                            'pinduoduo' => $pinduoduo_pid[0]->p_id
                         ]);
                     } else {
                         Pid::query ()->create ([
                             'user_id' => $group->user_id,
                             'agent_id' => $user->id,
                             'jingdong' => $jingdong_pid,
-                            'pinduoduo' => $pinduoduo_pid
+                            'pinduoduo' => $pinduoduo_pid[0]->p_id
                         ]);
                     }
                 }

@@ -187,14 +187,15 @@ trait TBKCommon
      */
     public function sensitiveWordFilter($str)
     {
-        $word = [
-            '【包邮】',
-            '【不包邮】',
-        ];
-        $badword1 = array_combine($word,array_fill(0,count($word),'*'));
+
+        $filter = trim(setting(1)->filter,'"');
+
+        $word = explode('|',$filter);
+
+        $badword1 = array_combine($word,array_fill(0,count($word),''));
 
         $string = strtr($str, $badword1);
-//        dd($string);
+
         return $string;
 
     }
