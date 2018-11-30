@@ -25,6 +25,7 @@ class UpgradeListener
 
     /**
      * @param Upgrade $event
+     * @throws \Throwable
      */
     public function handle(Upgrade $event)
     {
@@ -42,7 +43,7 @@ class UpgradeListener
             //升级等级是否是组等级
             if ($level->is_group == 1) {
                 //创建group
-                $group = db('groups')->insert([
+                $group = Group::query()->create([
                     'user_id' => $user->id,
                     'status' => 1,
                 ]);
@@ -72,19 +73,22 @@ class UpgradeListener
                     }
                     $jingdong = new JingDong();
                     $jingdong_pid = $jingdong->createPid (['group_id' => $group->id]);
+                    foreach ($jingdong_pid as $v){
+                        $jing = $v;
+                    }
                     $pinduoduo = new PinDuoDuo();
                     $pinduoduo_pid = $pinduoduo->createPid ();
                     if ($pid) {
                         $pid->update ([
                             'agent_id' => $user->id,
-                            'jingdong' => $jingdong_pid,
+                            'jingdong' => $jing,
                             'pinduoduo' => $pinduoduo_pid[0]->p_id
                         ]);
                     } else {
                         Pid::query ()->create ([
                             'user_id' => $group->user_id,
                             'agent_id' => $user->id,
-                            'jingdong' => $jingdong_pid,
+                            'jingdong' => $jing,
                             'pinduoduo' => $pinduoduo_pid[0]->p_id
                         ]);
                     }
