@@ -58,9 +58,10 @@ class HistoriesController extends Controller
     }
 
     /**
-     * 添加浏览记录.
+     * 添加浏览记录
      * @param HistoryCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Prettus\Repository\Contracts\ValidatorException
      */
     public function store(HistoryCreateRequest $request)
     {
@@ -88,7 +89,10 @@ class HistoriesController extends Controller
                 'type'         => $re['type'] ?? '',
                 'user_id'      => $user->id ?? '',
             ];
-            $histories = $this->repository->create($data);
+            $histories = $this->repository->updateOrCreate([
+                'item_id' => $data['item_id'],
+                'user_id' => $data['user_id']
+            ],$data);
 
 
             return json(1001, '添加成功', $histories);
