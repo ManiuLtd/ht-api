@@ -25,6 +25,7 @@ class UpgradeListener
 
     /**
      * @param Upgrade $event
+     * @throws \Throwable
      */
     public function handle(Upgrade $event)
     {
