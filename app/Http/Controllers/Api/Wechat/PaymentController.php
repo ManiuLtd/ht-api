@@ -162,13 +162,13 @@ class PaymentController extends Controller
                     if ($level->$column == $message['total_fee'] / 100) {
                         if ($type == 1) {
                             $min = '一月' . $level->name;
-                            $time = now ()->addDays (30);//月
+                            $time = now ()->addDays (30)->toDateTimeString();//月
                         } elseif ($type == 2) {
                             $min = '一季' . $level->name;
-                            $time = now ()->addMonths (3);//季
+                            $time = now ()->addMonths (3)->toDateTimeString();//季
                         } elseif ($type == 3) {
                             $min = '一年' . $level->name;
-                            $time = now ()->addYears (1);//年
+                            $time = now ()->addYears (1)->toDateTimeString();//年
                         } else {
                             $min = '永久' . $level->name;
                             $time = null;//永久

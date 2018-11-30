@@ -43,6 +43,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
         'wx_openid2',
         'realname',
         'alipay',
+        'expired_time',
     ];
 
     /**
