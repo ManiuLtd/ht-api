@@ -33,4 +33,6 @@ Route::namespace('System')
         Route::get('pddcallback', 'AuthorizationsController@PDDCallback');
         //淘宝回调
         Route::get('tbcallback', 'AuthorizationsController@TBCallback');
+        //京东回调
+        Route::get('jdcallback', 'AuthorizationsController@JDCallback');
     });
