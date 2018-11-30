@@ -20,14 +20,14 @@ trait TBKCommon
         $user_pid = db ('tbk_pids')->where ('user_id', $user->id)->first ();
 
         //自己
-        if ($user_pid->taobao != null) {
+        if (isset($user_pid->taobao) && $user_pid->taobao != null) {
             return $user_pid;
         }
         //邀请人
         if ($user->inviter_id != null) {
             $inviter_pid = db ('tbk_pids')->where ('user_id', $user->inviter_id)->first ();
 
-            if ($inviter_pid->taobao != null) {
+            if (isset($inviter_pid->taobao) && $inviter_pid->taobao != null) {
                 return $inviter_pid;
             }
         }
@@ -36,7 +36,7 @@ trait TBKCommon
             $group = db ('groups')->find ($user->group_id);
             $group_pid = db ('tbk_pids')->where ('user_id', $group->user_id)->first ();
             //小组
-            if ($group_pid->taobao != null) {
+            if (isset($group_pid->taobao) && $group_pid->taobao != null) {
                 return $group_pid;
             }
             // 代理设置
@@ -107,6 +107,10 @@ trait TBKCommon
         return $setting;
     }
 
+    /**
+     * @param $q
+     * @return array
+     */
     public function localSearch($q)
     {
         $limit = request ('limit', 10);
@@ -174,5 +178,24 @@ trait TBKCommon
                 'total' => $data['total'],
             ],
         ];
+    }
+
+    /**
+     * 字符串过滤
+     * @param $str
+     * @return string
+     */
+    public function sensitiveWordFilter($str)
+    {
+        $word = [
+            '【包邮】',
+            '【不包邮】',
+        ];
+        $badword1 = array_combine($word,array_fill(0,count($word),'*'));
+
+        $string = strtr($str, $badword1);
+//        dd($string);
+        return $string;
+
     }
 }

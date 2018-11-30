@@ -88,7 +88,7 @@ class SaveGoods implements ShouldQueue
         $coupon = new Coupon();
         $inserts = [];
         foreach ($results as $result) {
-            $data['title'] = $result->itemtitle;
+            $data['title'] = $result->itemshorttitle;
 //            $data['short_title'] = $result->D_title;
             $data['cat'] = $this->setTBCat($result->fqcat);
             $data['shop_type'] = $result->shoptype == 'B' ? 2 : 1;

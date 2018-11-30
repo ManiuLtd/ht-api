@@ -88,7 +88,7 @@ class LoginController extends Controller
 
             $token = Auth::attempt($credentials);
             if (! $token) {
-                return josn(4001, '登陆失败');
+                return json(4001, '登陆失败');
             }
             $user = Auth::user();
 

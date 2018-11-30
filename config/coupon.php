@@ -23,12 +23,12 @@ return [
         'JD_APPKEY' => env('JD_APPKEY', 'fac805ea86063176c9369905a8a6fe47'),
         'JD_LIST_APPURL' => env('JD_LIST_APPURL', 'http://japi.jingtuitui.com/api/get_goods_list'),
 
-        'JDM_APP_KEY' => 'C9C03414D454AC7D7496198D184C93F0',
-        'JDM_APP_SECRET' => '1e22d32fc23a45758f1fde4e539a3477',
+        'JDM_APP_KEY' => '57116DD1E5EDBA11B73A251A0BEB739E',
+        'JDM_APP_SECRET' => 'dfe23c330ca54ab787e9c5dc699caeaf',
 
         'JDMEDIA_APPKEY' => '9357e9ece6b6476db183967e7ea5e892',
         'JDMEDIA_SECRETKEY' => '27ed5eb361184677b14e3075a01e1d88',
-        'JDMEDIA_UNIONID' => '1001218212',
+        'JDMEDIA_UNIONID' => '1000383879',
         'JD_HJK_APIKEY' => '8baf004e74c0b239',
 
         'access_token' => 'ae5971e5-50db-4699-9907-872b516d80fe',
@@ -43,3 +43,16 @@ return [
 
 
 ];
+
+/**
+ * {#1573 ▼
++"access_token": "ae5971e5-50db-4699-9907-872b516d80fe"
++"code": 0
++"expires_in": 31535999
++"refresh_token": "57316424-4e6e-4bc2-95c0-1f1ff7c83b71"
++"time": "1543541511315"
++"token_type": "bearer"
++"uid": "3659419324"
++"user_nick": "我的头像还行"
+}
+ */

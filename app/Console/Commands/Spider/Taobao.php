@@ -11,6 +11,7 @@ use App\Jobs\Spider\KuaiQiang;
 use App\Models\Taoke\Setting;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
+use Illuminate\Support\Facades\Log;
 
 class Taobao extends Command
 {
@@ -228,21 +229,27 @@ class Taobao extends Command
     {
         try {
             $total = 5;
-            $bar = $this->output->createProgressBar($total);
+            $bar = $this->output->createProgressBar($total * 15);
             $min_id = 1;
             for ($j = 1; $j <= 15; $j++) {
 
                 for ($i = 1; $i <= $total; $i++) {
-                    $res = $this->tbk->kuaiQiang(['min_id' => $min_id, 'hour_type'=>$j]);
-                    $this->info($j);
-                    if ($min_id != $res['min_id']) {
-                        // 队列
-                        KuaiQiang::dispatch($res['data'], $j);
-                        $min_id = $res['min_id'];
-                        $bar->advance();
-                        $this->info(">>>已采集完第{$total}页 ");
+
+                    try {
+                        $res = $this->tbk->kuaiQiang(['min_id' => $min_id, 'hour_type' => $j]);
+
+                    }catch (\Exception $e){
+                        continue;
                     }
+//                    $this->info($j);
+                    // 队列
+                    KuaiQiang::dispatch($res['data'], $j);
+                    $min_id = $res['min_id'];
+                    $bar->advance();
+                    $this->info(">>>已采集完第".$i*$j."页 ");
+
                 }
+                $min_id = 1;
             }
             $bar->finish();
         } catch (\Exception $e) {

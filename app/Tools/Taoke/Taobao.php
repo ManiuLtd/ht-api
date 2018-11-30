@@ -3,6 +3,7 @@
 namespace App\Tools\Taoke;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\Taoke\Favourite;
 use Orzcc\TopClient\Facades\TopClient;
@@ -116,6 +117,13 @@ class Taobao implements TBKInterface
         //获取图文详情
 //        $images = $this->getDesc ($itemID);
 
+        $small_images = [$data->pict_url];
+        //在商品图前加上商品主图
+        if (isset($data->small_images->string)){
+            $small_images = $data->small_images->string;
+            array_unshift($small_images,$data->pict_url);
+        }
+
         //重组字段
         $coupon_price = isset($couponUrl->coupon_info) ? $this->getCouponPrice ($couponUrl->coupon_info) : 0;
         $arr = [];
@@ -133,7 +141,7 @@ class Taobao implements TBKInterface
         $arr['coupon_remain_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_remain_count : 0; //已使用优惠卷数量
         $arr['coupon_total_count'] = isset($couponUrl->coupon_remain_count) ? $couponUrl->coupon_total_count : 10000; //优惠卷总数
         $arr['pic_url'] = $data->pict_url; //商品主图
-        $arr['small_images'] = $data->small_images->string; //商品图
+        $arr['small_images'] = $small_images; //商品图
         $arr['images'] = null; //商品详情图
         $arr['kouling'] = $data->kouling; //淘口令
         $arr['introduce'] = $data->introduce; //描述
@@ -210,10 +218,11 @@ class Taobao implements TBKInterface
             if(is_numeric ($decode)){
                 $q = "https://item.taobao.com/item.htm?id={$decode}";
             }else{
-                $q = $decode;
+                $q = $this->sensitiveWordFilter($decode);
+//                $q = $decode;
             }
-
         }
+
         //本地搜索
         $searchType = request ('searchtype',2);
         if($searchType == 1){
@@ -509,6 +518,7 @@ class Taobao implements TBKInterface
             ->withData ($params)
             ->get ();
         $resp = json_decode ($resp);
+
         if ($resp->code != 1) {
             throw new \Exception($resp->msg);
         }
@@ -581,10 +591,12 @@ class Taobao implements TBKInterface
         $rest = Curl::to ('http://v2.api.haodanku.com/fastbuy')
             ->withData ($params)
             ->get ();
+
         $rest = json_decode ($rest);
-//        if ($rest->code != 1) {
-//            throw  new \Exception($rest->msg);
-//        }
+
+        if ($rest->code != 1) {
+            throw  new \Exception($rest->msg);
+        }
 
         return [
             'data' => $rest->data,
