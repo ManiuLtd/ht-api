@@ -3,6 +3,7 @@
 namespace App\Tools\Taoke;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\Taoke\Favourite;
 use Orzcc\TopClient\Facades\TopClient;
@@ -590,10 +591,12 @@ class Taobao implements TBKInterface
         $rest = Curl::to ('http://v2.api.haodanku.com/fastbuy')
             ->withData ($params)
             ->get ();
+
         $rest = json_decode ($rest);
-//        if ($rest->code != 1) {
-//            throw  new \Exception($rest->msg);
-//        }
+
+        if ($rest->code != 1) {
+            throw  new \Exception($rest->msg);
+        }
 
         return [
             'data' => $rest->data,

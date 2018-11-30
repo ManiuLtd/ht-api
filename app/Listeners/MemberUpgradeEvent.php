@@ -70,25 +70,26 @@ class MemberUpgradeEvent
                     'oldgroup_id' => $user->group_id != null ? $user->group_id : null,
                 ]);
                 //TODO 设计为组长之前，用的其他的推广位，先取消之前的推广位
-                $pid_group = Pid::query()->where('agent_id',$user->id)->first();
+                $pid_group = Pid::query()->where('user_id',$user->id)->first();
                 if ($pid_group){
                     $pid_group->update([
-                        'agent_id' => null
+                        'user_id' => null
                     ]);
                 }
             }
-
+            //TODO  组
             if($level->is_commission == 1) {
                 //查看是否已经有推广位
-                $user_pid = Pid::query ()->where ('agent_id', $user->id)->first ();
+                $user_pid = Pid::query ()->where ('user_id', $user->id)->first ();
                 if (!$user_pid) {
-                    $pid = Pid::query ()->where ('agent_id', null)->where ('taobao', '<>', null)->first ();
+                    $pid = Pid::query ()->where ('user_id', null)->where ('taobao', '<>', null)->first ();
                     $jingdong = new JingDong();
                     $jingdong_pid = $jingdong->createPid (['group_id' => $group->id]);
                     $pinduoduo = new PinDuoDuo();
                     $pinduoduo_pid = $pinduoduo->createPid ();
                     if ($pid) {
                         $pid->update ([
+
                             'user_id' => $user->id,
                             'jingdong' => $jingdong_pid,
                             'pinduoduo' => $pinduoduo_pid
