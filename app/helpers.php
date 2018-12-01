@@ -113,7 +113,8 @@ if (! function_exists('getUser')) {
      */
     function getUser()
     {
-        return auth()->user();
+//        return auth()->user();
+        return $user = \App\Models\User\User::query()->find(1);
     }
 }
 

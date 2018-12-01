@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Tools\Taoke\JingDong;
+use App\Tools\Taoke\Taobao;
 
 class HomeController extends Controller
 {
@@ -20,9 +21,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-//        $en = encrypt ('https%3A%2F%2Fmigu22.kuaizhan.com%2F%3Fkf%3D%28%EF%BF%A5skJFbPOpRz3%EF%BF%A5%29%26zr%3D%EF%BF%A5skJFbPOpRz3%EF%BF%A5%26base%3DenI%3D%26sku%3D580477371625%26rand%3D3'.'!'.'5vj1gv');
-//
-//        dd (decrypt ($en));
+        $jingdong = new JingDong();
+        dd($jingdong->getJdDetail(['itemid'=>29782184954]));
         return view('home');
     }
 }

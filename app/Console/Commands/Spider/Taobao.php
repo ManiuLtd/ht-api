@@ -363,6 +363,9 @@ class Taobao extends Command
         }
     }
 
+    /**
+     * 更新订单
+     */
     protected function updateOrder()
     {
         try {
