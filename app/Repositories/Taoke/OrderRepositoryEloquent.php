@@ -2,12 +2,11 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\User\User;
+
 use App\Models\Taoke\Order;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\OrderValidator;
-use mysql_xdevapi\Exception;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
 

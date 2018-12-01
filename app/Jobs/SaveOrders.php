@@ -39,9 +39,7 @@ class SaveOrders implements ShouldQueue
     }
 
     /**
-     * Execute the job.
-     *
-     * @return void
+     * @throws \Exception
      */
     public function handle()
     {
@@ -101,6 +99,16 @@ class SaveOrders implements ShouldQueue
                 'created_at'       => $result->create_time,
                 'updated_at'       => now()->toDateTimeString(),
             ];
+            $order = db('tbk_orders')->where([
+                'ordernum' => $item['ordernum'],
+                'itemid' => $item['itemid'],
+                'type' => 1,
+            ])->first();
+            if ($order) {
+                if ($order->status == 4) {
+                    $item['status'] = 5;
+                }
+            }
 
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
@@ -190,6 +198,17 @@ class SaveOrders implements ShouldQueue
                 'created_at'       => $result->order_create_time ? date('Y-m-d H:i:s', $result->order_create_time) : null,
                 'updated_at'       => now()->toDateTimeString(),
             ];
+            $order = db('tbk_orders')->where([
+                'ordernum' => $item['ordernum'],
+                'itemid' => $item['itemid'],
+                'type' => 3,
+            ])->first();
+            if ($order) {
+                if ($order->status == 4) {
+                    $item['status'] = 5;
+                }
+            }
+
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],
                 'itemid' => $item['itemid'],
@@ -302,6 +321,17 @@ class SaveOrders implements ShouldQueue
             }
             $item['commission_rate'] = $commission_rate;
             $item['commission_amount'] = $commission_amount;
+
+            $order = db('tbk_orders')->where([
+                'ordernum' => $item['ordernum'],
+                'itemid' => $item['itemid'],
+                'type' => 2,
+            ])->first();
+            if ($order) {
+                if ($order->status == 4) {
+                    $item['status'] = 5;
+                }
+            }
 
             db('tbk_orders')->updateOrInsert([
                 'ordernum' => $item['ordernum'],

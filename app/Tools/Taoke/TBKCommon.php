@@ -3,6 +3,7 @@
 namespace App\Tools\Taoke;
 
 use App\Models\Taoke\Setting;
+use App\Models\User\User;
 
 trait TBKCommon
 {
@@ -13,6 +14,7 @@ trait TBKCommon
     public function getPids()
     {
         $user = getUser ();
+
         $setting = setting (1); //应该是根据user或者user_id
 
         // 获取系统默认pid

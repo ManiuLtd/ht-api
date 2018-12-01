@@ -52,7 +52,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository->paginate(request('limit', 10));
+        $categories = $this->repository->paginate(request('limit', 100));
 
         return json(1001, '获取成功', $categories);
     }

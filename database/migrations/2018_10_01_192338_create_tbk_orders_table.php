@@ -32,7 +32,7 @@ class CreateTbkOrdersTable extends Migration
             $table->string('commission_rate', 10)->nullable()->comment('分成比率');
             $table->decimal('commission_amount', 6, 2)->nullable()->comment('预估收入');
             $table->string('pid', 50)->nullable()->comment('推广位');
-            $table->tinyInteger('status')->nullable()->comment('1已付款 2已结算 3已失效 '); //已付款(已付款、待返利) 已结算(已返利) 已失效(已退货、已失效)
+            $table->tinyInteger('status')->nullable()->comment('1已付款 2已结算 3已失效 4 已返利 5已退货'); //已付款(已付款) 已结算 已失效(已失效)  已返利
             $table->tinyInteger('type')->nullable()->comment('1淘宝 2京东 3拼多多');
             $table->timestamp('complete_at')->nullable()->comment('完成时间');
             $table->nullableTimestamps();

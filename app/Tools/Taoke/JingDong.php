@@ -5,6 +5,7 @@ namespace App\Tools\Taoke;
 use Carbon\Carbon;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\Taoke\Favourite;
+use mysql_xdevapi\Exception;
 
 class JingDong implements TBKInterface
 {
@@ -138,6 +139,67 @@ class JingDong implements TBKInterface
         return $arr;
     }
 
+    public function getJdDetail(array $array = [])
+    {
+        $id = $array['itemid'] ?? request('itemid');
+        $param_json = [
+            'skuIds' => "$id",
+        ];
+        $sysSetting = [
+            'method' => 'jd.union.open.goods.promotiongoodsinfo.query',
+            'appSecret' => '27ed5eb361184677b14e3075a01e1d88',
+            'app_key' => '9357e9ece6b6476db183967e7ea5e892',
+            'access_token' => '',
+        ];
+
+        $params = $this->asciiSort($param_json, $sysSetting);
+        $resp = Curl::to('https://router.jd.com/api')
+            ->withData($params)
+            ->asJsonResponse()
+            ->get();
+
+        if (isset($resp->errorResponse)) {
+            throw new \Exception($resp->errorResponse->msg);
+        }
+        if (!isset($resp->jd_union_open_goods_promotiongoodsinfo_query_response) || !isset($resp->jd_union_open_goods_promotiongoodsinfo_query_response->result)) {
+            throw new \Exception('未知错误');
+        }
+        $rest = json_decode($resp->jd_union_open_goods_promotiongoodsinfo_query_response->result);
+        if ($rest->code != 200) {
+            throw new \Exception($rest->message);
+        }
+        $data = $rest->data[0];
+        //领券地址
+        $link = null;
+
+        $link = $this->getCouponUrl([
+            'itemID' => $id,
+            'coupon_url' => $data->materialUrl,
+        ]);
+
+        if (!$link) {
+            $link = $data->materialUrl;
+        }
+
+        $resCoupon = $this->getCoupon ([
+            'url' => $data->materialUrl,
+        ]);
+        dd($resCoupon);
+        //判断优惠卷是否被收藏
+        $favourite = 0;
+
+        $user = getUser ();
+        $favouritesModel = Favourite::query ()->where ([
+            'user_id' => $user->id,
+            'item_id' => $id,
+            'type' => 2,
+        ])->first ();
+        if ($favouritesModel) {
+            $favourite = $favouritesModel->id; //已收藏
+        }
+
+
+    }
     /**
      * @param $id
      * @return null
@@ -474,5 +536,83 @@ class JingDong implements TBKInterface
             throw new \Exception($rest->message);
         }
         return $rest->data->resultList;
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function createPosition()
+    {
+        $spaceName = rand(1,999999);
+        $param_json = [
+            'positionReq' =>[
+                'unionId' => 1000383879,
+                'key' => 'e4209eac5db9f8e2c712812f6d0b4028497446729a51433a42006180be091d37976dec5a47dea4ed',
+                'unionType' => 1,
+                'type' => 3,
+                'spaceNameList' => ["$spaceName"],
+                'siteId' => 29047
+            ],
+        ];
+        $sysSetting = [
+            'method' => 'jd.union.open.position.create',
+            'appSecret' => '27ed5eb361184677b14e3075a01e1d88',
+            'app_key' => '9357e9ece6b6476db183967e7ea5e892',
+            'access_token' => '',
+        ];
+
+        $params = $this->asciiSort($param_json, $sysSetting);
+
+        $resp = Curl::to('https://router.jd.com/api')
+            ->withData($params)
+            ->asJsonResponse()
+            ->get();
+
+        if (!$resp) {
+            throw new \Exception('没有数据');
+        }
+        if (isset($resp->errorResponse)) {
+            throw new \Exception($resp->errorResponse->msg);
+        }
+        if (isset($resp->jd_union_open_position_create_response->result)) {
+            $rest = json_decode($resp->jd_union_open_position_create_response->result);
+            if ($rest->code == 200) {
+                return $rest->data->resultList;
+            }
+        }
+
+    }
+
+    /**
+     * @param array $param_json
+     * @param array $sysSetting
+     * @return array|string
+     */
+    protected function asciiSort(array $param_json, array $sysSetting)
+    {
+        $timestamp = now()->toDateTimeString();
+        $params = [
+            'method' => $sysSetting['method'],
+            'app_key' => $sysSetting['app_key'],
+//            'access_token' => $sysSetting['access_token'],
+            'timestamp' => "$timestamp",
+            'format' => 'json',
+            'v' => '1.0',
+            'sign_method' => 'md5',
+        ];
+        ksort($param_json);
+        $params['param_json'] = json_encode($param_json);
+
+        ksort($params);
+        $str = '';
+        foreach ($params as $k=>$val){
+            $str .= $k  . $val ;
+        }
+        $sign = strtoupper(md5($sysSetting['appSecret'].$str.$sysSetting['appSecret']));
+
+        $params['sign'] = $sign;
+//        $params = http_build_query($params);
+        return $params;
     }
 }
