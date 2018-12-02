@@ -20,24 +20,16 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->text('enough_reduce')->nullable();
-            $table->text('enough_free')->nullable();
-            $table->text('deduction')->nullable();
             $table->text('payment')->nullable();
-            $table->text('recharge')->nullable();
-            $table->text('credit')->nullable();
-            $table->text('shop')->nullable();
             $table->text('credit_order')->nullable(); //订单
             $table->text('credit_friend')->nullable(); //粉丝
             $table->text('notification')->nullable(); //通知
-            $table->string('pid')->nullable(); //淘宝、京东、拼多多的默认pid
             $table->text('withdraw')->nullable(); //提现
-            $table->text('taobao')->nullable(); //淘宝
-            $table->text('jingdong')->nullable(); //京东
-            $table->text('pinduoduo')->nullable(); //拼多多
+            $table->string('pid')->nullable(); //淘宝、京东、拼多多的默认pid
             $table->string('unionid', 190)->nullable(); //京东联盟id  {"jingdong":"1000383879"} json格式
             $table->text('filter')->nullable();//搜索过滤词汇
             $table->text('level_desc')->nullable(); //等级描述
+            $table->text('xieyi')->nullable(); //等级描述
             $table->text('download')->nullable(); //下载地址
             $table->text('kuaizhan')->nullable(); //下载地址
             $table->string('commission_rate', 190)->nullable()->comment('扣税比例');

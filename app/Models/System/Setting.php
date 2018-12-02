@@ -19,24 +19,17 @@ class Setting extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'enough_reduce',
-        'enough_free',
-        'deduction',
         'payment',
-        'recharge',
-        'shop',
-        'credit',
         'credit_order',
         'credit_friend',
         'notification',
         'pid',
         'withdraw',
-        'taobao',
-        'jingdong',
-        'pinduouo',
         'level_desc',
         'download',
         'kuaizhan',
+        'xieyi',
+        'commission_rate',
     ];
 
     protected $hidden = [
@@ -57,21 +50,13 @@ class Setting extends Model implements Transformable
      * @var array
      */
     protected $casts = [
-        'enough_reduce' => 'array',
-        'enough_free' => 'array',
-        'deduction' => 'array',
+
         'payment' => 'array',
-        'recharge' => 'array',
-        'shop' => 'array',
-        'credit' => 'array',
         'credit_order' => 'array',
         'credit_friend' => 'array',
         'notification' => 'array',
-        'pid' => 'array',
         'withdraw' => 'array',
-        'taobao' => 'array',
-        'jingdong' => 'array',
-        'pinduouo' => 'array',
+        'pid' => 'array',
         'unionid' => 'array',
     ];
 }
