@@ -21,8 +21,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $jingdong = new JingDong();
-        dd($jingdong->getJdDetail(['itemid'=>29782184954]));
         return view('home');
     }
 }

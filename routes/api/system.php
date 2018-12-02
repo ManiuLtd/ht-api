@@ -18,3 +18,11 @@ Route::namespace('System')
         //获取配置信息
         Route::get('setting', 'SettingsController@index');
     });
+
+Route::namespace('System')
+    ->prefix('system')
+    ->group(function () {
+
+        //获取配置信息
+        Route::get('setting/xieyi', 'SettingsController@xieyi');
+    });
