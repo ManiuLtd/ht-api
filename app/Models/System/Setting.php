@@ -39,6 +39,19 @@ class Setting extends Model implements Transformable
         'kuaizhan',
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
+
+    public function transform()
+    {
+        return [
+            'xieyi' => $this->xieyi,
+            'level_desc' => $this->level_desc,
+        ];
+    }
+
     /**
      * 自动格式转换
      * @var array
