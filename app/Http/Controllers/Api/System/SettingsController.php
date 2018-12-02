@@ -46,4 +46,10 @@ class SettingsController extends Controller
         return json('1001', '设置信息', $setting);
     }
 
+    public function xieyi()
+    {
+        $setting = $this->repository->firstOrNew();
+
+        return json('1001', '设置信息', $setting);
+    }
 }
