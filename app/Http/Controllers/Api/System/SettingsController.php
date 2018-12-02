@@ -48,7 +48,7 @@ class SettingsController extends Controller
 
     public function xieyi()
     {
-        $setting = $this->repository->firstOrNew('xieyi');
+        $setting = $this->repository->firstOrNew(['xieyi']);
 
         return json('1001', '设置信息', $setting);
     }
