@@ -49,11 +49,21 @@ class SendStatus extends Command
                 event(new CreditOrderFriend([
                     'user_id' => $v->user_id
                 ],1));
+            }
+        }
+        $order_refund = db('tbk_orders')
+            ->where('status',5)
+            ->whereDate('complete_at',date('Y-m'))
+            ->get()
+            ->toArray();
+        if (count($order_refund) > 0){
+            foreach ($order as $v){
                 event(new CreditOrder([
                     'user_id' => $v->user_id
                 ]));
             }
         }
+
 
     }
 }
