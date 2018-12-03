@@ -74,11 +74,14 @@ class AuthorizationsController extends Controller
                 'auth_time'   => now()->timestamp(request('auth_time'))->toDateTimeString(),
                 'expire_time' => now()->timestamp(request('expire_time'))->toDateTimeString(),
                 'type'        => 1,
+                'user_id'     => $id,
             ];
 
-            $tbksetting = tbksetting(getUserId());
+//            $tbksetting = tbksetting(getUserId());
 
-            \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
+            \App\Models\Taoke\Setting::query()->updateOrCreate([
+                'user_id' => $id
+            ], [
                 'taobao' => json_encode($create),
             ]);
 
@@ -157,10 +160,13 @@ class AuthorizationsController extends Controller
                 'name' => $resp->owner_name,
                 'expire_time' => now()->addSeconds($resp->expires_in)->toDateTimeString(),
                 'type' => 3,
+                'user_id'     => $id,
             ];
-            $tbksetting = tbksetting($id);
 
-            \App\Models\Taoke\Setting::query()->where('id', $tbksetting->id)->update([
+
+            \App\Models\Taoke\Setting::query()->updateOrCreate([
+                'user_id'     => $id,
+            ], [
                 'pinduouo' => json_encode($pinduoduo),
             ]);
             return json('1001', 'OK');
