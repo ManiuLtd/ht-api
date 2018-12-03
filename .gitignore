@@ -18,6 +18,5 @@ error.log
 /.vagrant
 .well-known
 .phpstorm.meta.php
-gpush.log
-public/gpush.log
+./public/jpush.log
 public/images/cache/*

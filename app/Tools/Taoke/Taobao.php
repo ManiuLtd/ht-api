@@ -100,9 +100,18 @@ class Taobao implements TBKInterface
             'item_id' => $itemID,
             'type' => 1,
         ])->first ();
+
+        //优惠券第一张图片
+        $pic_url = $data->pict_url;
+        $small_images = [$pic_url];
+
         if ($coupon) {
             $data->introduce = $coupon->introduce;
+            $pic_url = $coupon->pic_url;
+            $small_images = [$pic_url];
         }
+
+
         $data->introduce = null;
         //判断优惠卷是否被收藏
         $favourite = 0;
@@ -120,11 +129,11 @@ class Taobao implements TBKInterface
         //获取图文详情
 //        $images = $this->getDesc ($itemID);
 
-        $small_images = [$data->pict_url];
+
         //在商品图前加上商品主图
         if (isset($data->small_images->string)){
             $small_images = $data->small_images->string;
-            array_unshift($small_images,$data->pict_url);
+            array_unshift($small_images,$pic_url);
         }
 
         //重组字段

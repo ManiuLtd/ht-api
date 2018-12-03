@@ -107,11 +107,23 @@ class PinDuoDuo implements TBKInterface
                 $favourite = $favouritesModel->id; //已收藏
             }
         }
-        $small_images = [$data->picUrl];
+
+        $coupon = db ('tbk_coupons')->where ([
+            'item_id' => $id,
+            'type' => 3,
+        ])->first ();
+        //优惠券第一张图片
+        $pic_url = $data->picUrls;
+        $small_images = [$pic_url];
+        if ($coupon) {
+            $pic_url = $coupon->pic_url;
+            $small_images = [$pic_url];
+        }
+
         //在商品图前加上商品主图
         if (isset($data->picUrls)){
             $small_images = $data->picUrls;
-            array_unshift($small_images,$data->picUrl);
+            array_unshift($small_images,$pic_url);
         }
 
         //重组字段

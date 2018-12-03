@@ -80,6 +80,7 @@ class JingDong implements TBKInterface
         if (!$response->data) {
             throw new \Exception($response->message);
         }
+
         //领券地址
         $link = null;
 
