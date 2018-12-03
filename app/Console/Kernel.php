@@ -73,6 +73,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:tb zhuanti')->hourly();
         $schedule->command('spider:tb updateCoupon')->hourly();
         $schedule->command('spider:tb deleteCoupon')->hourly();
+        //每月25号执行结算订单
+        $schedule->command('command:name')->monthlyOn(25);
     }
 
     /**
