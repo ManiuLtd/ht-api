@@ -106,6 +106,7 @@ trait TBKCommon
                 }
             }
         }
+
         return $setting;
     }
 
