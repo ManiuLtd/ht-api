@@ -6,14 +6,14 @@ use App\Events\CreditOrderFriend;
 use App\Events\CreditOrder;
 use Illuminate\Console\Command;
 
-class SendStatus extends Command
+class OrderSettlement extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'order-settlement';
 
     /**
      * The console command description.
