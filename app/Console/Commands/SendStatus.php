@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Events\CreditOrderFriend;
+use App\Events\CreditOrder;
 use Illuminate\Console\Command;
 
 class SendStatus extends Command
@@ -48,6 +49,9 @@ class SendStatus extends Command
                 event(new CreditOrderFriend([
                     'user_id' => $v->user_id
                 ],1));
+                event(new CreditOrder([
+                    'user_id' => $v->user_id
+                ]));
             }
         }
 
