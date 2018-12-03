@@ -175,6 +175,7 @@ class PaymentController extends Controller
                         }
 
                         $user = User::query ()->find ($payment->user_id);
+
                         event(new Upgrade($user, $level));
                         $user->update ([
                             'level_id' => $level->id,
@@ -226,6 +227,7 @@ class PaymentController extends Controller
             throw new \Exception('等级不存在');
         }
         $level_user = db ('user_levels')->find ($user->level_id);
+
         if ($level_user->level > $level->level) {
             throw new \Exception('当前等级大于所要升级的等级');
         }

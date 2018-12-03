@@ -29,7 +29,7 @@ class Upgrade
      * @param User $user
      * @param $level
      */
-    public function __construct(User $user,$level)
+    public function __construct($user,$level)
     {
         $this->user = $user;
         $this->level = $level;
