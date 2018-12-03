@@ -144,7 +144,8 @@ class CreditOrderFriendListener
             }
             if ($user && $user['group_id'] != null) {
                 $group = Group::query()->find($user['group_id']);
-                $user_group_id = User::query()->find($group['id']); //当前组长
+                $user_group_id = User::query()->find($group['user_id']); //当前组长
+
                 if ($event->type == 1){
                     $credit1 = $credit['order_group1_credit1'];
                     $credit2 = $credit['order_group1_credit2'];

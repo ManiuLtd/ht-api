@@ -48,7 +48,9 @@ class Taobao implements TBKInterface
         $resp = Curl::to ('https://www.heimataoke.com/api-zhuanlian')
             ->withData ($params)
             ->get ();
+
         $resp = json_decode ($resp);
+
         if (isset($resp->error)) {
             throw new \Exception($resp->error);
         }
@@ -92,6 +94,7 @@ class Taobao implements TBKInterface
         ]);
 
         $data->kouling = $kouling;
+
         // 从本地优惠券中获取获取商品介绍 introduce 字段，如果本地没有 该字段为空
         $coupon = db ('tbk_coupons')->where ([
             'item_id' => $itemID,
