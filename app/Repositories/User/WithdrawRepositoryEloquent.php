@@ -85,6 +85,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         }
         $attributes['status'] = 0;
         $attributes['user_id'] = $user->id;
+        unset($attributes['token']);
         try {
             db ('user_withdraws')->insert ($attributes);
 
