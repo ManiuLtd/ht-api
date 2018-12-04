@@ -52,6 +52,7 @@ class Taobao implements TBKInterface
 
         $resp = json_decode ($resp);
 
+
         if (isset($resp->error)) {
             throw new \Exception($resp->error);
         }

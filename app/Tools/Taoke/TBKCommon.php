@@ -4,7 +4,6 @@ namespace App\Tools\Taoke;
 
 use App\Models\Taoke\Setting;
 use App\Models\User\User;
-use mysql_xdevapi\Exception;
 
 trait TBKCommon
 {
