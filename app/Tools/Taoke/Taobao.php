@@ -43,7 +43,8 @@ class Taobao implements TBKInterface
             'appsecret' => config ('coupon.taobao.HMTK_APP_SECRET'),
             'sid' => $taobao['sid'],  //user_id  设置表每个代理商和总管理员可以设置，代理商只可以修改 三个平台授权信息的字段
             'pid' => $pids->taobao,
-            'num_iid' => $array['item_id'],
+            'num_iid' => data_get($array,'item_id'),
+            'me' => data_get($array,'me'),
         ];
         $resp = Curl::to ('https://www.heimataoke.com/api-zhuanlian')
             ->withData ($params)
@@ -335,6 +336,7 @@ class Taobao implements TBKInterface
      * 淘口令搜索
      * @param $keywords
      * @return bool|mixed|string
+     * @throws \Exception
      */
     public function searchByTKL($keywords)
     {
@@ -348,6 +350,7 @@ class Taobao implements TBKInterface
             if (!$response->suc) {
                 return false;
             }
+
             if (str_contains ($response->url, 'a.m.taobao.com/i')) {
                 $pos = strpos ($response->url, '?');
                 $str = substr ($response->url, 0, $pos);
@@ -356,8 +359,19 @@ class Taobao implements TBKInterface
 
                 return $str;
             }
+
             if (str_contains ($response->url, 'uland.taobao.c')) {
-                return $response->content;
+                //取出url  调用转链接口
+//                dd($response->url);
+                $query = parse_url($response->url);
+
+                parse_str($query['query'], $params);
+                $rest = $this->getCouponUrl(['me'=>urlencode($params['e'])]);
+                if (!isset($rest->item_id)) {
+                    return false;
+                }
+                return $rest->item_id;
+
             }
             $pos = strpos ($response->url, '?');
             $query_string = substr ($response->url, $pos + 1, strlen ($response->url));
