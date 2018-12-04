@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\System;
 
 use App\Http\Controllers\Controller;
+use App\Presenters\SettingPresenter;
 use App\Validators\System\SettingValidator;
 use App\Repositories\Interfaces\System\SettingRepository;
 
@@ -36,12 +37,14 @@ class SettingsController extends Controller
     }
 
     /**
-     * 获取设置信息.
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function index()
     {
-        $setting = $this->repository->firstOrNew();
+        $setting = $this->repository
+            ->setPresenter (new SettingPresenter())
+            ->firstOrNew();
 
         return json('1001', '设置信息', $setting);
     }
