@@ -4,18 +4,20 @@ namespace App\Tools\Taoke;
 
 use App\Models\Taoke\Setting;
 use App\Models\User\User;
+use mysql_xdevapi\Exception;
 
 trait TBKCommon
 {
     /**
-     *  获取当前用户 的 pids.
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|mixed|null|object
+     * 获取当前用户 的 pids.
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|mixed|object|void|null
+     * @throws \Exception
      */
     public function getPids()
     {
         $user = getUser ();
 
-        $setting = setting (1); //应该是根据user或者user_id
+        $setting = $this->getDefaultSetting(); //应该是根据user或者user_id
 
         // 获取系统默认pid
 
@@ -54,6 +56,26 @@ trait TBKCommon
     }
 
     /**
+     * 系统设置
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     * @throws \Exception
+     */
+    protected function getDefaultSetting()
+    {
+        $user = User::query()->where('is_default',1)->first();
+        if (!$user) {
+            throw new \Exception('没有默认系统用户');
+        }
+
+        $setting = $user->tbkSetting;
+
+        if (!$setting) {
+            throw new \Exception('没有默认的系统设置');
+        }
+        return $setting;
+    }
+
+    /**
      * @param $e
      * @return object|void
      */
@@ -83,13 +105,14 @@ trait TBKCommon
     /**
      * 设置信息
      * @param null $group_id
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|mixed|null|object
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     * @throws \Exception
      */
     public function getSettings($group_id = null)
     {
         //读取代理设置
         $user = getUser ();
-        $setting = setting (1); //应该是根据user或者user_id
+        $setting = $this->getDefaultSetting(); //应该是根据user或者user_id
 
         if (!$group_id) {
             $group_id = $user->group_id;

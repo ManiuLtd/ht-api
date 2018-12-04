@@ -56,10 +56,6 @@ class Setting extends Model implements Transformable
         'credit_friend' => 'array',
         'notification' => 'array',
         'withdraw' => 'array',
-        'pid' => 'array',
-        'taobao' => 'array',
-        'jingdong' => 'array',
-        'pinduoduo' => 'array',
-        'unionid' => 'array',
+
     ];
 }

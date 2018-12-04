@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Events\CreditOrderFriend;
+use App\Models\Taoke\Setting;
 use Hashids\Hashids;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\ResetUserPassword;
@@ -227,4 +228,13 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         return $this->belongsTo('App\Models\User\Group', 'oldgroup_id')->withDefault(null);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function tbkSetting()
+    {
+        return $this->hasOne(Setting::class, 'user_id', 'id');
+    }
+
 }

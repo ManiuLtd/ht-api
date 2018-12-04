@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             $table->decimal('credit2', 8, 2)->nullable()->default(0.00); //积分
             $table->decimal('credit3', 8, 2)->nullable()->default(0.00); //经验值
             $table->integer('level_id')->nullable();
+            $table->tinyInteger('is_default')->default(0)->comment('0 不是默认 1是默认');
             $table->string('realname', 191)->nullable();
             $table->string('alipay', 191)->nullable();
             $table->tinyInteger('status')->nullable()->default(1);
