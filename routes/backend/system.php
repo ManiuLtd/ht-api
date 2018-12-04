@@ -4,7 +4,10 @@ Route::namespace('System')
     ->middleware('jwt.auth')
     ->prefix('system')
     ->group(function () {
-
+        //设置
+        Route::resource('setting', 'SettingsController', [
+            'only' => ['index', 'update'],
+        ]);
         //通知
         Route::resource('notification', 'NotificationsController', [
             'except' => ['show', 'edit', 'update'],
