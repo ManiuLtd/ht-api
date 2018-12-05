@@ -22,6 +22,7 @@ class Setting extends Model implements Transformable
         'payment',
         'credit_order',
         'credit_friend',
+        'credit_other',
         'notification',
         'pid',
         'withdraw',
@@ -46,6 +47,7 @@ class Setting extends Model implements Transformable
         'payment' => 'array',
         'credit_order' => 'array',
         'credit_friend' => 'array',
+        'credit_other' => 'array',
         'notification' => 'array',
         'withdraw' => 'array',
 
