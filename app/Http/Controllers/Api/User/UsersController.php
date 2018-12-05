@@ -99,12 +99,12 @@ class UsersController extends Controller
      */
     public function checkUpgrade()
     {
-//        try {
+        try {
             $this->repository->checkUpgrade();
             return json('1001','升级成功');
-//        } catch (\Exception $e) {
-//            return json(5001, $e->getMessage());
-//        }
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
     }
 
     /**

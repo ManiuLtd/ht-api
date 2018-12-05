@@ -11,6 +11,7 @@ use App\Criteria\RequestCriteria;
 use Illuminate\Support\Facades\Hash;
 use App\Validators\User\UserValidator;
 use Illuminate\Support\Facades\Validator;
+use mysql_xdevapi\Exception;
 use PhpParser\Node\Stmt\DeclareDeclare;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Models\Taoke\Pid;
@@ -374,23 +375,28 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function checkUpgrade()
     {
         $user = getUser();
+        $level_id = request('level_id');
+        if (!$level_id) {
+            throw new \Exception('level_id error');
+        }
         $user_level = Level::query()->find($user->level_id);
         if (!$user_level){
             throw new \Exception('用户等级信息错误');
         }
-        $level = db('user_levels')
-            ->where('level', '>', $user_level->level)
-            ->where('status', 1)
-            ->orderBy('level', 'asc')
-            ->first();
+        $level = db('user_levels')->find($level_id);
 
         if (! $level) {
-            throw new \Exception('等级已最高');
+            throw new \Exception('等级不存在');
+        }
+        if ($user_level->level >= $level->level) {
+            throw new \Exception('用户等级已最高');
         }
 
         if ($user->credit3 < $level->credit) {
             throw new \Exception('成长值不够不能升级');
         }
+
+
         event(new Upgrade($user, $level));
     }
 
