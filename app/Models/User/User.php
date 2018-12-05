@@ -160,7 +160,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
     protected function increment($column, $amount = 1, array $extra = [])
     {
         if (in_array($column, ['credit1', 'credit2','credit3'])) {
-            event(new CreditIncrement($this, $column, $amount, $extra));
+            event(new CreditIncrement($this, floatval($column), $amount, $extra));
         }
 
         return $this->incrementOrDecrement($column, $amount, $extra = [], 'increment');
@@ -176,10 +176,10 @@ class User extends Authenticatable implements JWTSubject, Transformable
     protected function decrement($column, $amount = 1, array $extra = [])
     {
         if (in_array($column, ['credit1', 'credit2'])) {
-            event(new CreditDecrement($this, $column, -$amount, $extra));
+            event(new CreditDecrement($this, floatval($column), -$amount, $extra));
         }
 
-        return $this->incrementOrDecrement($column, $amount, $extra, 'decrement');
+        return $this->incrementOrDecrement($column, $amount, $extra = [], 'decrement');
     }
 
 

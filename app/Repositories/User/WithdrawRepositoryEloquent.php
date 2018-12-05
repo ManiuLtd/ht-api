@@ -5,9 +5,11 @@ namespace App\Repositories\User;
 use EasyWeChat\Factory;
 use App\Models\User\Withdraw;
 use App\Tools\Taoke\Commission;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Criteria\RequestCriteria;
 use App\Validators\User\WithdrawValidator;
+use Overtrue\LaravelWeChat\Facade;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\User\WithdrawRepository;
 
@@ -200,45 +202,43 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
                 return json (4001, '用户没有绑定微信');
             }
 
-            $app = Factory::payment ($setting->payment);
+            $app = Facade::payment();
 
             $merchantPayData = [
                 'partner_trade_no' => str_random (16),
                 'openid' => $user_member->wx_openid1,
                 'check_name' => 'NO_CHECK',
+                're_user_name' => $user_member->nickname,
                 'amount' => $withdraw->money * 100,
                 'desc' => '淘宝返利提现',
-                'spbill_create_ip' => \EasyWeChat\Kernel\Support\get_client_ip (),
+
             ];
-            $result = $app->transfer->toBalance ($merchantPayData);
-            //红包发送失败
-            if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'FAIL') {
-                return json (4001, $result['err_code_des']);
+            $rest = $app->transfer->toBalance($merchantPayData);
+
+            if ($rest['result_code'] != 'SUCCESS' && $rest['return_code'] != 'SUCCESS') {
+                throw new \Exception($rest['err_code_des']);
             }
+
+
             $pay_type = 1;
         }
+        DB::transaction(function () use ($user_member,$deduct_money,$withdraw,$pay_type) {
 
-        //修改订单状态
-        $this->model->newQuery ()->where ('id', $withdraw->id)->update ([
-            'status' => 3,
-            'pay_type' => $pay_type,
-            'real_money' => $withdraw->money - $deduct_money,
-            'deduct_money' => $deduct_money,
-        ]);
+            //修改订单状态
+            $this->model->newQuery ()->where ('id', $withdraw->id)->update ([
+                'status' => 3,
+                'pay_type' => $pay_type,
+                'real_money' => $withdraw->money - $deduct_money,
+//                'deduct_money' => $deduct_money,
+            ]);
 
-        //减少余额
-        $user_member->decrement ('credit1', $withdraw->money);
+            //减少余额
+            $user_member->decrement ('credit1', $withdraw->money, [
+                'type' => 12,
+                'remark' => '淘宝返利提现'
+            ]);
 
-        //写入日志
-        $inster = [
-            'user_id' => $user_member->id,
-            'operater_id' => getUserId (),
-            'credit' => $withdraw->money,
-            'type' => 12,
-            'remark' => '用户提现',
-        ];
-        db ('user_credit_logs')->insert ($inster);
-
+        });
         return json (1001, '提现成功');
     }
 }
