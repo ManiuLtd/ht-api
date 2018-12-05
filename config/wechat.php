@@ -112,7 +112,7 @@ return [
              'key'                => env('WECHAT_PAYMENT_KEY', '69164ddaa84e74f4d925734bd8f6e1d3'),
              'cert_path'          => env('WECHAT_PAYMENT_CERT_PATH', storage_path('apiclient_cert.pem')),    // XXX: 绝对路径！！！！
              'key_path'           => env('WECHAT_PAYMENT_KEY_PATH', storage_path('apiclient_key.pem')),      // XXX: 绝对路径！！！！
-             'notify_url'         => 'http://v2.easytbk.com/api/payment/wechatNotify',                           // 默认支付结果通知地址
+             'notify_url'         => 'https://hongtang.online/api/payment/wechatNotify',                           // 默认支付结果通知地址
          ],
          // ...
      ],
