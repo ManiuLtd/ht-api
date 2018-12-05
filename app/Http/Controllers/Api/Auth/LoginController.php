@@ -79,7 +79,7 @@ class LoginController extends Controller
                 $user->update([
                     'headimgurl' => request('headimgurl'),
                     'nickname' => request('nickname'),
-                    'openid' => request('openid'),
+                    'wx_openid1' => request('openid'),
                 ]);
                 $token = auth()->login($user);
 

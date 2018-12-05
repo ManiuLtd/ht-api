@@ -103,8 +103,16 @@ class WithdrawsController extends Controller
         return json(1001, '删除成功');
     }
 
+    /**
+     * 提现审核
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     public function mark()
     {
-        return $this->repository->mark();
+//        try {
+            return $this->repository->mark();
+//        }catch (\Exception $e){
+//            return json(5001,$e->getMessage());
+//        }
     }
 }
