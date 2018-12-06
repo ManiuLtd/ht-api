@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Wechat;
 
 use App\Events\SendNotification;
 use App\Events\Upgrade;
+use App\Models\Taoke\Pid;
 use App\Models\User\Payment;
 use App\Models\User\User;
 use App\Repositories\Interfaces\User\PaymentRepository;
@@ -64,9 +65,17 @@ class PaymentController extends Controller
         //APP支付  https://www.easywechat.com/docs/master/payment/order
 
         try {
+            $user = getUser ();
+            $group = $user->group;
+            //淘宝推广位是否存在
+            $pid = Pid::query ()->whereNull('agent_id')->where('user_id',$group->user_id)->whereNotNull('taobao')->first ();
+            if (!$pid) {
+                throw new \Exception('升级失败，pid不够');
+            }
+
             $app = Facade::payment ();
 
-            $user = getUser ();
+
 
             $payType = request ('pay_type');
             $title = '微信支付';

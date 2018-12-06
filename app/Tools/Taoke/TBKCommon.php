@@ -224,4 +224,5 @@ trait TBKCommon
         return $string;
 
     }
+
 }
