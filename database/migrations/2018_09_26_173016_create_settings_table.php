@@ -23,6 +23,7 @@ class CreateSettingsTable extends Migration
             $table->text('payment')->nullable();
             $table->text('credit_order')->nullable(); //订单
             $table->text('credit_friend')->nullable(); //粉丝
+            $table->text('credit_other')->nullable(); //其他积分相关
             $table->text('notification')->nullable(); //通知
             $table->text('withdraw')->nullable(); //提现
 //            $table->string('pid')->nullable(); //淘宝、京东、拼多多的默认pid
