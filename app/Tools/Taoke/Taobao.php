@@ -341,8 +341,11 @@ class Taobao implements TBKInterface
      */
     public function searchByTKL($keywords)
     {
+
+
         //验证淘口令
-        if (substr_count ($keywords, '￥') == 2 || substr_count ($keywords, '《') == 2 || substr_count ($keywords, '€') == 2) {
+        if (substr_count ($keywords, '￥') >= 2 || substr_count ($keywords, '《') == 2 || substr_count ($keywords, '€') == 2) {
+
             $req = new WirelessShareTpwdQueryRequest();
             $req->setPasswordContent ($keywords);
             $topclient = TopClient::connection ();
@@ -360,17 +363,19 @@ class Taobao implements TBKInterface
 
                 return $str;
             }
-
-            if (str_contains ($response->url, 'uland.taobao.c')) {
+            if (str_contains ($response->url, '?e=') || str_contains ($response->url, '&e=')) {
                 //取出url  调用转链接口
-//                dd($response->url);
+
                 $query = parse_url($response->url);
 
                 parse_str($query['query'], $params);
+
                 $rest = $this->getCouponUrl(['me'=>urlencode($params['e'])]);
+
                 if (!isset($rest->item_id)) {
                     return false;
                 }
+
                 return $rest->item_id;
 
             }

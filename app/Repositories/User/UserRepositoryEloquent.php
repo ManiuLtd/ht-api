@@ -376,6 +376,15 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     {
         $user = getUser();
         $level_id = request('level_id');
+
+        $group = $user->group;
+        //淘宝推广位是否存在
+        $pid = Pid::query ()->whereNull('agent_id')->where('user_id',$group->user_id)->whereNotNull('taobao')->first ();
+        if (!$pid) {
+            throw new \Exception('升级失败，pid不够');
+        }
+
+
         if (!$level_id) {
             throw new \Exception('level_id error');
         }
