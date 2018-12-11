@@ -79,9 +79,6 @@ class Taobao extends Command
             case 'updateOrder':
                 $this->updateOrder();
                 break;
-            case 'says':
-                $this->says();
-                break;
             default:
                 $this->all();
                 break;

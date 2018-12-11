@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Controllers\Api\Taoke\CategoriesController;
+use App\Http\Controllers\Api\Taoke\GuessController;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
@@ -106,6 +107,11 @@ class TBKServiceProvider extends ServiceProvider
 //            ->give(\App\Tools\Taoke\Taobao::class);
 
         $this->app->when(CategoriesController::class)
+            ->needs(TBKInterface::class)
+            ->give(\App\Tools\Taoke\Taobao::class);
+
+        //猜你喜欢
+        $this->app->when(GuessController::class)
             ->needs(TBKInterface::class)
             ->give(\App\Tools\Taoke\Taobao::class);
     }

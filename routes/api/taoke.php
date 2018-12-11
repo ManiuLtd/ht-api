@@ -10,7 +10,7 @@ Route::namespace('Taoke')
 
         Route::get('coupon/detail', 'CouponsController@detail');
         //猜你喜欢
-        Route::get('guess/like', 'CouponsController@like');
+        Route::get('guess', 'GuessController@index');
 
         //分类
         Route::get('category', 'CategoriesController@index');
