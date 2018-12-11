@@ -24,7 +24,25 @@ class Level extends Model implements Transformable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'level',
+        'name',
+        'logo',
+        'group_rate1',
+        'group_rate2',
+        'commission_rate1',
+        'commission_rate2',
+        'credit',
+        'price1',
+        'price2',
+        'price3',
+        'price4',
+        'is_commission',
+        'is_group',
+        'is_pid',
+        'default',
+        'status',
+    ];
 
     /**
      * @var array

@@ -24,7 +24,7 @@ class EntranceCategory extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'parent_id', 
+        'parent_id',
         'title',
         'sort',
         'status',

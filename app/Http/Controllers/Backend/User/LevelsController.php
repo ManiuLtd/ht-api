@@ -58,7 +58,7 @@ class LevelsController extends Controller
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $level = $this->repository->create($request->except('token'));
+            $level = $this->repository->create($request->all());
 
             return json(1001, '创建成功', $level);
         } catch (ValidatorException $e) {
@@ -89,7 +89,7 @@ class LevelsController extends Controller
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $level = $this->repository->update($request->except('token'), $id);
+            $level = $this->repository->update($request->all(), $id);
 
             return json(1001, '更新成功', $level);
         } catch (ValidatorException $e) {
