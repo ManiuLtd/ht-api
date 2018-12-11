@@ -56,7 +56,4 @@ Route::namespace('Taoke')
         Route::get('jingxuan', 'JingXuanController@index');
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
 
-        //达人说
-        Route::get('says', 'SaysController@index');
-        Route::get('says/detail', 'SaysController@detail');
     });

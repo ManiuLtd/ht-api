@@ -829,46 +829,4 @@ class Taobao implements TBKInterface
         return $data;
     }
 
-    /**
-     * 达人说.
-     * @return array
-     * @throws \Exception
-     */
-    public function says()
-    {
-        $params = [
-            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
-        ];
-        $results = Curl::to ('http://v2.api.haodanku.com/talent_info')
-            ->withData ($params)
-            ->get ();
-        $results = json_decode ($results);
-        if ($results->code != 1) {
-            throw  new \Exception($results->msg);
-        }
-        return $results->data;
-    }
-    /**
-     * 达人文章详情.
-     * @param $id
-     * @return array|mixed
-     */
-    public function getArticle($id)
-    {
-        if (!is_numeric ($id) || !$id) {
-            throw  new \InvalidArgumentException('文章id类型错误');
-        }
-        $params = [
-            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
-            'id' => $id,
-        ];
-        $results = Curl::to ('http://v2.api.haodanku.com/talent_article')
-            ->withData ($params)
-            ->get ();
-        $results = json_decode ($results);
-        if ($results->code != 1) {
-            throw  new \Exception($results->msg);
-        }
-        return $results->data;
-    }
 }

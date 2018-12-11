@@ -409,18 +409,4 @@ class Taobao extends Command
         }
     }
 
-    /**
-     * 达人说
-     */
-    protected function says()
-    {
-        try {
-            $results = $this->tbk->says();
-//            //队列
-            Says::dispatch($results);
-            $this->info(">>>已采集完");
-        } catch (\Exception $e) {
-            $this->warn($e->getMessage());
-        }
-    }
 }

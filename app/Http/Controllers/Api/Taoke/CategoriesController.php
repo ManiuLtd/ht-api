@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
+use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
 use App\Tools\Taoke\TBKInterface;
 use App\Validators\Taoke\CategoryValidator;
@@ -52,7 +53,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository->paginate(request('limit', 100));
+        $categories = $this->repository
+            ->pushCriteria(new DatePickerCriteria())
+            ->paginate(request('limit', 100));
 
         return json(1001, '获取成功', $categories);
     }
