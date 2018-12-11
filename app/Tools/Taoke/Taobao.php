@@ -769,4 +769,38 @@ class Taobao implements TBKInterface
         }
         return $rest->general_classify;
     }
+
+    /**
+     * 达人说
+     * @return mixed
+     * @throws \Exception
+     */
+    public function talentInfo()
+    {
+        $rest = Curl::to ('http://v2.api.haodanku.com/talent_info/apikey/'. config ('coupon.taobao.HDK_APIKEY'))
+            ->asJsonResponse ()
+            ->get ();
+        if ($rest->code != 1) {
+            throw new \Exception($rest->msg);
+        }
+        return $rest->data;
+    }
+
+    /**
+     *
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function talentArticle($id)
+    {
+        $rest = Curl::to ('http://v2.api.haodanku.com/talent_article/apikey/'. config ('coupon.taobao.HDK_APIKEY').'/id/'.$id)
+            ->asJsonResponse ()
+            ->get ();
+        if ($rest->code != 1) {
+            throw new \Exception($rest->msg);
+        }
+        return $rest->data;
+    }
+
 }

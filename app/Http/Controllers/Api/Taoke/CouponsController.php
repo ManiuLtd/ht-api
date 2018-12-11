@@ -61,4 +61,8 @@ class CouponsController extends Controller
         }
     }
 
+    public function random()
+    {
+        return $this->repository->random();
+    }
 }

@@ -53,4 +53,8 @@ Route::namespace('Taoke')
         //精选单品
         Route::get('jingxuan', 'JingXuanController@index');
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
+
+        //随机数据
+        Route::get('random', 'CouponsController@random');
+
     });
