@@ -25,8 +25,6 @@ class LevelValidator extends LaravelValidator
             'commission_rate1' => 'required',
             'commission_rate2' => 'required',
             'credit' => 'required',
-            'price' => 'required',
-            'duration' => 'required',
             'description' => 'required',
         ],
         ValidatorInterface::RULE_UPDATE => [
@@ -38,8 +36,6 @@ class LevelValidator extends LaravelValidator
             'commission_rate1' => 'required',
             'commission_rate2' => 'required',
             'credit' => 'required',
-            'price' => 'required',
-            'duration' => 'required',
             'description' => 'required',
         ],
     ];

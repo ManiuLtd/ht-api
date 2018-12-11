@@ -24,6 +24,7 @@ class CreateTbkEntranceTable extends Migration
             $table->string ('title', 191)->nullable (); //标题
             $table->string ('descrtption', 191)->nullable (); //描述
             $table->string ('url', 191)->nullable (); //跳转地址
+            $table->nullableTimestamps();
             $table->softDeletes ();
 
             $table->index ('category_id', 'category_id');
