@@ -30,6 +30,7 @@ class Setting extends Model implements Transformable
         'download',
         'kuaizhan',
         'xieyi',
+        'filter',
         'commission_rate',
     ];
 
