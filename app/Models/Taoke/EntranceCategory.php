@@ -24,7 +24,7 @@ class EntranceCategory extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'parent_id',
+        'parent_id', 
         'title',
         'sort',
         'status',
@@ -35,13 +35,5 @@ class EntranceCategory extends Model implements Transformable
      */
     protected $dates = ['deleted_at'];
 
-    /**
-     * 标签.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function entrance()
-    {
-        return $this->belongsTo('App\Models\Taoke\Entrance', 'category_id')->withDefault(null);
-    }
 
 }

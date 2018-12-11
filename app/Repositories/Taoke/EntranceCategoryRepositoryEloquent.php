@@ -54,35 +54,4 @@ class EntranceCategoryRepositoryEloquent extends BaseRepository implements Entra
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-
-    public function list()
-    {
-        $type = $this->all();
-        return $this->getTree($type,'title','id','parent_id');
-
-    }
-
-    public function getTree($data,$field_name,$field_id='id',$field_pid='parent_id',$pid=0)
-    {
-        $arr = [];
-        $data = $data['data'];
-        if (count($data) > 0){
-            foreach ($data as $k=>$v){
-                if($v[$field_pid] == $pid){
-                    $data[$k]["_".$field_name] = $data[$k][$field_name];
-                    $arr[] = $data[$k];
-                    foreach ($data as $m=>$n){
-                        if($n[$field_pid] == $v[$field_id]){
-                            $data[$m]["_".$field_name] = '├─ '.$data[$m][$field_name];
-                            $arr[] = $data[$m];
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-        return $arr;
-    }
 }

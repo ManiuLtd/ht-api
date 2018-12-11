@@ -91,10 +91,6 @@ class EntrancesController extends Controller
      */
     public function destroy($id)
     {
-        $coupon = db('tbk_coupons')->where('cat', $id)->first();
-        if ($coupon) {
-            return json(4001, '禁止删除已经包含优惠券的分类');
-        }
         $this->repository->delete($id);
 
         return json(1001, '删除成功');

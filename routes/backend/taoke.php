@@ -39,5 +39,5 @@ Route::namespace('Taoke')
         //超级入口
         Route::resource('entrance', 'EntrancesController');
         //超级入口分类
-        Route::resource('entrance_category', 'EntranceCategoriesController');
+        Route::resource('entrance-category', 'EntranceCategoriesController');
     });

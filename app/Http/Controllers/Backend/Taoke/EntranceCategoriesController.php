@@ -42,7 +42,7 @@ class EntranceCategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository->list();
+        $categories = $this->repository->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $categories);
     }
@@ -91,16 +91,21 @@ class EntranceCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $category = db('tbk_entrance_categories')->where('parent_id', $id)->first();
-        if ($category) {
-            return json(4001, '禁止删除已经下级的分类');
-        }
-        $entrance = db('tbk_entrances')->where('category_id', $id)->first();
-        if ($entrance) {
-            return json(4001, '禁止删除包含标签的分类');
-        }
-        $this->repository->delete($id);
+        try{
+            $category = db('tbk_entrance_categories')->where('parent_id', $id)->first();
+            if ($category) {
+                throw new \Exception('禁止删除已经下级的分类');
+            }
+            $entrance = db('tbk_entrances')->where('category_id', $id)->first();
+            if ($entrance) {
+                throw new \Exception('禁止删除包含标签的分类');
+            }
+            $this->repository->delete($id);
 
-        return json(1001, '删除成功');
+            return json(1001, '删除成功');
+        }catch(\Exception $e){
+            return json('5001',$e->getMessage());
+        }
+
     }
 }
