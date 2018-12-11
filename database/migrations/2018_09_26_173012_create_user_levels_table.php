@@ -31,7 +31,6 @@ class CreateUserLevelsTable extends Migration
             $table->decimal('price2', 9, 2)->default(0); //升级所需支付金额  每季度
             $table->decimal('price3', 9, 2)->default(0); //升级所需支付金额  每年
             $table->decimal('price4', 9, 2)->default(0); //升级所需支付金额  永久
-            $table->string('description', 191)->nullable(); //等级描述
             $table->tinyInteger('is_commission')->default(0)->comment('0无返佣权限，1有'); //
             $table->tinyInteger('is_group')->default(0)->comment('0不是组，1 组'); //
             $table->tinyInteger('is_pid')->default(0)->comment('0可设置pid，1可设置pid'); //

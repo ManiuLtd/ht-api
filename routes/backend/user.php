@@ -39,10 +39,12 @@ Route::namespace('User')
             'except' => ['create', 'edit', 'store'],
         ]);
         //提现审核
-        Route::get('user/payment/mark', 'WithdrawsController@mark');
+        Route::get('user/withdraw/mark', 'WithdrawsController@mark');
 
         //充值记录
         Route::get('user/recharge', 'RechargesController@index');
+        //付款记录
+        Route::get('user/payment', 'PaymentsController@index');
 
         //团队
         Route::resource('user/group', 'GroupsController', [

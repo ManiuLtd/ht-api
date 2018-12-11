@@ -34,6 +34,11 @@ class Setting extends Model implements Transformable
      */
     protected $table = 'tbk_settings';
 
+
+    protected $hidden = [
+        'user_id'
+    ];
+
     /**
      * 自动格式转换
      * @var array

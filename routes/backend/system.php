@@ -21,10 +21,6 @@ Route::namespace('System')
             'only' => ['index'],
         ]);
 
-        //授权相关
-        Route::get('auth', 'AuthorizationsController@index');
-
-//        Route::get('authcode','AuthorizationsController@code');
     });
 
 Route::namespace('System')
@@ -36,6 +32,4 @@ Route::namespace('System')
         Route::get('pddcallback', 'AuthorizationsController@PDDCallback');
         //淘宝回调
         Route::get('tbcallback', 'AuthorizationsController@TBCallback');
-        //京东回调
-        Route::get('jdcallback', 'AuthorizationsController@JDCallback');
     });
