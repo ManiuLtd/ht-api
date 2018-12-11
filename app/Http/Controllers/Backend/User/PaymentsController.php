@@ -39,7 +39,7 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        $userPayments = $this->repository->paginate(request('limit', 10));
+        $userPayments = $this->repository->with (['user'])->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $userPayments);
     }
