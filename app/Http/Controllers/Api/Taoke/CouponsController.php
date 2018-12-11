@@ -61,4 +61,19 @@ class CouponsController extends Controller
         }
     }
 
+    /**
+     * 猜你喜欢
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function like()
+    {
+        try {
+            $itemid = request('itemid');
+            $data = $this->tbk->guessLike($itemid);
+
+            return json(1001, '获取成功', $data);
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
+    }
 }

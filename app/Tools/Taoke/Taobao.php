@@ -769,4 +769,106 @@ class Taobao implements TBKInterface
         }
         return $rest->general_classify;
     }
+    /**
+     * 猜你喜欢.
+     * @param array $params
+     * @return mixed
+     * @throws \Exception
+     */
+    public function guessLike($itemid)
+    {
+        if (!is_numeric ($itemid) || !$itemid) {
+            throw  new \InvalidArgumentException('商品id类型错误');
+        }
+        $params = [
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
+            'itemid' => $itemid,
+        ];
+        $results = Curl::to ('http://v2.api.haodanku.com/get_similar_info')
+            ->withData ($params)
+            ->get ();
+        $results = json_decode ($results);
+        if ($results->code != 1) {
+            throw  new \Exception($results->msg);
+        }
+        $data = array();
+        foreach ($results->data as $k=>$v){
+            $data[$k]['title'] = $v->itemtitle;
+            $data[$k]['cat'] = $v->fqcat;
+            $data[$k]['pic_url'] = $v->itempic;
+            if($v->shoptype == 'B'){
+                $shoptype = 2;
+            }else{
+                $shoptype = 1;
+            }
+            $data[$k]['shop_type'] = $shoptype;
+            $data[$k]['item_id'] = $v->itemid;
+//            $data['item_url'] = $v['itemtitle'];//产品地址
+            $data[$k]['volume'] = $v->itemsale;
+            $data[$k]['price'] = $v->itemprice;
+//            $data[$k]['final_price'] = $v->itemprice;//最终价
+            $data[$k]['coupon_price'] = $v->couponmoney;
+            $data[$k]['coupon_link'] = $v->couponurl;
+//            $data[$k]['activity_id'] = $v->couponurl;//优惠券ID
+            $data[$k]['commission_rate'] = $v->tkrates;
+            $data[$k]['total_num'] = $v->couponnum;
+            $data[$k]['receive_num'] = $v->couponreceive;
+            $data[$k]['videoid'] = $v->videoid;
+            if($v->activity_type == '普通活动'){
+                $activity_type = 1;
+            }elseif ($v->activity_type == '聚划算'){
+                $activity_type = 2;
+            }elseif ($v->activity_type == '淘抢购'){
+                $activity_type = 3;
+            }
+            $data[$k]['activity_type'] = $activity_type;
+            $data[$k]['type'] = 1;
+            $data[$k]['start_time'] = date('Y-m-d H:i:s',$v->couponstarttime);
+            $data[$k]['end_time'] = date('Y-m-d H:i:s',$v->couponendtime);
+        }
+        return $data;
+    }
+
+    /**
+     * 达人说.
+     * @return array
+     * @throws \Exception
+     */
+    public function says()
+    {
+        $params = [
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
+        ];
+        $results = Curl::to ('http://v2.api.haodanku.com/talent_info')
+            ->withData ($params)
+            ->get ();
+        $results = json_decode ($results);
+        if ($results->code != 1) {
+            throw  new \Exception($results->msg);
+        }
+        return $results->data;
+    }
+    /**
+     * 达人文章详情.
+     * @param $id
+     * @return array|mixed
+     */
+    public function getArticle($id)
+    {
+        if (!is_numeric ($id) || !$id) {
+            throw  new \InvalidArgumentException('文章id类型错误');
+        }
+        $params = [
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
+            'id' => $id,
+        ];
+        $results = Curl::to ('http://v2.api.haodanku.com/talent_article')
+            ->withData ($params)
+            ->get ();
+        $results = json_decode ($results);
+        if ($results->code != 1) {
+            throw  new \Exception($results->msg);
+        }
+        return $results->data;
+    }
 }

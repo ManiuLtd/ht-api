@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Jobs\Spider\Says;
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
@@ -77,6 +78,9 @@ class Taobao extends Command
                 break;
             case 'updateOrder':
                 $this->updateOrder();
+                break;
+            case 'says':
+                $this->says();
                 break;
             default:
                 $this->all();
@@ -400,6 +404,21 @@ class Taobao extends Command
             $bar = $this->output->createProgressBar(4);
 
             $bar->finish();
+        } catch (\Exception $e) {
+            $this->warn($e->getMessage());
+        }
+    }
+
+    /**
+     * 达人说
+     */
+    protected function says()
+    {
+        try {
+            $results = $this->tbk->says();
+//            //队列
+            Says::dispatch($results);
+            $this->info(">>>已采集完");
         } catch (\Exception $e) {
             $this->warn($e->getMessage());
         }
