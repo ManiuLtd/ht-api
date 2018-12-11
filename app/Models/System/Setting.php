@@ -33,6 +33,9 @@ class Setting extends Model implements Transformable
         'commission_rate',
     ];
 
+    /**
+     * @var array
+     */
     protected $hidden = [
         'user_id',
     ];
@@ -43,13 +46,11 @@ class Setting extends Model implements Transformable
      * @var array
      */
     protected $casts = [
-
         'payment' => 'array',
         'credit_order' => 'array',
         'credit_friend' => 'array',
         'credit_other' => 'array',
         'notification' => 'array',
         'withdraw' => 'array',
-
     ];
 }
