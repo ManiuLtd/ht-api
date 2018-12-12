@@ -39,7 +39,7 @@ class CreateUserLevelsTable extends Migration
 
             $table->nullableTimestamps();
             $table->softDeletes();
-            $table->index('user_id');
+//            $table->index('user_id');
         });
     }
 

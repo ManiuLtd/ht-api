@@ -9,6 +9,8 @@ Route::namespace('Taoke')
         //优惠券详情
 
         Route::get('coupon/detail', 'CouponsController@detail');
+        //猜你喜欢
+        Route::get('guess', 'GuessController@index');
 
         //分类
         Route::get('category', 'CategoriesController@index');

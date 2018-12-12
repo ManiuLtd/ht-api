@@ -769,4 +769,63 @@ class Taobao implements TBKInterface
         }
         return $rest->general_classify;
     }
+    /**
+     * 猜你喜欢.
+     * @param array $params
+     * @return mixed
+     * @throws \Exception
+     */
+    public function guessLike($itemid)
+    {
+        if (!is_numeric ($itemid) || !$itemid) {
+            throw  new \InvalidArgumentException('商品id类型错误');
+        }
+        $params = [
+            'apikey' => config ('coupon.taobao.HDK_APIKEY'),
+            'itemid' => $itemid,
+        ];
+        $results = Curl::to ('http://v2.api.haodanku.com/get_similar_info')
+            ->withData ($params)
+            ->get ();
+        $results = json_decode ($results);
+        if ($results->code != 1) {
+            throw  new \Exception($results->msg);
+        }
+        $data = [];
+        foreach ($results->data as $v){
+            $item = [];
+            $item['title'] = $v->itemtitle;
+            $item['cat'] = $v->fqcat;
+            $item['pic_url'] = $v->itempic;
+            if($v->shoptype == 'B'){
+                $shoptype = 2;
+            }else{
+                $shoptype = 1;
+            }
+            $item['shop_type'] = $shoptype;
+            $item['item_id'] = $v->itemid;
+            $item['volume'] = $v->itemsale;
+            $item['price'] = $v->itemprice;
+            $item['coupon_price'] = $v->couponmoney;
+            $item['coupon_link'] = $v->couponurl;
+            $item['commission_rate'] = $v->tkrates;
+            $item['total_num'] = $v->couponnum;
+            $item['receive_num'] = $v->couponreceive;
+            $item['videoid'] = $v->videoid;
+            if($v->activity_type == '普通活动'){
+                $activity_type = 1;
+            }elseif ($v->activity_type == '聚划算'){
+                $activity_type = 2;
+            }elseif ($v->activity_type == '淘抢购'){
+                $activity_type = 3;
+            }
+            $item['activity_type'] = $activity_type;
+            $item['type'] = 1;
+            $item['start_time'] = date('Y-m-d H:i:s',$v->couponstarttime);
+            $item['end_time'] = date('Y-m-d H:i:s',$v->couponendtime);
+            array_push($data,$item);
+        }
+        return $data;
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Spider;
 
+use App\Jobs\Spider\Says;
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
@@ -404,4 +405,5 @@ class Taobao extends Command
             $this->warn($e->getMessage());
         }
     }
+
 }
