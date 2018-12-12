@@ -26,5 +26,6 @@ class GuessController extends Controller
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
+
     }
 }
