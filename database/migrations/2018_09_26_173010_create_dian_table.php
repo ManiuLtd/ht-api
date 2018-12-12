@@ -32,7 +32,7 @@ class CreateDianTable extends Migration
             $table->string ('tag', 191)->nullable (); //店铺标签 水果、超市、女装
             $table->integer ('hot')->nullable ()->default (0);//人气
             $table->decimal ('commission_rate')->nullable ()->default (2);  //佣金比例
-            $table->decimal ('deduct_rate')->nullable ()->default (10);  //平台扣除的佣金比例 
+            $table->decimal ('deduct_rate')->nullable ()->default (10);  //平台扣除的佣金比例
             $table->nullableTimestamps ();
             $table->softDeletes ();
 

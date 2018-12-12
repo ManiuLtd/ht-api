@@ -18,7 +18,7 @@ class PaymentRepositoryEloquent extends BaseRepository implements PaymentReposit
      */
     protected $fieldSearchable = [
         'out_trade_no' => 'like',
-        'user_id',
+        'transaction_id' => 'like',
         'user_id',
         'type',
         'status',
