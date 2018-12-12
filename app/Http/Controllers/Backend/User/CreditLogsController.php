@@ -37,7 +37,6 @@ class CreditLogsController extends Controller
             ->with(['user'])
             ->paginate(request('limit', 10));
 
-        dd($userCreditLogs);
         return json(1001, '列表获取成功', $userCreditLogs);
     }
 }
