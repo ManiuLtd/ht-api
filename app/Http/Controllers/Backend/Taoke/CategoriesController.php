@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\Taoke;
 
-use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CategoryValidator;
 use App\Http\Requests\Taoke\CategoryCreateRequest;
