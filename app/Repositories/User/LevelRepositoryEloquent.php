@@ -21,6 +21,7 @@ class LevelRepositoryEloquent extends BaseRepository implements LevelRepository
     protected $fieldSearchable = [
         'name' => 'like',
         'status',
+        'level_id',
     ];
 
     /**
