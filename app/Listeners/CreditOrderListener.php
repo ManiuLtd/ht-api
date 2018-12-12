@@ -54,7 +54,6 @@ class CreditOrderListener
                 //推送
                 $user['title']   = $title;
                 $user['message'] = $messageCredit1.$credit1;
-                event(new SendNotification($user->toArray()));
             }
 
             if ($user && $user['inviter_id'] != null) {
@@ -70,7 +69,6 @@ class CreditOrderListener
                 //推送
                 $user_inviter['title']   = $title;
                 $user_inviter['message'] = '上级'.$messageCredit1.$credit1;
-                event(new SendNotification($user_inviter->toArray()));
             }
 
             if ($user && $user['group_id'] != null) {
@@ -87,7 +85,6 @@ class CreditOrderListener
                 //推送
                 $user_group_id['title']   = $title;
                 $user_group_id['message'] = '组长'.$messageCredit1.$credit1;
-                event(new SendNotification($user_group_id->toArray()));
             }
 
             if ($user && $user['oldgroup_id'] != null) {
@@ -104,7 +101,6 @@ class CreditOrderListener
                 //推送
                 $user_oldgroup_id['title']   = $title;
                 $user_oldgroup_id['message'] = '原组长'.$messageCredit1.$credit1;
-                event(new SendNotification($user_oldgroup_id->toArray()));
             }
 
         }
