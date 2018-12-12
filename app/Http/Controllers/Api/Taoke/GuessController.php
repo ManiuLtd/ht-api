@@ -19,5 +19,6 @@ class GuessController extends Controller
 //        $zhuanti = $this->repository->paginate(request('limit', 10));
 
         return json(1001, '获取成功', []);
+        
     }
 }
