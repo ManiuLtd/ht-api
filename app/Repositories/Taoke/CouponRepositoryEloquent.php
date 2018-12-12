@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Criteria\Taoke\CouponCriteria;
 use App\Models\Taoke\Coupon;
 use App\Criteria\RequestCriteria;
 use Illuminate\Support\Facades\DB;
@@ -106,6 +105,9 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         return false;
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse\
+     */
     public function random()
     {
         $userid = getUserId();

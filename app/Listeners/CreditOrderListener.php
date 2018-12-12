@@ -48,13 +48,12 @@ class CreditOrderListener
                 $credit2 = $credit['order_commission1_credit2'];
                 $credit3 = $credit['order_commission1_credit3'];
 
-                $user->decrement('credit1',$credit1,['remark' => $messageCredit1, 'type' => 18]);//余额
-                $user->decrement('credit2',$credit2,['remark' => $messageCredit2, 'type' => 17]); //积分
-                $user->decrement('credit3',$credit3,['remark' => $messageCredit3,'type' => 19]); //成长值
+                $user->decrement('credit1',$credit1,['remark' => $messageCredit1]);//余额
+                $user->decrement('credit2',$credit2,['remark' => $messageCredit2]); //积分
+                $user->decrement('credit3',$credit3,['remark' => $messageCredit3]); //成长值
                 //推送
                 $user['title']   = $title;
                 $user['message'] = $messageCredit1.$credit1;
-                event(new SendNotification($user->toArray()));
             }
 
             if ($user && $user['inviter_id'] != null) {
@@ -64,13 +63,12 @@ class CreditOrderListener
                 $credit2 = $credit['order_commission2_credit2'];
                 $credit3 = $credit['order_commission2_credit3'];
 
-                $user_inviter->decrement('credit1',$credit1,['remark' => '上级'.$messageCredit1, 'type' => 18]);//余额
-                $user_inviter->decrement('credit2',$credit2,['remark' => '上级'.$messageCredit2, 'type' => 17]); //积分
-                $user_inviter->decrement('credit3',$credit3,['remark' => '上级'.$messageCredit3,'type' => 19]); //成长值
+                $user_inviter->decrement('credit1',$credit1,['remark' => '上级'.$messageCredit1]);//余额
+                $user_inviter->decrement('credit2',$credit2,['remark' => '上级'.$messageCredit2]); //积分
+                $user_inviter->decrement('credit3',$credit3,['remark' => '上级'.$messageCredit3]); //成长值
                 //推送
                 $user_inviter['title']   = $title;
                 $user_inviter['message'] = '上级'.$messageCredit1.$credit1;
-                event(new SendNotification($user_inviter->toArray()));
             }
 
             if ($user && $user['group_id'] != null) {
@@ -81,13 +79,12 @@ class CreditOrderListener
                 $credit2 = $credit['order_group1_credit2'];
                 $credit3 = $credit['order_group1_credit3'];
 
-                $user_group_id->decrement('credit1',$credit1,['remark' => '组长'.$messageCredit1, 'type' => 18]);//余额
-                $user_group_id->decrement('credit2',$credit2,['remark' => '组长'.$messageCredit2, 'type' => 17]); //积分
-                $user_group_id->decrement('credit3',$credit3,['remark' => '组长'.$messageCredit3,'type' => 19]); //成长值
+                $user_group_id->decrement('credit1',$credit1,['remark' => '组长'.$messageCredit1]);//余额
+                $user_group_id->decrement('credit2',$credit2,['remark' => '组长'.$messageCredit2]); //积分
+                $user_group_id->decrement('credit3',$credit3,['remark' => '组长'.$messageCredit3]); //成长值
                 //推送
                 $user_group_id['title']   = $title;
                 $user_group_id['message'] = '组长'.$messageCredit1.$credit1;
-                event(new SendNotification($user_group_id->toArray()));
             }
 
             if ($user && $user['oldgroup_id'] != null) {
@@ -98,13 +95,12 @@ class CreditOrderListener
                 $credit2 = $credit['order_group2_credit2'];
                 $credit3 = $credit['order_group2_credit3'];
 
-                $user_oldgroup_id->decrement('credit1',$credit1,['remark' => '原组长'.$messageCredit1, 'type' => 18]);//余额
-                $user_oldgroup_id->decrement('credit2',$credit2,['remark' => '原组长'.$messageCredit2, 'type' => 17]); //积分
-                $user_oldgroup_id->decrement('credit3',$credit3,['remark' => '原组长'.$messageCredit3,'type' => 19]); //成长值
+                $user_oldgroup_id->decrement('credit1',$credit1,['remark' => '原组长'.$messageCredit1]);//余额
+                $user_oldgroup_id->decrement('credit2',$credit2,['remark' => '原组长'.$messageCredit2]); //积分
+                $user_oldgroup_id->decrement('credit3',$credit3,['remark' => '原组长'.$messageCredit3]); //成长值
                 //推送
                 $user_oldgroup_id['title']   = $title;
                 $user_oldgroup_id['message'] = '原组长'.$messageCredit1.$credit1;
-                event(new SendNotification($user_oldgroup_id->toArray()));
             }
 
         }
