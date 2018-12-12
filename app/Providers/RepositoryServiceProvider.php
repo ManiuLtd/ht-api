@@ -66,6 +66,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Taoke\KuaiQiangRepository::class, \App\Repositories\Taoke\KuaiQiangRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\OauthRepository::class, \App\Repositories\Taoke\OauthRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\SettingRepository::class, \App\Repositories\Taoke\SettingRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\DianRepository::class, \App\Repositories\Taoke\DianRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\DianCategoriesRepository::class, \App\Repositories\Taoke\DianCategoriesRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\DianTagRepository::class, \App\Repositories\Taoke\DianTagRepositoryEloquent::class);
         //:end-bindings:
     }
 }
