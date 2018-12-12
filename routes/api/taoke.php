@@ -54,4 +54,9 @@ Route::namespace('Taoke')
         Route::get('jingxuan', 'JingXuanController@index');
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
 
+        //小店分类
+        Route::get('dian/category', 'DianCategoryController@index');
+        //小店
+        Route::resource('dian', 'DianController')->only(['index','show']);
+
     });

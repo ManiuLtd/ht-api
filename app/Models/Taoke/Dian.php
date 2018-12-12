@@ -36,6 +36,10 @@ class Dian extends Model implements Transformable
         'hot',
         'commission_rate',
         'deduct_rate',
+        'card1',
+        'card2',
+        'zhizhao',
+        'can_pay',
     ];
 
     /**

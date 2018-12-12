@@ -17,7 +17,10 @@ class DianRepositoryEloquent extends BaseRepository implements DianRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'name','tag','category_id'
+        'name'=>'like',
+        'tag'=>'like',
+        'city'=>'like',
+        'category_id',
     ];
 
     /**

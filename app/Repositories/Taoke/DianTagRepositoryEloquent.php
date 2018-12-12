@@ -17,7 +17,7 @@ class DianTagRepositoryEloquent extends BaseRepository implements DianTagReposit
      * @var array
      */
     protected $fieldSearchable = [
-        'name',
+        'name'=>'like',
     ];
 
     /**

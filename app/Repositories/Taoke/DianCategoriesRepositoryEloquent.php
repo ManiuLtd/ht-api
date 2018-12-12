@@ -17,7 +17,7 @@ class DianCategoriesRepositoryEloquent extends BaseRepository implements DianCat
      * @var array
      */
     protected $fieldSearchable = [
-        'name',
+        'name'=>'like',
     ];
 
     /**
