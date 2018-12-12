@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Cms;
 
 use App\Http\Controllers\Controller;
-use App\Criteria\ArticleCategoryCriteria;
 use App\Repositories\Interfaces\Cms\ProjectRepository;
 
 /**
@@ -33,7 +32,6 @@ class ProjectsController extends Controller
     {
         try {
             $article = $this->repository
-                ->pushCriteria(new ArticleCategoryCriteria())
                 ->with(['category'])
                 ->paginate(request('limit', 10));
 

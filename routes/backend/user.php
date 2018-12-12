@@ -57,5 +57,5 @@ Route::namespace('User')
         ]);
 
         //分销等级
-        Route::resource('commission-level', 'LevelsController');
+        Route::resource('level', 'LevelsController');
     });
