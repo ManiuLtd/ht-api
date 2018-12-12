@@ -415,15 +415,5 @@ class PinDuoDuo implements TBKInterface
             return $data->p_id_generate_response->p_id_list;
         }
     }
-    /**
-     * 猜你喜欢.
-     * @param array $params
-     * @return mixed
-     * @throws \Exception
-     */
-    public function guessLike($itemid)
-    {
-        return [];
-    }
 
 }

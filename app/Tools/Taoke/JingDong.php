@@ -616,14 +616,4 @@ class JingDong implements TBKInterface
 //        $params = http_build_query($params);
         return $params;
     }
-    /**
-     * 猜你喜欢.
-     * @param array $params
-     * @return mixed
-     * @throws \Exception
-     */
-    public function guessLike($itemid)
-    {
-        return [];
-    }
 }

@@ -61,6 +61,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Taoke\HaoHuoRepository::class, \App\Repositories\Taoke\HaoHuoRepositoryEloquent::class);
 
         $this->app->bind(\App\Repositories\Interfaces\Taoke\ZhuanTiRepository::class, \App\Repositories\Taoke\ZhuanTiRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\EntranceRepository::class, \App\Repositories\Taoke\EntranceRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\EntranceCategoryRepository::class, \App\Repositories\Taoke\EntranceCategoryRepositoryEloquent::class);
 
         $this->app->bind(\App\Repositories\Interfaces\Taoke\JingXuanRepository::class, \App\Repositories\Taoke\JingXuanRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\KuaiQiangRepository::class, \App\Repositories\Taoke\KuaiQiangRepositoryEloquent::class);

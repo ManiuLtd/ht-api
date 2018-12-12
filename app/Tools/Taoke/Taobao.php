@@ -791,29 +791,27 @@ class Taobao implements TBKInterface
         if ($results->code != 1) {
             throw  new \Exception($results->msg);
         }
-        $data = array();
-        foreach ($results->data as $k=>$v){
-            $data[$k]['title'] = $v->itemtitle;
-            $data[$k]['cat'] = $v->fqcat;
-            $data[$k]['pic_url'] = $v->itempic;
+        $data = [];
+        foreach ($results->data as $v){
+            $item = [];
+            $item['title'] = $v->itemtitle;
+            $item['cat'] = $v->fqcat;
+            $item['pic_url'] = $v->itempic;
             if($v->shoptype == 'B'){
                 $shoptype = 2;
             }else{
                 $shoptype = 1;
             }
-            $data[$k]['shop_type'] = $shoptype;
-            $data[$k]['item_id'] = $v->itemid;
-//            $data['item_url'] = $v['itemtitle'];//产品地址
-            $data[$k]['volume'] = $v->itemsale;
-            $data[$k]['price'] = $v->itemprice;
-//            $data[$k]['final_price'] = $v->itemprice;//最终价
-            $data[$k]['coupon_price'] = $v->couponmoney;
-            $data[$k]['coupon_link'] = $v->couponurl;
-//            $data[$k]['activity_id'] = $v->couponurl;//优惠券ID
-            $data[$k]['commission_rate'] = $v->tkrates;
-            $data[$k]['total_num'] = $v->couponnum;
-            $data[$k]['receive_num'] = $v->couponreceive;
-            $data[$k]['videoid'] = $v->videoid;
+            $item['shop_type'] = $shoptype;
+            $item['item_id'] = $v->itemid;
+            $item['volume'] = $v->itemsale;
+            $item['price'] = $v->itemprice;
+            $item['coupon_price'] = $v->couponmoney;
+            $item['coupon_link'] = $v->couponurl;
+            $item['commission_rate'] = $v->tkrates;
+            $item['total_num'] = $v->couponnum;
+            $item['receive_num'] = $v->couponreceive;
+            $item['videoid'] = $v->videoid;
             if($v->activity_type == '普通活动'){
                 $activity_type = 1;
             }elseif ($v->activity_type == '聚划算'){
@@ -821,10 +819,11 @@ class Taobao implements TBKInterface
             }elseif ($v->activity_type == '淘抢购'){
                 $activity_type = 3;
             }
-            $data[$k]['activity_type'] = $activity_type;
-            $data[$k]['type'] = 1;
-            $data[$k]['start_time'] = date('Y-m-d H:i:s',$v->couponstarttime);
-            $data[$k]['end_time'] = date('Y-m-d H:i:s',$v->couponendtime);
+            $item['activity_type'] = $activity_type;
+            $item['type'] = 1;
+            $item['start_time'] = date('Y-m-d H:i:s',$v->couponstarttime);
+            $item['end_time'] = date('Y-m-d H:i:s',$v->couponendtime);
+            array_push($data,$item);
         }
         return $data;
     }

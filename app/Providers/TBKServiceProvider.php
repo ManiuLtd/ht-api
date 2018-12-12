@@ -110,9 +110,5 @@ class TBKServiceProvider extends ServiceProvider
             ->needs(TBKInterface::class)
             ->give(\App\Tools\Taoke\Taobao::class);
 
-        //猜你喜欢
-        $this->app->when(GuessController::class)
-            ->needs(TBKInterface::class)
-            ->give(\App\Tools\Taoke\Taobao::class);
     }
 }

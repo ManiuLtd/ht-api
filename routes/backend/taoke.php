@@ -36,4 +36,8 @@ Route::namespace('Taoke')
         Route::resource('setting', 'SettingsController', [
             'only' => ['index', 'update'],
         ]);
+        //超级入口
+        Route::resource('entrance', 'EntrancesController');
+        //超级入口分类
+        Route::resource('entrance-category', 'EntranceCategoriesController');
     });
