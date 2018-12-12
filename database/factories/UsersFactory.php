@@ -135,7 +135,7 @@ $factory->define(App\Models\User\Address::class, function (Faker $faker) {
 
 $factory->define(App\Models\User\Level::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
+//        'user_id' => 1,
         'name' => $faker->name,
         'logo' => $faker->imageUrl(100, 100),
         'group_rate1' => rand(10, 99),
@@ -143,8 +143,8 @@ $factory->define(App\Models\User\Level::class, function (Faker $faker) {
         'commission_rate1' => rand(10, 99),
         'commission_rate2' => rand(10, 99),
         'credit' => rand(10, 99),
-        'price' => rand(10, 99),
-        'duration' => rand(10, 999),
+//        'price' => rand(10, 99),
+//        'duration' => rand(10, 999),
         'description' => $faker->text(80),
         'default' => rand(0, 1),
         'status' => rand(0, 1),

@@ -415,4 +415,5 @@ class PinDuoDuo implements TBKInterface
             return $data->p_id_generate_response->p_id_list;
         }
     }
+
 }

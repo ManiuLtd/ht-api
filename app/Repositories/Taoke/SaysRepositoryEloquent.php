@@ -2,25 +2,27 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\Category;
-use App\Validators\Taoke\CategoryValidator;
+use App\Models\Taoke\Says;
+use App\Repositories\Interfaces\Taoke\SaysRepository;
+use App\Validators\Taoke\SaysValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Taoke\CategoryRepository;
 
 /**
- * Class CategoryRepositoryEloquent.
+ * Class SaysRepositoryEloquent
+ * @package App\Repositories\Taoke
  */
-class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
+class SaysRepositoryEloquent extends BaseRepository implements SaysRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name' => 'like',
-        'status',
-        'type',
-        'pid',
+        'name',
+        'label',
+        'topdata',
+        'newdata',
+        'clickdata',
     ];
 
     /**
@@ -30,7 +32,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      */
     public function model()
     {
-        return Category::class;
+        return Says::class;
     }
 
     /**
@@ -40,7 +42,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      */
     public function validator()
     {
-        return CategoryValidator::class;
+        return SaysValidator::class;
     }
 
     public function presenter()

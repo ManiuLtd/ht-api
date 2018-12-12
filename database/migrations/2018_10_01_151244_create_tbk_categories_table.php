@@ -20,6 +20,7 @@ class CreateTbkCategoriesTable extends Migration
         Schema::create('tbk_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
+            $table->integer('pid')->nullable()->default(0);
             $table->string('name', 191)->nullable();
             $table->string('logo', 191)->nullable();
             $table->tinyInteger('type')->nullable()->comment('1淘宝 2拼多多 3京东');
