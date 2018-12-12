@@ -55,6 +55,6 @@ Route::namespace('Taoke')
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
 
         //随机数据
-        Route::get('random', 'CouponsController@random');
+        Route::get('random', 'RandomsController@index');
 
     });

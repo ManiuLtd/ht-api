@@ -46,19 +46,19 @@ class TalentInfo implements ShouldQueue
 
         foreach ($this->data as $value){
 
-            $data['articleid'] = $value->id;
+            $data['article_id'] = $value->id;
             $data['name'] = $value->name;
-            $data['shorttitle'] = $value->shorttitle;
-            $data['app_image'] = $value->app_image;
+            $data['short_title'] = $value->shorttitle;
+            $data['thumb'] = $value->app_image;
             $data['label'] = $value->label;
-            $data['tk_item_id'] = $value->itemid_str;
-            $data['article_banner'] = $value->article_banner;
-            $data['highquality'] = $value->highquality;
+            $data['item_id'] = $value->itemid_str;
+            $data['banner'] = $value->article_banner;
+
             $data['readtimes'] = $value->readtimes;
             $data['followtimes'] = $value->followtimes;
-            $data['talent_name'] = $value->talent_name;
-            $data['head_img'] = $value->head_img;
-            $data['talent_id'] = $value->talent_id;
+            $data['nickname'] = $value->talent_name;
+            $data['headimgurl'] = $value->head_img;
+            $data['user_id'] = 1;
             $data['compose_image'] = $value->compose_image;
             $data['content'] = $value->article;
             $data['created_at'] = Carbon::now()->toDateTimeString();
@@ -66,18 +66,18 @@ class TalentInfo implements ShouldQueue
 
             switch ($this->type){
                 case 1:
-                    $data['is_topdata'] = 1;
+                    $data['is_top'] = 1;
                     break;
                 case 2:
-                    $data['is_newdata'] = 1;
+                    $data['is_new'] = 1;
                     break;
                 default:
-                    $data['is_clickdata'] = 1;
+                    $data['is_all'] = 1;
                     break;
             }
 
             db('tbk_says')->updateOrInsert([
-                'articleid'=>$data['articleid'],
+                'article_id'=>$data['article_id'],
                 ], $data);
             $data = [];
         }
