@@ -22,10 +22,11 @@ class CreateTbkEntranceCategoriesTable extends Migration
             $table->integer ('parent_id');//上级分类ID
             $table->string ('title', 191)->nullable (); //标题
             $table->integer ('sort')->nullable (); //排序
-            $table->tinyInteger ('status')->nullable (); //是否显示
+            $table->tinyInteger ('status')->nullable ()->comment('0.不显示1显示'); //是否显示 0.不显示1显示
+            $table->nullableTimestamps();
             $table->softDeletes ();
 
-            $table->index ('pid', 'pid');
+            $table->index ('parent_id', 'parent_id');
         });
     }
 

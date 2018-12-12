@@ -53,4 +53,7 @@ Route::namespace('Taoke')
         //精选单品
         Route::get('jingxuan', 'JingXuanController@index');
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
+
+        Route::get('entrance', 'EntrancesController@index');
+        Route::get('entrance/category', 'EntranceCategoriesController@index');
     });
