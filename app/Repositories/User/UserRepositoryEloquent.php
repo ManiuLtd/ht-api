@@ -33,6 +33,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         'nickname' => 'like',
         'status',
         'inviter_id',
+        'level_id',
         'alipay' => 'like',
         'realname' => 'like',
         'phone' => 'like',
