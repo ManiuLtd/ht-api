@@ -60,12 +60,5 @@ class CouponsController extends Controller
             return json(5001, $e->getMessage());
         }
     }
-<<<<<<< HEAD
 
-    public function random()
-    {
-        return $this->repository->random();
-    }
-=======
->>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
 }
