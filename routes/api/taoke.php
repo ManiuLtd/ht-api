@@ -55,5 +55,5 @@ Route::namespace('Taoke')
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
 
         Route::get('entrance', 'EntrancesController@index');
-        Route::get('entrance-category', 'EntranceCategoriesController@index');
+        Route::get('entrance/category', 'EntranceCategoriesController@index');
     });
