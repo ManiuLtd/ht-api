@@ -33,6 +33,10 @@ class CreateDianTable extends Migration
             $table->integer ('hot')->nullable ()->default (0);//人气
             $table->decimal ('commission_rate')->nullable ()->default (2);  //佣金比例
             $table->decimal ('deduct_rate')->nullable ()->default (10);  //平台扣除的佣金比例
+            $table->text ('card1')->nullable (); //身份证正面
+            $table->text ('card2')->nullable (); //身份证反面
+            $table->text ('zhizhao')->nullable (); //执照
+            $table->integer ('can_pay')->nullable ()->default (0);//是否支持付款0支持1.不支持
             $table->nullableTimestamps ();
             $table->softDeletes ();
 

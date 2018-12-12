@@ -61,11 +61,16 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interfaces\Taoke\HaoHuoRepository::class, \App\Repositories\Taoke\HaoHuoRepositoryEloquent::class);
 
         $this->app->bind(\App\Repositories\Interfaces\Taoke\ZhuanTiRepository::class, \App\Repositories\Taoke\ZhuanTiRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\EntranceRepository::class, \App\Repositories\Taoke\EntranceRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\EntranceCategoryRepository::class, \App\Repositories\Taoke\EntranceCategoryRepositoryEloquent::class);
 
         $this->app->bind(\App\Repositories\Interfaces\Taoke\JingXuanRepository::class, \App\Repositories\Taoke\JingXuanRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\KuaiQiangRepository::class, \App\Repositories\Taoke\KuaiQiangRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\OauthRepository::class, \App\Repositories\Taoke\OauthRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\Interfaces\Taoke\SettingRepository::class, \App\Repositories\Taoke\SettingRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\DianRepository::class, \App\Repositories\Taoke\DianRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\DianCategoriesRepository::class, \App\Repositories\Taoke\DianCategoriesRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\Interfaces\Taoke\DianTagRepository::class, \App\Repositories\Taoke\DianTagRepositoryEloquent::class);
         //:end-bindings:
     }
 }

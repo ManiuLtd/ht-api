@@ -2,7 +2,11 @@
 
 namespace App\Console\Commands\Spider;
 
+<<<<<<< HEAD
 use App\Jobs\Spider\TalentInfo;
+=======
+use App\Jobs\Spider\Says;
+>>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
@@ -409,6 +413,7 @@ class Taobao extends Command
         }
     }
 
+<<<<<<< HEAD
     /**
      * 达人说
      */
@@ -443,4 +448,6 @@ class Taobao extends Command
             $this->warn($e->getMessage());
         }
     }
+=======
+>>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
 }

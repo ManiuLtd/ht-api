@@ -2,25 +2,24 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\Category;
-use App\Validators\Taoke\CategoryValidator;
+use App\Models\Taoke\EntranceCategory;
+use App\Validators\Taoke\EntranceCategoryValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Interfaces\Taoke\CategoryRepository;
+use App\Repositories\Interfaces\Taoke\EntranceCategoryRepository;
 
 /**
- * Class CategoryRepositoryEloquent.
+ * Class EntranceRepositoryEloquent.
  */
-class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
+class EntranceCategoryRepositoryEloquent extends BaseRepository implements EntranceCategoryRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name' => 'like',
+        'title' => 'like',
         'status',
-        'type',
-        'pid',
+        'parent_id',
     ];
 
     /**
@@ -30,7 +29,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      */
     public function model()
     {
-        return Category::class;
+        return EntranceCategory::class;
     }
 
     /**
@@ -40,7 +39,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      */
     public function validator()
     {
-        return CategoryValidator::class;
+        return EntranceCategoryValidator::class;
     }
 
     public function presenter()

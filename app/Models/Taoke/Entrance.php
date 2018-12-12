@@ -8,34 +8,32 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Category.
+ * Class Entrance
+ * @package App\Models\Taoke
  */
-class Category extends Model implements Transformable
+class Entrance extends Model implements Transformable
 {
     use TransformableTrait, SoftDeletes;
 
     /**
      * @var string
      */
-    protected $table = 'tbk_categories';
+    protected $table = 'tbk_entrances';
 
     /**
      * @var array
      */
     protected $fillable = [
-        'name',
-        'pid',
+        'category_id',
         'logo',
-        'taobao',
-        'jingdong',
-        'pinduoduo',
-        'sort',
-        'type',
-        'status',
+        'title',
+        'descrtption',
+        'url',
     ];
 
     /**
      * @var array
      */
     protected $dates = ['deleted_at'];
+
 }

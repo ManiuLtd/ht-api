@@ -3,34 +3,34 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CategoryValidator;
-use App\Http\Requests\Taoke\CategoryCreateRequest;
-use App\Http\Requests\Taoke\CategoryUpdateRequest;
+use App\Validators\Taoke\DianCategoriesValidator;
+use App\Http\Requests\Taoke\DianCategoriesCreateRequest;
+use App\Http\Requests\Taoke\DianCategoriesUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use App\Repositories\Interfaces\Taoke\CategoryRepository;
+use App\Repositories\Interfaces\Taoke\DianCategoriesRepository;
 
 /**
- * Class CategoriesController.
+ * Class DianCategoriesController.
  */
-class CategoriesController extends Controller
+class DianCategoriesController extends Controller
 {
     /**
-     * @var CategoryRepository
+     * @var DianCategoriesRepository
      */
     protected $repository;
 
     /**
-     * @var CategoryValidator
+     * @var DianCategoriesValidator
      */
     protected $validator;
 
     /**
-     * CategoriesController constructor.
+     * DianCategoriesController constructor.
      *
-     * @param CategoryRepository $repository
-     * @param CategoryValidator $validator
+     * @param DianCategoriesRepository $repository
+     * @param DianCategoriesValidator $validator
      */
-    public function __construct(CategoryRepository $repository, CategoryValidator $validator)
+    public function __construct(DianCategoriesRepository $repository, DianCategoriesValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -43,24 +43,23 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository
-            ->paginate(request('limit', 10));
+        $diancategories = $this->repository->paginate(request('limit', 10));
 
-        return json(1001, '获取成功', $categories);
+        return json(1001, '获取成功', $diancategories);
     }
 
     /**
-     * @param CategoryCreateRequest $request
+     * @param DianCategoriesCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CategoryCreateRequest $request)
+    public function store(DianCategoriesCreateRequest $request)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $category = $this->repository->create($request->all());
+            $diancategories = $this->repository->create($request->all());
 
-            return json(1001, '添加成功', $category);
+            return json(1001, '添加成功', $diancategories);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
@@ -75,24 +74,24 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $category = $this->repository->find($id);
+        $diancategories = $this->repository->find($id);
 
-        return json(1001, '获取成功', $category);
+        return json(1001, '获取成功', $diancategories);
     }
 
     /**
-     * @param CategoryUpdateRequest $request
+     * @param DianCategoriesUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(CategoryUpdateRequest $request, $id)
+    public function update(DianCategoriesUpdateRequest $request, $id)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $category = $this->repository->update($request->all(), $id);
+            $diancategories = $this->repository->update($request->all(), $id);
 
-            return json(1001, '修改成功', $category);
+            return json(1001, '修改成功', $diancategories);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
@@ -107,10 +106,6 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $coupon = db('tbk_coupons')->where('cat', $id)->first();
-        if ($coupon) {
-            return json(4001, '禁止删除已经包含优惠券的分类');
-        }
         $this->repository->delete($id);
 
         return json(1001, '删除成功');

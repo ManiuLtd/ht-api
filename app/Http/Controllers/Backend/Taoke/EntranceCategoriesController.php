@@ -3,34 +3,33 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CategoryValidator;
-use App\Http\Requests\Taoke\CategoryCreateRequest;
-use App\Http\Requests\Taoke\CategoryUpdateRequest;
+use App\Validators\Taoke\EntranceCategoryValidator;
+use App\Http\Requests\Taoke\EntranceCategoryCreateRequest;
+use App\Http\Requests\Taoke\EntranceCategoryUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use App\Repositories\Interfaces\Taoke\CategoryRepository;
+use App\Repositories\Interfaces\Taoke\EntranceCategoryRepository;
 
 /**
- * Class CategoriesController.
+ * Class EntrancesController.
  */
-class CategoriesController extends Controller
+class EntranceCategoriesController extends Controller
 {
     /**
-     * @var CategoryRepository
+     * @var EntranceCategoryRepository
      */
     protected $repository;
 
     /**
-     * @var CategoryValidator
+     * @var EntranceCategoryValidator
      */
     protected $validator;
 
     /**
-     * CategoriesController constructor.
-     *
-     * @param CategoryRepository $repository
-     * @param CategoryValidator $validator
+     * EntranceCategoriesController constructor.
+     * @param EntranceCategoryRepository $repository
+     * @param EntranceCategoryValidator $validator
      */
-    public function __construct(CategoryRepository $repository, CategoryValidator $validator)
+    public function __construct(EntranceCategoryRepository $repository, EntranceCategoryValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -43,17 +42,16 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository
-            ->paginate(request('limit', 10));
+        $categories = $this->repository->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $categories);
     }
 
     /**
-     * @param CategoryCreateRequest $request
+     * @param EntranceCategoryCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CategoryCreateRequest $request)
+    public function store(EntranceCategoryCreateRequest $request)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
@@ -67,25 +65,11 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $category = $this->repository->find($id);
-
-        return json(1001, '获取成功', $category);
-    }
-
-    /**
-     * @param CategoryUpdateRequest $request
+     * @param EntranceCategoryUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(CategoryUpdateRequest $request, $id)
+    public function update(EntranceCategoryUpdateRequest $request, $id)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
@@ -107,12 +91,21 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $coupon = db('tbk_coupons')->where('cat', $id)->first();
-        if ($coupon) {
-            return json(4001, '禁止删除已经包含优惠券的分类');
-        }
-        $this->repository->delete($id);
+        try{
+            $category = db('tbk_entrance_categories')->where('parent_id', $id)->first();
+            if ($category) {
+                throw new \Exception('禁止删除已经下级的分类');
+            }
+            $entrance = db('tbk_entrances')->where('category_id', $id)->first();
+            if ($entrance) {
+                throw new \Exception('禁止删除包含标签的分类');
+            }
+            $this->repository->delete($id);
 
-        return json(1001, '删除成功');
+            return json(1001, '删除成功');
+        }catch(\Exception $e){
+            return json('5001',$e->getMessage());
+        }
+
     }
 }

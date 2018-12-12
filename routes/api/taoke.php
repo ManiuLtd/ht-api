@@ -9,6 +9,8 @@ Route::namespace('Taoke')
         //优惠券详情
 
         Route::get('coupon/detail', 'CouponsController@detail');
+        //猜你喜欢
+        Route::get('guess', 'GuessController@index');
 
         //分类
         Route::get('category', 'CategoriesController@index');
@@ -54,7 +56,19 @@ Route::namespace('Taoke')
         Route::get('jingxuan', 'JingXuanController@index');
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
 
+<<<<<<< HEAD
         //随机数据
         Route::get('random', 'RandomsController@index');
+=======
+
+        //小店分类
+        Route::get('dian/category', 'DianCategoryController@index');
+        //小店
+        Route::resource('dian', 'DianController')->only(['index','show']);
+
+
+        Route::get('entrance', 'EntrancesController@index');
+        Route::get('entrance/category', 'EntranceCategoriesController@index');
+>>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
 
     });

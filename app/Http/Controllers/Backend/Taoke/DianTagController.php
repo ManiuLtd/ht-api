@@ -3,34 +3,34 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\CategoryValidator;
-use App\Http\Requests\Taoke\CategoryCreateRequest;
-use App\Http\Requests\Taoke\CategoryUpdateRequest;
+use App\Validators\Taoke\DianTagValidator;
+use App\Http\Requests\Taoke\DianTagCreateRequest;
+use App\Http\Requests\Taoke\DianTagUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use App\Repositories\Interfaces\Taoke\CategoryRepository;
+use App\Repositories\Interfaces\Taoke\DianTagRepository;
 
 /**
- * Class CategoriesController.
+ * Class DianTagController.
  */
-class CategoriesController extends Controller
+class DianTagController extends Controller
 {
     /**
-     * @var CategoryRepository
+     * @var DianTagRepository
      */
     protected $repository;
 
     /**
-     * @var CategoryValidator
+     * @var DianTagValidator
      */
     protected $validator;
 
     /**
-     * CategoriesController constructor.
+     * DianTagController constructor.
      *
-     * @param CategoryRepository $repository
-     * @param CategoryValidator $validator
+     * @param DianTagRepository $repository
+     * @param DianTagValidator $validator
      */
-    public function __construct(CategoryRepository $repository, CategoryValidator $validator)
+    public function __construct(DianTagRepository $repository, DianTagValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -43,24 +43,23 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository
-            ->paginate(request('limit', 10));
+        $diantag = $this->repository->paginate(request('limit', 10));
 
-        return json(1001, '获取成功', $categories);
+        return json(1001, '获取成功', $diantag);
     }
 
     /**
-     * @param CategoryCreateRequest $request
+     * @param DianTagCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CategoryCreateRequest $request)
+    public function store(DianTagCreateRequest $request)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $category = $this->repository->create($request->all());
+            $diantag = $this->repository->create($request->all());
 
-            return json(1001, '添加成功', $category);
+            return json(1001, '添加成功', $diantag);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
@@ -75,24 +74,24 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $category = $this->repository->find($id);
+        $diantag = $this->repository->find($id);
 
-        return json(1001, '获取成功', $category);
+        return json(1001, '获取成功', $diantag);
     }
 
     /**
-     * @param CategoryUpdateRequest $request
+     * @param DianTagUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(CategoryUpdateRequest $request, $id)
+    public function update(DianTagUpdateRequest $request, $id)
     {
         try {
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $category = $this->repository->update($request->all(), $id);
+            $diantag = $this->repository->update($request->all(), $id);
 
-            return json(1001, '修改成功', $category);
+            return json(1001, '修改成功', $diantag);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
@@ -107,10 +106,6 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $coupon = db('tbk_coupons')->where('cat', $id)->first();
-        if ($coupon) {
-            return json(4001, '禁止删除已经包含优惠券的分类');
-        }
         $this->repository->delete($id);
 
         return json(1001, '删除成功');
