@@ -36,6 +36,7 @@ class DianCategoryController extends Controller
     {
         $this->repository = $repository;
         $this->validator = $validator;
+
     }
 
     /**
