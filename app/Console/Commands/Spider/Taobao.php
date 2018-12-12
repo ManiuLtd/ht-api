@@ -2,7 +2,11 @@
 
 namespace App\Console\Commands\Spider;
 
+<<<<<<< HEAD
+use App\Jobs\Spider\TalentInfo;
+=======
 use App\Jobs\Spider\Says;
+>>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
@@ -78,6 +82,9 @@ class Taobao extends Command
                 break;
             case 'updateOrder':
                 $this->updateOrder();
+                break;
+            case 'talent':
+                $this->talentInfo();
                 break;
             default:
                 $this->all();
@@ -406,4 +413,41 @@ class Taobao extends Command
         }
     }
 
+<<<<<<< HEAD
+    /**
+     * 达人说
+     */
+    protected function talentInfo()
+    {
+        try {
+            $this->info('正在采集达人说');
+            $resp = $this->tbk->talentInfo();
+            if (isset($resp->topdata)) {
+                foreach ($resp->topdata as $topdatum) {
+                    $rest = $this->tbk->talentArticle($topdatum->id);
+                    $rest_arr[] = $rest;
+                }
+                TalentInfo::dispatch($rest_arr,1);
+            }
+            if (isset($resp->newdata)) {
+                foreach ($resp->newdata as $newdata) {
+                    $new_data = $this->tbk->talentArticle($newdata->id);
+                    $now_arr[] = $new_data;
+                }
+                TalentInfo::dispatch($now_arr,2);
+            }
+            if (isset($resp->clickdata)) {
+                foreach ($resp->clickdata as $clickdata) {
+                    $click_data = $this->tbk->talentArticle($clickdata->id);
+                    $click_arr[] = $click_data;
+                }
+                TalentInfo::dispatch($click_arr,3);
+            }
+            $this->info('达人说采集结束');
+        }catch (\Exception $e){
+            $this->warn($e->getMessage());
+        }
+    }
+=======
+>>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
 }
