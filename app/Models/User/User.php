@@ -2,7 +2,7 @@
 
 namespace App\Models\User;
 
-use App\Events\CreditOrderFriend;
+use App\Events\CreditFriend;
 use App\Models\Taoke\Setting;
 use Hashids\Hashids;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -122,7 +122,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
         if (request('password') != '') {
             self::updating(function ($model) {
                 if ($model->inviter_id != null){
-                    event(new CreditOrderFriend([
+                    event(new CreditFriend([
                         'user_id' => $model->inviter_id
                     ],2));
                 }
@@ -131,7 +131,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
         }else{
             self::updating(function ($model) {
                 if ($model->inviter_id != null){
-                    event(new CreditOrderFriend([
+                    event(new CreditFriend([
                         'user_id' => $model->inviter_id
                     ],2));
                 }

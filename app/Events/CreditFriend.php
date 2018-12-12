@@ -7,7 +7,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class CreditOrderFriend
+class CreditFriend
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
