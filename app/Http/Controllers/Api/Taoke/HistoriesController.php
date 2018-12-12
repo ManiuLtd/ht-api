@@ -102,7 +102,7 @@ class HistoriesController extends Controller
     }
 
     /**
-     * 取消收藏.
+     * 取消足迹.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
