@@ -159,6 +159,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
      */
     protected function increment($column, $amount = 1, array $extra = [])
     {
+        $extra['type'] = 2;
         if (in_array($column, ['credit1', 'credit2','credit3'])) {
             event(new CreditIncrement($this, floatval($column), $amount, $extra));
         }
@@ -175,7 +176,9 @@ class User extends Authenticatable implements JWTSubject, Transformable
      */
     protected function decrement($column, $amount = 1, array $extra = [])
     {
-        if (in_array($column, ['credit1', 'credit2'])) {
+        $extra['type'] = 1;
+
+        if (in_array($column, ['credit1', 'credit2','credit3'])) {
             event(new CreditDecrement($this, floatval($column), -$amount, $extra));
         }
 
