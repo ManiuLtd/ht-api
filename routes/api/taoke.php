@@ -56,6 +56,10 @@ Route::namespace('Taoke')
         Route::get('jingxuan', 'JingXuanController@index');
         Route::get('jingxuan/kouling', 'JingXuanController@kouLing');
 
+<<<<<<< HEAD
+        //随机数据
+        Route::get('random', 'RandomsController@index');
+=======
 
         //小店分类
         Route::get('dian/category', 'DianCategoryController@index');
@@ -65,5 +69,6 @@ Route::namespace('Taoke')
 
         Route::get('entrance', 'EntrancesController@index');
         Route::get('entrance/category', 'EntranceCategoriesController@index');
+>>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
 
     });

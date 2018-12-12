@@ -5,6 +5,7 @@ namespace App\Repositories\Taoke;
 use App\Criteria\Taoke\CouponCriteria;
 use App\Models\Taoke\Coupon;
 use App\Criteria\RequestCriteria;
+use Illuminate\Support\Facades\DB;
 use Orzcc\TopClient\Facades\TopClient;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Traits\CacheableRepository;
@@ -103,6 +104,29 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
         }
 
         return false;
+    }
+
+    public function random()
+    {
+        $userid = getUserId();
+        $query = db('users');
+        if ($userid) {
+            $query = $query->where('id','<>',$userid);
+        }
+        $user_num = $query->count('id');
+        $random_id = rand(1,$user_num);
+        $coupon_num = $this->model->newQuery()->count('id');
+        $coupon_id = rand(1,$coupon_num);
+        $time = rand(1,240);
+
+        $user = DB::select("select id,nickname from users limit $random_id,1 ");
+        $coupon = DB::select("select id,title from tbk_coupons limit $coupon_id,1 ");
+        return json(1001,'获取成功',[
+            'user' => $user[0],
+            'coupon' => $coupon[0],
+            'time' => now()->subSeconds($time)->diffForHumans(),
+        ]);
+
     }
 
 }

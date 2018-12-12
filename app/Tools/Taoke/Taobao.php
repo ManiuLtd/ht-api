@@ -769,6 +769,40 @@ class Taobao implements TBKInterface
         }
         return $rest->general_classify;
     }
+<<<<<<< HEAD
+
+    /**
+     * 达人说
+     * @return mixed
+     * @throws \Exception
+     */
+    public function talentInfo()
+    {
+        $rest = Curl::to ('http://v2.api.haodanku.com/talent_info/apikey/'. config ('coupon.taobao.HDK_APIKEY'))
+            ->asJsonResponse ()
+            ->get ();
+        if ($rest->code != 1) {
+            throw new \Exception($rest->msg);
+        }
+        return $rest->data;
+    }
+
+    /**
+     *
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function talentArticle($id)
+    {
+        $rest = Curl::to ('http://v2.api.haodanku.com/talent_article/apikey/'. config ('coupon.taobao.HDK_APIKEY').'/id/'.$id)
+            ->asJsonResponse ()
+            ->get ();
+        if ($rest->code != 1) {
+            throw new \Exception($rest->msg);
+        }
+        return $rest->data;
+=======
     /**
      * 猜你喜欢.
      * @param array $params
@@ -826,6 +860,7 @@ class Taobao implements TBKInterface
             array_push($data,$item);
         }
         return $data;
+>>>>>>> 8cf93ef6d4ffa74c752d36c01ebdf3d1ed6976bb
     }
 
 }
