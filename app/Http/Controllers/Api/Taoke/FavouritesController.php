@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Criteria\UserCriteria;
 use App\Models\Taoke\Favourite;
 use App\Tools\Taoke\JingDong;
 use App\Tools\Taoke\PinDuoDuo;
@@ -10,7 +9,6 @@ use App\Tools\Taoke\Taobao;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\FavouriteValidator;
 use App\Http\Requests\Taoke\FavouriteCreateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\Taoke\FavouriteRepository;
 
 /**
