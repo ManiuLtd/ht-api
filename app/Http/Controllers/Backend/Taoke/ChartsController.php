@@ -17,20 +17,13 @@ class ChartsController extends Controller
     protected $repository;
 
     /**
-     * @var OrderValidator
-     */
-    protected $validator;
-
-    /**
      * CategoriesController constructor.
      *
      * @param OrderRepository $repository
-     * @param OrderValidator $validator
      */
-    public function __construct(OrderRepository $repository, OrderValidator $validator)
+    public function __construct(OrderRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator = $validator;
     }
 
 

@@ -165,23 +165,21 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     }
 
     /**
-     * 订单报表
+     * 订单报表 TODO 根据权限不同查询
      * @return mixed|void
      */
     public function orderChart()
     {
         $user = getUser();
-        //status 1佣金 2数量
-//        $status = request('status');
         $query = DB::table('tbk_orders')
             ->where('group_id',$user->group_id);
-        //today当天week本周month本月year全年
+        //time两个时间 today当天week本周month本月year全年
         $type = request('type');
 
         //根据日期筛选
         switch ($type) {
             case 'today':
-                $query = $query->whereDate('created_at','>=',today()->toDateString())
+                $query = $query->whereDate('created_at',today()->toDateString())
                     ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d %H') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
                 break;
             case 'week':
@@ -195,6 +193,11 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
             case 'year':
                 $query = $query->whereYear('created_at','>=', date('Y',time()))
                     ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                break;
+            case 'time':
+                $query = $query->whereDate('created_at','>=', request('start_time'))
+                    ->whereDate('created_at','<=', request('end_time'))
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
                 break;
             default:
                 break;
