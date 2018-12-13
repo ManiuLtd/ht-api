@@ -58,7 +58,7 @@ class ChartsController extends Controller
     public function member()
     {
         try {
-            $withdraw = $this->orderRepository->getMember();
+            $withdraw = $this->orderRepository->getMemberCommission();
 
             return json(1001, '获取成功', $withdraw);
         } catch (\Exception $e) {

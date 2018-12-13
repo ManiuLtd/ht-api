@@ -44,10 +44,10 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = $this->repository
-            ->with(['children'])
-            ->paginate(request('limit', 10));
+            ->with (['children'])
+            ->paginate (request ('limit', 10));
 
-        return json(1001, '获取成功', $categories);
+        return json (1001, '获取成功', $categories);
     }
 
     /**
@@ -57,13 +57,13 @@ class CategoriesController extends Controller
     public function store(CategoryCreateRequest $request)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_CREATE);
 
-            $category = $this->repository->create($request->all());
+            $category = $this->repository->create ($request->all ());
 
-            return json(1001, '添加成功', $category);
+            return json (1001, '添加成功', $category);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -76,9 +76,9 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $category = $this->repository->find($id);
+        $category = $this->repository->find ($id);
 
-        return json(1001, '获取成功', $category);
+        return json (1001, '获取成功', $category);
     }
 
     /**
@@ -89,13 +89,13 @@ class CategoriesController extends Controller
     public function update(CategoryUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $category = $this->repository->update($request->all(), $id);
+            $category = $this->repository->update ($request->all (), $id);
 
-            return json(1001, '修改成功', $category);
+            return json (1001, '修改成功', $category);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -108,12 +108,19 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $coupon = db('tbk_coupons')->where('cat', $id)->first();
-        if ($coupon) {
-            return json(4001, '禁止删除已经包含优惠券的分类');
-        }
-        $this->repository->delete($id);
+        try {
+            $coupon = db ('tbk_coupons')->where ('cat', $id)->first ();
+            if ($coupon) {
+                throw  new \Exception('禁止删除已经包含优惠券的分类');
+            }
+            $this->repository->delete ($id);
 
-        return json(1001, '删除成功');
+            return json (1001, '删除成功');
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessage ());
+
+        }
+
+
     }
 }

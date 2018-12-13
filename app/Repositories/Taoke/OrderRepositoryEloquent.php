@@ -148,10 +148,10 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     }
 
     /**
-     * 获取会员收入信息.
-     * @return array|mixed
+     * @return array
+     * @throws \Exception
      */
-    public function getMember()
+    public function getMemberCommission()
     {
         $lastMonth = $this->getOrderChart(true, ['date_type' => 'lastMonth','status' => 2]);//上月结算
         $month = $this->getOrderChart(true, ['date_type' => 'month','status' => 1]);//本月预估
@@ -165,10 +165,11 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     }
 
     /**
-     * 订单报表 TODO 根据权限不同查询
-     * @return mixed|void
+     * 订单报表
+     * //TODO 根据权限不同查询
+     * @return \Illuminate\Support\Collection|mixed
      */
-    public function orderChart()
+    public function chart()
     {
         $user = getUser();
         $query = DB::table('tbk_orders')
@@ -180,30 +181,28 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         switch ($type) {
             case 'today':
                 $query = $query->whereDate('created_at',today()->toDateString())
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d %H') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d %H') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             case 'week':
                 $query = $query->whereDate('created_at','>=', now()->addDay(-7)->toDateString())
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             case 'month':
                 $query = $query->whereMonth('created_at','>=', date('m',time()))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             case 'year':
                 $query = $query->whereYear('created_at','>=', date('Y',time()))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
-            case 'time':
+            case 'custom':
                 $query = $query->whereDate('created_at','>=', request('start_time'))
                     ->whereDate('created_at','<=', request('end_time'))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             default:
                 break;
         }
-        $res =$query->groupBy('weeks')
-            ->get();
-        return $res;
+        return $query->groupBy('time')->get();
     }
 }

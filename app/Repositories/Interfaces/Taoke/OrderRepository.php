@@ -24,11 +24,11 @@ interface OrderRepository extends RepositoryInterface
      * 会员收入信息.
      * @return mixed
      */
-    public function getMember();
+    public function getMemberCommission();
 
     /**
      * 订单报表
      * @return mixed
      */
-    public function orderChart();
+    public function chart();
 }

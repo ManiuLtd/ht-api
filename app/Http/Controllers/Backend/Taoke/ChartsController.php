@@ -30,8 +30,10 @@ class ChartsController extends Controller
     public function order()
     {
         try {
-            $orderChart = $this->repository->orderChart();
-            return json(1001, '获取成功', $orderChart);
+            $chart = $this->repository->chart();
+
+            return json(1001, '获取成功', $chart);
+
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
