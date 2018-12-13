@@ -492,6 +492,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
                 ->select(DB::raw ($sql), DB::raw('count(id) as total'))
                 ->groupBy('weeks')
                 ->get();
+        }else{
+            return json(4001,'参数有误');
         }
 
         return json(1001,'用户报表获取成功',$res);
