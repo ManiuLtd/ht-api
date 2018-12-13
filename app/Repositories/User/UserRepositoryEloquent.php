@@ -493,6 +493,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
                 ->groupBy('weeks')
                 ->get();
         }
+
         return json(1001,'用户报表获取成功',$res);
     }
 }
