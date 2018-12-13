@@ -25,4 +25,10 @@ interface OrderRepository extends RepositoryInterface
      * @return mixed
      */
     public function getMember();
+
+    /**
+     * 订单报表
+     * @return mixed
+     */
+    public function orderChart();
 }

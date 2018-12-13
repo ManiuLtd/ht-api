@@ -7,6 +7,7 @@ use App\Models\Taoke\Order;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\OrderValidator;
+use Carbon\Carbon;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
 
@@ -160,5 +161,30 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
             'month' => $month,
             'today' => $day,
         ];
+    }
+
+    /**
+     * 订单报表
+     * @return mixed|void
+     */
+    public function orderChart()
+    {
+        $user = getUser();
+        $commission = new Commission();
+        //检查会员
+        $userModel = $commission->checkUser($user->id);
+
+        //type 1佣金 2数量
+        $type = request('type');
+
+        $array = [];
+        for($i=0;$i<24;$i++){
+            $order = $this->model
+                ->where(['group_id'=>$user->group_id])
+                ->whereBetween('created_at',[Carbon::today()->addHours($i)->toDateTimeString(),Carbon::today()->addHours($i+1)->toDateTimeString()])
+                ->sum(['final_price']);
+            array_push($array,$order);
+        }
+        return $array;
     }
 }

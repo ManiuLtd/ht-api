@@ -48,4 +48,7 @@ Route::namespace('Taoke')
         Route::resource('entrance', 'EntrancesController');
         //超级入口分类
         Route::resource('entrance/category', 'EntranceCategoriesController');
+
+        //订单报表
+        Route::get('chart/order', 'ChartsController@order');
     });

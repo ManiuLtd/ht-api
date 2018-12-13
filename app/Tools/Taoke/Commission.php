@@ -172,7 +172,7 @@ class Commission
      * @param int $userId
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
      */
-    protected function checkUser(int $userId)
+    public function checkUser(int $userId)
     {
         $userModel = User::with('level')->find($userId);
         if (! $userModel) {
