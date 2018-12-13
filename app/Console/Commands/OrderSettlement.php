@@ -44,6 +44,9 @@ class OrderSettlement extends Command
             ->whereDate('complete_at',date('Y-m'))
             ->get()
             ->toArray();
+
+        //FIXME 订单结算返佣哪里体现？ 订单是每月同时结算的，这样的订单比较多，应该用队列处理；下面的返还积分同理
+        //改为队列：creditorder  返利
         if (count($order) > 0){
             foreach ($order as $v){
                 event(new CreditOrderFriend([
@@ -51,18 +54,18 @@ class OrderSettlement extends Command
                 ],1));
             }
         }
-        $order_refund = db('tbk_orders')
-            ->where('status',5)
-            ->whereDate('complete_at',date('Y-m'))
-            ->get()
-            ->toArray();
-        if (count($order_refund) > 0){
-            foreach ($order as $v){
-                event(new CreditOrder([
-                    'user_id' => $v->user_id
-                ]));
-            }
-        }
+//        $order_refund = db('tbk_orders')
+//            ->where('status',5)
+//            ->whereDate('complete_at',date('Y-m'))
+//            ->get()
+//            ->toArray();
+//        if (count($order_refund) > 0){
+//            foreach ($order as $v){
+//                event(new CreditOrder([
+//                    'user_id' => $v->user_id
+//                ]));
+//            }
+//        }
 
 
     }

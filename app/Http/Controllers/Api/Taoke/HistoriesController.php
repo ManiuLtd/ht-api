@@ -48,7 +48,7 @@ class HistoriesController extends Controller
     public function index()
     {
         $user = getUser();
-        $histories = History::query()
+            $histories = History::query()
             ->where('user_id',$user->id)
             ->orderBy('id','desc')
             ->paginate(request('limit', 10));
