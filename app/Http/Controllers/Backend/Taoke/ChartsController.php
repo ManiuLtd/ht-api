@@ -37,12 +37,12 @@ class ChartsController extends Controller
     public function order()
     {
         //type 1佣金 2数量
-        try {
+//        try {
             $orderChart = $this->repository->orderChart();
             return json(1001, '获取成功', $orderChart);
-        } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
-        }
+//        } catch (\Exception $e) {
+//            return json(5001, $e->getMessage());
+//        }
     }
 
     public function member()

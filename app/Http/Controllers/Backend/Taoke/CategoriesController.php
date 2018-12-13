@@ -44,6 +44,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = $this->repository
+            ->with(['children'])
             ->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $categories);

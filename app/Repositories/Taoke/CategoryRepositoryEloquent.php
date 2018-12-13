@@ -20,7 +20,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
         'name' => 'like',
         'status',
         'type',
-        'pid',
+        'category_id',
     ];
 
     /**
