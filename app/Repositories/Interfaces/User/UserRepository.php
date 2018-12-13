@@ -56,5 +56,5 @@ interface UserRepository extends RepositoryInterface
 
     public function bindAlipay();
 
-    public function member();
+    public function userChart();
 }
