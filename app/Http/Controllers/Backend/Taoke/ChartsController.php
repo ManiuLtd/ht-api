@@ -7,6 +7,8 @@ use App\Repositories\Interfaces\Taoke\OrderRepository;
 use App\Repositories\Interfaces\User\UserRepository;
 use App\Validators\Taoke\OrderValidator;
 use App\Validators\User\UserValidator;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class CategoriesController.
@@ -33,8 +35,10 @@ class ChartsController extends Controller
      */
     public function __construct(OrderRepository $repository,UserRepository $memberrepository, OrderValidator $validator,UserValidator $membervalidator)
     {
+        $this->memberrepository = $memberrepository;
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->membervalidator = $membervalidator;
     }
 
 
@@ -45,7 +49,10 @@ class ChartsController extends Controller
 
     public function member()
     {
-
-
+        try {
+            return $this->memberrepository->member();
+        }catch (\Exception $e){
+            return json(5001,$e->getMessage());
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Repositories\Taoke;
 
 use App\Models\Taoke\UserOrder;
 use App\Validators\Taoke\UserOrderValidator;
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\UserOrderRepository;

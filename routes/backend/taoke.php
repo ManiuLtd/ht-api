@@ -52,5 +52,7 @@ Route::namespace('Taoke')
         //超级入口分类
         Route::resource('entrance-category', 'EntranceCategoriesController');
 
+        Route::get('member','ChartsController@member');
+
 
     });

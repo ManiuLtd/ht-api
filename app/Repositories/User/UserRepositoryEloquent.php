@@ -451,6 +451,50 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         ]);
         return json(1001,'支付宝绑定成功');
     }
+
+    /**
+     * 用户报表
+     */
+    public function member()
+    {
+        $type = request('type');
+        if($type == 'day'){
+            $now = date('Y-m-d',time());
+            $sql = "DATE_FORMAT(created_at,'%Y-%m-%d %h') weeks";
+            $res = DB::table('users')
+                ->whereDate('created_at','>=', $now)
+                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
+                ->groupBy('weeks')
+                ->get();
+        }elseif($type == 'week'){
+            $now = date('Y-m-d',time());
+            $last = date('Y-m-d',strtotime('-1 week'));
+            $sql = "DATE_FORMAT(created_at,'%Y-%m-%d') weeks";
+            $res = DB::table('users')
+                ->whereDate('created_at', '<', $now)
+                ->whereDate('created_at', '>=', $last)
+                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
+                ->groupBy('weeks')
+                ->get();
+        }elseif($type == 'month'){
+            $now = date('Y',time());
+            $sql = "DATE_FORMAT(created_at,'%m') weeks";
+            $res = DB::table('users')
+                ->whereYear('created_at',$now)
+                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
+                ->groupBy('weeks')
+                ->get();
+        }elseif($type == 'year'){
+            $now = date('Y',time());
+            $sql = "DATE_FORMAT(created_at,'%Y') weeks";
+            $res = DB::table('users')
+                ->whereYear('created_at','>=',$now)
+                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
+                ->groupBy('weeks')
+                ->get();
+        }
+        return json(1001,'用户报表获取成功',$res);
+    }
 }
 
 
