@@ -126,14 +126,14 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
         if ($type == 2) {
             return db ('user_credit_logs')->where ([
                 'column' => 'credit1',
-                'type' => 11,
+                'type' => 2,
             ])->sum ('credit');
         }
         // 累计提现
         if ($type == 3) {
-            return db ('user_credit_logs')->where ([
+                return db ('user_credit_logs')->where ([
                 'column' => 'credit1',
-                'type' => 12,
+                'type' => 1,
             ])->sum ('credit');
         }
         return 0;
@@ -143,6 +143,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
      * @return \Illuminate\Http\JsonResponse|mixed
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Throwable
      */
     public function mark()
     {

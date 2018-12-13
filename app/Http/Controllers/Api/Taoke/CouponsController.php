@@ -60,4 +60,5 @@ class CouponsController extends Controller
             return json(5001, $e->getMessage());
         }
     }
+
 }

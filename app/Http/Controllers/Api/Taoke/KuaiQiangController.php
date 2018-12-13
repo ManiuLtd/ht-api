@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Criteria\KuaiQiangCriteria;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\KuaiQiangRepository;
 
@@ -34,7 +33,6 @@ class KuaiQiangController extends Controller
     {
 
         $kuaiqiang = $this->repository
-            ->pushCriteria(new KuaiQiangCriteria())
             ->paginate(request('limit', 10));
 
         return json(1001, '获取成功', $kuaiqiang);

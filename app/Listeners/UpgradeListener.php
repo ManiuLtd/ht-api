@@ -72,24 +72,35 @@ class UpgradeListener
                         throw new \Exception('小组不存在');
                     }
                     $jingdong = new JingDong();
-                    $jingdong_pid = $jingdong->createPid (['group_id' => $group->id]);
-                    foreach ($jingdong_pid as $v){
-                        $jing = $v;
+                    try {
+                        $jingdong_pid = $jingdong->createPid(['group_id' => $group->id]);
+                        foreach ($jingdong_pid as $v) {
+                            $jing = $v;
+                        }
+                    }catch (\Exception $e){
+                        $jing = null;
                     }
                     $pinduoduo = new PinDuoDuo();
-                    $pinduoduo_pid = $pinduoduo->createPid ();
+                    try {
+                        $pinduoduo_pid = $pinduoduo->createPid();
+                        $p_id = $pinduoduo_pid[0]->p_id;
+                    }catch (\Exception $e){
+                        $p_id = null;
+                    }
+
+
                     if ($pid) {
                         $pid->update ([
                             'agent_id' => $user->id,
                             'jingdong' => $jing,
-                            'pinduoduo' => $pinduoduo_pid[0]->p_id
+                            'pinduoduo' => $p_id
                         ]);
                     } else {
                         Pid::query ()->create ([
                             'user_id' => $group->user_id,
                             'agent_id' => $user->id,
                             'jingdong' => $jing,
-                            'pinduoduo' => $pinduoduo_pid[0]->p_id
+                            'pinduoduo' => $p_id
                         ]);
                     }
                 }

@@ -18,7 +18,6 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
      */
     protected $fieldSearchable = [
         'user_id',
-        'user_id',
         'type',
         'created_at',
     ];

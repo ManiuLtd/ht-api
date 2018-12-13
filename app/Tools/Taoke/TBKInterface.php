@@ -47,11 +47,5 @@ interface TBKInterface
      */
     public function super_category();
 
-    /**
-     * 猜你喜欢.
-     * @param $itemid
-     * @return mixed
-     */
-    public function guessLike($itemid);
 
 }

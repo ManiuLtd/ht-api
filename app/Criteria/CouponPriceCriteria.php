@@ -13,7 +13,7 @@ class CouponPriceCriteria implements CriteriaInterface
     /**
      * 根据时间筛选，需要传入开始时间和结束时间.
      * @param $model
-     * @param RepositoryInterface $repositoryus
+     * @param RepositoryInterface $repository
      * @return mixed
      */
     public function apply($model, RepositoryInterface $repository)

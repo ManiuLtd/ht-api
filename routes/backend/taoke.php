@@ -46,9 +46,11 @@ Route::namespace('Taoke')
         //小店
         Route::resource('dian', 'DianController');
 
+
         //超级入口
         Route::resource('entrance', 'EntrancesController');
         //超级入口分类
         Route::resource('entrance-category', 'EntranceCategoriesController');
+
 
     });

@@ -20,15 +20,13 @@ Route::namespace('User')
 
         //分销等级列表
         Route::get('level', 'LevelsController@index');
-        //付费升级
-        Route::get('payment', 'LevelsController@payment');
 
         //积分余额日志列表
         Route::get('credit-log', 'CreditLogsController@index');
 
         //发起提现
         Route::resource('withdraw', 'WithdrawsController', [
-            'only' => ['index', 'store'],
+            'only' => ['store'],
         ]);
 
         //绑定手机号
