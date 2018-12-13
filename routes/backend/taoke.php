@@ -36,6 +36,7 @@ Route::namespace('Taoke')
         Route::resource('setting', 'SettingsController', [
             'only' => ['index', 'update'],
         ]);
+
         //小店分类
         Route::resource('dian/categories', 'DianCategoriesController');
         //小店标签
@@ -44,11 +45,18 @@ Route::namespace('Taoke')
         ]);
         //小店
         Route::resource('dian', 'DianController');
+
+
         //超级入口
         Route::resource('entrance', 'EntrancesController');
         //超级入口分类
-        Route::resource('entrance/category', 'EntranceCategoriesController');
+
+        Route::resource('entrance-category', 'EntranceCategoriesController');
+
+        //用户报表
+        Route::get('chart/member', 'ChartsController@member');
 
         //订单报表
         Route::get('chart/order', 'ChartsController@order');
+
     });

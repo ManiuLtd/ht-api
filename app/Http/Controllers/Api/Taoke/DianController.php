@@ -35,6 +35,7 @@ class DianController extends Controller
     {
         $this->repository = $repository;
         $this->validator = $validator;
+
     }
 
     /**

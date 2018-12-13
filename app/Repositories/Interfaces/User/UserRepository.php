@@ -55,4 +55,6 @@ interface UserRepository extends RepositoryInterface
     public function bindinviterRegister($user, $inviter);
 
     public function bindAlipay();
+
+    public function userChart();
 }

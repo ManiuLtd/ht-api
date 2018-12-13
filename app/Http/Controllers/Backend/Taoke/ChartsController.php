@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
+use App\Repositories\Interfaces\User\UserRepository;
 use App\Validators\Taoke\OrderValidator;
+
 
 /**
  * Class CategoriesController.
@@ -15,14 +17,17 @@ class ChartsController extends Controller
      * @var OrderRepository
      */
     protected $repository;
+    protected $userrepository;
 
     /**
      * CategoriesController constructor.
      *
      * @param OrderRepository $repository
      */
-    public function __construct(OrderRepository $repository)
+
+    public function __construct(OrderRepository $repository,UserRepository $userrepository)
     {
+        $this->userrepository = $userrepository;
         $this->repository = $repository;
     }
 
@@ -41,6 +46,10 @@ class ChartsController extends Controller
 
     public function member()
     {
-        //type 1佣金 2数量
+        try {
+            return $this->userrepository->userChart();
+        }catch (\Exception $e){
+            return json(5001,$e->getMessage());
+        }
     }
 }
