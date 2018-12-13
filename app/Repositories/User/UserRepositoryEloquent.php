@@ -455,72 +455,34 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     /**
      * 用户报表
      */
-    public function userChart()
+    public function chart()
     {
         $type = request('type');
         $query = DB::table('users');
         switch ($type){
             case 'today':
                $query = $query->whereDate('created_at',today()->toDateString())
-               ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d %h') weeks"),DB::raw('count(id) as total'));
+               ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d %h') time"),DB::raw('count(id) as total_count'));
                break;
             case 'week':
                 $query = $query->whereDate('created_at','>=',now()->addDay(-7)->toDateString())
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"),DB::raw('count(id) as total'));
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"),DB::raw('count(id) as total_count'));
                 break;
             case 'month':
-                $query = $query->whereDate('created_at','>=',date('m',time()))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"),DB::raw('count(id) as total'));
+                $query = $query->whereMonth('created_at','>=',now ()->month)
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"),DB::raw('count(id) as total_count'));
                 break;
             case 'year':
-                $query = $query->whereDate('created_at','>=',date('Y',time()))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') weeks"),DB::raw('count(id) as total'));
+                $query = $query->whereYear('created_at','>=',now ()->year)
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') time"),DB::raw('count(id) as total_count'));
                 break;
             case 'custom':
-                $query = $query->whereDate('created_at','>=',date('Y',time()))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') weeks"),DB::raw('count(id) as total'));
+                $query = $query->whereDate('created_at','>=', request('start_time'))
+                    ->whereDate('created_at','<=', request('end_time'))
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') time"),DB::raw('count(id) as total_count'));
                 break;
         }
-//        if($type == 'day'){
-//            $now = date('Y-m-d',time());
-//            $sql = "DATE_FORMAT(created_at,'%Y-%m-%d %h') weeks";
-//            $res = DB::table('users')
-//                ->whereDate('created_at','>=', $now)
-//                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
-//                ->groupBy('weeks')
-//                ->get();
-//        }elseif($type == 'week'){
-//            $now = date('Y-m-d',time());
-//            $last = date('Y-m-d',strtotime('-1 week'));
-//            $sql = "DATE_FORMAT(created_at,'%Y-%m-%d') weeks";
-//            $res = DB::table('users')
-//                ->whereDate('created_at', '<', $now)
-//                ->whereDate('created_at', '>=', $last)
-//                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
-//                ->groupBy('weeks')
-//                ->get();
-//        }elseif($type == 'month'){
-//            $now = date('Y',time());
-//            $sql = "DATE_FORMAT(created_at,'%m') weeks";
-//            $res = DB::table('users')
-//                ->whereYear('created_at',$now)
-//                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
-//                ->groupBy('weeks')
-//                ->get();
-//        }elseif($type == 'year'){
-//            $now = date('Y',time());
-//            $sql = "DATE_FORMAT(created_at,'%Y') weeks";
-//            $res = DB::table('users')
-//                ->whereYear('created_at','>=',$now)
-//                ->select(DB::raw ($sql), DB::raw('count(id) as total'))
-//                ->groupBy('weeks')
-//                ->get();
-//        }else{
-//            return json(4001,'参数有误');
-//        }
-       $res = $query->groupBy('weeks')->get();
-
-        return json(1001,'用户报表获取成功',$res);
+        return $query->groupBy('time')->get();
     }
 }
 

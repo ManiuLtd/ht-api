@@ -33,6 +33,11 @@ interface UserRepository extends RepositoryInterface
      */
     public function bindInviter();
 
+
+    /**
+     * 注册
+     * @return mixed
+     */
     public function register();
 
     /**
@@ -54,7 +59,15 @@ interface UserRepository extends RepositoryInterface
      */
     public function bindinviterRegister($user, $inviter);
 
+    /**
+     * 绑定支付宝
+     * @return mixed
+     */
     public function bindAlipay();
 
-    public function userChart();
+    /**
+     * 会员报表
+     * @return mixed
+     */
+    public function chart();
 }
