@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Models\Taoke\Favourite;
+use App\Criteria\UserCriteria;
 use App\Tools\Taoke\JingDong;
 use App\Tools\Taoke\PinDuoDuo;
 use App\Tools\Taoke\Taobao;
@@ -46,9 +47,8 @@ class FavouritesController extends Controller
      */
     public function index()
     {
-        $user = getUser();
-        $favourites = Favourite::query()
-            ->where('user_id',$user->id)
+        $favourites = $this->repository
+            ->pushCriteria(new UserCriteria())
             ->orderBy('id','desc')
             ->paginate(request('limit', 10));
 
@@ -63,17 +63,7 @@ class FavouritesController extends Controller
     public function store(FavouriteCreateRequest $request)
     {
         try {
-            $re = $request->all();
-            if ($re['type'] == 1){
-                $tool    = new Taobao();
-            }elseif ($re['type'] == 2){
-                $tool    = new JingDong();
-            }elseif ($re['type'] == 3){
-                $tool    = new PinDuoDuo();
-            }
-            $detail = $tool->getDetail([
-                'itemid' => $re['item_id']
-            ]);
+            $detail = $request->all();
             $user = getUser();
             $data = [
                 'title'        => $detail['title'] ?? '',
@@ -83,7 +73,7 @@ class FavouritesController extends Controller
                 'coupon_price' => $detail['coupon_price'] ?? '',
                 'final_price'  => $detail['final_price'] ?? '',
                 'price'        => $detail['price'] ?? '',
-                'type'         => $re['type'] ?? '',
+                'type'         => $detail['type'] ?? '',
                 'user_id'      => $user->id ?? '',
             ];
             $favourite = $this->repository->create($data);

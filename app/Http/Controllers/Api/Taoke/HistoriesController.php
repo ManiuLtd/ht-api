@@ -47,11 +47,10 @@ class HistoriesController extends Controller
      */
     public function index()
     {
-        $user = getUser();
-            $histories = History::query()
-            ->where('user_id',$user->id)
-            ->orderBy('id','desc')
-            ->paginate(request('limit', 10));
+            $histories = $this->repository
+                ->pushCriteria(new UserCriteria())
+                ->orderBy('id','desc')
+                ->paginate(request('limit', 10));
 
 
         return json(1001, '列表获取成功', $histories);
@@ -66,17 +65,7 @@ class HistoriesController extends Controller
     public function store(HistoryCreateRequest $request)
     {
         try {
-            $re = $request->all();
-            if ($re['type'] == 1){
-                $tool    = new Taobao();
-            }elseif ($re['type'] == 2){
-                $tool    = new JingDong();
-            }elseif ($re['type'] == 3){
-                $tool    = new PinDuoDuo();
-            }
-            $detail = $tool->getDetail([
-                'itemid' => $re['item_id']
-            ]);
+            $detail = $request->all();
             $user = getUser();
             $data = [
                 'title'        => $detail['title'] ?? '',
@@ -86,7 +75,7 @@ class HistoriesController extends Controller
                 'coupon_price' => $detail['coupon_price'] ?? '',
                 'final_price'  => $detail['final_price'] ?? '',
                 'price'        => $detail['price'] ?? '',
-                'type'         => $re['type'] ?? '',
+                'type'         => $detail['type'] ?? '',
                 'user_id'      => $user->id ?? '',
             ];
             $histories = $this->repository->updateOrCreate([

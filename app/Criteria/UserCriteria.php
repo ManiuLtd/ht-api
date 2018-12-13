@@ -26,12 +26,18 @@ class UserCriteria implements CriteriaInterface
         if (in_array($type,[2,3,4])) {
             return $model->where('type',$type);
         }
-        if ($userID) {
+        if ($userID){
+            return $model->where([
+                'user_id' => $userID,
+            ]);
+        }
+        if ($userID && $type) {
             return $model->where([
                 'user_id' => $userID,
                 'type' => $type
             ]);
         }
+
 
         return $model;
     }
