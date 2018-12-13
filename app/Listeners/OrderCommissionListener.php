@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\CreditOrderFriend;
+use App\Events\OrderCommission;
 use App\Events\SendNotification;
 use App\Models\User\CreditLog;
 use App\Models\User\Group;
@@ -12,7 +12,7 @@ use App\Models\System\Setting;
 use App\Tools\Taoke\Commission;
 use Carbon\Carbon;
 
-class OrderRebateListener
+class OrderCommissionListener
 {
     /**
      * Create the event listener.
@@ -25,10 +25,10 @@ class OrderRebateListener
     }
 
     /**
-     * @param CreditOrderFriend $event
+     * @param OrderCommission $event
      * @throws \Exception
      */
-    public function handle(CreditOrderFriend $event)
+    public function handle(OrderCommission $event)
     {
         $params = $event->params;
 
@@ -36,16 +36,16 @@ class OrderRebateListener
         //去掉平台的抽成
         $price = $params['price'] * (1 - $setting->commission_rate / 100);
         $tool = new Commission();
-        $user = User::query()->find($params['user_id']);
+        $user = User::query()->with('level')->find($params['user_id']);
         //直推订单返利
-        if ($user){
+        if ($user && $user['level']->is_commission == 1){
             $rebate = $tool->getCommissionByUser($user->id,$price,'commission_rate1');
             $user->increment('credit1', $rebate, ['remark' => '直推订单返利']);
         }
         //上级订单返利
         if ($user && $user->inviter_id != null){
-            $inviter = User::query()->find($user->inviter_id);//上级
-            if (!$inviter){
+            $inviter = User::query()->with('level')->find($user->inviter_id);//上级
+            if (!$inviter && $inviter['level']->is_commission == 1){
                 return;
             }
             $rebate = $tool->getCommissionByUser($inviter->id,$price,'commission_rate2');
@@ -57,8 +57,8 @@ class OrderRebateListener
             if (!$group) {
                 return;
             }
-            $userGroup = User::query ()->find ($group['user_id']); //当前组长
-            if (!$userGroup) {
+            $userGroup = User::query ()->with('level')->find ($group['user_id']); //当前组长
+            if (!$userGroup && $userGroup['level']->is_group == 1) {
                 return;
             }
             $rebate = $tool->getCommissionByUser($userGroup->id,$price,'group_rate1');
@@ -70,12 +70,12 @@ class OrderRebateListener
             if (!$oldgroup) {
                 return;
             }
-            $userOldgroup = User::query ()->find ($oldgroup['user_id']); //原组长
-            if (!$userOldgroup) {
+            $userOldgroup = User::query ()->with('level')->find ($oldgroup['user_id']); //原组长
+            if (!$userOldgroup && $userOldgroup['level']->is_group == 1) {
                 return;
             }
             $rebate = $tool->getCommissionByUser($userOldgroup->id,$price,'group_rate2');
-            $userOldgroup->increment('credit1', $rebate, ['remark' => '老团员订单返利']);
+            $userOldgroup->increment('credit1', $rebate, ['remark' => '补贴订单返利']);
         }
     }
 }

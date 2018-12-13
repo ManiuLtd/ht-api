@@ -29,8 +29,8 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UpgradeListener',
         ],
 
-        'App\Events\OrderRebate' => [
-            'App\Listeners\OrderRebateListener',
+        'App\Events\OrderCommission' => [
+            'App\Listeners\OrderCommissionListener',
         ],
     ];
 

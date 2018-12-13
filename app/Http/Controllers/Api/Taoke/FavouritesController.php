@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Models\Taoke\Favourite;
 use App\Criteria\UserCriteria;
+use App\Models\User\User;
 use App\Tools\Taoke\JingDong;
 use App\Tools\Taoke\PinDuoDuo;
 use App\Tools\Taoke\Taobao;
@@ -49,7 +50,6 @@ class FavouritesController extends Controller
     {
         $favourites = $this->repository
             ->pushCriteria(new UserCriteria())
-            ->orderBy('id','desc')
             ->paginate(request('limit', 10));
 
         return json(1001, '列表获取成功', $favourites);
@@ -63,19 +63,12 @@ class FavouritesController extends Controller
     public function store(FavouriteCreateRequest $request)
     {
         try {
-            $detail = $request->all();
+            $user = User::query()->with('level')->find(46);
+            dd($user['level']->is_commission);
+            $data = $request->all();
             $user = getUser();
-            $data = [
-                'title'        => $detail['title'] ?? '',
-                'pic_url'      => $detail['pic_url'] ?? '',
-                'item_id'      => $detail['item_id'] ?? '',
-                'volume'       => $detail['volume'] ?? '',
-                'coupon_price' => $detail['coupon_price'] ?? '',
-                'final_price'  => $detail['final_price'] ?? '',
-                'price'        => $detail['price'] ?? '',
-                'type'         => $detail['type'] ?? '',
-                'user_id'      => $user->id ?? '',
-            ];
+            $data['user_id'] = $user->id;
+
             $favourite = $this->repository->create($data);
 
             return json(1001, '添加成功', $favourite);

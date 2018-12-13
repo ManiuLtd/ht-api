@@ -49,7 +49,6 @@ class HistoriesController extends Controller
     {
             $histories = $this->repository
                 ->pushCriteria(new UserCriteria())
-                ->orderBy('id','desc')
                 ->paginate(request('limit', 10));
 
 
@@ -65,19 +64,10 @@ class HistoriesController extends Controller
     public function store(HistoryCreateRequest $request)
     {
         try {
-            $detail = $request->all();
+            $data = $request->all();
             $user = getUser();
-            $data = [
-                'title'        => $detail['title'] ?? '',
-                'pic_url'      => $detail['pic_url'] ?? '',
-                'item_id'      => $detail['item_id'] ?? '',
-                'volume'       => $detail['volume'] ?? '',
-                'coupon_price' => $detail['coupon_price'] ?? '',
-                'final_price'  => $detail['final_price'] ?? '',
-                'price'        => $detail['price'] ?? '',
-                'type'         => $detail['type'] ?? '',
-                'user_id'      => $user->id ?? '',
-            ];
+            $data['user_id'] = $user->id;
+
             $histories = $this->repository->updateOrCreate([
                 'item_id' => $data['item_id'],
                 'user_id' => $data['user_id']
