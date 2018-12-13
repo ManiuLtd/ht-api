@@ -38,4 +38,9 @@ class Category extends Model implements Transformable
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    public function children()
+    {
+        //只查询顶级分类 ，with('children')
+    }
 }
