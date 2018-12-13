@@ -8,6 +8,7 @@ use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\OrderValidator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
 
@@ -170,21 +171,36 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     public function orderChart()
     {
         $user = getUser();
-        $commission = new Commission();
-        //检查会员
-        $userModel = $commission->checkUser($user->id);
-
-        //type 1佣金 2数量
+        //status 1佣金 2数量
+//        $status = request('status');
+        $query = DB::table('tbk_orders')
+            ->where('group_id',$user->group_id);
+        //today当天week本周month本月year全年
         $type = request('type');
 
-        $array = [];
-        for($i=0;$i<24;$i++){
-            $order = $this->model
-                ->where(['group_id'=>$user->group_id])
-                ->whereBetween('created_at',[Carbon::today()->addHours($i)->toDateTimeString(),Carbon::today()->addHours($i+1)->toDateTimeString()])
-                ->sum(['final_price']);
-            array_push($array,$order);
+        //根据日期筛选
+        switch ($type) {
+            case 'today':
+                $query = $query->whereDate('created_at','>=',today()->toDateString())
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d %H') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                break;
+            case 'week':
+                $query = $query->whereDate('created_at','>=', now()->addDay(-7)->toDateString())
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                break;
+            case 'month':
+                $query = $query->whereMonth('created_at','>=', date('m',time()))
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                break;
+            case 'year':
+                $query = $query->whereYear('created_at','>=', date('Y',time()))
+                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') weeks"), DB::raw('count(id) as total,sum(commission_amount) as amount'));
+                break;
+            default:
+                break;
         }
-        return $array;
+        $res =$query->groupBy('weeks')
+            ->get();
+        return $res;
     }
 }
