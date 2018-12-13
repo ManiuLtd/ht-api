@@ -63,8 +63,7 @@ class FavouritesController extends Controller
     public function store(FavouriteCreateRequest $request)
     {
         try {
-            $user = User::query()->with('level')->find(46);
-            dd($user['level']->is_commission);
+
             $data = $request->all();
             $user = getUser();
             $data['user_id'] = $user->id;

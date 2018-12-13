@@ -62,7 +62,7 @@ class OrderCommissionListener
                 return;
             }
             $rebate = $tool->getCommissionByUser($userGroup->id,$price,'group_rate1');
-            $userGroup->increment('credit1', $rebate, ['remark' => '团员订单返利']);
+            $userGroup->increment('credit1', $rebate, ['remark' => '团队订单返利']);
         }
         //原组长订单返利
         if ($user && $user->oldgroup_id != null) {
