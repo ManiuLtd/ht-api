@@ -169,3 +169,43 @@ if (! function_exists('tbksetting')) {
     }
 }
 
+
+if (! function_exists('resort_array')) {
+    /**
+     * @param $array
+     * @param $type  日 周 月 年 自定义天数
+     * @return mixed
+     */
+    function resort_array($array,$type)
+    {
+        //array_pluck
+        //2018-12-11 00
+        //2018-12-11 01
+        //2018-12-11 02
+        $names = array_pluck($array, 'created_at');
+
+        $array = [
+            [
+                'created_at' => '2018-12-11 14:01:20',
+                'commission_amount' => '20'
+            ],
+            [
+                'created_at' => '2018-12-11 14:01:20',
+                'commission_amount' => '20'
+            ],
+        ];
+
+        $array = [100, '200', 300, '400', 500];
+        //只查询2018-12-11 00
+
+        $filtered = array_where($array, function ($value, $key) {
+            return str_contains ($value['created_at'],"2018-12-11 00");
+        });
+
+    }
+
+}
+
+
+
+
