@@ -24,11 +24,8 @@ class Category extends Model implements Transformable
      */
     protected $fillable = [
         'name',
-        'category_id',
+        'parent_id',
         'logo',
-        'taobao',
-        'jingdong',
-        'pinduoduo',
         'sort',
         'type',
         'status',
