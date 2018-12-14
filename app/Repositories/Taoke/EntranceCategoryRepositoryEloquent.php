@@ -57,6 +57,7 @@ class EntranceCategoryRepositoryEloquent extends BaseRepository implements Entra
     }
 
     /**
+     * 超级入口分类
      * @return mixed
      */
     public function list()
