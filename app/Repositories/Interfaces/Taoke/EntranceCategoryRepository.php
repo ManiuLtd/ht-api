@@ -10,9 +10,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface EntranceCategoryRepository extends RepositoryInterface
 {
-    /**
-     * 超级入口列表
-     * @return mixed
-     */
-    public function list();
+
 }

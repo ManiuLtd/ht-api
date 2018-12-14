@@ -56,29 +56,4 @@ class EntranceCategoryRepositoryEloquent extends BaseRepository implements Entra
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    /**
-     * 超级入口分类
-     * @return mixed
-     */
-    public function list()
-    {
-        $model = $this->findWhere(['parent_id' => 0]);
-        $data = $model['data'];
-        foreach ($data as $key => $v){
-            $last = $this->findWhere(['parent_id' => $v['id']]);
-            $arr = [];
-            if (count($last['data']) > 0){
-                $arr = $last['data'];
-                foreach ($arr as $k => $val){
-                    $entrance = Entrance::query()->where('category_id',$val['id'])->get()->toArray();
-                    $arr[$k]['entrance'] = $entrance;
-                }
-            }else{
-                $entrance = Entrance::query()->where('category_id',$v['id'])->get()->toArray();
-                $arr[]['entrance'] = $entrance;
-            }
-            $data[$key]['last'] = $arr;
-        }
-        return $data;
-    }
 }

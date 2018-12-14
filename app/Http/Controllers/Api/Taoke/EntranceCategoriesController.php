@@ -42,7 +42,7 @@ class EntranceCategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository->list();
+        $categories = $this->repository->with(['entrance','child'])->all();
 
         return json(1001, '获取成功', $categories);
     }
