@@ -2,25 +2,24 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\Dian;
 use App\Criteria\RequestCriteria;
-use App\Validators\Taoke\DianValidator;
+use App\Models\Taoke\DianOrder;
+use App\Validators\Taoke\DianOrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
-use App\Repositories\Interfaces\Taoke\DianRepository;
+use App\Repositories\Interfaces\Taoke\DianOrderRepository;
 
 /**
  * Class DianRepositoryEloquent.
  */
-class DianRepositoryEloquent extends BaseRepository implements DianRepository
+class DianOrderRepositoryEloquent extends BaseRepository implements DianOrderRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name'=>'like',
-        'tag'=>'like',
-        'city'=>'like',
-        'category_id',
+        'transaction_id',
+        'out_trade_no',
+        'title'=>'like',
     ];
 
     /**
@@ -30,7 +29,7 @@ class DianRepositoryEloquent extends BaseRepository implements DianRepository
      */
     public function model()
     {
-        return Dian::class;
+        return DianOrder::class;
     }
 
     /**
@@ -38,7 +37,7 @@ class DianRepositoryEloquent extends BaseRepository implements DianRepository
      */
     public function validator()
     {
-        return DianValidator::class;
+        return DianOrderValidator::class;
     }
 
     /**
