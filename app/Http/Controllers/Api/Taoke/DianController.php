@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Api\Taoke;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Taoke\DianCreateRequest;
 use App\Repositories\Interfaces\Taoke\DianRepository;
-use App\Repositories\Interfaces\Taoke\GuessRepository;
-use App\Tools\Taoke\Commission;
 use App\Validators\Taoke\DianValidator;
-use Illuminate\Http\Request;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class GuessController.
@@ -46,6 +44,21 @@ class DianController extends Controller
         $dian = $this->repository->paginate(request('limit', 10));
         return json(1001, '列表获取成功', $dian);
     }
+
+    /**
+     * 申请成为店家
+     */
+    public function store(DianCreateRequest $request)
+    {
+        try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $dian = $this->repository->create($request->all());
+
+            return json(1001, '添加成功', $dian);
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
+        }
+    }
     /**
      * 小店详情
      * @return \Illuminate\Http\JsonResponse
@@ -56,14 +69,5 @@ class DianController extends Controller
         return json(1001, '详情获取成功', $dian);
     }
 
-    /**
-     * 小店分类列表
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function categories()
-    {
-        $categories = db('dian_categories')->where('status',1)->orderBy('sort','desc')->get();
-        return json(1001, '获取成功', $categories);
-    }
 
 }

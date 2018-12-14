@@ -37,6 +37,8 @@ Route::namespace('Taoke')
             'only' => ['index', 'update'],
         ]);
 
+        //小店订单
+        Route::resource('dian/order', 'DianOrderController');
         //小店分类
         Route::resource('dian/categories', 'DianCategoriesController');
         //小店标签
