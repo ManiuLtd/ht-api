@@ -25,7 +25,7 @@ class Category extends Model implements Transformable
     protected $fillable = [
         'name',
         'parent_id',
-        'logo',
+       'logo',
         'sort',
         'type',
         'status',
