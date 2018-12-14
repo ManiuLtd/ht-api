@@ -16,20 +16,19 @@ use Illuminate\Http\Request;
 class DianController extends Controller
 {
     /**
-     * @var FavouriteRepository
+     * @var DianRepository
      */
     protected $repository;
 
     /**
-     * @var FavouriteValidator
+     * @var DianValidator
      */
     protected $validator;
 
     /**
-     * FavouritesController constructor.
-     *
-     * @param FavouriteRepository $repository
-     * @param FavouriteValidator $validator
+     * DianController constructor.
+     * @param DianRepository $repository
+     * @param DianValidator $validator
      */
     public function __construct(DianRepository $repository, DianValidator $validator)
     {

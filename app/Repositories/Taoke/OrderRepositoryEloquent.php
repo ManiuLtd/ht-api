@@ -172,8 +172,8 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     public function chart()
     {
         $user = getUser();
-        $query = DB::table('tbk_orders')
-            ->where('group_id',$user->group_id);
+        $query = DB::table('tbk_orders');
+//            ->where('group_id',$user->group_id);
         //time两个时间 today当天week本周month本月year全年
         $type = request('type');
 
