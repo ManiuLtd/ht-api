@@ -68,6 +68,20 @@ class GroupsController extends Controller
         }
     }
 
+
+    /**
+     * 小组详情.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+        $group = $this->repository->find($id);
+
+        return json(1001, '详情获取成功', $group);
+    }
+
+
     /**
      * 删除小组.
      * @param $id
