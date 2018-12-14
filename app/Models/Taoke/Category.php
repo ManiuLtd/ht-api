@@ -45,6 +45,6 @@ class Category extends Model implements Transformable
      */
     public function children()
     {
-        return $this->hasMany('App\Models\Taoke\Category','parent_id')->withDefault(null);
+        return $this->hasMany('App\Models\Taoke\Category','parent_id');
     }
 }
