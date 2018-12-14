@@ -42,6 +42,6 @@ class Category extends Model implements Transformable
     public function children()
     {
         //只查询顶级分类 ，with('children')
-        return $this->belongsTo('App\Models\Taoke\Category')->withDefault(null);
+        return $this->belongsTo('App\Models\Taoke\Category','parent_id')->withDefault(null);
     }
 }

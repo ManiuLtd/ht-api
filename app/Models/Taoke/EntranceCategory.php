@@ -44,5 +44,12 @@ class EntranceCategory extends Model implements Transformable
         return $this->hasMany('App\Models\Taoke\Entrance','category_id');
     }
 
-   
+    /**
+     * 子分类
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function children()
+    {
+        return $this->belongsTo('App\Models\Taoke\EntranceCategory','parent_id')->withDefault (null);
+    }
 }

@@ -63,6 +63,9 @@ class UpgradeListener
 
             if($level->is_commission == 1) {
                 //查看是否已经有推广位
+                //
+                //1淘宝存在。另外两个为空 更新当前行 分配京东和屁=拼多多
+                //2根本就没分配，需要在pid表绑定一行
                 $user_pid = Pid::query ()->where ('agent_id', $user->id)->first ();
                 if (!$user_pid) {
                     $pid = Pid::query ()->whereNull('agent_id')->where('user_id',$group->user_id)->whereNotNull('taobao')->first ();
