@@ -36,4 +36,13 @@ class EntranceCategory extends Model implements Transformable
     protected $dates = ['deleted_at'];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function entrance()
+    {
+        return $this->hasMany('App\Models\Taoke\Entrance','category_id');
+    }
+
+   
 }
