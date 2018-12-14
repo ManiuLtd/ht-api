@@ -61,8 +61,10 @@ Route::namespace('Taoke')
 
         //小店分类
         Route::get('dian/category', 'DianCategoryController@index');
+        //小店订单
+        Route::resource('dian/order', 'DianOrderController');
         //小店
-        Route::resource('dian', 'DianController')->only(['index','show']);
+        Route::resource('dian', 'DianController');
 
         //超级入口
         Route::get('entrance', 'EntrancesController@index');

@@ -28,6 +28,7 @@ class CreateDianOrdersTable extends Migration
             $table->decimal('money')->nullable()->default(0); //应付款金额
             $table->decimal('real_money')->nullable()->default(0); //实际付款金额pay
             $table->tinyInteger('status')->nullable()->comment('1 支付完成 2 支付未完成 3已退款');
+            $table->tinyInteger('refund_status')->nullable()->comment('1正常  2退款中 3商家同意  4平台同意 5商家拒绝，6平台拒绝');//退款状态
             $table->string('pay_type')->nullable(); //付款类型 1微信 2支付宝 3线下
             $table->timestamp('payment_at')->nullable()->comment('支付完成时间');
             $table->nullableTimestamps();

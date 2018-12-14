@@ -6,9 +6,9 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class DianValidator.
+ * Class DianOrderValidator.
  */
-class DianValidator extends LaravelValidator
+class DianOrderValidator extends LaravelValidator
 {
     /**
      * Validation Rules.
@@ -18,13 +18,13 @@ class DianValidator extends LaravelValidator
     protected $rules = [
 
         ValidatorInterface::RULE_CREATE => [
-            'thumb' => 'required',
+            'title' => 'required',
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'thumb' => 'required',
+            'title' => 'required',
         ],
     ];
     protected $messages = [
-        'thumb.required' => '主图不能为空',
+        'title.required' => '订单标题不能为空',
     ];
 }
