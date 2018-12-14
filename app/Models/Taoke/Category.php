@@ -39,9 +39,12 @@ class Category extends Model implements Transformable
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * 子分类
+     * @return mixed
+     */
     public function children()
     {
-        //只查询顶级分类 ，with('children')
-        return $this->belongsTo('App\Models\Taoke\Category','parent_id')->withDefault(null);
+        return $this->hasMany('App\Models\Taoke\Category','parent_id')->withDefault(null);
     }
 }
