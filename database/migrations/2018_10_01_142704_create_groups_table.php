@@ -25,7 +25,6 @@ class CreateGroupsTable extends Migration
             $table->string('qq')->nullable(); //组长QQ
             $table->string('wechat')->nullable(); //组长微信
             $table->string('name', 50)->nullable(); //小组名
-            $table->string('logo', 191)->nullable(); //小组图标
             $table->text('description')->nullable(); //小组描述
             $table->tinyInteger('status')->nullable()->default(1); //小组状态 1正常 0禁用
             $table->tinyInteger('default')->nullable()->default(0);  //是否为默认小组

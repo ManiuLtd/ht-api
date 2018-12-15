@@ -31,7 +31,6 @@ class Group extends Model implements Transformable
         'qrcode',
         'qq',
         'wechat',
-        'logo',
         'description',
         'status',
         'default',
