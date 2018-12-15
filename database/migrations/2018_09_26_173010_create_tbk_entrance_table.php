@@ -25,6 +25,7 @@ class CreateTbkEntranceTable extends Migration
             $table->string ('descrtption', 191)->nullable (); //描述
             $table->string ('url', 191)->nullable (); //跳转地址
             $table->tinyInteger ('type')->nullable (); //类型  1 跳转链接 2 跳转模块
+            $table->tinyInteger ('is_home')->nullable (); //首页显示  0 不显示 1显示
             $table->string ('params', 191)->nullable (); //参数
             $table->nullableTimestamps();
             $table->softDeletes ();

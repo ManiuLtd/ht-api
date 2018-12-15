@@ -30,6 +30,7 @@ class Entrance extends Model implements Transformable
         'descrtption',
         'url',
         'type',
+        'is_home',
         'params',
     ];
 
