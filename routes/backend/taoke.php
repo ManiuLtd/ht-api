@@ -61,4 +61,12 @@ Route::namespace('Taoke')
         //订单报表
         Route::get('chart/order', 'ChartsController@order');
 
+        //自定义专题
+
+        Route::resource('diy/zhuanti', 'DiyZhuantiController');
+
+        //自定义专题
+
+        Route::resource('diy/ads', 'DiyAdsController');
+
     });

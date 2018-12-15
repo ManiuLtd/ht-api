@@ -7,7 +7,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 /**
  * Interface DiyZhuantiRepository.
  */
-interface DiyZhuantiRepository extends RepositoryInterface
+interface DiyAdsRepository extends RepositoryInterface
 {
     //
 }

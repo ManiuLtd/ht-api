@@ -65,6 +65,10 @@ Route::namespace('Taoke')
         Route::resource('dian/order', 'DianOrderController');
         //小店
         Route::resource('dian', 'DianController');
+        //自定义广告列表
+        Route::get('diy/ads', 'DivAdsController@index');
+        //自定义专题列表
+        Route::get('diy/zhuanti', 'DivZhuantiController@index');
 
         //超级入口
         Route::get('entrance', 'EntrancesController@index');

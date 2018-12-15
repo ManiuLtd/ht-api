@@ -3,15 +3,15 @@
 namespace App\Repositories\Taoke;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Taoke\DianCategories;
-use App\Repositories\Interfaces\Taoke\DianCategoriesRepository;
-use App\Validators\Taoke\DianCategoriesValidator;
+use App\Models\Taoke\DiyZhuanti;
+use App\Repositories\Interfaces\Taoke\DiyZhuantiRepository;
+use App\Validators\Taoke\DiyZhuantiValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class DianRepositoryEloquent.
  */
-class DianCategoriesRepositoryEloquent extends BaseRepository implements DianCategoriesRepository
+class DiyZhuantiRepositoryEloquent extends BaseRepository implements DiyZhuantiRepository
 {
     /**
      * @var array
@@ -27,7 +27,7 @@ class DianCategoriesRepositoryEloquent extends BaseRepository implements DianCat
      */
     public function model()
     {
-        return DianCategories::class;
+        return DiyZhuanti::class;
     }
 
     /**
@@ -35,7 +35,7 @@ class DianCategoriesRepositoryEloquent extends BaseRepository implements DianCat
      */
     public function validator()
     {
-        return DianCategoriesValidator::class;
+        return DiyZhuantiValidator::class;
     }
 
     /**

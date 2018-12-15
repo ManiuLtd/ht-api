@@ -8,7 +8,7 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 /**
  * Class DianValidator.
  */
-class DiyZhuantiValidator extends LaravelValidator
+class DiyAdsValidator extends LaravelValidator
 {
     /**
      * Validation Rules.
@@ -16,7 +16,6 @@ class DiyZhuantiValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-
         ValidatorInterface::RULE_CREATE => [
         ],
         ValidatorInterface::RULE_UPDATE => [

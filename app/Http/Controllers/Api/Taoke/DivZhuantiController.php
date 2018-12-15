@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
 
-use App\Repositories\Interfaces\Taoke\DiyAdsRepository;
+use App\Repositories\Interfaces\Taoke\DiyZhuantiRepository;
 
 /**
  * Class GuessController.
  */
-class DivAdsController extends Controller
+class DivZhuantiController extends Controller
 {
     /**
      * @var DiyAdsRepository
@@ -21,14 +21,14 @@ class DivAdsController extends Controller
      * @param DiyAdsRepository $repository
      *
      */
-    public function __construct(DiyAdsRepository $repository)
+    public function __construct(DiyZhuantiRepository $repository)
     {
         $this->repository = $repository;
 
     }
 
     /**
-     * 自定义广告列表
+     * 自定义专题列表
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()

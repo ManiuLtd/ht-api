@@ -3,21 +3,21 @@
 namespace App\Repositories\Taoke;
 
 use App\Criteria\RequestCriteria;
-use App\Models\Taoke\DiyZhuanti;
-use App\Repositories\Interfaces\Taoke\DiyZhuantiRepository;
-use App\Validators\Taoke\DiyZhuantiValidator;
+use App\Models\Taoke\DiyAds;
+use App\Repositories\Interfaces\Taoke\DiyAdsRepository;
+use App\Validators\Taoke\DiyAdsValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class DianRepositoryEloquent.
  */
-class DiyZhuantiRepositoryEloquent extends BaseRepository implements DiyZhuantiRepository
+class DiyAdsRepositoryEloquent extends BaseRepository implements DiyAdsRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name'=>'like',
+        'title'=>'like',
     ];
 
     /**
@@ -27,7 +27,7 @@ class DiyZhuantiRepositoryEloquent extends BaseRepository implements DiyZhuantiR
      */
     public function model()
     {
-        return DiyZhuanti::class;
+        return DiyAds::class;
     }
 
     /**
@@ -35,7 +35,7 @@ class DiyZhuantiRepositoryEloquent extends BaseRepository implements DiyZhuantiR
      */
     public function validator()
     {
-        return DiyZhuantiValidator::class;
+        return DiyAdsValidator::class;
     }
 
     /**

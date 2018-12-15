@@ -9,42 +9,24 @@ use Prettus\Repository\Traits\TransformableTrait;
 /**
  * Class History.
  */
-class DiyZhuanti extends Model implements Transformable
+class DiyAds extends Model implements Transformable
 {
     use TransformableTrait;
 
     /**
      * @var string
      */
-    protected $table = 'tbk_diy_zhuanti';
+    protected $table = 'tbk_diy_ads';
 
     /**
      * @var array
      */
     protected $fillable = [
-        'pid',
-        'name',
-        'params',
+        'title',
         'thumb',
-        'list_thumb',
-        'bgimg',
-        'show_category',
-        'limit',
+        'url',
         'sort',
         'status',
-        'layout1',
-        'layout2',
+        'type',
     ];
-
-    /**
-     * 子分类
-     * @return mixed
-     */
-    public function children()
-    {
-        return $this->hasMany('App\Models\Taoke\DiyZhuanti','pid');
-    }
-
-
-
 }

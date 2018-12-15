@@ -3,34 +3,34 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\DiyZhuantiValidator;
-use App\Http\Requests\Taoke\DiyZhuantiCreateRequest;
-use App\Http\Requests\Taoke\DiyZhuantiUpdateRequest;
+use App\Validators\Taoke\DiyAdsValidator;
+use App\Http\Requests\Taoke\DiyAdsCreateRequest;
+use App\Http\Requests\Taoke\DiyAdsUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use App\Repositories\Interfaces\Taoke\DiyZhuantiRepository;
+use App\Repositories\Interfaces\Taoke\DiyAdsRepository;
 
 /**
- * Class DiyZhuantiController.
+ * Class DiyAdsController.
  */
-class DiyZhuantiController extends Controller
+class DiyAdsController extends Controller
 {
     /**
-     * @var DiyZhuantiRepository
+     * @var DiyAdsRepository
      */
     protected $repository;
 
     /**
-     * @var DiyZhuantiValidator
+     * @var DiyAdsValidator
      */
     protected $validator;
 
     /**
-     * DiyZhuantiController constructor.
+     * DiyAdsController constructor.
      *
-     * @param DiyZhuantiRepository $repository
-     * @param DiyZhuantiValidator $validator
+     * @param DiyAdsRepository $repository
+     * @param DiyAdsValidator $validator
      */
-    public function __construct(DiyZhuantiRepository $repository, DiyZhuantiValidator $validator)
+    public function __construct(DiyAdsRepository $repository, DiyAdsValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -43,25 +43,24 @@ class DiyZhuantiController extends Controller
      */
     public function index()
     {
-        $diyZhuanti = $this->repository
-            ->with (['children'])
+        $diyAds = $this->repository
             ->paginate (request ('limit', 10));
 
-        return json (1001, '获取成功', $diyZhuanti);
+        return json (1001, '获取成功', $diyAds);
     }
 
     /**
-     * @param DiyZhuantiCreateRequest $request
+     * @param DiyAdsCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(DiyZhuantiCreateRequest $request)
+    public function store(DiyAdsCreateRequest $request)
     {
         try {
             $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_CREATE);
 
-            $diyZhuanti = $this->repository->create ($request->all ());
+            $diyAds = $this->repository->create ($request->all ());
 
-            return json (1001, '添加成功', $diyZhuanti);
+            return json (1001, '添加成功', $diyAds);
         } catch (\Exception $e) {
             return json (5001, $e->getMessage ());
         }
@@ -76,24 +75,24 @@ class DiyZhuantiController extends Controller
      */
     public function show($id)
     {
-        $diyZhuanti = $this->repository->find ($id);
+        $diyAds = $this->repository->find ($id);
 
-        return json (1001, '获取成功', $diyZhuanti);
+        return json (1001, '获取成功', $diyAds);
     }
 
     /**
-     * @param DiyZhuantiUpdateRequest $request
+     * @param DiyAdsUpdateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(DiyZhuantiUpdateRequest $request, $id)
+    public function update(DiyAdsUpdateRequest $request, $id)
     {
         try {
             $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
 
-            $diyZhuanti = $this->repository->update ($request->all (), $id);
+            $diyAds = $this->repository->update ($request->all (), $id);
 
-            return json (1001, '修改成功', $diyZhuanti);
+            return json (1001, '修改成功', $diyAds);
         } catch (\Exception $e) {
             return json (5001, $e->getMessage ());
         }

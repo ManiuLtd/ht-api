@@ -9,57 +9,40 @@ use Prettus\Repository\Traits\TransformableTrait;
 /**
  * Class History.
  */
-class Dian extends Model implements Transformable
+class DiyZhuanti extends Model implements Transformable
 {
     use TransformableTrait;
 
     /**
      * @var string
      */
-    protected $table = 'dian';
+    protected $table = 'tbk_diy_zhuanti';
 
     /**
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'inviter_id',
-        'category_id',
-        'thumb',
-        'images',
+        'pid',
         'name',
-        'phone',
-        'city',
-        'address',
-        'introduce',
-        'tag',
-        'hot',
-        'commission_rate',
-        'deduct_rate',
-        'card1',
-        'card2',
-        'zhizhao',
-        'can_pay',
+        'params',
+        'thumb',
+        'list_thumb',
+        'bgimg',
+        'show_category',
+        'limit',
+        'sort',
+        'status',
+        'layout1',
+        'layout2',
     ];
 
     /**
-     * The "booting" method of the model.
+     * 子分类
+     * @return mixed
      */
-    public static function boot()
+    public function children()
     {
-        parent::boot();
-        //创建之前 添加member_id
-        self::creating(function ($model) {
-            $model->user_id = getUserId();
-        });
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category()
-    {
-        return $this->belongsTo('App\Models\Taoke\DianCategories', 'category_id')->withDefault(null);
+        return $this->hasMany('App\Models\Taoke\DiyZhuanti','pid');
     }
 
 
