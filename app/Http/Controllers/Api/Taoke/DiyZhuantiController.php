@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\Taoke\DiyZhuantiRepository;
  * Class GuessController.
  */
 class DiyZhuantiController extends Controller
+
 {
     /**
      * @var DiyAdsRepository
