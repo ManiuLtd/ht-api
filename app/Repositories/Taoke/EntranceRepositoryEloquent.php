@@ -19,6 +19,9 @@ class EntranceRepositoryEloquent extends BaseRepository implements EntranceRepos
     protected $fieldSearchable = [
         'title' => 'like',
         'category_id',
+        'is_home',
+        'type',
+        'status',
     ];
 
     /**
