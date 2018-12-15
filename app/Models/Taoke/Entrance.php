@@ -29,6 +29,8 @@ class Entrance extends Model implements Transformable
         'title',
         'descrtption',
         'url',
+        'type',
+        'params',
     ];
 
     /**
