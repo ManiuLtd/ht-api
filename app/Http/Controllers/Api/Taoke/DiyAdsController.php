@@ -9,8 +9,9 @@ use App\Repositories\Interfaces\Taoke\DiyAdsRepository;
 /**
  * Class GuessController.
  */
-class DivAdsController extends Controller
+class DiyAdsController extends Controller
 {
+    
     /**
      * @var DiyAdsRepository
      */
