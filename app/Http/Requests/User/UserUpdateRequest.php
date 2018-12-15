@@ -27,7 +27,6 @@ class UserUpdateRequest extends FormRequest
 
         return [
             'phone' => 'unique:users,phone,'.$id,
-            'name' => 'required|unique:users,name,'.$id,
         ];
     }
 }
