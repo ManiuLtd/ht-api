@@ -94,15 +94,16 @@ class EntranceCategoriesController extends Controller
         try{
             $category = db('tbk_entrance_categories')->where('parent_id', $id)->first();
             if ($category) {
-                throw new \Exception('禁止删除已经下级的分类');
+                throw new \Exception('禁止删除包含下级的分类');
             }
             $entrance = db('tbk_entrances')->where('category_id', $id)->first();
             if ($entrance) {
-                throw new \Exception('禁止删除包含标签的分类');
+                throw new \Exception('禁止删除包含入口的分类');
             }
             $this->repository->delete($id);
 
             return json(1001, '删除成功');
+
         }catch(\Exception $e){
             return json('5001',$e->getMessage());
         }
