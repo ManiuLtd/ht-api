@@ -26,14 +26,12 @@ class Group extends Model implements Transformable
      */
     protected $fillable = [
         'user_id',
-        'pid',
         'name',
         'qrcode',
         'qq',
         'wechat',
         'description',
         'status',
-        'default',
     ];
 
     /**
