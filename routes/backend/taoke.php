@@ -50,10 +50,14 @@ Route::namespace('Taoke')
 
 
         //超级入口
-        Route::resource('entrance', 'EntrancesController');
+        Route::resource('entrance', 'EntrancesController',[
+            'except'=> ['create', 'edit','show'],
+        ]);
         //超级入口分类
 
-        Route::resource('entrance/category', 'EntranceCategoriesController');
+        Route::resource('entrance/category', 'EntranceCategoriesController',[
+            'except'=> ['create', 'edit','show'],
+        ]);
 
         //用户报表
         Route::get('chart/user', 'ChartsController@user');
