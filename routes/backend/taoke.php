@@ -28,6 +28,7 @@ Route::namespace('Taoke')
         Route::resource('jingxuan', 'JingXuanController', [
             'except'=> ['create', 'edit'],
         ]);
+        
 
         //快抢商品
         Route::resource('kuaiqiang', 'KuaiQiangController');
