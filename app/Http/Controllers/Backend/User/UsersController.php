@@ -10,9 +10,7 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\User\UserRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-/**
- * @apiDefine Success
- */
+
 /**
  * Class UsersController.
  */
@@ -46,9 +44,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $userss = $this->repository->with(['group', 'level', 'oldGroup', 'inviter'])->paginate();
+        $users = $this->repository->with(['group', 'level', 'oldGroup', 'inviter'])->paginate();
 
-        return json(1001, '列表获取成功', $userss);
+        return json(1001, '列表获取成功', $users);
     }
 
     /**

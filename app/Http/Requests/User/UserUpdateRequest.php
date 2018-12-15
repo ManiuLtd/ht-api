@@ -26,7 +26,7 @@ class UserUpdateRequest extends FormRequest
         $id = $this->route('user'); //获取当前需要排除的id
 
         return [
-            'email' => 'required|email|unique:users,email,'.$id,
+            'phone' => 'required|email|unique:users,email,'.$id,
             'name' => 'required|unique:users,name,'.$id,
         ];
     }
