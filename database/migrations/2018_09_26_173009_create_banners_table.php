@@ -24,6 +24,7 @@ class CreateBannersTable extends Migration
             $table->string('url')->nullable()->comment('外部链接地址');
             $table->integer('sort')->nullable()->default(100)->comment('排序');
             $table->string('tag', 191)->nullable()->comment('标识');
+            $table->string('color', 191)->nullable()->comment('颜色');
             $table->tinyInteger('status')->nullable()->default(1)->comment('状态0隐藏 1显示');
             $table->nullableTimestamps();
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Taoke;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUpdateRequest extends FormRequest
+class CategoryCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,8 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route('user'); //获取当前需要排除的id
-
         return [
-            'phone' => 'required|email|unique:users,email,'.$id,
-            'name' => 'required|unique:users,name,'.$id,
+            //
         ];
     }
 }

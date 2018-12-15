@@ -47,9 +47,7 @@ Route::namespace('User')
         Route::get('user/payment', 'PaymentsController@index');
 
         //团队
-        Route::resource('user/group', 'GroupsController', [
-            'except' => ['create', 'edit', 'store', 'show'],
-        ]);
+        Route::resource('user/group', 'GroupsController');
 
         //会员
         Route::resource('user', 'UsersController', [

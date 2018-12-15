@@ -148,8 +148,6 @@ class User extends Authenticatable implements JWTSubject, Transformable
         $this->notify(new ResetUserPassword($token));
     }
 
-
-
     /**
      * 增加字段数量.
      * @param string $column

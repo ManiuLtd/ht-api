@@ -28,6 +28,7 @@ class Banner extends Model implements Transformable
         'url',
         'sort',
         'tag',
+        'color',
         'status',
     ];
 
