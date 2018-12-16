@@ -217,7 +217,7 @@ class WithdrawRepositoryEloquent extends BaseRepository implements WithdrawRepos
             $rest = $app->transfer->toBalance($merchantPayData);
 
             if ($rest['result_code'] != 'SUCCESS' && $rest['return_code'] != 'SUCCESS') {
-                throw new \Exception($rest['err_code_des']);
+                throw new \InvalidArgumentException($rest['err_code_des']);
             }
 
 

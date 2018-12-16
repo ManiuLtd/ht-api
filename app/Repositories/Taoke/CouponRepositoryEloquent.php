@@ -61,7 +61,6 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
 
     /**
      * 淘口令解密.
-     * @param $keywords
      * @return array|bool|mixed|string
      * @throws \Exception
      */
@@ -106,7 +105,7 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse\
+     * @return array
      */
     public function random()
     {
@@ -123,11 +122,11 @@ class CouponRepositoryEloquent extends BaseRepository implements CouponRepositor
 
         $user = DB::select("select id,nickname from users limit $random_id,1 ");
         $coupon = DB::select("select id,title from tbk_coupons limit $coupon_id,1 ");
-        return json(1001,'获取成功',[
+        return [
             'user' => $user[0],
             'coupon' => $coupon[0],
             'time' => now()->subSeconds($time)->diffForHumans(),
-        ]);
+        ];
 
     }
 

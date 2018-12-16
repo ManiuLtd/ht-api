@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Tools\Taoke\JingDong;
-use App\Tools\Taoke\Taobao;
-use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {

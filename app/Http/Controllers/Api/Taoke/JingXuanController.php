@@ -42,24 +42,4 @@ class JingXuanController extends Controller
         }
     }
 
-    /**
-     * 获取淘口令和领劵地址
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function kouLing()
-    {
-        try {
-            $itemId = request ('itemid');
-            $tool = new Taobao();
-            $coupon = $tool->getDetail ([
-                'itemid' => $itemId,
-            ]);
-            return json ('1001', '获取成功', [
-                'kouling' => $coupon['kouling'],
-                'coupon_url' => $coupon['coupon_link']['url']
-            ]);
-        } catch (\Exception $e) {
-            return json ('5001', $e->getMessage ());
-        }
-    }
 }

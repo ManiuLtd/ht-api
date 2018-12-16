@@ -15,7 +15,7 @@ Route::namespace('System')
         ]);
         //通知列表
         Route::get('notification', 'NotificationsController@index');
-;
+
     });
 
 Route::namespace('System')

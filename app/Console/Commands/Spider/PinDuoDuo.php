@@ -72,7 +72,7 @@ class PinDuoDuo extends Command
                 'page' => 1,
             ]);
 
-            $total = data_get($result, 'data.total_count', 0);
+            $total = data_get($result, 'total_count', 0);
 
             $totalPage = (int) ceil($total / 100) > 600 ? 600 : (int) ceil($total / 100);
 
@@ -87,7 +87,7 @@ class PinDuoDuo extends Command
             for ($page = 1; $page <= $totalPage; $page++) {
                 $response = $this->tbk->spider(['page'=>$page]);
 
-                $goods_list = data_get($response, 'data.goods_list', 0);
+                $goods_list = data_get($response, 'goods_list', 0);
 
                 if ($goods_list) {
                     SaveGoods::dispatch($goods_list, 'pinduoduo', '', $all);

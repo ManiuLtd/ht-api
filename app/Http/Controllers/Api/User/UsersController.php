@@ -32,13 +32,13 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $userId = getUserId();
+        $userId = getUserId ();
         $users = $this->repository
             ->withCount ('friends')
-            ->with(['level', 'inviter', 'group'])
-            ->find($userId);
+            ->with (['level', 'inviter', 'group'])
+            ->find ($userId);
 
-        return json(1001, '会员信息获取成功', $users);
+        return json (1001, '会员信息获取成功', $users);
     }
 
     /**
@@ -48,9 +48,10 @@ class UsersController extends Controller
     public function friends()
     {
         try {
-            return json(1001, '获取成功', $this->repository->getFrineds());
+            $friends = $this->repository->getFrineds ();
+            return json (1001, '获取成功', $friends);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -61,9 +62,10 @@ class UsersController extends Controller
     public function inviter()
     {
         try {
-            return json(1001, '获取成功', $this->repository->getInviter());
+            $inviter = $this->repository->getInviter ();
+            return json (1001, '获取成功', $inviter);
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -74,9 +76,11 @@ class UsersController extends Controller
     public function bindMobile()
     {
         try {
-            return $this->repository->bindMobile();
+             $this->repository->bindMobile ();
+            return json ('1001', '手机号绑定成功');
+
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -87,9 +91,11 @@ class UsersController extends Controller
     public function bindInviter()
     {
         try {
-            return $this->repository->bindInviter();
+            $this->repository->bindInviter ();
+            return json ('1001', '上级绑定成功');
+
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -100,10 +106,10 @@ class UsersController extends Controller
     public function checkUpgrade()
     {
         try {
-            $this->repository->checkUpgrade();
-            return json('1001','升级成功');
+            $this->repository->checkUpgrade ();
+            return json ('1001', '升级成功');
         } catch (\Exception $e) {
-            return json(5001, $e->getMessage());
+            return json (5001, $e->getMessage ());
         }
     }
 
@@ -114,9 +120,11 @@ class UsersController extends Controller
     public function bindAlipay()
     {
         try {
-            return $this->repository->bindAlipay();
-        }catch (\Exception $e){
-            return json(5001,$e->getMessage());
+            $this->repository->bindAlipay ();
+            return json ('1001', '支付宝绑定成功');
+
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessage ());
         }
     }
 

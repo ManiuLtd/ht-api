@@ -18,8 +18,6 @@ Route::namespace('User')
         Route::get('friends', 'UsersController@friends');
         Route::get('inviter', 'UsersController@inviter');
 
-        //分销等级列表
-        Route::get('level', 'LevelsController@index');
 
         //积分余额日志列表
         Route::get('credit-log', 'CreditLogsController@index');
@@ -38,5 +36,15 @@ Route::namespace('User')
         //绑定支付宝
         Route::post('bind/alipay', 'UsersController@bindAlipay');
 
+    });
+
+
+Route::namespace('User')
+    ->prefix('user')
+    ->group(function () {
+
+
+        //分销等级列表
+        Route::get('level', 'LevelsController@index');
 
     });

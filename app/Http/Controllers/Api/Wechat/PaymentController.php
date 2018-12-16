@@ -70,7 +70,7 @@ class PaymentController extends Controller
             //淘宝推广位是否存在
             $pid = Pid::query ()->whereNull('agent_id')->where('user_id',$group->user_id)->whereNotNull('taobao')->first ();
             if (!$pid) {
-                throw new \Exception('升级失败，pid不够');
+                throw new \InvalidArgumentException('升级失败，pid不够');
             }
 
             $app = Facade::payment ();
@@ -119,7 +119,7 @@ class PaymentController extends Controller
                 $result = $app->jssdk->appConfig ($result['prepay_id']);//第二次签名
                 return json (1001, "支付信息请求成功", $result);
             } else {
-                throw new \Exception('微信支付签名失败');
+                throw new \InvalidArgumentException('微信支付签名失败');
             }
         } catch (\Exception $e) {
             return json (5001, $e->getMessage ());
@@ -158,14 +158,14 @@ class PaymentController extends Controller
                     $type = $other->type;//1月2季3年4永久
 
                     if (!in_array ($type, [1, 2, 3, 4])) {
-                        throw new \Exception('传参错误');
+                        throw new \InvalidArgumentException('传参错误');
                     } else {
                         $column = 'price' . $type;
                     }
 
                     $level = db ('user_levels')->find ($level_id);
                     if (!$level) {
-                        throw new \Exception('等级不存在');
+                        throw new \InvalidArgumentException('等级不存在');
                     }
 
                     if ($level->$column == $message['total_fee'] / 100) {
@@ -194,7 +194,7 @@ class PaymentController extends Controller
                         $user['message'] = '恭喜你成功升级为' . $min . ',到期时间为'.$time != null ? $time : '永久' ;
                         event (new SendNotification($user->toArray ()));
                     } else {
-                        throw new \Exception('升级失败');
+                        throw new \InvalidArgumentException('升级失败');
                     }
                     // 用户支付失败
                 } elseif ($message['result_code'] === 'FAIL') {
@@ -226,19 +226,19 @@ class PaymentController extends Controller
         $type = request ('type');//1月2季3年4永久
 
         if (!in_array ($type, [1, 2, 3, 4])) {
-            throw new \Exception('传参错误');
+            throw new \InvalidArgumentException('传参错误');
         } else {
             $column = 'price' . $type;
         }
 
         $level = db ('user_levels')->find ($level_id);
         if (!$level) {
-            throw new \Exception('等级不存在');
+            throw new \InvalidArgumentException('等级不存在');
         }
         $level_user = db ('user_levels')->find ($user->level_id);
 
         if ($level_user->level > $level->level) {
-            throw new \Exception('当前等级大于所要升级的等级');
+            throw new \InvalidArgumentException('当前等级大于所要升级的等级');
         }
 
         return $level->$column * 100;

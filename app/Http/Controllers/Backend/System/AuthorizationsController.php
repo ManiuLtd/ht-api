@@ -38,7 +38,7 @@ class AuthorizationsController extends Controller
             $id = getUserId ();
 
             if (!$id) {
-                throw new \Exception('用户不存在');
+                throw new \InvalidArgumentException('用户不存在');
             }
 
 
@@ -75,7 +75,7 @@ class AuthorizationsController extends Controller
         try {
             $id = auth ()->setToken (request ('state'))->id ();
             if (!$id) {
-                throw new \Exception('用户不存在');
+                throw new \InvalidArgumentException('用户不存在');
             }
             $resp = Curl::to ('http://open-api.pinduoduo.com/oauth/token')
                 ->withHeader ('Content-Type: application/json')
@@ -88,7 +88,7 @@ class AuthorizationsController extends Controller
                 ->post ();
             $resp = json_decode ($resp);
             if (!$resp) {
-                throw new \Exception('请重新授权');
+                throw new \InvalidArgumentException('请重新授权');
             }
 
             $pinduoduo = [

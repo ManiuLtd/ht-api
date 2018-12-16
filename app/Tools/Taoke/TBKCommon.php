@@ -2,14 +2,37 @@
 
 namespace App\Tools\Taoke;
 
+use App\Exceptions\PhoneException;
+use App\Exceptions\InviterException;
 use App\Models\Taoke\Setting;
 use App\Models\User\User;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 trait TBKCommon
 {
+
+    /**
+     * TODO 后端可设置是否必须绑定手机号和上级
+     * @throws UnauthorizedHttpException
+     * @throws PhoneException
+     * @throws InviterException
+     */
+    public function checkUser()
+    {
+        $user = getUser ();
+        if(!$user){
+            throw  new UnauthorizedHttpException("请先登录");
+        }
+        if($user->phone == null){
+            throw  new PhoneException();
+        }
+        if($user->inviter_id == null){
+            throw  new InviterException();
+        }
+    }
     /**
      * 获取当前用户 的 pids.
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|mixed|object|void|null
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|mixed|null|object|void
      * @throws \Exception
      */
     public function getPids()
@@ -63,13 +86,13 @@ trait TBKCommon
     {
         $user = User::query()->where('is_default',1)->first();
         if (!$user) {
-            throw new \Exception('没有默认系统用户');
+            throw new \InvalidArgumentException('没有默认系统用户');
         }
 
         $setting = $user->tbkSetting;
 
         if (!$setting) {
-            throw new \Exception('没有默认的系统设置');
+            throw new \InvalidArgumentException('没有默认的系统设置');
         }
         return $setting;
     }
@@ -96,6 +119,7 @@ trait TBKCommon
     public function getFinalCommission($price)
     {
         $id = getUserId ();
+        if(!$id)  return 0;
         $commission = new Commission();
 
         return $commission->getCommissionByUser ($id, $price, 'commission_rate1');

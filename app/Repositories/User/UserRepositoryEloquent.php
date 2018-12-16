@@ -3,11 +3,13 @@
 namespace App\Repositories\User;
 
 use App\Events\Upgrade;
+use App\Exceptions\PhoneException;
 use App\Models\User\Group;
 use App\Models\User\Level;
 use Hashids\Hashids;
 use App\Models\User\User;
 use App\Criteria\RequestCriteria;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Support\Facades\Hash;
 use App\Validators\User\UserValidator;
 use Illuminate\Support\Facades\Validator;
@@ -75,10 +77,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
-    public function getUserChart()
-    {
-        //TODO 后端可根据日志获取会员近一周、半月、一月的增长记录
-    }
 
     /**
      * 获取三级粉丝.
@@ -170,12 +168,12 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $validator = Validator::make (request ()->all (), $rules, $messages);
         //字段验证失败
         if ($validator->fails ()) {
-            throw  new \Exception($validator->errors ()->first ());
+            throw  new \InvalidArgumentException($validator->errors ()->first ());
         }
 
         //验证手机号
         if (!preg_match ("/^1[3456789]{1}\d{9}$/", $phone)) {
-            throw  new \Exception('手机号格式不正确');
+            throw  new \InvalidArgumentException('手机号格式不正确');
         }
 
         //验证手机号是否被占用
@@ -183,21 +181,19 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             ['id', '<>', $user->id],
             'phone' => $phone,
         ])->first ()) {
-            throw  new \Exception('手机号已被其他用户绑定');
+            throw  new \InvalidArgumentException('手机号已被其他用户绑定');
 
         }
 
         //验证短信是否过期
         if (!checkSms ($phone, request ('code'))) {
-            throw  new \Exception('验证码不存在或者已过期');
+            throw  new \InvalidArgumentException('验证码不存在或者已过期');
         }
 
-        User::query ()->where ('id', $user->id)->update ([
+        return User::query ()->where ('id', $user->id)->update ([
             'phone' => $phone,
             'password' => bcrypt (request ('password')),
         ]);
-
-        return json ('1001', '绑定成功');
     }
 
     /**
@@ -213,37 +209,34 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
         $decodeID = $hashids->decode ($number);
         if (!isset($decodeID[0])) {
-            throw  new \Exception('邀请码错误');
-
+            throw  new \InvalidArgumentException('邀请码错误');
         }
         $inviterId = $decodeID[0];
 
         //禁止绑定已被绑定过的用户
         if ($user->inviter_id != null) {
-            throw  new \Exception('用户已被绑定');
+            throw  new \InvalidArgumentException('用户已被绑定');
         }
 
         //验证邀请码是否存在
         $inviterModel = db ('users')->find ($inviterId);
 
         if (!$inviterModel) {
-            throw  new \Exception('邀请人不存在');
+            throw  new \InvalidArgumentException('邀请人不存在');
         }
 
         if ($inviterModel->id == $user->id) {
-            throw  new \Exception('禁止绑定自己');
+            throw  new \InvalidArgumentException('禁止绑定自己');
 
         }
 
 
         //查询用户
-        $user->update ([
+        return $user->update ([
             'inviter_id' => $inviterModel->id,
             'group_id' => $inviterModel->group_id,
         ]);
 
-
-        return json ('1001', '绑定成功');
     }
 
     /**
@@ -255,20 +248,20 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     {
         $tag = request ('tag');
         if (!$tag) {
-            throw new \Exception('缺少参数');
+            throw new \InvalidArgumentException('缺少参数');
         }
         $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
         $decode = $hashids->decode ($tag);
         $user = User::query ()->find ($decode[0]);
         if (!$user) {
-            throw new \Exception('该用户不存在');
+            throw new \InvalidArgumentException('该用户不存在');
         }
 
         return $user;
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return array|mixed
      * @throws \Exception
      */
     public function register()
@@ -289,22 +282,22 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $validator = \Validator::make (request ()->all (), $rules, $messages);
         //字段验证失败
         if ($validator->fails ()) {
-            return json (4061, $validator->errors ()->first ());
+            throw  new \InvalidArgumentException($validator->errors ()->first ());
         }
         //验证手机号
         if (!preg_match ("/^1[3456789]{1}\d{9}$/", $phone)) {
-            return json (4001, '手机号格式不正确');
+            throw  new \InvalidArgumentException("手机号格式不正确");
         }
 
         //验证手机号是否被占用
         if (db ('users')->where ([
             'phone' => $phone,
         ])->first ()) {
-            return json (4001, '手机号已被其他用户绑定');
+            throw  new \InvalidArgumentException("手机号已被其他用户绑定");
         }
         //验证短信是否过期
         if (!checkSms ($phone, request ('code'))) {
-            return json (4001, '验证码不存在或者已过期');
+            throw  new \InvalidArgumentException("验证码不存在或者已过期");
         }
         $level = Level::query ()->where ('default', 1)->first ();
 
@@ -322,13 +315,13 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
         $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
 
-        return json (1001, '注册成功', [
+        return [
             'tag' => $hashids->encode ($user->id),
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth ()->factory ()->getTTL () * 60,
             'user' => $user,
-        ]);
+        ];
     }
 
     /**
@@ -345,7 +338,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $decodeID = $hashids->decode ($inviter_code);
 
         if (!isset($decodeID[0])) {
-            throw new \Exception('邀请码不存在');
+            throw new \InvalidArgumentException('邀请码不存在');
         }
         $inviterId = $decodeID[0];
 
@@ -353,11 +346,11 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $inviterModel = db ('users')->find ($inviterId);
 
         if (!$inviterModel) {
-            throw new \Exception('邀请人不存在');
+            throw new \InvalidArgumentException('邀请人不存在');
         }
 
         if ($user->id == $inviterId){
-            throw new \Exception('不能绑定自己');
+            throw new \InvalidArgumentException('不能绑定自己');
         }
 
         $user->update ([
@@ -382,28 +375,27 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         //淘宝推广位是否存在
         $pid = Pid::query ()->whereNull('agent_id')->where('user_id',$group->user_id)->whereNotNull('taobao')->first ();
         if (!$pid) {
-            throw new \Exception('升级失败，pid不够');
+            throw new \InvalidArgumentException('升级失败，pid不够');
         }
 
-
         if (!$level_id) {
-            throw new \Exception('level_id error');
+            throw new \InvalidArgumentException('level_id error');
         }
         $user_level = Level::query()->find($user->level_id);
         if (!$user_level){
-            throw new \Exception('用户等级信息错误');
+            throw new \InvalidArgumentException('用户等级信息错误');
         }
         $level = db('user_levels')->find($level_id);
 
         if (! $level) {
-            throw new \Exception('等级不存在');
+            throw new \InvalidArgumentException('等级不存在');
         }
         if ($user_level->level >= $level->level) {
-            throw new \Exception('用户等级已最高');
+            throw new \InvalidArgumentException('用户等级已最高');
         }
 
         if ($user->credit3 < $level->credit) {
-            throw new \Exception('成长值不够不能升级');
+            throw new \InvalidArgumentException('成长值不够不能升级');
         }
 
 
@@ -430,26 +422,25 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $validator = \Validator::make (request ()->all (), $rules);
         //字段验证失败
         if ($validator->fails ()) {
-            return json (4061, $validator->errors ()->first ());
+            throw new \InvalidArgumentException($validator->errors ()->first ());
         }
         //验证手机号
         if (!preg_match ("/^1[3456789]{1}\d{9}$/", $phone)) {
-            return json (4001, '手机号格式不正确');
+            throw new \InvalidArgumentException('手机号格式不正确');
         }
         if (!$user->phone) {
-            throw new \Exception('请先绑定手机号');
+            throw new PhoneException('请先绑定手机号');
         }
         if ($user->phone != $phone) {
-            throw new \Exception('手机号与绑定的手机号不一致');
+            throw new \InvalidArgumentException('手机号与绑定的手机号不一致');
         }
         if (!checkSms($phone,request('code'))) {
-            throw new \Exception('验证码不正确');
+            throw new \InvalidArgumentException('验证码不正确');
         }
-        $user->update([
+        return $user->update([
             'realname' => request('realname'),
             'alipay' => request('alipay'),
         ]);
-        return json(1001,'支付宝绑定成功');
     }
 
     /**

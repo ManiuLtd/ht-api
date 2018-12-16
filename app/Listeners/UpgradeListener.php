@@ -72,7 +72,7 @@ class UpgradeListener
                     //获取我组长的id
                     $group_id = Group::query()->find($user->group_id);
                     if (!$group_id){
-                        throw new \Exception('小组不存在');
+                        throw new \InvalidArgumentException('小组不存在');
                     }
                     $jingdong = new JingDong();
                     try {

@@ -75,7 +75,7 @@ class OfficialAccountController extends Controller
 
             return $response;
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage ());
+            throw new \InvalidArgumentException($e->getMessage ());
         }
     }
 

@@ -26,7 +26,7 @@ class Taobao implements TBKInterface
         $pids = $this->getPids ();
 
         if (!isset($pids->taobao)) {
-            throw new \Exception('请先设置系统pid');
+            throw new \InvalidArgumentException('请先设置系统pid');
         }
 
         $setting = $this->getSettings(); // 应该是根据user或者user_id
@@ -34,7 +34,7 @@ class Taobao implements TBKInterface
         $taobao = $setting->taobao;
 
         if (!isset($taobao['sid'])) {
-            throw new \Exception('请先授权淘宝联盟');
+            throw new \InvalidArgumentException('请先授权淘宝联盟');
         }
 
         //  Implement getCouponUrl() method.
@@ -54,10 +54,10 @@ class Taobao implements TBKInterface
 
 
         if (isset($resp->error)) {
-            throw new \Exception($resp->error);
+            throw new \InvalidArgumentException($resp->error);
         }
         if (isset($resp->error_response)) {
-            throw new \Exception($resp->error_response->sub_msg);
+            throw new \InvalidArgumentException($resp->error_response->sub_msg);
         }
 
         return $resp;
@@ -71,6 +71,8 @@ class Taobao implements TBKInterface
      */
     public function getDetail(array $params = [])
     {
+        $this->checkUser ();
+
         $itemID = $params['itemid'] ?? request ('itemid');
         if (!is_numeric ($itemID)) {
             throw  new \InvalidArgumentException('商品id类型错误');
@@ -83,7 +85,7 @@ class Taobao implements TBKInterface
         $req->setNumIids ($itemID);
         $resp = $topclient->execute ($req);
         if (!isset($resp->results->n_tbk_item)) {
-            throw new \Exception("淘宝客接口调用失败：{$itemID}");
+            throw new \InvalidArgumentException("淘宝客接口调用失败：{$itemID}");
         }
 
         $data = $resp->results->n_tbk_item[0];
@@ -128,8 +130,7 @@ class Taobao implements TBKInterface
                 $favourite = $favouritesModel->id; //已收藏
             }
         }
-        //获取图文详情
-//        $images = $this->getDesc ($itemID);
+
 
 
         //在商品图前加上商品主图
@@ -166,36 +167,7 @@ class Taobao implements TBKInterface
         return $arr;
     }
 
-    /**
-     * @param $id
-     * @return array|\Illuminate\Cache\CacheManager|mixed
-     * @throws \Exception
-     */
-    protected function getDesc($id)
-    {
-//        $images = cache('getDesc_'.$id);
-//        if ($images) {
-//            return $images;
-//        }
 
-        $rest = Curl::to ('http://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"' . $id . '"}')
-            ->asJsonResponse ()
-            ->get ();
-
-        if (isset($rest->data->pcDescContent)) {
-//            dd($rest->data->pcDescContent);
-            preg_match_all('<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""\']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""\'<>]*)[^<>]*?/?[\s\t\r\n]*>', $rest->data->pcDescContent, $matches);
-            if (isset($matches['imgUrl'])) {
-                $images = [];
-                foreach ($matches['imgUrl'] as $key => $match) {
-                    $images[$key] = 'http:' . $match;
-                }
-                cache(['getDesc_'.$id=>$images],now()->addMinute(10));
-                return $images;
-            }
-        }
-
-    }
 
     /**
      * 获取优惠卷金额.
@@ -294,7 +266,7 @@ class Taobao implements TBKInterface
 
         //接口信息获取失败
         if ($response->status != 200) {
-            throw new \Exception($response->msg);
+            throw new \InvalidArgumentException($response->msg);
         }
         //当前页面地址
         $uri = \Request::url ();
@@ -435,7 +407,7 @@ class Taobao implements TBKInterface
         $resp = json_decode ($resp);
 
         if (isset($resp->error)) {
-            throw new \Exception($resp->error);
+            throw new \InvalidArgumentException($resp->error);
         }
         if (!isset($resp->n_tbk_order)) {
             throw  new \Exception('没有数据');
@@ -462,7 +434,7 @@ class Taobao implements TBKInterface
         $resp = json_decode ($resp);
 
         if ($resp->code != 1) {
-            throw new \Exception($resp->msg);
+            throw new \InvalidArgumentException($resp->msg);
         }
         $data = $resp->data;
 
@@ -500,7 +472,7 @@ class Taobao implements TBKInterface
             ->get ();
         $resp = json_decode ($resp);
         if ($resp->code != 1) {
-            throw new \Exception($resp->msg);
+            throw new \InvalidArgumentException($resp->msg);
         }
 
         return [
@@ -527,7 +499,7 @@ class Taobao implements TBKInterface
             ->get ();
         $resp = json_decode ($resp);
         if ($resp->code != 1) {
-            throw new \Exception($resp->msg);
+            throw new \InvalidArgumentException($resp->msg);
         }
 
         return $resp;
@@ -552,7 +524,7 @@ class Taobao implements TBKInterface
         $resp = json_decode ($resp);
 
         if ($resp->code != 1) {
-            throw new \Exception($resp->msg);
+            throw new \InvalidArgumentException($resp->msg);
         }
 
         return [
@@ -576,7 +548,7 @@ class Taobao implements TBKInterface
             ->get ();
         $res = json_decode ($resp);
         if ($res->code != 1) {
-            throw new \Exception($res->msg);
+            throw new \InvalidArgumentException($res->msg);
         }
 
         return $res;
@@ -599,7 +571,7 @@ class Taobao implements TBKInterface
             ->get ();
         $res = json_decode ($resp);
         if ($res->code != 1) {
-            throw new \Exception($res->msg);
+            throw new \InvalidArgumentException($res->msg);
         }
 
         return $res;
@@ -680,7 +652,7 @@ class Taobao implements TBKInterface
         $back = $params['back'] ?? 500;
         $min_id = $params['min_id'] ?? 1;
         if (!in_array ($back, [1, 2, 10, 20, 50, 100, 120, 200, 500, 1000])) {
-            throw new \Exception('每页条数不合法');
+            throw new \InvalidArgumentException('每页条数不合法');
         }
         $params = [
             'apikey' => config ('coupon.taobao.HDK_APIKEY'),
@@ -693,7 +665,7 @@ class Taobao implements TBKInterface
             ->get ();
         $rest = json_decode ($rest);
         if ($rest->code != 1) {
-            throw new \Exception($rest->msg);
+            throw new \InvalidArgumentException($rest->msg);
         }
 
         return [
@@ -723,7 +695,7 @@ class Taobao implements TBKInterface
         $resp = json_decode ($resp);
 
         if ($resp->code != 1) {
-            throw new \Exception($resp->msg);
+            throw new \InvalidArgumentException($resp->msg);
         }
 
         return $resp->data;
@@ -748,27 +720,13 @@ class Taobao implements TBKInterface
         $req->setText ($params['title']);
         $resp = $topclient->execute ($req);
         if (!isset($resp->data->model)) {
-            throw new \Exception('淘口令生成失败');
+            throw new \InvalidArgumentException('淘口令生成失败');
         }
         $taokouling = $resp->data->model;
 
         return $taokouling;
     }
 
-    /**
-     * @return mixed
-     * @throws \Exception
-     */
-    public function super_category()
-    {
-        $rest = Curl::to ('http://v2.api.haodanku.com/super_classify/apikey/' . config ('coupon.taobao.HDK_APIKEY'))
-            ->asJsonResponse ()
-            ->get ();
-        if ($rest->code != 1) {
-            throw new \Exception($rest->msg);
-        }
-        return $rest->general_classify;
-    }
 
     /**
      * 达人说
@@ -781,7 +739,7 @@ class Taobao implements TBKInterface
             ->asJsonResponse ()
             ->get ();
         if ($rest->code != 1) {
-            throw new \Exception($rest->msg);
+            throw new \InvalidArgumentException($rest->msg);
         }
         return $rest->data;
     }
@@ -798,15 +756,15 @@ class Taobao implements TBKInterface
             ->asJsonResponse()
             ->get();
         if ($rest->code != 1) {
-            throw new \Exception($rest->msg);
+            throw new \InvalidArgumentException($rest->msg);
         }
         return $rest->data;
     }
 
     /**
-     * 猜你喜欢.
-     * @param array $params
-     * @return mixed
+     * 猜你喜欢
+     * @param $itemid
+     * @return array
      * @throws \Exception
      */
     public function guessLike($itemid)

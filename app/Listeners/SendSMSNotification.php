@@ -37,7 +37,7 @@ class SendSMSNotification
         ])->first();
 
         if ($model) {
-            throw new \Exception('验证码发送过于频繁');
+            throw new \InvalidArgumentException('验证码发送过于频繁');
         }
 
         $sms = new EasySms(config('sms'));

@@ -24,7 +24,7 @@ class PinDuoDuo implements TBKInterface
         $pids = $this->getPids ();
 
         if (!isset($pids->pinduoduo)) {
-            throw new \Exception('请先设置系统拼多多推广位id');
+            throw new \InvalidArgumentException('请先设置系统拼多多推广位id');
         }
         $time = time ();
         $params = [
@@ -46,22 +46,25 @@ class PinDuoDuo implements TBKInterface
         $resp = json_decode ($resp);
 
         if (isset($resp->error_response)) {
-            throw new \Exception($resp->error_response->error_msg);
+            throw new \InvalidArgumentException($resp->error_response->error_msg);
         }
 
         if (isset($resp->goods_zs_unit_generate_response)) {
             return $resp->goods_zs_unit_generate_response;
         }
-        throw new \Exception('未知错误');
+        throw new \InvalidArgumentException('未知错误');
     }
 
     /**
+     * @param array $params
      * @return array|mixed
      * @throws \Exception
      */
     public function getDetail(array $params = [])
     {
-        $id = $params['itemid'] ?? request('itemid');
+        $this->checkUser ();
+
+        $id = $params['itemid'] ?? request ('itemid');
         if (!is_numeric ($id)) {
             throw new \InvalidArgumentException('商品id类型错误');
         }
@@ -78,15 +81,15 @@ class PinDuoDuo implements TBKInterface
             ->post ();
         $result = json_decode ($result);
         if (!$result) {
-            db('tbk_coupons')->where([
+            db ('tbk_coupons')->where ([
                 'type' => 3,
                 'item_id' => $id,
-            ])->delete();
-            throw new \Exception('优惠券不存在');
+            ])->delete ();
+            throw new \InvalidArgumentException('优惠券不存在');
         }
 
         if ($result->status_code != 200) {
-            throw new \Exception($result->message);
+            throw new \InvalidArgumentException($result->message);
         }
 
         $data = $result->data;
@@ -121,9 +124,9 @@ class PinDuoDuo implements TBKInterface
         }
 
         //在商品图前加上商品主图
-        if (isset($data->picUrls)){
+        if (isset($data->picUrls)) {
             $small_images = $data->picUrls;
-            array_unshift($small_images,$pic_url);
+            array_unshift ($small_images, $pic_url);
         }
 
         //重组字段
@@ -147,7 +150,7 @@ class PinDuoDuo implements TBKInterface
         $arr['introduce'] = $data->skuDesc; //描述
         $arr['favourite'] = $favourite;
         $arr['coupon_link'] = $link; //领劵地址
-        $arr['finalCommission'] = floatval(round($this->getFinalCommission($data->wlCommission),2));
+        $arr['finalCommission'] = floatval (round ($this->getFinalCommission ($data->wlCommission), 2));
         $arr['favourite'] = $favourite;
 
         return $arr;
@@ -162,11 +165,11 @@ class PinDuoDuo implements TBKInterface
     public function search(array $array = [])
     {
         $page = request ('page', 1);
-        $q = request('q');
+        $q = request ('q');
         $sort = request ('sort');
 
-        $searchType = request ('searchtype',2);
-        if($searchType == 1){
+        $searchType = request ('searchtype', 2);
+        if ($searchType == 1) {
             return $this->localSearch ($q);
         }
 
@@ -259,7 +262,7 @@ class PinDuoDuo implements TBKInterface
             $nextPage = $page + 1;
             //页码不对
             if ($page > $totalPage) {
-                throw new \Exception('超出最大页码');
+                throw new \InvalidArgumentException('超出最大页码');
             }
 
             return [
@@ -317,7 +320,7 @@ class PinDuoDuo implements TBKInterface
         $data = json_decode ($result);
 
         if (isset($data->error_response)) {
-            throw new \Exception($data->error_response->error_msg);
+            throw new \InvalidArgumentException($data->error_response->error_msg);
         }
 
         if (isset($data->order_list_get_response)) {
@@ -336,7 +339,7 @@ class PinDuoDuo implements TBKInterface
         //  Implement spider() method.
         $page = $array['page'] ?? 1;
         if ($page > 600) {
-            throw new \Exception('爬取完成');
+            throw new \InvalidArgumentException('爬取完成');
         }
         $params = [
             'type' => 'goodslist',
@@ -351,36 +354,20 @@ class PinDuoDuo implements TBKInterface
             ->post ();
         $result = json_decode ($result);
         if (!$result) {
-            throw new \Exception('接口返回数据为空');
+            throw new \InvalidArgumentException('接口返回数据为空');
         }
         if ($result->status_code != 200) {
-            throw new \Exception($result->message);
+            throw new \InvalidArgumentException($result->message);
         }
 
         return [
-            'code' => 1001,
-            'data' => [
-                'total_count' => $result->total > 60000 ? 60000 : $result->total,
-                'goods_list' => $result->data,
-            ],
+
+            'total_count' => $result->total > 60000 ? 60000 : $result->total,
+            'goods_list' => $result->data,
+
         ];
     }
 
-    /**
-     * @return array|mixed
-     */
-    public function hotSearch()
-    {
-        return [];
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function super_category()
-    {
-        return [];
-    }
 
     /**
      * @return mixed
@@ -396,7 +383,7 @@ class PinDuoDuo implements TBKInterface
             'type' => 'pdd.ddk.goods.pid.generate',
         ];
 
-        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID').'number1' . 'timestamp' . $time . 'typepdd.ddk.goods.pid.generate';
+        $str = 'client_id' . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_ID') . 'number1' . 'timestamp' . $time . 'typepdd.ddk.goods.pid.generate';
 
         $sign = strtoupper (md5 (data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET') . $str . data_get (config ('coupon'), 'pinduoduo.PDD_CLIENT_SECRET')));
 
@@ -409,7 +396,7 @@ class PinDuoDuo implements TBKInterface
         $data = json_decode ($result);
 
         if (isset($data->error_response)) {
-            throw new \Exception($data->error_response->error_msg);
+            throw new \InvalidArgumentException($data->error_response->error_msg);
         }
         if (isset($data->p_id_generate_response)) {
             return $data->p_id_generate_response->p_id_list;

@@ -39,7 +39,7 @@ class CreditOrderFriendListener
         }
 
         if (!$credit) {
-            throw new \Exception('管理员还没配置参数');
+            throw new \InvalidArgumentException('管理员还没配置参数');
         }
         $today = now ()->toDateTimeString ();
         //默认值

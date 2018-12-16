@@ -242,7 +242,7 @@ class RequestCriteria implements CriteriaInterface
             }
 
             if (count($fields) == 0) {
-                throw new \Exception(trans('repository::criteria.fields_not_accepted', ['field' => implode(',', $searchFields)]));
+                throw new \InvalidArgumentException(trans('repository::criteria.fields_not_accepted', ['field' => implode(',', $searchFields)]));
             }
         }
 

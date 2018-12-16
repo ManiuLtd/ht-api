@@ -36,16 +36,5 @@ interface TBKInterface
      */
     public function spider(array $params);
 
-    /**
-     * 获取热搜词.
-     * @return mixed
-     */
-    public function hotSearch();
-
-    /**
-     * @return mixed
-     */
-    public function super_category();
-
 
 }

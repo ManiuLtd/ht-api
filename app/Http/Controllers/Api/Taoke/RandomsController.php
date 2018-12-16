@@ -31,9 +31,10 @@ class RandomsController extends Controller
     public function index()
     {
         try {
-            return $this->repository->random();
-        }catch (\Exception $e){
-            return json(5001,$e->getMessage());
+            $data = $this->repository->random ();
+            return json (1001, "获取成功", $data);
+        } catch (\Exception $e) {
+            return json (5001, $e->getMessage ());
         }
     }
 
