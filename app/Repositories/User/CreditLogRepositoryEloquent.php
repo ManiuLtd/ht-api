@@ -57,6 +57,4 @@ class CreditLogRepositoryEloquent extends BaseRepository implements CreditLogRep
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
-
-
 }

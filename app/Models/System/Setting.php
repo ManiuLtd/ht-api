@@ -41,9 +41,8 @@ class Setting extends Model implements Transformable
         'user_id',
     ];
 
-
     /**
-     * 自动格式转换
+     * 自动格式转换.
      * @var array
      */
     protected $casts = [

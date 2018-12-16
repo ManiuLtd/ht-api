@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Events\CreditOrderFriend;
-use App\Jobs\Spider\OrderRebate;
 use Illuminate\Console\Command;
+use App\Jobs\Spider\OrderRebate;
 
 class OrderSettlement extends Command
 {
@@ -40,14 +39,14 @@ class OrderSettlement extends Command
     public function handle()
     {
         $order = db('tbk_orders')
-            ->where('status',2)
-            ->whereDate('complete_at',date('Y-m',strtotime('-1 month')))
+            ->where('status', 2)
+            ->whereDate('complete_at', date('Y-m', strtotime('-1 month')))
             ->get()
             ->toArray();
 
         //改为队列：creditorder  返利
-        if (count($order) > 0){
-            foreach ($order as $v){
+        if (count($order) > 0) {
+            foreach ($order as $v) {
                 OrderRebate::dispatch($v);
             }
         }

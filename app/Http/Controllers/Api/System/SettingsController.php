@@ -43,10 +43,9 @@ class SettingsController extends Controller
     public function index()
     {
         $setting = $this->repository
-            ->setPresenter (new SettingPresenter())
+            ->setPresenter(new SettingPresenter())
             ->firstOrNew();
 
         return json('1001', '设置信息', $setting);
     }
-
 }

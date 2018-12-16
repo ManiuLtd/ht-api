@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use App\Http\Controllers\Auth\Passwords\Facade\Password;
-use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
 
 class ResetPasswordController extends Controller
 {
@@ -43,10 +42,10 @@ class ResetPasswordController extends Controller
             if ($errorTime > 5) {
                 Cache::forget('password:phone:error:'.$request->phone);
 
-                return json(4001,'验证码错误次数过多');
+                return json(4001, '验证码错误次数过多');
             }
 
-            return json(4001,'验证码错误');
+            return json(4001, '验证码错误');
         }
 
         $this->resetPassword($user, $request->password);

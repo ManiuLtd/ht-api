@@ -37,11 +37,11 @@ class Category extends Model implements Transformable
     protected $dates = ['deleted_at'];
 
     /**
-     * 子分类
+     * 子分类.
      * @return mixed
      */
     public function children()
     {
-        return $this->hasMany('App\Models\Taoke\Category','parent_id');
+        return $this->hasMany('App\Models\Taoke\Category', 'parent_id');
     }
 }

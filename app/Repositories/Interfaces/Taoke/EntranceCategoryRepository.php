@@ -5,10 +5,8 @@ namespace App\Repositories\Interfaces\Taoke;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface EntranceCategoryRepository
- * @package App\Repositories\Interfaces\Taoke
+ * Interface EntranceCategoryRepository.
  */
 interface EntranceCategoryRepository extends RepositoryInterface
 {
-
 }

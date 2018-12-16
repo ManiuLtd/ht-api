@@ -2,15 +2,12 @@
 
 namespace App\Events;
 
-use App\Models\User\Level;
 use App\Models\User\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class Upgrade
 {
@@ -29,7 +26,7 @@ class Upgrade
      * @param User $user
      * @param $level
      */
-    public function __construct($user,$level)
+    public function __construct($user, $level)
     {
         $this->user = $user;
         $this->level = $level;

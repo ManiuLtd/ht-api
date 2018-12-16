@@ -18,22 +18,20 @@ class CouponPriceCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $min = request ('min_price');
-        $max = request ('max_price');
+        $min = request('min_price');
+        $max = request('max_price');
 
         $where = [
-            'status'=>1
+            'status'=>1,
         ];
         if ($min) {
             $where[] = ['final_price', '>=', $min];
-
         }
         if ($max) {
             $where[] = ['final_price', '<=', $max];
-
         }
         if ($min || $max) {
-            return $model->where ($where);
+            return $model->where($where);
         }
 
         return $model;

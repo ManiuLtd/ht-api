@@ -10,7 +10,6 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\User\UserRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-
 /**
  * Class UsersController.
  */
@@ -88,8 +87,6 @@ class UsersController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             $users = $this->repository->update($request->all(), $id);

@@ -17,16 +17,16 @@ class CreateTbkEntranceCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create ('tbk_entrance_categories', function (Blueprint $table) {
-            $table->increments ('id');
-            $table->integer ('parent_id');//上级分类ID
-            $table->string ('title', 191)->nullable (); //标题
-            $table->integer ('sort')->nullable (); //排序
-            $table->tinyInteger ('status')->nullable ()->comment('0.不显示1显示'); //是否显示 0.不显示1显示
+        Schema::create('tbk_entrance_categories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('parent_id'); //上级分类ID
+            $table->string('title', 191)->nullable(); //标题
+            $table->integer('sort')->nullable(); //排序
+            $table->tinyInteger('status')->nullable()->comment('0.不显示1显示'); //是否显示 0.不显示1显示
             $table->nullableTimestamps();
-            $table->softDeletes ();
+            $table->softDeletes();
 
-            $table->index ('parent_id', 'parent_id');
+            $table->index('parent_id', 'parent_id');
         });
     }
 
@@ -37,6 +37,6 @@ class CreateTbkEntranceCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists ('tbk_entrance_categories');
+        Schema::dropIfExists('tbk_entrance_categories');
     }
 }

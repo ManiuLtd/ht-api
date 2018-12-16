@@ -28,7 +28,7 @@ class TalentInfo implements ShouldQueue
      * @param $data
      * @param $type
      */
-    public function __construct($data,$type)
+    public function __construct($data, $type)
     {
         $this->data = $data;
         $this->type = $type;
@@ -42,10 +42,7 @@ class TalentInfo implements ShouldQueue
      */
     public function handle()
     {
-
-
-        foreach ($this->data as $value){
-
+        foreach ($this->data as $value) {
             $data['article_id'] = $value->id;
             $data['name'] = $value->name;
             $data['short_title'] = $value->shorttitle;
@@ -64,7 +61,7 @@ class TalentInfo implements ShouldQueue
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
 
-            switch ($this->type){
+            switch ($this->type) {
                 case 1:
                     $data['is_top'] = 1;
                     break;
@@ -81,6 +78,5 @@ class TalentInfo implements ShouldQueue
                 ], $data);
             $data = [];
         }
-
     }
 }

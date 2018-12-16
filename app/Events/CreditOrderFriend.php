@@ -23,10 +23,10 @@ class CreditOrderFriend
      * @param array $params
      * @param int $type   1.代表订单 2. 代表粉丝
      */
-    public function __construct(array $params,int $type)
+    public function __construct(array $params, int $type)
     {
         $this->params = $params;
-        $this->type   = $type;
+        $this->type = $type;
     }
 
     /**

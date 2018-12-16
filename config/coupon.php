@@ -10,7 +10,6 @@ return [
 
         'HDK_APIKEY' => env('HDK_APIKEY', 'poerjewnsjfhsd'), //好单库apikey
 
-
     ],
 
     'jingdong' => [
@@ -19,8 +18,6 @@ return [
 
         'JDM_APP_KEY' => '57116DD1E5EDBA11B73A251A0BEB739E',
         'JDM_APP_SECRET' => 'dfe23c330ca54ab787e9c5dc699caeaf',
-
-
 
         'JD_HJK_APIKEY' => '8baf004e74c0b239',
 
@@ -36,8 +33,4 @@ return [
         'PDD_CLIENT_SECRET' => env('PDD_CLIENT_SECRET', '92ff1f13aa9be0a166f9513ee25016d34e81fd29'),
     ],
 
-
-
 ];
-
-

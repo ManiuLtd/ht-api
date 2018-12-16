@@ -2,9 +2,11 @@
 
 namespace App\Models\User;
 
-use App\Events\CreditOrderFriend;
-use App\Models\Taoke\Setting;
 use Hashids\Hashids;
+use App\Models\Taoke\Setting;
+use App\Events\CreditDecrement;
+use App\Events\CreditIncrement;
+use App\Events\CreditOrderFriend;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\ResetUserPassword;
 use Illuminate\Notifications\Notifiable;
@@ -13,8 +15,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Events\CreditIncrement;
-use App\Events\CreditDecrement;
 
 class User extends Authenticatable implements JWTSubject, Transformable
 {
@@ -111,29 +111,29 @@ class User extends Authenticatable implements JWTSubject, Transformable
         parent::boot();
         //创建之前 加密密码
         self::creating(function ($model) {
-            if ($model->inviter_id != null){
+            if ($model->inviter_id != null) {
                 event(new CreditOrderFriend([
-                    'user_id' => $model->user_id
-                ],2));
+                    'user_id' => $model->user_id,
+                ], 2));
             }
             $model->password = bcrypt(request('password'));
         });
         //编辑是如果设置了密码 则更新密码
         if (request('password') != '') {
             self::updating(function ($model) {
-                if ($model->inviter_id != null){
+                if ($model->inviter_id != null) {
                     event(new CreditOrderFriend([
-                        'user_id' => $model->inviter_id
-                    ],2));
+                        'user_id' => $model->inviter_id,
+                    ], 2));
                 }
                 $model->password = bcrypt(request('password'));
             });
-        }else{
+        } else {
             self::updating(function ($model) {
-                if ($model->inviter_id != null){
+                if ($model->inviter_id != null) {
                     event(new CreditOrderFriend([
-                        'user_id' => $model->inviter_id
-                    ],2));
+                        'user_id' => $model->inviter_id,
+                    ], 2));
                 }
             });
         }
@@ -158,7 +158,7 @@ class User extends Authenticatable implements JWTSubject, Transformable
     protected function increment($column, $amount = 1, array $extra = [])
     {
         $extra['type'] = 2;
-        if (in_array($column, ['credit1', 'credit2','credit3'])) {
+        if (in_array($column, ['credit1', 'credit2', 'credit3'])) {
             event(new CreditIncrement($this, $column, $amount, $extra));
         }
 
@@ -176,14 +176,12 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         $extra['type'] = 1;
 
-        if (in_array($column, ['credit1', 'credit2','credit3'])) {
+        if (in_array($column, ['credit1', 'credit2', 'credit3'])) {
             event(new CreditDecrement($this, $column, -$amount, $extra));
         }
 
         return $this->incrementOrDecrement($column, $amount, $extra = [], 'decrement');
     }
-
-
 
     /**
      * 等级.
@@ -237,5 +235,4 @@ class User extends Authenticatable implements JWTSubject, Transformable
     {
         return $this->hasOne(Setting::class, 'user_id', 'id');
     }
-
 }

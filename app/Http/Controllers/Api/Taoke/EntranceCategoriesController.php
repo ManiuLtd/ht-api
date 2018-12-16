@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\EntranceCategoryValidator;
-use App\Http\Requests\Taoke\EntranceCategoryCreateRequest;
-use App\Http\Requests\Taoke\EntranceCategoryUpdateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\Taoke\EntranceCategoryRepository;
 
 /**
@@ -42,10 +39,8 @@ class EntranceCategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository->with(['entrance','children'])->all();
+        $categories = $this->repository->with(['entrance', 'children'])->all();
 
         return json(1001, '获取成功', $categories);
     }
-
-
 }

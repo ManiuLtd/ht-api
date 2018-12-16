@@ -22,7 +22,6 @@ class RandomsController extends Controller
     public function __construct(CouponRepository $repository)
     {
         $this->repository = $repository;
-
     }
 
     /**
@@ -31,12 +30,11 @@ class RandomsController extends Controller
     public function index()
     {
         try {
-            $data = $this->repository->random ();
-            return json (1001, "获取成功", $data);
+            $data = $this->repository->random();
+
+            return json(1001, '获取成功', $data);
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
-
-
 }

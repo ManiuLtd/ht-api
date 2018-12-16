@@ -44,9 +44,9 @@ class DiyAdsController extends Controller
     public function index()
     {
         $diyAds = $this->repository
-            ->paginate (request ('limit', 10));
+            ->paginate(request('limit', 10));
 
-        return json (1001, '获取成功', $diyAds);
+        return json(1001, '获取成功', $diyAds);
     }
 
     /**
@@ -56,13 +56,13 @@ class DiyAdsController extends Controller
     public function store(DiyAdsCreateRequest $request)
     {
         try {
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_CREATE);
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $diyAds = $this->repository->create ($request->all ());
+            $diyAds = $this->repository->create($request->all());
 
-            return json (1001, '添加成功', $diyAds);
+            return json(1001, '添加成功', $diyAds);
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 
@@ -75,9 +75,9 @@ class DiyAdsController extends Controller
      */
     public function show($id)
     {
-        $diyAds = $this->repository->find ($id);
+        $diyAds = $this->repository->find($id);
 
-        return json (1001, '获取成功', $diyAds);
+        return json(1001, '获取成功', $diyAds);
     }
 
     /**
@@ -88,13 +88,13 @@ class DiyAdsController extends Controller
     public function update(DiyAdsUpdateRequest $request, $id)
     {
         try {
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $diyAds = $this->repository->update ($request->all (), $id);
+            $diyAds = $this->repository->update($request->all(), $id);
 
-            return json (1001, '修改成功', $diyAds);
+            return json(1001, '修改成功', $diyAds);
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 

@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Taoke\DiyZhuanti;
-use App\Repositories\Interfaces\Taoke\DiyZhuantiRepository;
+use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\DiyZhuantiValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\Taoke\DiyZhuantiRepository;
 
 /**
  * Class DianRepositoryEloquent.
@@ -46,7 +46,6 @@ class DiyZhuantiRepositoryEloquent extends BaseRepository implements DiyZhuantiR
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-
     /**
      * @return string
      */
@@ -54,5 +53,4 @@ class DiyZhuantiRepositoryEloquent extends BaseRepository implements DiyZhuantiR
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
-
 }

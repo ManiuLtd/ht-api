@@ -17,32 +17,32 @@ class CreateDianTable extends Migration
      */
     public function up()
     {
-        Schema::create ('dian', function (Blueprint $table) {
-            $table->increments ('id');
-            $table->integer ('user_id')->nullable (); //所属用户
-            $table->integer ('inviter_id')->nullable (); //邀请人
-            $table->integer ('category_id')->nullable ();//所属分类
-            $table->string ('thumb', 191)->nullable (); //主图
-            $table->text ('images')->nullable (); //店铺介绍图
-            $table->string ('name', 191)->nullable (); //店名
-            $table->string ('phone', 191)->nullable (); //联系电话
-            $table->string ('city', 191)->nullable (); //所在地 存入城市名
-            $table->string ('address', 191)->nullable (); //地址  定位获得
-            $table->string ('introduce', 191)->nullable (); //商家介绍
-            $table->string ('tag', 191)->nullable (); //店铺标签 水果、超市、女装
-            $table->integer ('hot')->nullable ()->default (0);//人气
-            $table->decimal ('commission_rate')->nullable ()->default (2);  //佣金比例
-            $table->decimal ('deduct_rate')->nullable ()->default (10);  //平台扣除的佣金比例
-            $table->text ('card1')->nullable (); //身份证正面
-            $table->text ('card2')->nullable (); //身份证反面
-            $table->text ('zhizhao')->nullable (); //执照
-            $table->integer ('can_pay')->nullable ()->default (0);//是否支持付款0支持1.不支持
-            $table->nullableTimestamps ();
-            $table->softDeletes ();
+        Schema::create('dian', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->nullable(); //所属用户
+            $table->integer('inviter_id')->nullable(); //邀请人
+            $table->integer('category_id')->nullable(); //所属分类
+            $table->string('thumb', 191)->nullable(); //主图
+            $table->text('images')->nullable(); //店铺介绍图
+            $table->string('name', 191)->nullable(); //店名
+            $table->string('phone', 191)->nullable(); //联系电话
+            $table->string('city', 191)->nullable(); //所在地 存入城市名
+            $table->string('address', 191)->nullable(); //地址  定位获得
+            $table->string('introduce', 191)->nullable(); //商家介绍
+            $table->string('tag', 191)->nullable(); //店铺标签 水果、超市、女装
+            $table->integer('hot')->nullable()->default(0); //人气
+            $table->decimal('commission_rate')->nullable()->default(2);  //佣金比例
+            $table->decimal('deduct_rate')->nullable()->default(10);  //平台扣除的佣金比例
+            $table->text('card1')->nullable(); //身份证正面
+            $table->text('card2')->nullable(); //身份证反面
+            $table->text('zhizhao')->nullable(); //执照
+            $table->integer('can_pay')->nullable()->default(0); //是否支持付款0支持1.不支持
+            $table->nullableTimestamps();
+            $table->softDeletes();
 
-            $table->index ('user_id', 'user_id');
-            $table->index ('inviter_id', 'inviter_id');
-            $table->index ('category_id', 'category_id');
+            $table->index('user_id', 'user_id');
+            $table->index('inviter_id', 'inviter_id');
+            $table->index('category_id', 'category_id');
         });
     }
 
@@ -53,6 +53,6 @@ class CreateDianTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists ('dian');
+        Schema::dropIfExists('dian');
     }
 }

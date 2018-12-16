@@ -3,18 +3,13 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use App\Http\Requests\Taoke\SettingUpdateRequest;
-use App\Repositories\Interfaces\Taoke\SettingRepository;
 use App\Validators\Taoke\SettingValidator;
+use App\Http\Requests\Taoke\SettingUpdateRequest;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use App\Repositories\Interfaces\Taoke\SettingRepository;
 
 /**
  * Class SettingsController.
- *
- * @package namespace App\Http\Controllers\Taoke;
  */
 class SettingsController extends Controller
 {
@@ -47,11 +42,11 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        $settings = $this->repository->firstOrCreate ([
-            'user_id' => getUserId ()
+        $settings = $this->repository->firstOrCreate([
+            'user_id' => getUserId(),
         ]);
 
-        return json (1001, '列表获取成功', $settings);
+        return json(1001, '列表获取成功', $settings);
     }
 
     /**
@@ -62,23 +57,19 @@ class SettingsController extends Controller
     public function update(SettingUpdateRequest $request, $id)
     {
         try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $this->validator->with ($request->all ())->passesOrFail (ValidatorInterface::RULE_UPDATE);
+            $settingModel = $this->repository->find($id);
 
-            $settingModel = $this->repository->find ($id);
-
-            if ($settingModel->user_id != getUserId ()) {
-                throw  new  \Exception("请勿恶意修改参数");
+            if ($settingModel->user_id != getUserId()) {
+                throw  new  \Exception('请勿恶意修改参数');
             }
 
-            $setting = $this->repository->update($request->all (), $id);
+            $setting = $this->repository->update($request->all(), $id);
 
-
-            return json (1001, '更新成功', $setting);
+            return json(1001, '更新成功', $setting);
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage());
+            return json(5001, $e->getMessage());
         }
     }
-
-
 }

@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Taoke\DiyAds;
-use App\Repositories\Interfaces\Taoke\DiyAdsRepository;
+use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\DiyAdsValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\Taoke\DiyAdsRepository;
 
 /**
  * Class DianRepositoryEloquent.
@@ -46,7 +46,6 @@ class DiyAdsRepositoryEloquent extends BaseRepository implements DiyAdsRepositor
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-
     /**
      * @return string
      */
@@ -54,5 +53,4 @@ class DiyAdsRepositoryEloquent extends BaseRepository implements DiyAdsRepositor
     {
         return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
-
 }

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Wechat;
 
-use App\Models\User\Level;
 use App\Models\User\User;
-use App\Repositories\Interfaces\User\UserRepository;
+use App\Models\User\Level;
 use Overtrue\LaravelWeChat\Facade;
 use App\Handler\TextMessageHandler;
 use App\Handler\EventMessageHandler;
@@ -13,6 +12,7 @@ use App\Handler\MediaMessageHandler;
 use App\Http\Controllers\Controller;
 use EasyWeChat\Kernel\Messages\Message;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Repositories\Interfaces\User\UserRepository;
 
 /**
  * 微信公众号开发请搭配内网穿透工具，这样方便本地调试
@@ -21,12 +21,10 @@ use Tymon\JWTAuth\Exceptions\JWTException;
  */
 class OfficialAccountController extends Controller
 {
-
     /**
      * @var UserRepository
      */
     protected $repository;
-
 
     /**
      * OfficialAccountController constructor.
@@ -46,14 +44,14 @@ class OfficialAccountController extends Controller
      */
     public function serve()
     {
-        $app = Facade::officialAccount ();
+        $app = Facade::officialAccount();
 
-        $app->server->push (new TextMessageHandler($app), Message::TEXT);
-        $app->server->push (new ImageMessageHandler($app), Message::IMAGE);
-        $app->server->push (new EventMessageHandler($app), Message::EVENT);
-        $app->server->push (new MediaMessageHandler($app), Message::VOICE | Message::VIDEO | Message::SHORT_VIDEO);
+        $app->server->push(new TextMessageHandler($app), Message::TEXT);
+        $app->server->push(new ImageMessageHandler($app), Message::IMAGE);
+        $app->server->push(new EventMessageHandler($app), Message::EVENT);
+        $app->server->push(new MediaMessageHandler($app), Message::VOICE | Message::VIDEO | Message::SHORT_VIDEO);
 
-        return $app->server->serve ();
+        return $app->server->serve();
     }
 
     /**
@@ -63,19 +61,17 @@ class OfficialAccountController extends Controller
     public function login()
     {
         try {
+            $app = Facade::officialAccount();
 
-            $app = Facade::officialAccount ();
+            $encode = encrypt(request('redirect_url', 'sb').'!'.request('inviter', 'sb'));
 
-            $encode = encrypt (request ('redirect_url', 'sb') . '!' . request ('inviter', 'sb'));
+            $redirectUrl = route('wechat.callback', [$encode]);
 
-
-            $redirectUrl = route ('wechat.callback',[$encode]);
-
-            $response = $app->oauth->scopes (['snsapi_userinfo'])->redirect ($redirectUrl);
+            $response = $app->oauth->scopes(['snsapi_userinfo'])->redirect($redirectUrl);
 
             return $response;
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException($e->getMessage ());
+            throw new \InvalidArgumentException($e->getMessage());
         }
     }
 
@@ -86,39 +82,36 @@ class OfficialAccountController extends Controller
      */
     public function callback($encode)
     {
+        $str = decrypt($encode);
 
-        $str = decrypt ($encode);
-
-        $decode = explode ('!', $str);
+        $decode = explode('!', $str);
         try {
-            $app = Facade::officialAccount ();
+            $app = Facade::officialAccount();
 
-            $user = $app->oauth->user ();
+            $user = $app->oauth->user();
 
-            $original = $user->getOriginal ();
+            $original = $user->getOriginal();
 
-            $user = User::query ()->where ([
+            $user = User::query()->where([
                 'wx_unionid' => $original['unionid'],
-            ])->first ();
+            ])->first();
 
             // 用户存在， 登陆
             if ($user) {
                 if ($decode[1] != 'sb') {
                     try {
-                        $this->repository->bindinviterRegister ($user, $decode[1]);
+                        $this->repository->bindinviterRegister($user, $decode[1]);
                     } catch (\Exception $exception) {
                     }
                 }
                 if ($original['unionid'] != null) {
-                    $user->update ([
+                    $user->update([
                         'headimgurl' => $original['headimgurl'],
                         'nickname' => $original['nickname'],
                     ]);
                 }
-
-
             } else {
-                $level = Level::query ()->where ('default', 1)->first ();
+                $level = Level::query()->where('default', 1)->first();
                 // 用户不存在，注册
                 if ($original['unionid'] != null) {
                     $insert = [
@@ -132,21 +125,19 @@ class OfficialAccountController extends Controller
                 }
                 if ($decode[1] != 'sb') {
                     try {
-                        $this->repository->bindinviterRegister ($user, $decode[1]);
+                        $this->repository->bindinviterRegister($user, $decode[1]);
                     } catch (\Exception $exception) {
                     }
                 }
             }
 
             if ($decode[0] != 'sb') {
-                return redirect ($decode[0]);
-
+                return redirect($decode[0]);
             }
-            return "未指定重定向地址";
+
+            return '未指定重定向地址';
         } catch (JWTException $e) {
-            throw  new \Exception($e->getMessage ());
+            throw  new \Exception($e->getMessage());
         }
     }
-
-
 }

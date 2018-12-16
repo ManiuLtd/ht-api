@@ -35,7 +35,7 @@ class Commission
         if ($userModel->level->$type < 0) {
             return 0;
         }
-        $setting_commission_rate = 1 - data_get(setting(1),'commission_rate',0) / 100;
+        $setting_commission_rate = 1 - data_get(setting(1), 'commission_rate', 0) / 100;
 
         return $commission * $setting_commission_rate * $userModel->level->$type / 100;
     }
@@ -59,16 +59,16 @@ class Commission
         //订单
         $query = db('tbk_orders')->whereIn('status', $orderStatus);
 
-        if(request ('type')){
-          switch (request ('type')){
+        if (request('type')) {
+            switch (request('type')) {
               case 1:
-                  $query = $query->where ('type',1);
+                  $query = $query->where('type', 1);
                   break;
               case 2:
-                  $query = $query->where ('type',2);
+                  $query = $query->where('type', 2);
                   break;
               case 3:
-                  $query = $query->where ('type',3);
+                  $query = $query->where('type', 3);
                   break;
               default:
                   break;

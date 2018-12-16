@@ -3,9 +3,8 @@
 namespace App\Jobs\Spider;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
-use App\Events\CreditOrderFriend;
 use App\Events\OrderCommission;
+use App\Events\CreditOrderFriend;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,12 +40,11 @@ class OrderRebate implements ShouldQueue
     {
         $result = $this->results;
         event(new CreditOrderFriend([
-            'user_id' => $result['user_id']
+            'user_id' => $result['user_id'],
         ], 1));
         event(new OrderCommission([
             'user_id' => $result['user_id'],
             'price' => $result['commission_amount'],
         ]));
-
     }
 }

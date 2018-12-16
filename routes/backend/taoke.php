@@ -28,7 +28,6 @@ Route::namespace('Taoke')
         Route::resource('jingxuan', 'JingXuanController', [
             'except'=> ['create', 'edit'],
         ]);
-        
 
         //快抢商品
         Route::resource('kuaiqiang', 'KuaiQiangController');
@@ -43,21 +42,20 @@ Route::namespace('Taoke')
         //小店分类
         Route::resource('dian/categories', 'DianCategoriesController');
         //小店标签
-        Route::resource('dian/tag', 'DianTagController',[
+        Route::resource('dian/tag', 'DianTagController', [
             'except'=> ['create', 'edit'],
         ]);
         //小店
         Route::resource('dian', 'DianController');
 
-
         //超级入口
-        Route::resource('entrance', 'EntrancesController',[
-            'except'=> ['create', 'edit','show'],
+        Route::resource('entrance', 'EntrancesController', [
+            'except'=> ['create', 'edit', 'show'],
         ]);
         //超级入口分类
 
-        Route::resource('entrance/category', 'EntranceCategoriesController',[
-            'except'=> ['create', 'edit','show'],
+        Route::resource('entrance/category', 'EntranceCategoriesController', [
+            'except'=> ['create', 'edit', 'show'],
         ]);
 
         //用户报表
@@ -73,5 +71,4 @@ Route::namespace('Taoke')
         //自定义专题
 
         Route::resource('diy/ads', 'DiyAdsController');
-
     });

@@ -6,13 +6,11 @@ use App\Models\Taoke\Pid;
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
+use Orzcc\TopClient\Facades\TopClient;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
-use Orzcc\TopClient\Facades\TopClient;
 use TopClient\request\TbkItemInfoGetRequest;
-use Illuminate\Support\Facades\Cache;
 
 class SaveOrders implements ShouldQueue
 {
@@ -67,7 +65,7 @@ class SaveOrders implements ShouldQueue
     protected function saveTBKOrder($results)
     {
         foreach ($results as $result) {
-            $pid = Pid::query()->where('taobao','like', '%'.$result->adzone_id)->first();
+            $pid = Pid::query()->where('taobao', 'like', '%'.$result->adzone_id)->first();
             $group_id = null;
             $oldgroup_id = null;
             $user_id = null;
@@ -125,19 +123,20 @@ class SaveOrders implements ShouldQueue
      */
     public function getPicUrl($itemID)
     {
-        $topclient = TopClient::connection ();
+        $topclient = TopClient::connection();
         $req = new TbkItemInfoGetRequest();
-        $req->setFields ('title,pict_url');
-        $req->setNumIids ("$itemID");
-        $resp = $topclient->execute ($req);
+        $req->setFields('title,pict_url');
+        $req->setNumIids("$itemID");
+        $resp = $topclient->execute($req);
 
-        if (!isset($resp->results->n_tbk_item)) {
+        if (! isset($resp->results->n_tbk_item)) {
             return;
         }
-        $tbkItem = (array)$resp->results->n_tbk_item[0];
+        $tbkItem = (array) $resp->results->n_tbk_item[0];
 
         return $tbkItem['pict_url'];
     }
+
     /**
      * 淘客订单状态
      * @param $status

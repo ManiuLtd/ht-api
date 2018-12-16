@@ -4,9 +4,9 @@ namespace App\Repositories\Taoke;
 
 use App\Criteria\RequestCriteria;
 use App\Models\Taoke\DianCategories;
-use App\Repositories\Interfaces\Taoke\DianCategoriesRepository;
-use App\Validators\Taoke\DianCategoriesValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Validators\Taoke\DianCategoriesValidator;
+use App\Repositories\Interfaces\Taoke\DianCategoriesRepository;
 
 /**
  * Class DianRepositoryEloquent.

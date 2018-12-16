@@ -7,13 +7,11 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class OrderCriteria.
- *
- * @package namespace App\Criteria;
  */
 class OrderCriteria implements CriteriaInterface
 {
     /**
-     * Apply criteria in query repository
+     * Apply criteria in query repository.
      *
      * @param string              $model
      * @param RepositoryInterface $repository
@@ -22,6 +20,6 @@ class OrderCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        return $model->where('user_id',getUserId());
+        return $model->where('user_id', getUserId());
     }
 }

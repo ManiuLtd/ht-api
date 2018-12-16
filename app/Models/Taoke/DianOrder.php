@@ -47,8 +47,4 @@ class DianOrder extends Model implements Transformable
             $model->user_id = getUserId();
         });
     }
-
-
-
-
 }

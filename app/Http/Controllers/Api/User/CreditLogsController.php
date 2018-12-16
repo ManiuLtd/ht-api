@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\User;
 
-
 use App\Criteria\DatePickerCriteria;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\User\CreditLogRepository;

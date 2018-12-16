@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Models\Taoke\Favourite;
 use App\Criteria\UserCriteria;
-use App\Models\User\User;
-use App\Tools\Taoke\JingDong;
-use App\Tools\Taoke\PinDuoDuo;
-use App\Tools\Taoke\Taobao;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\FavouriteValidator;
 use App\Http\Requests\Taoke\FavouriteCreateRequest;
@@ -18,8 +13,6 @@ use App\Repositories\Interfaces\Taoke\FavouriteRepository;
  */
 class FavouritesController extends Controller
 {
-
-
     /**
      * @var FavouriteRepository
      */
@@ -56,14 +49,13 @@ class FavouritesController extends Controller
     }
 
     /**
-     * 添加收藏
+     * 添加收藏.
      * @param FavouriteCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(FavouriteCreateRequest $request)
     {
         try {
-
             $data = $request->all();
             $user = getUser();
             $data['user_id'] = $user->id;

@@ -2,11 +2,10 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Models\Taoke\Entrance;
 use App\Models\Taoke\EntranceCategory;
-use App\Validators\Taoke\EntranceCategoryValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Validators\Taoke\EntranceCategoryValidator;
 use App\Repositories\Interfaces\Taoke\EntranceCategoryRepository;
 
 /**
@@ -55,5 +54,4 @@ class EntranceCategoryRepositoryEloquent extends BaseRepository implements Entra
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-
 }

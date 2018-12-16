@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Models\User\Level;
-use App\Models\User\User;
-use App\Http\Controllers\Controller;
 use Hashids\Hashids;
+use App\Models\User\User;
+use App\Models\User\Level;
+use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\Auth\User\LoginRequest;
 
@@ -37,10 +37,10 @@ class LoginController extends Controller
      */
     protected function respondWithToken($token, $user)
     {
-        $hashids = new Hashids(config ('hashids.SALT'), config ('hashids.LENGTH'), config ('hashids.ALPHABET'));
+        $hashids = new Hashids(config('hashids.SALT'), config('hashids.LENGTH'), config('hashids.ALPHABET'));
 
         $data = [
-            'tag' => $hashids->encode ($user->id),
+            'tag' => $hashids->encode($user->id),
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
@@ -75,7 +75,6 @@ class LoginController extends Controller
 
             // 用户存在， 登陆
             if ($user) {
-
                 $user->update([
                     'headimgurl' => request('headimgurl'),
                     'nickname' => request('nickname'),
@@ -85,7 +84,7 @@ class LoginController extends Controller
 
                 return $this->respondWithToken($token, $user);
             }
-            $level = Level::query()->where('default',1)->first();
+            $level = Level::query()->where('default', 1)->first();
             // 用户不存在，注册
             $insert = [
                 'wx_unionid' => request('unionid'),

@@ -68,7 +68,6 @@ class GroupsController extends Controller
         }
     }
 
-
     /**
      * 小组详情.
      * @param $id
@@ -80,7 +79,6 @@ class GroupsController extends Controller
 
         return json(1001, '详情获取成功', $group);
     }
-
 
     /**
      * 删除小组.

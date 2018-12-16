@@ -36,9 +36,9 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         try {
-            $data =  $this->repository->register();
+            $data = $this->repository->register();
 
-            return json (1001,"注册成功",$data);
+            return json(1001, '注册成功', $data);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }

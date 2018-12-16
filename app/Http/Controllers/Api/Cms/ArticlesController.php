@@ -42,7 +42,7 @@ class ArticlesController extends Controller
     }
 
     /**
-     * 详情
+     * 详情.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

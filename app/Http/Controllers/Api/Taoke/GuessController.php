@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Http\Controllers\Controller;
 use App\Tools\Taoke\Taobao;
+use App\Http\Controllers\Controller;
 
 /**
  * Class GuessController.
@@ -26,6 +26,5 @@ class GuessController extends Controller
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
-
     }
 }
