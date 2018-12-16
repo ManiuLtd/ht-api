@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Validators\Taoke\JingxuanDpValidator;
+use App\Validators\Taoke\JingxuanValidator;
 use App\Http\Requests\Taoke\JingXuanCreateRequest;
 use App\Http\Requests\Taoke\JingXuanUpdateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -20,7 +20,7 @@ class JingXuanController extends Controller
     protected $repository;
 
     /**
-     * @var JingxuanDpValidator
+     * @var JingxuanValidator
      */
     protected $validator;
 
@@ -28,9 +28,9 @@ class JingXuanController extends Controller
      * JingXuanController constructor.
      *
      * @param JingXuanRepository $repository
-     * @param JingxuanDpValidator $validator
+     * @param JingxuanValidator $validator
      */
-    public function __construct(JingXuanRepository $repository, JingxuanDpValidator $validator)
+    public function __construct(JingXuanRepository $repository, JingxuanValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;

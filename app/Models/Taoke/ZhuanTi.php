@@ -7,12 +7,16 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Category.
+ * Class ZhuanTi
+ * @package App\Models\Taoke
  */
 class ZhuanTi extends Model implements Transformable
 {
     use TransformableTrait;
 
+    /**
+     * @var string
+     */
     protected $table = 'tbk_zhuanti';
 
     /**
@@ -30,17 +34,4 @@ class ZhuanTi extends Model implements Transformable
         return $array;
     }
 
-    /**
-     * 添加更新前.
-     */
-    protected static function boot()
-    {
-        parent::boot();
-        self::creating(function ($model) {
-            $model->items = json_encode(request('items'));
-        });
-        self::updating(function ($model) {
-            $model->items = json_encode(request('items'));
-        });
-    }
 }

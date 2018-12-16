@@ -45,4 +45,14 @@ class DiyZhuantiRepositoryEloquent extends BaseRepository implements DiyZhuantiR
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+
+    /**
+     * @return string
+     */
+    public function presenter()
+    {
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
+    }
+
 }

@@ -13,14 +13,13 @@ class DiyZhuantiController extends Controller
 
 {
     /**
-     * @var DiyAdsRepository
+     * @var DiyZhuantiRepository
      */
     protected $repository;
 
     /**
-     * DiyAdsController constructor.
-     * @param DiyAdsRepository $repository
-     *
+     * DiyZhuantiController constructor.
+     * @param DiyZhuantiRepository $repository
      */
     public function __construct(DiyZhuantiRepository $repository)
     {

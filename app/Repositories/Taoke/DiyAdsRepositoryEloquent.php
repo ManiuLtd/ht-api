@@ -45,4 +45,14 @@ class DiyAdsRepositoryEloquent extends BaseRepository implements DiyAdsRepositor
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+
+    /**
+     * @return string
+     */
+    public function presenter()
+    {
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
+    }
+
 }

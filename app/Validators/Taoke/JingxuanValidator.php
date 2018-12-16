@@ -6,9 +6,9 @@ use Prettus\Validator\LaravelValidator;
 use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
- * Class JingxuanDpValidator.
+ * Class JingxuanValidator.
  */
-class JingxuanDpValidator extends LaravelValidator
+class JingxuanValidator extends LaravelValidator
 {
     /**
      * Validation Rules.

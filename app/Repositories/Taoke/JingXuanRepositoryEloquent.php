@@ -4,7 +4,7 @@ namespace App\Repositories\Taoke;
 
 use App\Tools\Taoke\Taobao;
 use App\Models\Taoke\JingXuan;
-use App\Validators\Taoke\JingxuanDpValidator;
+use App\Validators\Taoke\JingxuanValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\JingXuanRepository;
@@ -31,7 +31,7 @@ class JingXuanRepositoryEloquent extends BaseRepository implements JingXuanRepos
      */
     public function validator()
     {
-        return JingxuanDpValidator::class;
+        return JingxuanValidator::class;
     }
 
     /**
