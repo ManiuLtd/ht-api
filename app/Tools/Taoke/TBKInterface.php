@@ -35,6 +35,4 @@ interface TBKInterface
      * @return mixed
      */
     public function spider(array $params);
-
-
 }

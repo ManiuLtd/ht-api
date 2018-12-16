@@ -2,21 +2,19 @@
 
 namespace App\Repositories\Taoke;
 
+use App\Models\Taoke\Setting;
+use App\Validators\Taoke\SettingValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Interfaces\Taoke\SettingRepository;
-use App\Models\Taoke\Setting;
-use App\Validators\Taoke\SettingValidator;
 
 /**
  * Class SettingRepositoryEloquent.
- *
- * @package namespace App\Repositories\Taoke;
  */
 class SettingRepositoryEloquent extends BaseRepository implements SettingRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,23 +24,20 @@ class SettingRepositoryEloquent extends BaseRepository implements SettingReposit
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
+     * Specify Validator class name.
+     *
+     * @return mixed
+     */
     public function validator()
     {
-
         return SettingValidator::class;
     }
 
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }

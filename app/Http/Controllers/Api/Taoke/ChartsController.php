@@ -43,13 +43,12 @@ class ChartsController extends Controller
         try {
             return json(1001, '获取成功', [
                 'order' => $this->orderRepository->getOrderChart(false),
-                'commission' => $this->orderRepository->getOrderChart()
+                'commission' => $this->orderRepository->getOrderChart(),
             ]);
         } catch (\Exception $e) {
             return json(5001, $e->getMessage());
         }
     }
-
 
     /**
      * 会员收入信息.

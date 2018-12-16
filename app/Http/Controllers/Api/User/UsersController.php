@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\User\Group;
+use App\Http\Controllers\Controller;
 use App\Repositories\Interfaces\User\UserRepository;
 
 /**
@@ -32,13 +32,13 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $userId = getUserId ();
+        $userId = getUserId();
         $users = $this->repository
-            ->withCount ('friends')
-            ->with (['level', 'inviter', 'group'])
-            ->find ($userId);
+            ->withCount('friends')
+            ->with(['level', 'inviter', 'group'])
+            ->find($userId);
 
-        return json (1001, '会员信息获取成功', $users);
+        return json(1001, '会员信息获取成功', $users);
     }
 
     /**
@@ -48,10 +48,11 @@ class UsersController extends Controller
     public function friends()
     {
         try {
-            $friends = $this->repository->getFrineds ();
-            return json (1001, '获取成功', $friends);
+            $friends = $this->repository->getFrineds();
+
+            return json(1001, '获取成功', $friends);
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 
@@ -62,71 +63,71 @@ class UsersController extends Controller
     public function inviter()
     {
         try {
-            $inviter = $this->repository->getInviter ();
-            return json (1001, '获取成功', $inviter);
+            $inviter = $this->repository->getInviter();
+
+            return json(1001, '获取成功', $inviter);
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 
     /**
-     * 绑定手机号
+     * 绑定手机号.
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function bindMobile()
     {
         try {
-             $this->repository->bindMobile ();
-            return json ('1001', '手机号绑定成功');
+            $this->repository->bindMobile();
 
+            return json('1001', '手机号绑定成功');
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 
     /**
-     * 绑定邀请人
+     * 绑定邀请人.
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function bindInviter()
     {
         try {
-            $this->repository->bindInviter ();
-            return json ('1001', '上级绑定成功');
+            $this->repository->bindInviter();
 
+            return json('1001', '上级绑定成功');
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 
     /**
-     * 手动升级
+     * 手动升级.
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function checkUpgrade()
     {
         try {
-            $this->repository->checkUpgrade ();
-            return json ('1001', '升级成功');
+            $this->repository->checkUpgrade();
+
+            return json('1001', '升级成功');
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
 
     /**
-     * 绑定支付宝
+     * 绑定支付宝.
      * @return \Illuminate\Http\JsonResponse
      */
     public function bindAlipay()
     {
         try {
-            $this->repository->bindAlipay ();
-            return json ('1001', '支付宝绑定成功');
+            $this->repository->bindAlipay();
 
+            return json('1001', '支付宝绑定成功');
         } catch (\Exception $e) {
-            return json (5001, $e->getMessage ());
+            return json(5001, $e->getMessage());
         }
     }
-
-
 }

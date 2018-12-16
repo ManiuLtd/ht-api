@@ -29,9 +29,9 @@ class CreateTbkSaysTable extends Migration
             $table->integer('user_id')->default(1); //	达人id
             $table->string('compose_image', 190)->nullable(); // APP信息流主图
             $table->longText('content')->nullable(); // 内容
-            $table->tinyInteger('is_top')->default(0)->comment("置顶文章 1是 0否"); //文章类别（topdata.置顶文章,newdata.最新文章,clickdata.所有）
-            $table->tinyInteger('is_new')->default(0)->comment("最新文章 1是 0否");
-            $table->tinyInteger('is_all')->default(0)->comment("所有文章 1是 0否");
+            $table->tinyInteger('is_top')->default(0)->comment('置顶文章 1是 0否'); //文章类别（topdata.置顶文章,newdata.最新文章,clickdata.所有）
+            $table->tinyInteger('is_new')->default(0)->comment('最新文章 1是 0否');
+            $table->tinyInteger('is_all')->default(0)->comment('所有文章 1是 0否');
             $table->nullableTimestamps();
             $table->softDeletes();
         });

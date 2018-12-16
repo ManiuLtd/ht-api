@@ -23,10 +23,10 @@ class UserCriteria implements CriteriaInterface
         //获取userid
         $userID = getUserId();
         $type = request('type');
-        if (in_array($type,[2,3,4])) {
-            return $model->where('type',$type);
+        if (in_array($type, [2, 3, 4])) {
+            return $model->where('type', $type);
         }
-        if ($userID){
+        if ($userID) {
             return $model->where([
                 'user_id' => $userID,
             ]);
@@ -34,10 +34,9 @@ class UserCriteria implements CriteriaInterface
         if ($userID && $type) {
             return $model->where([
                 'user_id' => $userID,
-                'type' => $type
+                'type' => $type,
             ]);
         }
-
 
         return $model;
     }

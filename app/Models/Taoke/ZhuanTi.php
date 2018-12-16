@@ -7,8 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class ZhuanTi
- * @package App\Models\Taoke
+ * Class ZhuanTi.
  */
 class ZhuanTi extends Model implements Transformable
 {
@@ -33,5 +32,4 @@ class ZhuanTi extends Model implements Transformable
 
         return $array;
     }
-
 }

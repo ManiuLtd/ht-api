@@ -8,8 +8,8 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Http\Controllers\Controller;
 use App\Tools\Taoke\TBKInterface;
+use App\Http\Controllers\Controller;
 use App\Validators\Taoke\CategoryValidator;
 use App\Repositories\Interfaces\Taoke\CategoryRepository;
 
@@ -38,7 +38,7 @@ class CategoriesController extends Controller
      * @param CategoryValidator $validator
      * @param TBKInterface $TBK
      */
-    public function __construct(CategoryRepository $repository, CategoryValidator $validator,TBKInterface $TBK)
+    public function __construct(CategoryRepository $repository, CategoryValidator $validator, TBKInterface $TBK)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -66,9 +66,10 @@ class CategoriesController extends Controller
     {
         try {
             $classify = $this->TBK->super_category();
+
             return json(1001, '获取成功', $classify);
-        }catch (\Exception $e){
-            return json(5001,$e->getMessage());
+        } catch (\Exception $e) {
+            return json(5001, $e->getMessage());
         }
     }
 }

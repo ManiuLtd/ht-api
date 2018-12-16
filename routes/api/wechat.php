@@ -20,5 +20,3 @@ Route::namespace('Wechat')
         Route::any('payment/notify', 'PaymentController@notify');
     });
         //h5支付回调
-
-

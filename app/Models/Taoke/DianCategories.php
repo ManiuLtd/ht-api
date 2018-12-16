@@ -28,9 +28,7 @@ class DianCategories extends Model implements Transformable
         'status',
     ];
 
-
-    /**
+    /*
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-
 }

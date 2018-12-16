@@ -104,13 +104,13 @@ class JingDong extends Command
         try {
             $settings = Setting::query()->get();
 
-            $bar = $this->output->createProgressBar(10* $settings->count());
-            foreach ($settings as $setting){
+            $bar = $this->output->createProgressBar(10 * $settings->count());
+            foreach ($settings as $setting) {
                 //循环所有页码查出数据
                 for ($page = 1; $page <= 10; $page++) {
                     try {
                         $resp = $this->tbk->getOrders(['page' => $page, 'setting' => $setting]);
-                    }catch (\Exception $e){
+                    } catch (\Exception $e) {
                         $this->warn($e->getMessage());
                         break;
                     }
@@ -121,7 +121,6 @@ class JingDong extends Command
                     $bar->advance();
                     $this->info(">>>已采集完第{$page}页 ");
                 }
-
             }
             $bar->finish();
         } catch (\Exception $e) {

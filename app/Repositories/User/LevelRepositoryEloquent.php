@@ -4,9 +4,7 @@ namespace App\Repositories\User;
 
 use App\Models\User\Level;
 use App\Criteria\RequestCriteria;
-use App\Models\User\User;
 use App\Validators\User\LevelValidator;
-use Carbon\Carbon;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\User\LevelRepository;
 

@@ -20,7 +20,6 @@ Route::namespace('System')
         Route::resource('sms', 'SmsController', [
             'only' => ['index'],
         ]);
-
     });
 
 Route::namespace('System')

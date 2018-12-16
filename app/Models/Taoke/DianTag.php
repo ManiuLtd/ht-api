@@ -26,6 +26,4 @@ class DianTag extends Model implements Transformable
         'sort',
         'status',
     ];
-
-
 }

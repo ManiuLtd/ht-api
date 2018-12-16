@@ -7,13 +7,11 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class CouponCriteria.
- *
- * @package namespace App\Criteria\Taoke;
  */
 class CouponCriteria implements CriteriaInterface
 {
     /**
-     * Apply criteria in query repository
+     * Apply criteria in query repository.
      *
      * @param string              $model
      * @param RepositoryInterface $repository

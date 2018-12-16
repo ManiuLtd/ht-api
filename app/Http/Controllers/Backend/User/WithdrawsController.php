@@ -104,13 +104,13 @@ class WithdrawsController extends Controller
     }
 
     /**
-     * 提现审核
+     * 提现审核.
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function mark()
     {
 //        try {
-            return $this->repository->mark();
+        return $this->repository->mark();
 //        }catch (\Exception $e){
 //            return json(5001,$e->getMessage());
 //        }

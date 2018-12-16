@@ -2,20 +2,16 @@
 
 namespace App\Console\Commands\Spider;
 
-
-use App\Jobs\Spider\TalentInfo;
-
-use App\Jobs\Spider\Says;
 use Carbon\Carbon;
 use App\Jobs\Haohuo;
 use App\Jobs\SaveGoods;
 use App\Jobs\SaveOrders;
 use App\Jobs\Spider\DownItem;
-use App\Jobs\Spider\KuaiQiang;
 use App\Models\Taoke\Setting;
+use App\Jobs\Spider\KuaiQiang;
+use App\Jobs\Spider\TalentInfo;
 use Illuminate\Console\Command;
 use App\Tools\Taoke\TBKInterface;
-use Illuminate\Support\Facades\Log;
 
 class Taobao extends Command
 {
@@ -239,13 +235,10 @@ class Taobao extends Command
             $bar = $this->output->createProgressBar($total * 15);
             $min_id = 1;
             for ($j = 1; $j <= 15; $j++) {
-
                 for ($i = 1; $i <= $total; $i++) {
-
                     try {
                         $res = $this->tbk->kuaiQiang(['min_id' => $min_id, 'hour_type' => $j]);
-
-                    }catch (\Exception $e){
+                    } catch (\Exception $e) {
                         continue;
                     }
 //                    $this->info($j);
@@ -253,8 +246,7 @@ class Taobao extends Command
                     KuaiQiang::dispatch($res['data'], $j);
                     $min_id = $res['min_id'];
                     $bar->advance();
-                    $this->info(">>>已采集完第".$i*$j."页 ");
-
+                    $this->info('>>>已采集完第'.$i * $j.'页 ');
                 }
                 $min_id = 1;
             }
@@ -344,9 +336,9 @@ class Taobao extends Command
     {
         try {
             $settings = Setting::query()->get();
-            $bar = $this->output->createProgressBar(10* $settings->count());
+            $bar = $this->output->createProgressBar(10 * $settings->count());
             $type = $this->option('type');
-            foreach ($settings as $setting){
+            foreach ($settings as $setting) {
                 //循环所有页码查出数据
 
                 for ($page = 1; $page <= 4; $page++) {
@@ -371,22 +363,22 @@ class Taobao extends Command
     }
 
     /**
-     * 更新订单
+     * 更新订单.
      */
     protected function updateOrder()
     {
         try {
             $carbon = new Carbon();
             $settings = Setting::query()->get();
-            $bar = $this->output->createProgressBar(10* $settings->count());
+            $bar = $this->output->createProgressBar(10 * $settings->count());
             $type = $this->option('type');
             $orders = db('tbk_orders')->select(['created_at'])->where([
                 'status' => 1,
                 'type' => 1,
             ])->get();
-            foreach ($settings as $setting){
+            foreach ($settings as $setting) {
                 //循环所有订单
-                foreach ($orders as $order){
+                foreach ($orders as $order) {
                     try {
                         $resp = $this->tbk->getOrders([
                             'page' => 1,
@@ -394,7 +386,7 @@ class Taobao extends Command
                             'type' => $type,
                             'start_time' => $carbon->parse($order->created_at)->subMinute(5)->toDateTimeString(),
                         ]);
-                    }catch (\Exception $e){
+                    } catch (\Exception $e) {
                         $this->warn($e->getMessage());
                         continue;
                     }
@@ -412,9 +404,8 @@ class Taobao extends Command
         }
     }
 
-
     /**
-     * 达人说
+     * 达人说.
      */
     protected function talentInfo()
     {
@@ -426,26 +417,25 @@ class Taobao extends Command
                     $rest = $this->tbk->talentArticle($topdatum->id);
                     $rest_arr[] = $rest;
                 }
-                TalentInfo::dispatch($rest_arr,1);
+                TalentInfo::dispatch($rest_arr, 1);
             }
             if (isset($resp->newdata)) {
                 foreach ($resp->newdata as $newdata) {
                     $new_data = $this->tbk->talentArticle($newdata->id);
                     $now_arr[] = $new_data;
                 }
-                TalentInfo::dispatch($now_arr,2);
+                TalentInfo::dispatch($now_arr, 2);
             }
             if (isset($resp->clickdata)) {
                 foreach ($resp->clickdata as $clickdata) {
                     $click_data = $this->tbk->talentArticle($clickdata->id);
                     $click_arr[] = $click_data;
                 }
-                TalentInfo::dispatch($click_arr,3);
+                TalentInfo::dispatch($click_arr, 3);
             }
             $this->info('达人说采集结束');
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->warn($e->getMessage());
         }
     }
-
 }

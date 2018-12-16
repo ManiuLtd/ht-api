@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Api\Taoke\CategoriesController;
-use App\Http\Controllers\Api\Taoke\GuessController;
 use App\Tools\Taoke\TBKInterface;
 use App\Console\Commands\Spider\Taobao;
 use Illuminate\Support\ServiceProvider;
@@ -12,6 +10,7 @@ use App\Console\Commands\Spider\PinDuoDuo;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Api\Taoke\SearchController;
 use App\Http\Controllers\Api\Taoke\CouponsController;
+use App\Http\Controllers\Api\Taoke\CategoriesController;
 
 class TBKServiceProvider extends ServiceProvider
 {
@@ -109,6 +108,5 @@ class TBKServiceProvider extends ServiceProvider
         $this->app->when(CategoriesController::class)
             ->needs(TBKInterface::class)
             ->give(\App\Tools\Taoke\Taobao::class);
-
     }
 }

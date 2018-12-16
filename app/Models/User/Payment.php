@@ -37,7 +37,7 @@ class Payment extends Model implements Transformable
     /**
      * @var array
      */
-    protected  $dates = ['payment_at'];
+    protected $dates = ['payment_at'];
 
     /**
      * @var array

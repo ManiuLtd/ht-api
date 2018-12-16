@@ -2,13 +2,11 @@
 
 namespace App\Repositories\Taoke;
 
-
 use App\Models\Taoke\Order;
 use App\Tools\Taoke\Commission;
 use App\Criteria\RequestCriteria;
-use App\Validators\Taoke\OrderValidator;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Validators\Taoke\OrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\OrderRepository;
 
@@ -82,8 +80,8 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         $user = getUser();
         $commission = new Commission();
         $dateType = $params['date_type'] ?? request('date_type', 'month');
-        $status = $params['status'] ?? request('status', [1,2,3]);
-        if (!is_array($status)) {
+        $status = $params['status'] ?? request('status', [1, 2, 3]);
+        if (! is_array($status)) {
             $status = [intval($status)];
         }
 
@@ -153,9 +151,9 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
      */
     public function getMemberCommission()
     {
-        $lastMonth = $this->getOrderChart(true, ['date_type' => 'lastMonth','status' => 2]);//上月结算
-        $month = $this->getOrderChart(true, ['date_type' => 'month','status' => 1]);//本月预估
-        $day = $this->getOrderChart(true, ['date_type' => 'today','status' => 1]);//今日收益
+        $lastMonth = $this->getOrderChart(true, ['date_type' => 'lastMonth', 'status' => 2]); //上月结算
+        $month = $this->getOrderChart(true, ['date_type' => 'month', 'status' => 1]); //本月预估
+        $day = $this->getOrderChart(true, ['date_type' => 'today', 'status' => 1]); //今日收益
 
         return [
             'lastMonth' => $lastMonth,
@@ -166,7 +164,7 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 
     /**
      * 订单报表
-     * //TODO 根据权限不同查询
+     * //TODO 根据权限不同查询.
      * @return \Illuminate\Support\Collection|mixed
      */
     public function chart()
@@ -180,29 +178,30 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         //根据日期筛选
         switch ($type) {
             case 'today':
-                $query = $query->whereDate('created_at',today()->toDateString())
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d %H') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
+                $query = $query->whereDate('created_at', today()->toDateString())
+                    ->select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d %H') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             case 'week':
-                $query = $query->whereDate('created_at','>=', now()->addDay(-7)->toDateString())
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
+                $query = $query->whereDate('created_at', '>=', now()->addDay(-7)->toDateString())
+                    ->select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             case 'month':
-                $query = $query->whereMonth('created_at','>=', date('m',time()))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
+                $query = $query->whereMonth('created_at', '>=', date('m', time()))
+                    ->select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             case 'year':
-                $query = $query->whereYear('created_at','>=', date('Y',time()))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
+                $query = $query->whereYear('created_at', '>=', date('Y', time()))
+                    ->select(DB::raw("DATE_FORMAT(created_at,'%Y-%m') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             case 'custom':
-                $query = $query->whereDate('created_at','>=', request('start_time'))
-                    ->whereDate('created_at','<=', request('end_time'))
-                    ->select(DB::raw ("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
+                $query = $query->whereDate('created_at', '>=', request('start_time'))
+                    ->whereDate('created_at', '<=', request('end_time'))
+                    ->select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') time"), DB::raw('count(id) as total_count,sum(commission_amount) as total_amount'));
                 break;
             default:
                 break;
         }
+
         return $query->groupBy('time')->get();
     }
 }

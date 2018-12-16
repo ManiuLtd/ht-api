@@ -31,7 +31,6 @@ class KuaiQiangController extends Controller
      */
     public function index()
     {
-
         $kuaiqiang = $this->repository
             ->paginate(request('limit', 10));
 

@@ -42,7 +42,7 @@ class OrderTypeCriteria implements CriteriaInterface
         //团队订单
         if ($type == 3) {
             $group = db('groups')->find($member->group_id);
-            if (!$group) {
+            if (! $group) {
                 throw new \InvalidArgumentException('团队不存在');
             }
             if ($group->user_id != $member->id) {
@@ -54,7 +54,7 @@ class OrderTypeCriteria implements CriteriaInterface
         //补贴订单
         if ($type == 4) {
             $group = db('groups')->find($member->group_id);
-            if (!$group) {
+            if (! $group) {
                 throw new \InvalidArgumentException('团队不存在');
             }
             if ($group->user_id != $member->id) {

@@ -61,7 +61,4 @@ class Dian extends Model implements Transformable
     {
         return $this->belongsTo('App\Models\Taoke\DianCategories', 'category_id')->withDefault(null);
     }
-
-
-
 }

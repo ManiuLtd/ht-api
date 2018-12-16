@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('spider:jd order')->everyFiveMinutes();
         //拼多多
         $schedule->command('spider:pdd --all=false')->everyFiveMinutes();
-        
+
         $schedule->command('spider:pdd order')->everyThirtyMinutes();
         //淘宝订单
         //以创建时间查询

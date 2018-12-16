@@ -7,13 +7,11 @@ use Prettus\Repository\Presenter\FractalPresenter;
 
 /**
  * Class SettingPresenter.
- *
- * @package namespace App\Presenters;
  */
 class SettingPresenter extends FractalPresenter
 {
     /**
-     * Transformer
+     * Transformer.
      *
      * @return \League\Fractal\TransformerAbstract
      */

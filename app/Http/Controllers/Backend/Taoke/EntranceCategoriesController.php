@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\EntranceCategoryValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Http\Requests\Taoke\EntranceCategoryCreateRequest;
 use App\Http\Requests\Taoke\EntranceCategoryUpdateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\Taoke\EntranceCategoryRepository;
 
 /**
@@ -91,7 +91,7 @@ class EntranceCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        try{
+        try {
             $category = db('tbk_entrance_categories')->where('parent_id', $id)->first();
             if ($category) {
                 throw new \InvalidArgumentException('禁止删除包含下级的分类');
@@ -103,10 +103,8 @@ class EntranceCategoriesController extends Controller
             $this->repository->delete($id);
 
             return json(1001, '删除成功');
-
-        }catch(\Exception $e){
-            return json('5001',$e->getMessage());
+        } catch (\Exception $e) {
+            return json('5001', $e->getMessage());
         }
-
     }
 }

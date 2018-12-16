@@ -3,13 +3,8 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
-
-use App\Repositories\Interfaces\Taoke\DianCategoriesRepository;
-
-use App\Repositories\Interfaces\Taoke\GuessRepository;
-
 use App\Validators\Taoke\DianCategoriesValidator;
-
+use App\Repositories\Interfaces\Taoke\DianCategoriesRepository;
 
 /**
  * Class GuessController.
@@ -36,19 +31,18 @@ class DianCategoryController extends Controller
     {
         $this->repository = $repository;
         $this->validator = $validator;
-
     }
 
     /**
-     * 小店分类列表
+     * 小店分类列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $dian = $this->repository
-            ->orderBy('sort','desc')
+            ->orderBy('sort', 'desc')
             ->paginate(request('limit', 10));
+
         return json(1001, '列表获取成功', $dian);
     }
-
 }

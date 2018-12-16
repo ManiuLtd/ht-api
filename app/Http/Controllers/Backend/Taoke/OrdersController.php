@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Criteria\OrderCriteria;
-use App\Criteria\UserCriteria;
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\OrderValidator;
 use App\Repositories\Interfaces\Taoke\OrderRepository;

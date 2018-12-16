@@ -8,8 +8,6 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Setting.
- *
- * @package namespace App\Models\Taoke;
  */
 class Setting extends Model implements Transformable
 {
@@ -26,7 +24,7 @@ class Setting extends Model implements Transformable
         'taobao',
         'jingdong',
         'pinduoduo',
-        'user_id'
+        'user_id',
     ];
 
     /**
@@ -34,13 +32,12 @@ class Setting extends Model implements Transformable
      */
     protected $table = 'tbk_settings';
 
-
     protected $hidden = [
-        'user_id'
+        'user_id',
     ];
 
     /**
-     * 自动格式转换
+     * 自动格式转换.
      * @var array
      */
     protected $casts = [

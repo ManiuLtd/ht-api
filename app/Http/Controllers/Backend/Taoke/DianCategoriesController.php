@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Backend\Taoke;
 
 use App\Http\Controllers\Controller;
 use App\Validators\Taoke\DianCategoriesValidator;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Http\Requests\Taoke\DianCategoriesCreateRequest;
 use App\Http\Requests\Taoke\DianCategoriesUpdateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Repositories\Interfaces\Taoke\DianCategoriesRepository;
 
 /**

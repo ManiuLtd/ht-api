@@ -57,7 +57,7 @@ if (! function_exists('json')) {
      * @param int $statusCode
      * @return \Illuminate\Http\JsonResponse
      */
-    function json(int $code, string $message, $data = null,$statusCode =200)
+    function json(int $code, string $message, $data = null, $statusCode = 200)
     {
         $array = [
             'code' => $code,
@@ -68,7 +68,7 @@ if (! function_exists('json')) {
             $array['data'] = $data;
         }
 
-        return response()->json($array,$statusCode);
+        return response()->json($array, $statusCode);
     }
 }
 
@@ -169,14 +169,13 @@ if (! function_exists('tbksetting')) {
     }
 }
 
-
 if (! function_exists('resort_array')) {
     /**
      * @param $array
      * @param $type  日 周 月 年 自定义天数
      * @return mixed
      */
-    function resort_array($array,$type)
+    function resort_array($array, $type)
     {
         //array_pluck
         //2018-12-11 00
@@ -187,11 +186,11 @@ if (! function_exists('resort_array')) {
         $array = [
             [
                 'created_at' => '2018-12-11 14:01:20',
-                'commission_amount' => '20'
+                'commission_amount' => '20',
             ],
             [
                 'created_at' => '2018-12-11 14:01:20',
-                'commission_amount' => '20'
+                'commission_amount' => '20',
             ],
         ];
 
@@ -199,13 +198,7 @@ if (! function_exists('resort_array')) {
         //只查询2018-12-11 00
 
         $filtered = array_where($array, function ($value, $key) {
-            return str_contains ($value['created_at'],"2018-12-11 00");
+            return str_contains($value['created_at'], '2018-12-11 00');
         });
-
     }
-
 }
-
-
-
-

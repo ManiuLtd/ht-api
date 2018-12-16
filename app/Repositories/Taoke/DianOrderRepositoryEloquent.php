@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Taoke\DianOrder;
+use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\DianOrderValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\Interfaces\Taoke\DianOrderRepository;
@@ -47,5 +47,4 @@ class DianOrderRepositoryEloquent extends BaseRepository implements DianOrderRep
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-
 }

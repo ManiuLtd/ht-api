@@ -36,7 +36,6 @@ class CreditIncrement
      */
     public $extra;
 
-
     /**
      * CreditDecrement constructor.
      * @param User $user 需要操作的会员

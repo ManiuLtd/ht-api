@@ -2,7 +2,6 @@
 
 namespace App\Jobs\Spider;
 
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

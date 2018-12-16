@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        parent::report ($exception);
+        parent::report($exception);
     }
 
     /**
@@ -47,42 +47,42 @@ class Handler extends ExceptionHandler
     {
         //参数格式错误
         if ($exception instanceof \InvalidArgumentException) {
-            return json (4001, $exception->getMessage ());
+            return json(4001, $exception->getMessage());
         }
         //jwt相关异常
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
 
             //判断token是否存在
-            if (!auth ()->guard ()->parser ()->setRequest ($request)->hasToken ()) {
-                return json (4002, 'Token not provided', null, 401);
+            if (! auth()->guard()->parser()->setRequest($request)->hasToken()) {
+                return json(4002, 'Token not provided', null, 401);
             }
 
             //判断token是否正常
             try {
-                if (!auth ()->guard ()->parseToken ()->authenticate ()) {
-                    return json (4002, 'User not exists', null, 401);
+                if (! auth()->guard()->parseToken()->authenticate()) {
+                    return json(4002, 'User not exists', null, 401);
                 }
             } catch (Exception $e) {
-                return json (4002, 'Token is error', null, 401);
+                return json(4002, 'Token is error', null, 401);
             }
         }
         //token黑名单
         if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
             //判断token 是否注销或者过期
-            if (!\auth ()->guard ('api')->user ()) {
-                return json (4002, 'The token has been blacklisted', null, 401);
+            if (! \auth()->guard('api')->user()) {
+                return json(4002, 'The token has been blacklisted', null, 401);
             }
         }
         //未绑定手机号
         if ($exception instanceof PhoneException) {
-            return json (4003, "Phone is not bind");
+            return json(4003, 'Phone is not bind');
         }
 
         //未绑定邀请人
         if ($exception instanceof InviterException) {
-            return json (4004, "Inviter is not bind");
+            return json(4004, 'Inviter is not bind');
         }
 
-        return parent::render ($request, $exception);
+        return parent::render($request, $exception);
     }
 }

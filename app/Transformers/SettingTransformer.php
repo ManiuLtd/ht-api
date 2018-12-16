@@ -3,12 +3,9 @@
 namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use App\Models\Setting;
 
 /**
  * Class SettingTransformer.
- *
- * @package namespace App\Transformers;
  */
 class SettingTransformer extends TransformerAbstract
 {
@@ -21,7 +18,7 @@ class SettingTransformer extends TransformerAbstract
         return [
 
             'xieyi' => $model->xieyi,
-            'level_desc' => $model->level_desc
+            'level_desc' => $model->level_desc,
         ];
     }
 }

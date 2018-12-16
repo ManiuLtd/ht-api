@@ -48,5 +48,4 @@ class DianRepositoryEloquent extends BaseRepository implements DianRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-
 }

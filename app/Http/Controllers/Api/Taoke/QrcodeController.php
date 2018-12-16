@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Taoke;
 
-use App\Tools\Taoke\JingDong;
-use App\Tools\Taoke\PinDuoDuo;
-use App\Tools\Taoke\Taobao;
 use Hashids\Hashids;
+use App\Tools\Taoke\Taobao;
 use App\Tools\Qrcode\Qrcode;
 use Illuminate\Http\Request;
+use App\Tools\Taoke\JingDong;
 use App\Tools\Qrcode\TextEnum;
+use App\Tools\Taoke\PinDuoDuo;
 use App\Tools\Qrcode\ImageEnum;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
@@ -43,27 +43,27 @@ class QrcodeController extends Controller
     {
         try {
             $item_id = request('item_id');
-            $type    = request('type');
+            $type = request('type');
             $pic_url = request('pic_url');
-            if ($type == 1){
-                $tool    = new Taobao();
+            if ($type == 1) {
+                $tool = new Taobao();
                 $mes = ' 淘 宝';
-            }elseif ($type == 2){
-                $tool    = new JingDong();
+            } elseif ($type == 2) {
+                $tool = new JingDong();
                 $mes = ' 京 东';
-            }elseif ($type == 3){
-                $tool    = new PinDuoDuo();
+            } elseif ($type == 3) {
+                $tool = new PinDuoDuo();
                 $mes = '拼多多';
             }
-            $data  = $tool->getDetail([
-                'itemid' => $item_id
+            $data = $tool->getDetail([
+                'itemid' => $item_id,
             ]);
-            if ($type == 1){
+            if ($type == 1) {
                 //获取设置信息
                 $setting = setting(1);
                 $kuaizhan = $setting->kuaizhan;
                 $url = $kuaizhan.'/?kf=('.$data['kouling'].')&zr='.$data['kouling'].'&base=enI=&sku='.$data['item_id'].'&rand=3';
-            }else{
+            } else {
                 $url = data_get($data, 'coupon_link.url');
             }
             $userid = getUserId();
@@ -74,7 +74,7 @@ class QrcodeController extends Controller
             $qrcode->width = 564;
             $qrcode->height = 971;
             $qrcode->savePath = 'images/cache/'.$hashids.'_'.$item_id.'.jpg';
-            $redirectUrl = route ('wechat.login', [
+            $redirectUrl = route('wechat.login', [
                 'redirect_url' => $url,
                 'inviter'      => $hashids,
             ]);
@@ -93,13 +93,13 @@ class QrcodeController extends Controller
                 new ImageEnum($data['qrcode_img'], 200, 200, 'right-top', 0, 690),
             ];
             $textEnumArray = [
-                new TextEnum($data['final_price'], 160, 838, 35,'#DD6470'),
-                new TextEnum($data['price'], 185, 895, 32,'#6A6A6A'),
-                new TextEnum($mes, 20, 725, 25,'#FFE3EA'),
-                new TextEnum($str1, 100, 725, 25,'#4C4C4C'),
-                new TextEnum($str3, 20, 760, 25,'#4C4C4C'),
-                new TextEnum($str4, 20, 795, 25,'#4C4C4C'),
-                new TextEnum(intval($data['coupon_price']), 70, 895, 32,'#D4A5B2'),
+                new TextEnum($data['final_price'], 160, 838, 35, '#DD6470'),
+                new TextEnum($data['price'], 185, 895, 32, '#6A6A6A'),
+                new TextEnum($mes, 20, 725, 25, '#FFE3EA'),
+                new TextEnum($str1, 100, 725, 25, '#4C4C4C'),
+                new TextEnum($str3, 20, 760, 25, '#4C4C4C'),
+                new TextEnum($str4, 20, 795, 25, '#4C4C4C'),
+                new TextEnum(intval($data['coupon_price']), 70, 895, 32, '#D4A5B2'),
             ];
             $qrcode->setImageEnumArray($imageEnumArray);
             $qrcode->setTextEnumArray($textEnumArray);
@@ -133,7 +133,7 @@ class QrcodeController extends Controller
             //二维码
             $cacheImage = public_path('images/cache/').$hashids.'_invite'.'.png';
             //生成二维码
-            $redirectUrl = route ('wechat.login', [
+            $redirectUrl = route('wechat.login', [
                 'redirect_url' => $setting->download,
                 'inviter'      => $hashids,
             ]);

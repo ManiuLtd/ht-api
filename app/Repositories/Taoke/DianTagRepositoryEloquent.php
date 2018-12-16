@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Taoke;
 
-use App\Criteria\RequestCriteria;
 use App\Models\Taoke\DianTag;
-use App\Repositories\Interfaces\Taoke\DianTagRepository;
+use App\Criteria\RequestCriteria;
 use App\Validators\Taoke\DianTagValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Interfaces\Taoke\DianTagRepository;
 
 /**
  * Class DianRepositoryEloquent.

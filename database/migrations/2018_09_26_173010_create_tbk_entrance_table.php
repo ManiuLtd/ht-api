@@ -17,21 +17,21 @@ class CreateTbkEntranceTable extends Migration
      */
     public function up()
     {
-        Schema::create ('tbk_entrances', function (Blueprint $table) {
-            $table->increments ('id');
-            $table->integer ('category_id');//分类id
-            $table->string ('logo', 191)->nullable (); //图标
-            $table->string ('title', 191)->nullable (); //标题
-            $table->string ('description', 191)->nullable (); //描述
-            $table->string ('url', 191)->nullable (); //跳转地址
-            $table->tinyInteger ('type')->default (1); //类型  1 跳转链接 2 跳转模块
-            $table->tinyInteger ('is_home')->default (0); //首页显示  0 不显示 1显示
-            $table->string ('params', 191)->nullable (); //参数
-            $table->int ('sort')->default (100); //参数
+        Schema::create('tbk_entrances', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('category_id'); //分类id
+            $table->string('logo', 191)->nullable(); //图标
+            $table->string('title', 191)->nullable(); //标题
+            $table->string('description', 191)->nullable(); //描述
+            $table->string('url', 191)->nullable(); //跳转地址
+            $table->tinyInteger('type')->default(1); //类型  1 跳转链接 2 跳转模块
+            $table->tinyInteger('is_home')->default(0); //首页显示  0 不显示 1显示
+            $table->string('params', 191)->nullable(); //参数
+            $table->int('sort')->default(100); //参数
             $table->nullableTimestamps();
-            $table->softDeletes ();
+            $table->softDeletes();
 
-            $table->index ('category_id', 'category_id');
+            $table->index('category_id', 'category_id');
         });
     }
 
@@ -42,6 +42,6 @@ class CreateTbkEntranceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists ('tbk_entrances');
+        Schema::dropIfExists('tbk_entrances');
     }
 }

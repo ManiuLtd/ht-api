@@ -37,14 +37,11 @@ class DiyZhuanti extends Model implements Transformable
     ];
 
     /**
-     * 子分类
+     * 子分类.
      * @return mixed
      */
     public function children()
     {
-        return $this->hasMany('App\Models\Taoke\DiyZhuanti','pid');
+        return $this->hasMany('App\Models\Taoke\DiyZhuanti', 'pid');
     }
-
-
-
 }

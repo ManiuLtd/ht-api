@@ -42,5 +42,4 @@ class LevelsController extends Controller
 
         return json(1001, '列表获取成功', $levels);
     }
-
 }

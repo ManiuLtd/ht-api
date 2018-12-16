@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\Taoke;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Taoke\DianCreateRequest;
-use App\Repositories\Interfaces\Taoke\DianRepository;
 use App\Validators\Taoke\DianValidator;
+use App\Http\Requests\Taoke\DianCreateRequest;
 use Prettus\Validator\Contracts\ValidatorInterface;
+use App\Repositories\Interfaces\Taoke\DianRepository;
 
 /**
  * Class GuessController.
@@ -32,21 +32,21 @@ class DianController extends Controller
     {
         $this->repository = $repository;
         $this->validator = $validator;
-
     }
 
     /**
-     * 小店列表
+     * 小店列表.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $dian = $this->repository->paginate(request('limit', 10));
+
         return json(1001, '列表获取成功', $dian);
     }
 
     /**
-     * 申请成为店家
+     * 申请成为店家.
      */
     public function store(DianCreateRequest $request)
     {
@@ -59,15 +59,15 @@ class DianController extends Controller
             return json(5001, $e->getMessage());
         }
     }
+
     /**
-     * 小店详情
+     * 小店详情.
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $dian = $this->repository->find($id);
+
         return json(1001, '详情获取成功', $dian);
     }
-
-
 }

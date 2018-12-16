@@ -27,7 +27,7 @@ interface OrderRepository extends RepositoryInterface
     public function getMemberCommission();
 
     /**
-     * 订单报表
+     * 订单报表.
      * @return mixed
      */
     public function chart();

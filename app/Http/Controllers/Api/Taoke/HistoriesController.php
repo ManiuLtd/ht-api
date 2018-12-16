@@ -4,15 +4,10 @@ namespace App\Http\Controllers\Api\Taoke;
 
 use App\Criteria\UserCriteria;
 use App\Http\Controllers\Controller;
-use App\Models\Taoke\History;
 use App\Validators\Taoke\HistoryValidator;
 use App\Http\Requests\Taoke\HistoryCreateRequest;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Interfaces\Taoke\HistoryRepository;
-use App\Tools\Taoke\JingDong;
-use App\Tools\Taoke\PinDuoDuo;
-use App\Tools\Taoke\Taobao;
 
 /**
  * Class HistoriesController.
@@ -47,16 +42,15 @@ class HistoriesController extends Controller
      */
     public function index()
     {
-            $histories = $this->repository
+        $histories = $this->repository
                 ->pushCriteria(new UserCriteria())
                 ->paginate(request('limit', 10));
-
 
         return json(1001, '列表获取成功', $histories);
     }
 
     /**
-     * 添加浏览记录
+     * 添加浏览记录.
      * @param HistoryCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Prettus\Repository\Contracts\ValidatorException
@@ -70,9 +64,8 @@ class HistoriesController extends Controller
 
             $histories = $this->repository->updateOrCreate([
                 'item_id' => $data['item_id'],
-                'user_id' => $data['user_id']
-            ],$data);
-
+                'user_id' => $data['user_id'],
+            ], $data);
 
             return json(1001, '添加成功', $histories);
         } catch (ValidatorException $e) {

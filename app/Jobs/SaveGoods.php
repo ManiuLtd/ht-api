@@ -109,7 +109,7 @@ class SaveGoods implements ShouldQueue
             $data['status'] = 0;
             $data['videoid'] = $result->videoid;
             $data['activity_type'] = $this->GetactivityType($result->activity_type);
-            $data['start_time'] = isset($result->couponstarttime) ?  date('Y-m-d H:i:s', $result->couponstarttime) : null;
+            $data['start_time'] = isset($result->couponstarttime) ? date('Y-m-d H:i:s', $result->couponstarttime) : null;
             $data['end_time'] = isset($result->couponendtime) ? date('Y-m-d H:i:s', $result->couponendtime) : null;
 
             $data['created_at'] = Carbon::now()->toDateTimeString();
@@ -124,7 +124,6 @@ class SaveGoods implements ShouldQueue
                     $data
                 );
             }
-
         }
         //批量插入
         if ($this->all == 'true') {
@@ -153,7 +152,7 @@ class SaveGoods implements ShouldQueue
             $data['introduce'] = $result->skuDesc;
             $data['type'] = 2;
             $data['status'] = 0;
-            $data['start_time'] = isset($result->beginTime) ? Carbon::createFromTimestamp(intval($result->beginTime+1))->toDateTimeString() : null;
+            $data['start_time'] = isset($result->beginTime) ? Carbon::createFromTimestamp(intval($result->beginTime + 1))->toDateTimeString() : null;
             $data['end_time'] = isset($result->endTime) ? Carbon::createFromTimestamp(intval($result->endTime))->toDateTimeString() : null;
             $data['created_at'] = Carbon::now()->toDateTimeString();
             $data['updated_at'] = Carbon::now()->toDateTimeString();
@@ -170,7 +169,6 @@ class SaveGoods implements ShouldQueue
         }
         //批量插入
         if ($this->all == 'true') {
-
             DB::table('tbk_coupons')->insert($inserts);
         }
     }
@@ -215,7 +213,6 @@ class SaveGoods implements ShouldQueue
         }
         //批量插入
         if ($this->all == 'true') {
-
             DB::table('tbk_coupons')->insert($inserts);
         }
     }
@@ -335,7 +332,7 @@ class SaveGoods implements ShouldQueue
      */
     protected function setTBCat($cat)
     {
-        switch ($cat){
+        switch ($cat) {
             case 1:
                 return 43;
             case 2:
@@ -374,6 +371,7 @@ class SaveGoods implements ShouldQueue
                 return 59;
         }
     }
+
     /**
      * 设置好京客京东分类ID.
      * @param $cat
